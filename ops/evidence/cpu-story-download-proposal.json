@@ -1,0 +1,16 @@
+{
+  "status": "PROPOSAL_ONLY_NOT_APPROVED_NOT_DOWNLOADED",
+  "repo": "Qwen/Qwen2.5-1.5B-Instruct-GGUF",
+  "revision": "91cad51170dc346986eccefdc2dd33a9da36ead9",
+  "license": "Apache-2.0",
+  "download_cap_bytes": 1200000000,
+  "additional_disk_cap_bytes": 1500000000,
+  "files": [
+    {"file": "qwen2.5-1.5b-instruct-q4_k_m.gguf", "bytes": 1117320736, "sha256": "6a1a2eb6d15622bf3c96857206351ba97e1af16c30d7a74ee38970e434e9407e"},
+    {"file": "LICENSE", "destination": "qwen1.5b-LICENSE", "bytes": 11343, "sha256": "832dd9e00a68dd83b3c3fb9f5588dad7dcf337a0db50f7d9483f310cd292e92e"},
+    {"file": "README.md", "destination": "qwen1.5b-MODEL-CARD.md", "bytes": 4856, "sha256": "57c72d4010fb11a98fc8e62dc8ef112b23a7a7525b71e571ca978d35cb3b2eec"}
+  ],
+  "runtime": "Reuse installed llama.cpp b11558 Windows CPU executable; no runtime download",
+  "official_metadata_checked": "2026-10-12",
+  "quality": "UNPROVEN; manual review required separately from valid JSON"
+}

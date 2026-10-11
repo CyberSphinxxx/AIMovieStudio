@@ -73,3 +73,11 @@ New jobs write SCRIPT_BATCH/DRAFT_BATCH sections of at most4 shots, each using e
 Initial targeted8pass/1fail found backup stage allowlist omitted new sections; fixed and reran23 tests PASS54.31s (sections/media/prewrite/3 real hardkills). Nine new section tests cover600s120-shot fixture, receipt recovery, portable partial restore/no rewrite, batched3-episode prewrite/reuse, cross-section knowledge, missing/invalid sections blocked before visuals and pinned schema/legacy step. Full verify.ps1 -Browser PASS71 backend77.25s,2 Vitest,5 Edge31.0s, lint/type/build/main audits0. Evidence script-batch-verification.log. This proves durable bounded orchestration with labeled deterministic fixtures, not real screenplay quality or GPU filmmaking.
 
 Next: test and prepare additional licensed CPU writing experiment. Exact reviewed proposal CPU_STORY_INSTALL_PROPOSAL.md; no1.5B weights downloaded or approved yet. Keep advancing independent work while GPU App Control remains blocked.
+
+## Additional CPU writing proposal/profile (approval pending)
+
+Official1.5B GGUF revision/hash/license reviewed; proposal caps1.2GB network/1.5GB added disk, no runtime/system install. Bounded installer rejects absent approval, budgets/corrupt artifacts/existing targets and validates resume; explicit profile checks installed weight size/SHA and5GiB RAM before process launch. Writing-only worker smoke stops at failed section/ten minutes/2GiB remaining RAM, preserves checkpoints, samples server RSS/available RAM and never enters imagery. No1.5B weights downloaded; no inference/fit/quality pass. Human async approval question pending.
+
+23 targeted CPU profile/setup/API/story checks PASS3.33s, including actual read-only own-process memory counter. Full verify81 backend79.01s/2 Vitest/5 Edge31.6s and main audits0 PASS. Subsequent inspection fixed completed partial downloads otherwise making HTTP Range past EOF in both GPU/CPU helpers; first added test placed an old assertion in wrong function, corrected.10 download fixture tests PASS0.15s, Ruff PASS. Actual downloads were not performed. Evidence cpu-profile-verification.log.
+
+While this separate approval is pending, next independent work: F7.03 optional saved future-draft dialogue/action editing with optimistic revision, full continuity revalidation, retained history and later-draft invalidation.

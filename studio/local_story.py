@@ -12,16 +12,52 @@ import httpx
 from pydantic import ValidationError
 
 from studio.media import ROOT
+from studio.diagnostics import memory_status, process_rss
+from studio.storage import digest
 from studio.story import OllamaStory, T, checked_post
 from studio.processes import owned_process
 
+CPU_PROFILES = {
+    "small_cpu": (
+        "Qwen2.5-0.5B-Instruct-Q4_K_M",
+        "qwen2.5-0.5b-instruct-q4_k_m.gguf",
+        491400032,
+        "74a4da8c9fdbcd15bd1f6d01d621410d31c6fc00986f5eb687824e7b93d7a9db",
+    ),
+    "cpu_1_5b": (
+        "Qwen2.5-1.5B-Instruct-Q4_K_M",
+        "qwen2.5-1.5b-instruct-q4_k_m.gguf",
+        1117320736,
+        "6a1a2eb6d15622bf3c96857206351ba97e1af16c30d7a74ee38970e434e9407e",
+    ),
+}
+
+
+def observe_process(observer, process):
+    if observer:
+        observer({"pid": process.pid, "rss_bytes": process_rss(process.pid), "memory": memory_status()})
+
 
 @contextmanager
-def cpu_server(check=lambda: None):
+def cpu_server(check=lambda: None, profile="small_cpu", observer=None):
     folder = ROOT / "tools" / "story"
-    executable, weights = folder / "llama-server.exe", folder / "qwen2.5-0.5b-instruct-q4_k_m.gguf"
+    _, filename, size, sha = CPU_PROFILES[profile]
+    executable, weights = folder / "llama-server.exe", folder / filename
     if not executable.exists() or not weights.exists():
-        raise RuntimeError("MISSING_MODEL: Run scripts/setup_story.py to prepare the small CPU story model.")
+        raise RuntimeError(
+            "MISSING_MODEL: The selected CPU writing experiment is not installed. Review its setup/download approval first."
+        )
+    check()
+    if profile == "cpu_1_5b":
+        memory = memory_status()
+        if not memory.get("available") or memory["free_gb"] < 5:
+            raise RuntimeError(
+                "RESOURCE_BUSY: The 1.5B CPU experiment requires at least 5 GiB free RAM before loading."
+            )
+    if weights.stat().st_size != size or digest(weights) != sha:
+        raise RuntimeError(
+            "BAD_MODEL: CPU weights differ from the reviewed size/SHA256; no model was loaded."
+        )
     with socket.socket() as sock:
         sock.bind(("127.0.0.1", 0))
         port = sock.getsockname()[1]
@@ -57,6 +93,7 @@ def cpu_server(check=lambda: None):
             deadline = time.monotonic() + 45
             while time.monotonic() < deadline:
                 check()
+                observe_process(observer, process)
                 if process.poll() is not None:
                     raise RuntimeError(
                         "MODEL_LOAD_FAILED: Check tools/story/runtime.log for CPU runtime diagnostics."
@@ -83,8 +120,9 @@ def cpu_server(check=lambda: None):
 
 
 class SmallCPUStory(OllamaStory):
-    def __init__(self, check=lambda: None):
-        self.model = "Qwen2.5-0.5B-Instruct-Q4_K_M"
+    def __init__(self, check=lambda: None, profile="small_cpu", observer=None):
+        self.model = CPU_PROFILES[profile][0]
+        self.profile, self.observer = profile, observer
         self.check = check
 
     def generate(self, schema: type[T], prompt: str) -> T:
@@ -96,9 +134,14 @@ class SmallCPUStory(OllamaStory):
             {"role": "user", "content": prompt},
         ]
         with (
-            cpu_server(self.check) as (url, process),
+            cpu_server(self.check, self.profile, self.observer) as (url, process),
             httpx.Client(base_url=url, timeout=180, trust_env=False) as client,
         ):
+
+            def check():
+                self.check()
+                observe_process(self.observer, process)
+
             for attempt in range(3):
                 response = checked_post(
                     client,
@@ -119,7 +162,7 @@ class SmallCPUStory(OllamaStory):
                         "stream": False,
                         "seed": 42,
                     },
-                    self.check,
+                    check,
                 )
                 response.raise_for_status()
                 content = response.json()["choices"][0]["message"]["content"]

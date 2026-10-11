@@ -25,3 +25,5 @@
 21. Schema-valid tiny-model output failed manual writing review. Require screenplay scene content (minimum80 characters/shot), constrain generated cinematic camera choices, normalize redundant actor references. Bound JSON repair history to original request plus only the latest failed reply (4000 characters) and concise errors; never accumulate all outputs beyond local context.
 
 Use ordinary persisted worker steps for four-shot screenplay sections; assembly stays SCRIPT/DRAFT. No schema migration, ordinal rewrites or in-memory-only long generation. Prior changes and recent scenes feed subsequent requests; complete continuity is rechecked before expensive production. Output bounds protect completion budgets, but do not certify the tiny CPU writer.
+
+Qwen1.5B is a separately approved CPU experiment, not covered by GPU model approval. Reuse installed CPU runtime, exact official SHA/size/license, never auto-select/download or fallback. Counter sampling reports sampled working-set maxima rather than asserting exact total RAM. Completed checksum-valid partials publish without extra network bytes, avoiding Range past EOF.

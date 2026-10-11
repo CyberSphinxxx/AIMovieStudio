@@ -43,6 +43,8 @@ An optional tiny CPU feasibility model can be prepared with `.venv/Scripts/pytho
 
 Select **Small CPU feasibility model** in Settings to use that installed runtime. It unloads after each story step. The observed worker persisted a real plan and screenplay, then stopped at missing image/video setup. Some attempts exhausted schema repairs; this tiny model remains a writing feasibility test.
 
+The additional **Qwen 1.5B CPU experiment** has an explicit profile, checksum/RAM guards and a bounded writing-only smoke harness. Its separate download approval is pending; no 1.5B inference or quality pass is claimed. Scope: `docs/CPU_STORY_INSTALL_PROPOSAL.md`. The helper refuses to download without its approval flag, and the missing model fails without falling back to a demo.
+
 The user approved the bounded private GPU installation in `docs/GPU_INSTALL_PROPOSAL.md`. Its source, isolated runtime and image weights are installed with recorded checksums. **The first runtime smoke failed before inference: Windows Application Control blocked PyTorch's CUDA DLL.** No real GPU image or video has been generated. Video weights remain gated on a reviewed image test. See `ops/HARDWARE_PROOF.md` and `ops/APPROVALS.md`. The studio does not alter Windows security policy. Vendor dependencies also have unresolved audit advisories and are not release-certified.
 
 ## Verify

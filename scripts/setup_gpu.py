@@ -65,6 +65,14 @@ def fetch(url, destination, size, sha, reservation=None):
         remaining += data["reservations"].get(reservation, 0)
     temporary = destination.with_name(destination.name + ".partial")
     offset = temporary.stat().st_size if temporary.exists() else 0
+    if offset == size:
+        if digest(temporary) != sha:
+            raise RuntimeError("Completed GPU partial checksum differs; inspect before retrying")
+        os.link(temporary, destination)
+        temporary.unlink()
+        data["completed"][str(destination.relative_to(ROOT))] = {"bytes": size, "sha256": sha, "url": url}
+        save(data)
+        return
     if offset > size:
         raise RuntimeError("Existing partial artifact exceeds approved size")
     if size - offset > remaining or shutil.disk_usage(TARGET).free < size - offset + max(RESERVE, MIN_FREE):

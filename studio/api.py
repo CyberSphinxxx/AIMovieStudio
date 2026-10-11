@@ -26,7 +26,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 class SettingsInput(StrictModel):
-    story_engine: str = Field(default="ollama", pattern=r"^(ollama|small_cpu)$")
+    story_engine: str = Field(default="ollama", pattern=r"^(ollama|small_cpu|cpu_1_5b)$")
     story_model: str = Field(default="", max_length=100, pattern=r"^[\w.:/-]*$")
     speech: str = Field(default="windows", pattern=r"^(windows|none)$")
     reserve_mb: int = Field(default=1024, ge=100, le=102400)
@@ -200,6 +200,15 @@ def create_app(root: Path | None = None, run_worker=True) -> FastAPI:
                     and (ROOT / "tools" / "story" / "qwen2.5-0.5b-instruct-q4_k_m.gguf").exists(),
                     "is_mock": False,
                     "message": "Small feasibility model. Structured plan tested separately; story quality not established.",
+                },
+                {
+                    "id": "cpu-1-5b",
+                    "name": "CPU story · Qwen 1.5B experiment",
+                    "available": (ROOT / "tools/story/llama-server.exe").is_file()
+                    and (ROOT / "tools/story/qwen2.5-1.5b-instruct-q4_k_m.gguf").is_file(),
+                    "is_mock": False,
+                    "verified": False,
+                    "message": "Separate 1.2 GB download approval required. CPU writing quality/performance unproven; requires 5 GiB free RAM.",
                 },
                 {
                     "id": "windows-speech",

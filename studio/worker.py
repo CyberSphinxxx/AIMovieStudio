@@ -28,8 +28,9 @@ STAGES = {
 
 
 class Worker:
-    def __init__(self, store: Store):
+    def __init__(self, store: Store, story_observer=None):
         self.store = store
+        self.story_observer = story_observer
         self.stop = threading.Event()
         self.thread: threading.Thread | None = None
         self.lockfile = None
@@ -222,10 +223,12 @@ class Worker:
             or spec["backend"] == "demo"
         ):
             provider = DemoStory()
-        elif settings["story_engine"] == "small_cpu":
+        elif settings["story_engine"] in {"small_cpu", "cpu_1_5b"}:
             from studio.local_story import SmallCPUStory
 
-            provider = SmallCPUStory(check=check)
+            provider = SmallCPUStory(
+                check=check, profile=settings["story_engine"], observer=self.story_observer
+            )
         else:
             provider = OllamaStory(settings["story_model"], check=check)
         base = {

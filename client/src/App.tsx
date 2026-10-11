@@ -1382,6 +1382,9 @@ function Settings() {
               <option value="small_cpu">
                 Small CPU story · Qwen 0.5B (feasibility)
               </option>
+              <option value="cpu_1_5b">
+                CPU story · Qwen 1.5B (experiment, separate install)
+              </option>
             </select>
           </label>
           <label>

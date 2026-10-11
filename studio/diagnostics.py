@@ -12,6 +12,45 @@ from studio.media import run
 _cached: tuple[float, dict] = (0, {})
 
 
+def process_rss(pid: int) -> int | None:
+    """Read-only Windows working-set counter; sampling is not an exact peak proof."""
+    if os.name != "nt":
+        return None
+
+    class Counters(ctypes.Structure):
+        _fields_ = [("cb", wintypes.DWORD), ("faults", wintypes.DWORD)] + [
+            (name, ctypes.c_size_t)
+            for name in [
+                "peak_rss",
+                "rss",
+                "peak_paged",
+                "paged",
+                "peak_nonpaged",
+                "nonpaged",
+                "pagefile",
+                "peak_pagefile",
+            ]
+        ]
+
+    kernel = ctypes.WinDLL("kernel32", use_last_error=True)
+    kernel.OpenProcess.argtypes = [wintypes.DWORD, wintypes.BOOL, wintypes.DWORD]
+    kernel.OpenProcess.restype = wintypes.HANDLE
+    kernel.CloseHandle.argtypes = [wintypes.HANDLE]
+    psapi = ctypes.WinDLL("psapi", use_last_error=True)
+    psapi.GetProcessMemoryInfo.argtypes = [wintypes.HANDLE, ctypes.POINTER(Counters), wintypes.DWORD]
+    handle = kernel.OpenProcess(0x410, False, pid)
+    if not handle:
+        return None
+    try:
+        counters = Counters()
+        counters.cb = ctypes.sizeof(counters)
+        if psapi.GetProcessMemoryInfo(handle, ctypes.byref(counters), counters.cb):
+            return counters.rss
+        return None
+    finally:
+        kernel.CloseHandle(handle)
+
+
 def memory_status() -> dict:
     if os.name != "nt":
         return {"available": False, "reason": "Windows memory counters unavailable"}

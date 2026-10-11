@@ -99,3 +99,16 @@ def test_existing_file_is_never_overwritten_and_missing_checksum_rejected(downlo
     with pytest.raises(ValueError, match="SHA256"):
         installer.fetch("https://fixture.invalid/model", path, 3, "")
     assert path.read_bytes() == b"original" and not requests
+
+
+def test_finished_partial_publishes_without_network_or_extra_budget(downloads, monkeypatch):
+    path = downloads / "finished.bin"
+    payload = b"finished"
+    path.with_suffix(".bin.partial").write_bytes(payload)
+    state = installer.ledger()
+    state["received_bytes"] = 100
+    installer.save(state)
+    requests = response(monkeypatch, b"must-not-download")
+    installer.fetch("https://fixture.invalid/model", path, len(payload), hashlib.sha256(payload).hexdigest())
+    assert path.read_bytes() == payload and not requests
+    assert installer.ledger()["received_bytes"] == 100

@@ -1,8 +1,8 @@
 {
   "date": "2026-10-12",
   "backend": {
-    "passed": 71,
-    "seconds": 77.25,
+    "passed": 81,
+    "seconds": 79.01,
     "warning": "Starlette TestClient httpx deprecation"
   },
   "frontend": {
@@ -10,7 +10,7 @@
     "lint": "PASS",
     "typescript_and_build": "PASS",
     "edge_passed": 5,
-    "edge_seconds": 31.0
+    "edge_seconds": 31.6
   },
   "main_audits": {
     "python_known_advisories": 0,
@@ -25,6 +25,7 @@
     "GPU runtime FAILED before inference: OS application-control policy blocked torch_cuda.dll. No actual GPU image/video proof.",
     "New speech/stem suite initially uncovered Windows SQLITE_IOERR_TRUNCATE; narrow startup repair verified3 actual hardkills (2 exercised real retry), then updated full53/2/5 suite passed.",
     "Declared continuity final verification captured in continuity-verification.log: 62 backend/2 Vitest/5 Edge; all requested checks passed. Actual CPU latest run FAILED297.547s; historic structurally valid script failed manual writing review.",
-    "Durable four-shot sections: script-batch-verification.log71/2/5 PASS. 600s deterministic writing fixture recovered receipt and restored partial backup with no section rewrite; actual GPU and writing quality unproven."
+    "Durable four-shot sections: script-batch-verification.log71/2/5 PASS. 600s deterministic writing fixture recovered receipt and restored partial backup with no section rewrite; actual GPU and writing quality unproven.",
+    "CPU profile/helper regression cpu-profile-verification.log81/2/5 PASS. Afterwards completed-partial EOF resume repair passed10 targeted download tests0.15s. No1.5B weights installed or inference; approval pending."
   ]
 }
