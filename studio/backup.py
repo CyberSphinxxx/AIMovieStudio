@@ -125,7 +125,18 @@ def validate_document(data):
         if episode["script"]:
             EpisodeScript.model_validate_json(episode["script"])
     for step in data["tables"]["steps"]:
-        if step["stage"] not in {"PLAN", "DRAFT", "SCRIPT", "REFERENCE", "FRAME", "CLIP", "AUDIO", "EXPORT"}:
+        if step["stage"] not in {
+            "PLAN",
+            "DRAFT",
+            "SCRIPT",
+            "SCRIPT_BATCH",
+            "DRAFT_BATCH",
+            "REFERENCE",
+            "FRAME",
+            "CLIP",
+            "AUDIO",
+            "EXPORT",
+        }:
             raise ValueError("Unknown restored stage")
         json.loads(step["payload"])
         if not 0 <= step["attempts"] <= step["max_attempts"] <= 3:

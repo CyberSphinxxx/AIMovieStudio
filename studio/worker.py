@@ -7,7 +7,8 @@ import threading
 import time
 
 from studio import media
-from studio.domain import SeasonPlan, continuity_errors, stable, validate_script
+from studio.domain import EpisodeScript, SeasonPlan, continuity_errors, stable, validate_script
+from studio.script_batches import merge_sections, validate_section
 from studio.storage import Store, atomic_json, digest
 from studio.story import DemoStory, OllamaStory
 from studio.providers import WanGPConfig, WanGPProvider
@@ -16,6 +17,8 @@ STAGES = {
     "PLAN": "Preparing your story",
     "SCRIPT": "Writing the screenplay",
     "DRAFT": "Prewriting the season",
+    "SCRIPT_BATCH": "Writing screenplay scenes",
+    "DRAFT_BATCH": "Prewriting episode scenes",
     "REFERENCE": "Creating character references",
     "FRAME": "Composing shot keyframes",
     "CLIP": "Animating shots",
@@ -214,7 +217,10 @@ class Worker:
         def check():
             self.check(step)
 
-        if stage not in {"PLAN", "SCRIPT", "DRAFT"} or spec["backend"] == "demo":
+        if (
+            stage not in {"PLAN", "SCRIPT", "DRAFT", "SCRIPT_BATCH", "DRAFT_BATCH"}
+            or spec["backend"] == "demo"
+        ):
             provider = DemoStory()
         elif settings["story_engine"] == "small_cpu":
             from studio.local_story import SmallCPUStory
@@ -238,21 +244,47 @@ class Worker:
             if len(plan.episodes) != spec["episodes"]:
                 raise RuntimeError("BAD_STORY: Model did not plan the requested number of episodes.")
             return {"plan": plan.model_dump(), "artifacts": []}
-        if stage in {"SCRIPT", "DRAFT"}:
-            number = step["payload"]["episode"] if stage == "DRAFT" else step["episode"]
+        if stage in {"SCRIPT", "DRAFT", "SCRIPT_BATCH", "DRAFT_BATCH"}:
+            number = step["payload"]["episode"] if stage.startswith("DRAFT") else step["episode"]
             episode = next(e for e in project["episodes"] if e["number"] == number)
+            payload = step["payload"]
+            sections = []
+            for sid in payload.get("previous_batch_ids", payload.get("batch_ids", [])):
+                with self.store.connect() as db:
+                    row = db.execute(
+                        "SELECT * FROM steps WHERE id=? AND job_id=?", (sid, step["job_id"])
+                    ).fetchone()
+                if not row or row["state"] != "SUCCEEDED" or not row["output"]:
+                    raise RuntimeError("BAD_STORY: A required screenplay section checkpoint is missing.")
+                sections.append(EpisodeScript.model_validate(json.loads(row["output"])["script"]))
             if stage == "SCRIPT" and episode["status"] == "DRAFTED" and episode["script"]:
-                from studio.domain import EpisodeScript
-
                 script = EpisodeScript.model_validate(episode["script"])
+            elif stage.endswith("_BATCH"):
+                section = provider.script_batch(project, number, payload["start"], payload["count"], sections)
+                if section.number != number:
+                    raise RuntimeError("BAD_STORY: Screenplay section belongs to another episode.")
+                validate_section(
+                    section,
+                    SeasonPlan.model_validate(project["plan"]),
+                    payload["start"],
+                    payload["count"],
+                    spec["target_seconds"] / payload["total"],
+                )
+                script = merge_sections(sections + [section], number)
+            elif sections:
+                script = merge_sections(sections, number)
             else:
                 script = provider.script(project, number)
             if script.number != number:
                 raise RuntimeError("BAD_STORY: Script belongs to a different episode.")
             plan = SeasonPlan.model_validate(project["plan"])
-            validate_script(script, plan, spec["target_seconds"])
+            validate_script(
+                script,
+                plan,
+                sum(s.duration for s in script.shots) if stage.endswith("_BATCH") else spec["target_seconds"],
+            )
             events = project["canon"]
-            if stage == "DRAFT":
+            if stage.startswith("DRAFT"):
                 # Earlier unfilmed changes are a planning simulation, never persisted canon.
                 events = [
                     {**change, "episode": e["number"]}
@@ -265,7 +297,7 @@ class Worker:
             conflicts = continuity_errors(script, events, plan)
             if conflicts:
                 raise RuntimeError("CANON_CONFLICT: " + "; ".join(conflicts))
-            return {"script": script.model_dump(), "artifacts": []}
+            return {"script": (section if stage.endswith("_BATCH") else script).model_dump(), "artifacts": []}
         real_provider = WanGPProvider(WanGPConfig.model_validate(settings.get("wangp", {})), self.store.root)
         size = media.SIZES[spec["orientation"]]
         payload = step["payload"]
@@ -527,9 +559,17 @@ class Worker:
                 ordinal = step["ordinal"] + 1
                 if spec.get("prewrite_season") and len(plan["episodes"]) > 1:
                     for episode in plan["episodes"]:
-                        self.store.add_step(db, jid, ordinal, "DRAFT", {"episode": episode["number"]})
-                        ordinal += 1
-                self.store.add_step(db, jid, ordinal, "SCRIPT", {"episode": step["episode"]})
+                        ordinal = self.store.add_story_steps(
+                            db, jid, ordinal, episode["number"], spec, draft=True
+                        )
+                self.store.add_story_steps(
+                    db,
+                    jid,
+                    ordinal,
+                    step["episode"],
+                    spec,
+                    reuse=bool(spec.get("prewrite_season") and len(plan["episodes"]) > 1),
+                )
             elif step["stage"] == "DRAFT":
                 script = output["script"]
                 db.execute(

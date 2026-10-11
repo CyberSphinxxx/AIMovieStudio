@@ -23,3 +23,5 @@
 
 20. Declared continuity uses stable props and exact fact text, per-shot actor-specific uses, ordered proposed changes and before-state checks. Draft simulation never writes canon; completed export atomically records changes/provenance. Explicit flashbacks use earlier episode-start state, a limited coarse timeline; fine-grained world time/costume/relationship and undeclared prose analysis remain open.
 21. Schema-valid tiny-model output failed manual writing review. Require screenplay scene content (minimum80 characters/shot), constrain generated cinematic camera choices, normalize redundant actor references. Bound JSON repair history to original request plus only the latest failed reply (4000 characters) and concise errors; never accumulate all outputs beyond local context.
+
+Use ordinary persisted worker steps for four-shot screenplay sections; assembly stays SCRIPT/DRAFT. No schema migration, ordinal rewrites or in-memory-only long generation. Prior changes and recent scenes feed subsequent requests; complete continuity is rechecked before expensive production. Output bounds protect completion budgets, but do not certify the tiny CPU writer.

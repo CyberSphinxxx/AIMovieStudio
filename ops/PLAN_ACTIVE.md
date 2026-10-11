@@ -1,11 +1,12 @@
 # Active implementation plan — 2026-10-12
 
-Task/ID: F2.04/F3.02 declared continuity and prop references.
-Behavior: A character cannot use a prop owned by another actor or a fact not yet learned. Proposed changes must match their before-state and become canon only after episode export; saved future drafts are rechecked against actual completed events. Offscreen dead speakers also block production.
-Ground truth: Checkpoint0c2fe8a passed53 backend/2 frontend/5 Edge. Existing model only checks prior alive/dead and outcome; CanonEvent already supports ownership/knowledge/location but lacks typed screenplay assertions. Read architecture/DATA_MODEL.md, docs/04_STORY_ENGINE.md, agent-prompts/02_SERIES_CANON.md and continuity skill.
-Slice: Optional typed props and initial character knowledge, per-shot required props/knowledge, bounded after-shot changes with before-values and provenance. Validate changes/reference IDs, as-of episode state, and explicit flashback-to-episode-start exception. Include prop references in frames; show owners in Cast & World. No semantic claim for undeclared prose; costume/relationship/fine-grained world-time remain open.
-Tests: Prop transfer/use-before-receive, learning/use-before-learning, stale before-state, dead offscreen speaker/explicit flashback, no dream/future event leakage, completed canon across restart/prewrite, parent reference checksum, UI rendering, existing backups/migration/export.
-Safety: Backward compatible default fields; no schema migration or download. Append facts and source event metadata transactionally at completed export; no overwrite. Old plans/scripts remain valid.
-Recovery: Existing receipts and job order preserved, stable event IDs, backup includes structured scripts/events. Failure blocks visuals.
-Progress: Typed assertions, export-only facts, prop references/UI and targeted tests implemented. Current full regression captured in continuity-verification.log. Actual CPU schema/quality failures preserved in real-story-runs/, latest f6b050ee failed297.547s after three attempts. No GPU inference.
-Result: Declared continuity slice implemented; full phase remains incomplete. Next dependency-unblocked work is F2.03 durable bounded screenplay requests.
+Task/ID: F2.03 durable bounded screenplay batches.
+Behavior: Longer episodes write at most four shots per model completion. Each section is checkpointed before the next; restart reuses saved sections. Assembly validates complete runtime/continuity before audio/images. Season prewriting keeps independent episode sections and no future canon.
+Ground truth:262c256 passed62 backend/2 Vitest/5 Edge. Actual tiny CPU still fails screenplay quality/schema; long scripts currently ask for up to120 shots in3500 output tokens. Reuse transactional ordered steps/receipts/backups.
+Slice: New jobs add SCRIPT_BATCH/DRAFT_BATCH followed by existing SCRIPT/DRAFT assembly. Short scripts/persisted old steps keep their behavior. Bounded schema/prompt and previous section context, global shot IDs/change positions, per-section plus final validation, human stage labels.
+Components: story provider/local inherited adapter; storage scheduler; worker assembly; UI status; interruption/continuity/long-script tests.
+Safety/licensing: No downloads/packages/OS changes. Demo sections remain labeled fixtures. Real writing success/quality is a separate observed gate.
+Exit:600s fixture schedules30 four-shot sections, exact120 shots/runtime; receipt recovery preserves outputs; malformed/missing/causally contradictory sections fail before visuals; season prewrite/reuse, full suite and browser pass.
+Recovery: Additive stage names/payloads, no migration. Existing IDs/receipts stay valid. Backups include partial sections/paused jobs.
+Progress: Implemented; initial backup stage allowlist failure repaired.23 targeted and full71 backend/2 Vitest/5 Edge passed.600s fixture receipt recovery/partial restore reused sections, malformed sections blocked before visuals.
+Result: Durable batching slice DONE_VERIFIED with development fixtures; real writing quality remains unproven and phase2 incomplete.

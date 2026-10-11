@@ -49,6 +49,9 @@ def checked_post(client, path, body, check):
 class StoryProvider(Protocol):
     def plan(self, project: dict) -> SeasonPlan: ...
     def script(self, project: dict, number: int) -> EpisodeScript: ...
+    def script_batch(
+        self, project: dict, number: int, start: int, count: int, previous: list[EpisodeScript]
+    ) -> EpisodeScript: ...
 
 
 class DemoStory:
@@ -168,6 +171,23 @@ class DemoStory:
         )
         return EpisodeScript(number=number, screenplay=screenplay, shots=shots)
 
+    def script_batch(self, project, number, start, count, previous):
+        script = self.script(project, number)
+        shots = script.shots[start : start + count]
+        return EpisodeScript(
+            number=number,
+            screenplay="DEMO SCREENPLAY SECTION — deterministic development fixture.\n\n"
+            + "\n\n".join(
+                f"SCENE {s.number} — {s.camera}\n{s.action}\nOFFSCREEN: {s.narration}" for s in shots
+            ),
+            shots=shots,
+            proposed_changes=[
+                c
+                for c in script.proposed_changes
+                if (start < c.after_shot <= start + count) or (start == c.after_shot == 0)
+            ],
+        )
+
 
 class OllamaStory:
     """Official localhost /api/chat contract with bounded schema repair and unload."""
@@ -253,10 +273,18 @@ class OllamaStory:
         return plan
 
     def script(self, project, number):
+        return self._script_section(project, number, 0, math.ceil(project["spec"]["target_seconds"] / 5), [])
+
+    def script_batch(self, project, number, start, count, previous):
+        if not 1 <= count <= 4:
+            raise ValueError("A screenplay batch must contain one to four shots")
+        return self._script_section(project, number, start, count, previous)
+
+    def _script_section(self, project, number, start, count, previous):
         characters = tuple(c["id"] for c in project["plan"]["characters"])
         locations = tuple(p["id"] for p in project["plan"]["locations"])
-        count = max(1, math.ceil(project["spec"]["target_seconds"] / 5))
-        duration = project["spec"]["target_seconds"] / count
+        total = math.ceil(project["spec"]["target_seconds"] / 5)
+        duration = project["spec"]["target_seconds"] / total
         cast_type = Literal.__getitem__(characters)
         props = tuple(p["id"] for p in project["plan"].get("props", []))
         knowledge_schema = create_model(
@@ -279,6 +307,9 @@ class OllamaStory:
             character_ids=(list[cast_type], Field(min_length=1, max_length=len(characters))),
             location_id=(Literal.__getitem__(locations), ...),
             duration=(float, Field(ge=duration, le=duration)),
+            number=(int, Field(ge=start + 1, le=start + count)),
+            action=(str, Field(min_length=5, max_length=450)),
+            narration=(str, Field(max_length=int(duration * 12))),
             camera=(
                 Literal[
                     "Wide establishing shot",
@@ -325,7 +356,7 @@ class OllamaStory:
                     entity_id=(entities, ...),
                     before_value=(before, ...),
                     value=(after, Field(max_length=500, min_length=3) if field == "knowledge" else ...),
-                    after_shot=(int, Field(ge=0, le=count)),
+                    after_shot=(int, Field(ge=start, le=start + count)),
                 )
             )
         change_union = Union.__getitem__(tuple(change_types))
@@ -333,9 +364,9 @@ class OllamaStory:
             "RequestedScreenplay",
             __base__=EpisodeScript,
             number=(Literal.__getitem__((number,)), ...),
-            screenplay=(str, Field(min_length=max(80, count * 80), max_length=50000)),
+            screenplay=(str, Field(min_length=max(80, count * 80), max_length=min(50000, count * 400))),
             shots=(list[shot_schema], Field(min_length=count, max_length=count)),
-            proposed_changes=(list[change_union], Field(default_factory=list, max_length=48)),
+            proposed_changes=(list[change_union], Field(default_factory=list, max_length=min(48, count * 2))),
         )
         previous_draft = next(
             (e.get("script") for e in project.get("episodes", []) if e["number"] == number - 1),
@@ -347,13 +378,27 @@ class OllamaStory:
             if previous_draft
             else ""
         )
+        fixed_plan = {k: v for k, v in project["plan"].items() if k != "episodes"}
+        fixed_plan["episode_outline"] = next(e for e in project["plan"]["episodes"] if e["number"] == number)
+        section_context = {
+            "previous_shots": [s.model_dump() for part in previous for s in part.shots][-2:],
+            "previous_section_text": previous[-1].screenplay[-1500:] if previous else "",
+            "earlier_episode_changes": [c.model_dump() for part in previous for c in part.proposed_changes],
+        }
+        prompt = (
+            f"Write screenplay scenes for episode {number}, shots {start + 1} through {start + count} of {total}. Exactly {count} cinematic shots, each duration {duration} seconds. Include scene action and offscreen dialogue/narration (no lip-sync claim); screenplay must describe these scenes, not just a title. Use global shot numbers {start + 1} onward. Follow the episode outline, reaching its outcome only in the final section. Use character/location IDs EXACTLY as supplied. Keep spoken lines short enough for each shot; empty narration is allowed. Fixed plan: {json.dumps(fixed_plan)}. Prior canon only: {json.dumps([e for e in project['canon'] if e['episode'] < number])}. Settings: {json.dumps(project['spec'])}. Earlier sections in this episode: {json.dumps(section_context)}"
+            + draft_context
+            + f" In each shot, required_props lists prop_id/character_id for the specific actor using each prop; required_knowledge lists facts used by that character. When facts, ownership, life or location change, provide proposed_changes with global after_shot ({start} means before this section), exact before_value, value and causal reason. Knowledge before_value is unknown/known; its value is exact fact text. Changes from earlier sections already apply; do not repeat them. Never invent a change merely to bypass a contradiction. Flashbacks require an earlier flashback_episode and continuity_note; their state is the start of that earlier episode and cannot change present canon."
+        )
+        if len(prompt) > 24000:
+            raise RuntimeError(
+                "STORY_CONTEXT_TOO_LARGE: Story registry/canon exceeds the current local writing context budget."
+            )
         script = self.generate(
             script_schema,
-            f"Write full screenplay for episode {number}, including offscreen dialogue/narration (no lip-sync claim). Exactly {count} cinematic shots, each duration {duration} seconds. Use ordered shot numbers 1 onward. Use character/location IDs EXACTLY as supplied, never names in ID fields. Keep spoken lines short enough for each shot. Fixed plan: {json.dumps(project['plan'])}. Prior canon only: {json.dumps([e for e in project['canon'] if e['episode'] < number])}. Settings: {json.dumps(project['spec'])}"
-            + draft_context
-            + " Declare initial prop ownership and character knowledge from the fixed plan. In each shot, required_props lists prop_id/character_id for the specific actor using each prop; required_knowledge lists facts used by that character (not omniscient narrator knowledge). When facts, ownership, life or location change, provide proposed_changes with after_shot (0 means before shot 1), exact before_value, value and causal reason. Knowledge before_value is unknown/known; its value is the exact fact text. Never invent a change merely to bypass a contradiction. Flashbacks require an earlier flashback_episode and continuity_note; their state is the start of that earlier episode and cannot change present canon.",
+            prompt,
         )
         for index, shot in enumerate(script.shots):
-            shot.id = stable(project["id"], f"episode:{number}:shot:{index}")
-            shot.number = index + 1
+            shot.id = stable(project["id"], f"episode:{number}:shot:{start + index}")
+            shot.number = start + index + 1
         return EpisodeScript.model_validate(script.model_dump())

@@ -15,7 +15,7 @@ Do not interpret partial task evidence as full phase acceptance. See PROGRESS an
 | F1.05 | DONE_VERIFIED | Five Edge flows passed including blocked settings save while loading; actual demo playback/download and series prewrite |
 | F2.01 | IN_PROGRESS | Real CPU plan+screenplay and worker checkpoints observed; weak quality and one exhausted JSON repair attempt |
 | F2.02 | IN_PROGRESS | Finite ending and episode outline persisted; real quality evaluation open |
-| F2.03 | IN_PROGRESS | Full demo screenplay per produced episode; real script batching not proven |
+| F2.03 | IN_PROGRESS | Durable four-shot batches,600s fixture/recovery/partial backup and whole-script continuity verified; real writing quality unproven |
 | F2.04 | IN_PROGRESS | Declared ownership/knowledge/location/life before-state checks, export-only canon, prop reference lineage and episode-start flashbacks tested; precise world time/prose semantics open |
 | F2.05 | IN_PROGRESS | 10-episode outline fixture; episode2 reference/canon reuse tested; real series not proven |
 | F2.06 | DONE_VERIFIED | Ten screenplay checkpoints, interrupted receipt recovery/reuse, no future canon; 3-episode browser flow |
@@ -51,4 +51,4 @@ Do not interpret partial task evidence as full phase acceptance. See PROGRESS an
 | F8.05 | IN_PROGRESS | Main npm/Python audit0; hostile backups/download budgets tested; vendor90 advisories unresolved |
 | F8.06 | IN_PROGRESS | Screenshots/evidence/run docs; release still blocked by listed gates |
 
-Next unblocked: F2.03 durable bounded screenplay batches. The tiny CPU model fails the writing quality gate and latest three-attempt schema run; preserve those failures. GPU installation is approved only within the pinned private scope; runtime inference remains OS-blocked. No security changes, cloud or paid action authorized.
+Next unblocked: F2.01 stronger CPU writing proposal/installer and bounded observed test (new download requires approval). The tiny CPU model fails the writing quality gate and latest three-attempt schema run; preserve those failures. GPU installation is approved only within the pinned private scope; runtime inference remains OS-blocked. No security changes, cloud or paid action authorized.

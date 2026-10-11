@@ -72,6 +72,7 @@ export type Step = {
   state: string;
   attempts: number;
   error: string | null;
+  payload?: { episode?: number; start?: number; count?: number; total?: number };
 };
 export type Job = {
   id: string;
@@ -134,6 +135,8 @@ export const stageLabel = (stage: string) =>
   ({
     PLAN: "Preparing your story",
     SCRIPT: "Writing the screenplay",
+    SCRIPT_BATCH: "Writing screenplay scenes",
+    DRAFT_BATCH: "Prewriting episode scenes",
     DRAFT: "Prewriting the season",
     REFERENCE: "Creating references",
     FRAME: "Composing keyframes",
@@ -146,3 +149,16 @@ export const stageLabel = (stage: string) =>
     PAUSED: "Paused",
     CANCELLED: "Cancelled",
   })[stage] || stage;
+
+export const stepLabel = (step: Step) => {
+  const section = step.payload;
+  if (
+    ["SCRIPT_BATCH", "DRAFT_BATCH"].includes(step.stage) &&
+    section?.start !== undefined &&
+    section.count !== undefined &&
+    section.total !== undefined
+  ) {
+    return `${stageLabel(step.stage)} · Episode ${section.episode || 1}, shots ${section.start + 1}–${section.start + section.count} of ${section.total}`;
+  }
+  return stageLabel(step.stage);
+};

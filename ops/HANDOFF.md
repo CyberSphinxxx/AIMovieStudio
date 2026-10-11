@@ -1,10 +1,10 @@
 # Handoff â€” 2026-10-12
 
-Status: ACTIVE DEVELOPMENT; full application unfinished. Original blueprint preserved. Previous checkpoint0c2fe8a; the declared-continuity checkpoint follows it (read Git log). Main app runs at127.0.0.1:8765 with current backend. No remote changes.
+Status: ACTIVE DEVELOPMENT; full application unfinished. Original blueprint preserved. Previous checkpoint262c256; durable screenplay section checkpoint follows it (read Git log). Main app runs at127.0.0.1:8765 with current backend. No remote changes.
 
 Environment: Windows11 Home, RTX3060Laptop6144MiB, driver610.88,16GB RAM. Main .venv Python3.12.14; isolated tools/gpu/python Python3.11.14 and tools/wan-gp/.venv Torch2.10.0+cu130. Node24.19/npm11.17. App-owned FFmpeg and tinyCPU Qwen0.5B/llama.cpp. No global driver/Python/security changes.
 
-Verified:62 backend tests(75.87s),2 Vitest,5 Edge flows(34.5s),Ruff/lint/TypeScript/build PASS, main Python/npm audit0. First latest browser run failed ambiguous Series locator; fixed exact name and reran all5 PASS. Tests include hard process termination/hash reuse, active pause/cancel/SSE, ten-episode screenplay checkpoint recovery, backup hostile/corrupt/no-overwrite restore and actual resumed MP4, resource preflight and download budget/resume. See full-verification.json/browser-tests.json. Settings screenshot loaded and inspected.
+Verified:71 backend tests(77.25s),2 Vitest,5 Edge flows(31.0s),Ruff/lint/TypeScript/build PASS, main Python/npm audit0. First latest browser run failed ambiguous Series locator; fixed exact name and reran all5 PASS. Tests include hard process termination/hash reuse, active pause/cancel/SSE, ten-episode screenplay checkpoint recovery, backup hostile/corrupt/no-overwrite restore and actual resumed MP4, resource preflight and download budget/resume. See full-verification.json/browser-tests.json. Settings screenshot loaded and inspected.
 
 Working commands:
 ```powershell
@@ -20,7 +20,7 @@ GPU blocker: Actual API smoke FAILED44.0s before inference. WinError4551 and Cod
 
 CPU story: Direct plan19.422s+script23.281s; worker checkpoints31.078s first/89.656s latest, then missing-provider/license in isolated fixture. One intervening attempt exhausted3 JSON repairs(project b43e1969-addb-4fa6-af87-39b4e95ceeff). Tiny model weak/unreliable; no high-quality real season claim.
 
-Completed F6.01 slice:1.15x tempo cap, actual overflow failure before visuals, hashed downloadable source WAVs in backups. Actual restart race SQLITE_IOERR_TRUNCATE repaired with bounded Windows-only fresh-connection initialization retries;3 hardkills passed,2 triggered real retries. Declared props/knowledge/location/life before-states, export-only canon, prop reference lineage and episode-start flashbacks now tested. Next exact task: F2.03 durable bounded screenplay batches; long scripts currently rely on one completion. GPU branch requires policy-compatible runtime within approval; no security workaround or video download before reviewed image PASS.
+Completed F6.01 slice:1.15x tempo cap, actual overflow failure before visuals, hashed downloadable source WAVs in backups. Actual restart race SQLITE_IOERR_TRUNCATE repaired with bounded Windows-only fresh-connection initialization retries;3 hardkills passed,2 triggered real retries. Declared props/knowledge/location/life before-states, export-only canon, prop reference lineage and episode-start flashbacks now tested. New jobs now use durable four-shot sections;600s writing fixture/recovery/partial backup verified. Next exact task: prepare/test CPU1.5B installer and profile, request separate bounded approval only after concrete reviewed helper/proposal; no weights approved/downloaded yet. GPU branch requires policy-compatible runtime within approval; no security workaround or video download before reviewed image PASS.
 
 Main files: studio/{domain,story,storage,worker,backup,media,providers,vendor_bridge,vendor_telemetry,diagnostics,api}.py; scripts/{backup,gpu_smoke,setup_gpu,prepare_gpu_runtime}.py; client/src/App.tsx; tests/. Backups strip executable settings; imported paused jobs freeze current reviewed settings on first resume.
 

@@ -16,6 +16,8 @@ Open http://127.0.0.1:8765. Type an idea and press **Create movie**. The default
 
 For a series, Creative settings includes **Prewrite every episode**. Each screenplay is a separate resumable step. Future drafts are planned fiction; canon records only completed episodes. Saved drafts are validated against current canon before production.
 
+New longer productions write in saved sections of at most four shots. Interrupted writing resumes at its next unfinished section; assembly checks the entire runtime and declared continuity before audio or visuals. Previously persisted jobs retain their original checkpoints. This bounds requests and preserves work; it does not establish the tiny CPU model's writing quality.
+
 Speech is measured before visual generation in new productions. A line that would need more than 1.15× tempo correction fails with its measured duration; the studio preserves the raw voice rather than racing or truncating dialogue. Export → **Audio stems for editing** downloads original voices, scene audio, ambience and the mixed WAV. These hashed source assets are included in portable backups.
 
 Double-click `StopStudio.cmd` to stop the server. Relaunch to resume interrupted work. Pause finishes the current atomic step; Stop production cancels that job permanently and preserves its assets. Failed steps have a finite retry budget. A changed or missing source asset blocks export with diagnostics.

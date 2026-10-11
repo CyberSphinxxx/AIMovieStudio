@@ -18,7 +18,7 @@ import {
   Square,
   WandSparkles,
 } from "lucide-react";
-import { api, assetUrl, stageLabel } from "./types";
+import { api, assetUrl, stageLabel, stepLabel } from "./types";
 import type { Project, Recent, Spec } from "./types";
 
 const EXAMPLE =
@@ -605,7 +605,7 @@ function Studio({ id }: { id: string }) {
         <span
           className={`state-label ${job?.state === "FAILED" ? "failed" : ""}`}
         >
-          {stageLabel(active?.stage || project.status)}
+          {active ? stepLabel(active) : stageLabel(project.status)}
         </span>
       </div>
       {project.spec.backend === "demo" && <DemoNotice />}
@@ -683,7 +683,7 @@ function Studio({ id }: { id: string }) {
                   <div className="preview-empty">
                     <Clapperboard size={42} />
                     <p>Your story is taking shape.</p>
-                    <small>{stageLabel(active?.stage || project.status)}</small>
+                    <small>{active ? stepLabel(active) : stageLabel(project.status)}</small>
                   </div>
                 )}
               </div>
@@ -1015,7 +1015,7 @@ function Studio({ id }: { id: string }) {
           </h2>
           <p aria-live="polite" className="muted">
             {active
-              ? stageLabel(active.stage)
+              ? stepLabel(active)
               : movie
                 ? "Your draft passed media validation."
                 : job?.state === "PAUSED"
@@ -1050,7 +1050,13 @@ function Studio({ id }: { id: string }) {
               "AUDIO",
               "EXPORT",
             ].map((stage) => {
-              const steps = job?.steps.filter((s) => s.stage === stage) || [];
+              const steps =
+                job?.steps.filter(
+                  (s) =>
+                    s.stage === stage ||
+                    (stage === "SCRIPT" &&
+                      ["SCRIPT_BATCH", "DRAFT_BATCH", "DRAFT"].includes(s.stage)),
+                ) || [];
               const finished =
                 steps.length > 0 && steps.every((s) => s.state === "SUCCEEDED");
               const working = steps.some((s) => s.state === "RUNNING");

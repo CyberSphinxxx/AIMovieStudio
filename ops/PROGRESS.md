@@ -65,3 +65,11 @@ Real CPU runs preserved per project in real-story-runs/. First added-fields run3
 Bounded-history actual CPU retest f6b050ee FAILED after three attempts: truncated JSON,297.547s total,plan13.437s. Preserved complete result; no writing quality pass. Stop tuning this weak model against the same failure and advance bounded screenplay architecture.
 
 Final declared-continuity verify.ps1 -Browser PASS:62 backend75.87s,2 Vitest,5 Edge34.5s; Ruff/ESLint/TypeScript/build and main Python/npm audits0. Command output continuity-verification.log; no real GPU inference or CPU writing quality pass.
+
+## Durable screenplay sections
+
+New jobs write SCRIPT_BATCH/DRAFT_BATCH sections of at most4 shots, each using existing atomic receipt/transaction/retry machinery; final SCRIPT/DRAFT validates complete runtime/continuity before production. Short scripts and legacy persisted steps retain behavior. Local schema caps section screenplay/action/narration and change counts, includes episode outline/last2 shots/last1500 text plus previous changes, rejects oversized prompt context. Global shot IDs/causal positions retained; no proposed fact commits until export. UI reports episode and shot range and includes prewriting in story progress.
+
+Initial targeted8pass/1fail found backup stage allowlist omitted new sections; fixed and reran23 tests PASS54.31s (sections/media/prewrite/3 real hardkills). Nine new section tests cover600s120-shot fixture, receipt recovery, portable partial restore/no rewrite, batched3-episode prewrite/reuse, cross-section knowledge, missing/invalid sections blocked before visuals and pinned schema/legacy step. Full verify.ps1 -Browser PASS71 backend77.25s,2 Vitest,5 Edge31.0s, lint/type/build/main audits0. Evidence script-batch-verification.log. This proves durable bounded orchestration with labeled deterministic fixtures, not real screenplay quality or GPU filmmaking.
+
+Next: test and prepare additional licensed CPU writing experiment. Exact reviewed proposal CPU_STORY_INSTALL_PROPOSAL.md; no1.5B weights downloaded or approved yet. Keep advancing independent work while GPU App Control remains blocked.

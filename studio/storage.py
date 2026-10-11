@@ -3,6 +3,7 @@ from __future__ import annotations
 import hashlib
 import json
 import logging
+import math
 import os
 import sqlite3
 import time
@@ -202,16 +203,49 @@ class Store:
                 (jid, pid, episode, time.time(), json.dumps(config)),
             )
             first = "PLAN" if not project["plan"] else "SCRIPT"
-            self.add_step(db, jid, 0, first, {"episode": episode})
+            if first == "PLAN":
+                self.add_step(db, jid, 0, first, {"episode": episode})
+            else:
+                saved = next(e for e in project["episodes"] if e["number"] == episode)
+                self.add_story_steps(
+                    db,
+                    jid,
+                    0,
+                    episode,
+                    project["spec"],
+                    reuse=saved["status"] == "DRAFTED" and bool(saved["script"]),
+                )
             db.execute("UPDATE projects SET status='QUEUED',updated=? WHERE id=?", (time.time(), pid))
             self.event(db, pid, jid, "queued", {"episode": episode})
             return jid
 
     def add_step(self, db, jid, ordinal, stage, payload):
+        sid = str(uuid4())
         db.execute(
             "INSERT OR IGNORE INTO steps(id,job_id,ordinal,stage,payload) VALUES(?,?,?,?,?)",
-            (str(uuid4()), jid, ordinal, stage, json.dumps(payload)),
+            (sid, jid, ordinal, stage, json.dumps(payload)),
         )
+        return db.execute("SELECT id FROM steps WHERE job_id=? AND ordinal=?", (jid, ordinal)).fetchone()[
+            "id"
+        ]
+
+    def add_story_steps(self, db, jid, ordinal, episode, spec, *, draft=False, reuse=False):
+        stage = "DRAFT" if draft else "SCRIPT"
+        total = math.ceil(spec["target_seconds"] / 5)
+        batches = []
+        if total > 4 and not reuse:
+            for start in range(0, total, 4):
+                payload = {
+                    "episode": episode,
+                    "start": start,
+                    "count": min(4, total - start),
+                    "total": total,
+                    "previous_batch_ids": list(batches),
+                }
+                batches.append(self.add_step(db, jid, ordinal, stage + "_BATCH", payload))
+                ordinal += 1
+        self.add_step(db, jid, ordinal, stage, {"episode": episode, "batch_ids": batches})
+        return ordinal + 1
 
     def control(self, pid: str, action: str):
         states = {"pause": "PAUSED", "cancel": "CANCELLED", "resume": "QUEUED"}
