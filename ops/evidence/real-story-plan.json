@@ -1,0 +1,54 @@
+{
+  "backend": "llama.cpp CPU",
+  "is_mock": false,
+  "model": "Qwen2.5-0.5B-Instruct-Q4_K_M",
+  "status": "STRUCTURED_PLAN_VALID",
+  "elapsed_seconds": 11.078,
+  "episode_count": 1,
+  "plan": {
+    "title": "The Last Survivor",
+    "logline": "A lighthouse keeper receives a message from a ship lost at sea and chooses to rescue its last survivor.",
+    "ending": "The lighthouse keeper, a seasoned survivor, finds the last survivor of the ship, a young girl, and decides to save her.",
+    "world_rules": [
+      "The ending should be a coherent narrative that ends on a positive note.",
+      "The ending should be a logical conclusion to the story arc."
+    ],
+    "characters": [
+      {
+        "id": "6803ea68-73f9-5b7a-86e1-458283d0337b",
+        "name": "Lighthouse Keeper",
+        "appearance": "A middle-aged man with a stern expression",
+        "goal": "Rescue the last survivor",
+        "voice": "A deep, gravelly voice"
+      },
+      {
+        "id": "578cc1ba-7299-55a7-864b-f93e26d44e82",
+        "name": "Young Girl",
+        "appearance": "A young woman with a gentle expression",
+        "goal": "Find the last survivor",
+        "voice": "A soft, gentle voice"
+      }
+    ],
+    "locations": [
+      {
+        "id": "7e0f2e4b-cf2e-549b-a35e-a7e90cbee23b",
+        "name": "Lighthouse",
+        "description": "A small, ancient structure with a weathered exterior and a large window that overlooks the sea"
+      },
+      {
+        "id": "b69374ea-1163-583c-b4e1-60d2861ab316",
+        "name": "Sea",
+        "description": "A vast body of water with waves crashing against the shore, a small island, and a small boat"
+      }
+    ],
+    "episodes": [
+      {
+        "number": 1,
+        "title": "The lighthouse keeper finds the last survivor",
+        "summary": "The lighthouse keeper, a seasoned survivor, finds the last survivor of the ship, a young girl, and decides to save her.",
+        "outcome": "The lighthouse keeper, a seasoned survivor, finds the last survivor of the ship, a young girl, and decides to save her."
+      }
+    ]
+  },
+  "quality_review": "Not performed. Small feasibility model; no cinematic/story-quality guarantee."
+}

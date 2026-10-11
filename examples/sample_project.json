@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "project_id": "proj_demo001",
+  "title": "The Last Lantern",
+  "idea": "In a foggy coastal town, a night-shift courier finds one lit lantern that holds back a silent shadow until sunrise.",
+  "kind": "series",
+  "aspect_ratio": "9:16",
+  "target_seconds": 60,
+  "episode_count": 6,
+  "language": "English",
+  "visual_style": "photorealistic cinematic horror; practical nighttime light; restrained camera motion",
+  "resolution_preference": "draft",
+  "use_cloud": false,
+  "approved_downloads": false
+}

@@ -1,0 +1,12 @@
+# Security and licensing audit
+- [ ] Third-party model cards/terms saved in rights registry
+- [ ] WanGP Community License 2.0 requirements recorded, no unauthorized paid embedding
+- [ ] No API keys/tokens checked in or dumped to logs
+- [ ] No remote bind by default; CORS/origin protections tested
+- [ ] Untrusted prompt output never executed as commands or direct OS paths
+- [ ] Uploaded assets and imported ZIPs confined to app project root
+- [ ] FFmpeg invoked with argv and checked input; corrupt/malicious input errors handled
+- [ ] App-owned temp cleanups only; originals protected
+- [ ] User approval for >1GB downloads, remote upload, payments/system changes
+- [ ] No impersonation/unauthorized voice cloning; user rights respected
+- [ ] Future public distribution reviewed against model/media/font/encoder licenses

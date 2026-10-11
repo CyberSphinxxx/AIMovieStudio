@@ -1,0 +1,83 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://local.ai-movie-studio/contracts/project_spec.schema.json",
+  "title": "ProjectSpec v1",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "project_id": {
+      "type": "string",
+      "pattern": "^[a-zA-Z0-9_-]{6,80}$"
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1
+    },
+    "idea": {
+      "type": "string",
+      "minLength": 1
+    },
+    "kind": {
+      "enum": [
+        "clip",
+        "short_drama",
+        "movie",
+        "series"
+      ]
+    },
+    "aspect_ratio": {
+      "enum": [
+        "9:16",
+        "16:9",
+        "1:1"
+      ]
+    },
+    "target_seconds": {
+      "type": "integer",
+      "minimum": 3,
+      "maximum": 10800
+    },
+    "episode_count": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 100
+    },
+    "language": {
+      "type": "string",
+      "minLength": 1
+    },
+    "visual_style": {
+      "type": "string",
+      "minLength": 1
+    },
+    "resolution_preference": {
+      "enum": [
+        "draft",
+        "balanced",
+        "cinematic"
+      ]
+    },
+    "use_cloud": {
+      "type": "boolean"
+    },
+    "approved_downloads": {
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "schema_version",
+    "project_id",
+    "title",
+    "idea",
+    "kind",
+    "aspect_ratio",
+    "target_seconds",
+    "language",
+    "visual_style",
+    "resolution_preference",
+    "use_cloud"
+  ]
+}

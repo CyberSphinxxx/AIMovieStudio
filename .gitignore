@@ -1,0 +1,13 @@
+.venv/
+node_modules/
+client/dist/
+data/
+tools/
+__pycache__/
+.pytest_cache/
+.ruff_cache/
+test-results/
+playwright-report/
+*.pyc
+.env
+AI_Movie_Studio_Codex_Blueprint/

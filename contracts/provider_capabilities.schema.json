@@ -1,0 +1,113 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://local.ai-movie-studio/contracts/provider_capabilities.schema.json",
+  "title": "ProviderCapabilities v1",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "provider_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "provider_name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "provider_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "backend_type": {
+      "enum": [
+        "mock",
+        "local",
+        "cloud"
+      ]
+    },
+    "supported_tasks": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "story",
+          "image",
+          "video",
+          "speech",
+          "audio",
+          "render"
+        ]
+      },
+      "uniqueItems": true
+    },
+    "supported_aspects": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "9:16",
+          "16:9",
+          "1:1"
+        ]
+      }
+    },
+    "max_native_seconds": {
+      "type": "number",
+      "minimum": 0
+    },
+    "max_width": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "max_height": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "supports_reference_image": {
+      "type": "boolean"
+    },
+    "supports_progress": {
+      "type": "boolean"
+    },
+    "supports_cancel": {
+      "type": "boolean"
+    },
+    "license_name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "license_url": {
+      "type": "string",
+      "minLength": 1
+    },
+    "model_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "ready": {
+      "type": "boolean"
+    },
+    "health_reason": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  },
+  "required": [
+    "schema_version",
+    "provider_id",
+    "provider_name",
+    "provider_version",
+    "backend_type",
+    "supported_tasks",
+    "supported_aspects",
+    "supports_progress",
+    "supports_cancel",
+    "license_name",
+    "license_url",
+    "ready"
+  ]
+}

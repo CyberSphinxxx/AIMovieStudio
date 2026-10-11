@@ -1,0 +1,137 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://local.ai-movie-studio/contracts/shot_spec.schema.json",
+  "title": "ShotSpec v1",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "shot_id": {
+      "type": "string",
+      "pattern": "^[a-zA-Z0-9_-]{6,80}$"
+    },
+    "project_id": {
+      "type": "string",
+      "pattern": "^[a-zA-Z0-9_-]{6,80}$"
+    },
+    "episode_id": {
+      "type": "string",
+      "pattern": "^[a-zA-Z0-9_-]{6,80}$"
+    },
+    "scene_id": {
+      "type": "string",
+      "pattern": "^[a-zA-Z0-9_-]{6,80}$"
+    },
+    "character_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[a-zA-Z0-9_-]{6,80}$"
+      },
+      "uniqueItems": true
+    },
+    "location_id": {
+      "type": "string",
+      "pattern": "^[a-zA-Z0-9_-]{6,80}$"
+    },
+    "prop_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[a-zA-Z0-9_-]{6,80}$"
+      }
+    },
+    "reference_asset_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[a-zA-Z0-9_-]{6,80}$"
+      }
+    },
+    "keyframe_asset_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]{6,80}$"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "duration_frames": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 1800
+    },
+    "fps": {
+      "type": "integer",
+      "enum": [
+        16,
+        24,
+        25,
+        30
+      ]
+    },
+    "aspect_ratio": {
+      "enum": [
+        "9:16",
+        "16:9",
+        "1:1"
+      ]
+    },
+    "native_width": {
+      "type": "integer",
+      "minimum": 32
+    },
+    "native_height": {
+      "type": "integer",
+      "minimum": 32
+    },
+    "action": {
+      "type": "string",
+      "minLength": 1
+    },
+    "camera": {
+      "type": "string",
+      "minLength": 1
+    },
+    "animation_prompt": {
+      "type": "string",
+      "minLength": 1
+    },
+    "outfit_state_refs": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "audio_cues": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "mock_ok": {
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "schema_version",
+    "shot_id",
+    "project_id",
+    "episode_id",
+    "scene_id",
+    "character_ids",
+    "reference_asset_ids",
+    "duration_frames",
+    "fps",
+    "aspect_ratio",
+    "action",
+    "camera",
+    "animation_prompt"
+  ]
+}

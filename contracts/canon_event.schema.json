@@ -1,0 +1,93 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://local.ai-movie-studio/contracts/canon_event.schema.json",
+  "title": "CanonEvent v1",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "event_id": {
+      "type": "string",
+      "pattern": "^[a-zA-Z0-9_-]{6,80}$"
+    },
+    "project_id": {
+      "type": "string",
+      "pattern": "^[a-zA-Z0-9_-]{6,80}$"
+    },
+    "episode_id": {
+      "type": "string",
+      "pattern": "^[a-zA-Z0-9_-]{6,80}$"
+    },
+    "entity_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[a-zA-Z0-9_-]{6,80}$"
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "narrative_time": {
+      "type": "string",
+      "minLength": 1
+    },
+    "event_kind": {
+      "enum": [
+        "knowledge",
+        "relationship",
+        "appearance",
+        "injury",
+        "death",
+        "revival",
+        "location",
+        "prop_ownership",
+        "faction",
+        "world_rule",
+        "other"
+      ]
+    },
+    "before_state": {
+      "type": "object"
+    },
+    "after_state": {
+      "type": "object"
+    },
+    "known_by_character_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[a-zA-Z0-9_-]{6,80}$"
+      }
+    },
+    "source_scene_id": {
+      "type": "string",
+      "pattern": "^[a-zA-Z0-9_-]{6,80}$"
+    },
+    "approval_status": {
+      "enum": [
+        "proposed",
+        "approved",
+        "superseded"
+      ]
+    },
+    "revision": {
+      "type": "integer",
+      "minimum": 0
+    }
+  },
+  "required": [
+    "schema_version",
+    "event_id",
+    "project_id",
+    "episode_id",
+    "entity_ids",
+    "narrative_time",
+    "event_kind",
+    "before_state",
+    "after_state",
+    "approval_status",
+    "revision"
+  ]
+}
