@@ -5,6 +5,7 @@ export type Spec = {
   target_seconds: number;
   episodes: number;
   backend: "demo" | "local";
+  prewrite_season?: boolean;
   language: "English";
   style: string;
   idempotency_key: string;
@@ -124,6 +125,7 @@ export const stageLabel = (stage: string) =>
   ({
     PLAN: "Preparing your story",
     SCRIPT: "Writing the screenplay",
+    DRAFT: "Prewriting the season",
     REFERENCE: "Creating references",
     FRAME: "Composing keyframes",
     CLIP: "Animating shots",

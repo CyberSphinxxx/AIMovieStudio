@@ -8,6 +8,8 @@ try{
     if($LASTEXITCODE -ne 0){throw 'Python 3.11+ is needed. Pass -Python with an installed interpreter path.'}
   }
   $requirements=if($Development){'requirements-dev.txt'}else{'requirements.txt'}
+  & ./.venv/Scripts/python.exe -m pip install pip==26.2.1
+  if($LASTEXITCODE -ne 0){throw 'Isolated pip update failed.'}
   & ./.venv/Scripts/python.exe -m pip install -r $requirements
   if($LASTEXITCODE -ne 0){throw 'Local Python dependency installation failed.'}
   & ./.venv/Scripts/python.exe scripts/setup_media.py

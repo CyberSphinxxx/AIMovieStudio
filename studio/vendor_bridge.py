@@ -110,6 +110,18 @@ def main():
         raise RuntimeError("MISSING_PROVIDER: WanGP installation has no official shared/api.py")
     directory.mkdir(parents=True, exist_ok=True)
     offline_network()
+    # This module lives alongside the standalone bridge, independent of Studio's venv.
+    from vendor_telemetry import Sampler
+
+    telemetry = Sampler(directory / "provider-telemetry.json")
+    telemetry.start()
+    try:
+        run_session(request, root, directory, response_path)
+    finally:
+        telemetry.close()
+
+
+def run_session(request, root, directory, response_path):
     sys.path.insert(0, str(root))
     from shared.api import init
 

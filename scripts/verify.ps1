@@ -9,6 +9,7 @@ Push-Location $studioRoot
 try{
   Run-Check './.venv/Scripts/ruff.exe' @('check','studio','tests','scripts')
   Run-Check './.venv/Scripts/python.exe' @('-m','pytest','-q')
+  Run-Check './.venv/Scripts/python.exe' @('-m','pip_audit','--format=json','--output','ops/evidence/python-audit.json')
   Push-Location client
   try{
     Run-Check 'npm.cmd' @('run','lint')

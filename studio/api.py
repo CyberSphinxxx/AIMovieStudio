@@ -13,12 +13,14 @@ from fastapi.exceptions import RequestValidationError
 from fastapi.responses import FileResponse, JSONResponse, StreamingResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import Field
+from starlette.background import BackgroundTask
 
 from studio import media
 from studio.domain import CanonEvent, ProjectInput, StrictModel
 from studio.storage import Store, digest
 from studio.worker import Worker
 from studio.providers import WanGPConfig, WanGPProvider
+from studio.diagnostics import hardware
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -149,6 +151,7 @@ def create_app(root: Path | None = None, run_worker=True) -> FastAPI:
             "privacy": "Localhost only; no cloud providers",
             "real_generation_verified": False,
             "native_export": "360×640 / 640×360 / 480×480, 24 fps",
+            "hardware": hardware(),
         }
 
     @app.get("/api/providers")
@@ -309,7 +312,7 @@ def create_app(root: Path | None = None, run_worker=True) -> FastAPI:
         return self_data
 
     @app.get("/api/projects/{pid}/events")
-    async def events(pid: str, request: Request, after: int = 0):
+    async def events(pid: str, request: Request, after: int = 0, follow: bool = True):
         store.get(pid)
         try:
             cursor = max(after, int(request.headers.get("last-event-id", "0")))
@@ -331,6 +334,8 @@ def create_app(root: Path | None = None, run_worker=True) -> FastAPI:
                     yield f"id: {cursor}\ndata: {json.dumps({'kind': row['kind'], 'data': json.loads(row['data'])})}\n\n"
                 if not rows:
                     yield ": heartbeat\n\n"
+                if not follow:
+                    return
                 await asyncio.sleep(1)
 
         return StreamingResponse(
@@ -362,6 +367,20 @@ def create_app(root: Path | None = None, run_worker=True) -> FastAPI:
     def manifest(pid: str):
         return JSONResponse(
             store.get(pid), headers={"Content-Disposition": 'attachment; filename="movie-project.json"'}
+        )
+
+    @app.get("/api/backup")
+    def backup():
+        from uuid import uuid4
+        from studio.backup import create_backup
+
+        path = store.root / "backups" / f"{uuid4()}.zip"
+        create_backup(store, path)
+        return FileResponse(
+            path,
+            media_type="application/zip",
+            filename="movie-studio-backup.zip",
+            background=BackgroundTask(path.unlink, missing_ok=True),
         )
 
     dist = ROOT / "client" / "dist"

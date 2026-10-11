@@ -66,7 +66,9 @@ test("one idea to playable demo MP4, persisted story, shots, and downloads", asy
   const video = page.getByLabel("Movie preview");
   await expect(video).toBeVisible();
   await video.evaluate((e: HTMLVideoElement) => e.play());
-  await expect.poll(() => video.evaluate((e: HTMLVideoElement) => e.currentTime)).toBeGreaterThan(1);
+  await expect
+    .poll(() => video.evaluate((e: HTMLVideoElement) => e.currentTime))
+    .toBeGreaterThan(1);
   await video.evaluate((e: HTMLVideoElement) => e.pause());
   await expect
     .poll(() => video.evaluate((e: HTMLVideoElement) => e.duration))
@@ -146,4 +148,97 @@ test("real request fails honestly and settings are actionable", async ({
   await page.getByLabel("Soundtrack", { exact: true }).selectOption("windows");
   await page.getByRole("button", { name: "Save settings" }).click();
   await expect(page.getByRole("status")).toHaveText("Settings saved.");
+});
+
+test("season prewriting is saved and studio backup is downloadable", async ({
+  page,
+  request,
+}) => {
+  await request.patch("/api/settings", {
+    data: { story_model: "", speech: "none", reserve_mb: 1024 },
+  });
+  await page.goto("/");
+  await page
+    .getByRole("button", { name: "Series A complete season", exact: true })
+    .click();
+  await page.getByLabel("SECONDS / EPISODE").fill("5");
+  await page.getByLabel("EPISODES", { exact: true }).fill("3");
+  await page.getByRole("button", { name: "Creative settings" }).click();
+  await page.getByLabel("Prewrite every episode before making footage").check();
+  await page
+    .getByLabel("What’s your movie about?")
+    .fill("Three travelers uncover a lighthouse secret over three chapters.");
+  await page.getByRole("button", { name: "Create movie", exact: true }).click();
+  await expect(
+    page.getByRole("heading", { name: "That’s a wrap." }),
+  ).toBeVisible({ timeout: 90000 });
+  const id = page.url().split("/").pop();
+  const result = await (await request.get(`/api/projects/${id}`)).json();
+  expect(result.episodes.map((e: { script: unknown }) => !!e.script)).toEqual([
+    true,
+    true,
+    true,
+  ]);
+  expect(result.canon).toHaveLength(1);
+  await page.getByRole("tab", { name: "Episodes", exact: true }).click();
+  await page.getByRole("button", { name: /03 Chapter 3/ }).click();
+  await expect(
+    page.getByRole("button", { name: "Produce episode 3" }),
+  ).toBeDisabled();
+  await page.getByRole("button", { name: /02 Chapter 2/ }).click();
+  await page.getByRole("button", { name: "Produce episode 2" }).click();
+  await expect(
+    page.getByRole("heading", { name: "That’s a wrap." }),
+  ).toBeVisible({ timeout: 90000 });
+  await page.getByRole("link", { name: "Settings", exact: true }).click();
+  await expect(page.getByText("Graphics card", { exact: true })).toBeVisible();
+  await expect(
+    page.getByRole("button", { name: "Save settings" }),
+  ).toBeEnabled();
+  const backup = await request.get(
+    (await page
+      .getByRole("link", { name: "Download studio backup" })
+      .getAttribute("href"))!,
+  );
+  expect(backup.status()).toBe(200);
+  expect(backup.headers()["content-type"]).toBe("application/zip");
+  expect((await backup.body()).subarray(0, 2).toString()).toBe("PK");
+  await page.screenshot({
+    path: "../ops/evidence/settings-desktop.png",
+    fullPage: true,
+  });
+  const accessibility = await new AxeBuilder({ page })
+    .withTags(["wcag2a", "wcag2aa", "wcag21aa"])
+    .analyze();
+  expect(accessibility.violations).toEqual([]);
+});
+
+test("settings cannot overwrite saved configuration while it is loading", async ({
+  page,
+}) => {
+  let release: () => void = () => {};
+  const gate = new Promise<void>((resolve) => {
+    release = resolve;
+  });
+  await page.route("**/api/settings", async (route) => {
+    if (route.request().method() === "GET") await gate;
+    await route.continue();
+  });
+  await page.goto("/settings");
+  await expect(
+    page.getByRole("button", { name: "Save settings" }),
+  ).toBeDisabled();
+  await expect(
+    page.getByLabel("Local story engine", { exact: true }),
+  ).toBeDisabled();
+  await expect(
+    page.getByText("Loading saved settings…", { exact: true }),
+  ).toBeVisible();
+  release();
+  await expect(
+    page.getByRole("button", { name: "Save settings" }),
+  ).toBeEnabled();
+  await expect(
+    page.getByText("Checking your studio…", { exact: true }),
+  ).toHaveCount(0);
 });

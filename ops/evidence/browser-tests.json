@@ -81,12 +81,12 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 2030,
+                  "duration": 1794,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-11T17:55:24.031Z",
+                  "startTime": "2026-10-11T19:10:16.223Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -115,12 +115,12 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 10074,
+                  "duration": 8383,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-11T17:55:26.352Z",
+                  "startTime": "2026-10-11T19:10:18.298Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -149,12 +149,12 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 2688,
+                  "duration": 4871,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-11T17:55:36.444Z",
+                  "startTime": "2026-10-11T19:10:26.692Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -164,7 +164,75 @@
           ],
           "id": "64bdea7002f9c9cea9f4-f2e9c05fddf36411a872",
           "file": "studio.spec.ts",
-          "line": 120,
+          "line": 122,
+          "column": 1
+        },
+        {
+          "title": "season prewriting is saved and studio backup is downloadable",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 9977,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-11T19:10:31.573Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "64bdea7002f9c9cea9f4-7ee6c9b09a37f9ad911b",
+          "file": "studio.spec.ts",
+          "line": 153,
+          "column": 1
+        },
+        {
+          "title": "settings cannot overwrite saved configuration while it is loading",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3241,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-11T19:10:41.560Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "64bdea7002f9c9cea9f4-77ced7aad2faef778f5e",
+          "file": "studio.spec.ts",
+          "line": 216,
           "column": 1
         }
       ]
@@ -172,9 +240,9 @@
   ],
   "errors": [],
   "stats": {
-    "startTime": "2026-10-11T17:55:22.742Z",
-    "duration": 16717.804,
-    "expected": 3,
+    "startTime": "2026-10-11T19:10:14.948Z",
+    "duration": 30138.721,
+    "expected": 5,
     "skipped": 0,
     "unexpected": 0,
     "flaky": 0

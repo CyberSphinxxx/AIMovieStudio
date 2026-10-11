@@ -1,4 +1,5 @@
 from concurrent.futures import ThreadPoolExecutor
+import json
 
 import pytest
 from fastapi.testclient import TestClient
@@ -19,6 +20,15 @@ def test_create_reopen_and_idempotency(tmp_path, spec):
         assert len(client.get("/api/projects").json()) == 1
     with TestClient(create_app(tmp_path, run_worker=False)) as client:
         assert client.get(f"/api/projects/{pid}").json()["spec"]["idea"] == spec.idea
+
+
+def test_legacy_project_defaults_keep_idempotency(store, spec):
+    pid, _ = store.create(spec)
+    old = spec.model_dump()
+    del old["prewrite_season"]
+    with store.connect() as db:
+        db.execute("UPDATE projects SET spec=? WHERE id=?", (json.dumps(old), pid))
+    assert store.create(spec) == (pid, False)
 
 
 def test_input_security_and_errors(tmp_path, spec):

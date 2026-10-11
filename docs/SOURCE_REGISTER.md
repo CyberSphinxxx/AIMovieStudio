@@ -15,3 +15,14 @@ Checked 2026-10-12. Intended use: private local development; no public distribut
 | Windows process containment | https://learn.microsoft.com/en-us/windows/win32/procthread/job-objects | Nested job objects and kill-on-close supported since Windows 8. Tested on Windows 11; no OS settings changes. |
 
 All model weights, LoRAs, voices and media need separate rights/provenance. No third-party inference framework or weights are committed to Git. No paid/cloud provider is enabled. Source URLs may evolve; recheck before selecting a GPU model or changing adapter contracts.
+
+
+## Approved isolated GPU sources — checked2026-10-12
+
+- WanGP source pinned6479db36bdc2619a904a852bba9c2d78e1a83f82: https://github.com/deepbeepmeep/Wan2GP/tree/6479db36bdc2619a904a852bba9c2d78e1a83f82 . Original handlers/API determine selected paths/capabilities; checksum in installer/evidence. No inferred inference success.
+- uv portable Windows release0.13.0: https://github.com/astral-sh/uv/releases/tag/0.13.0 . App-owned Python install with --no-bin --no-registry; no global toolchain changes.
+- Official CUDA13.0 PyTorch Windows wheel index: https://download.pytorch.org/whl/cu130/ . Exact cp311 hashes/sizes pinned in wan-runtime-artifacts.json. Torch2.10.0 import blocked by local Windows policy.
+- Model converted-hosting revisions/URLs/hashes and upstream licenses are pinned in gpu-download-proposal.json and GPU_INSTALL_PROPOSAL.md. Private local installation only; distribution remains unreviewed.
+- Gyan FFmpeg9.0.2 official GitHub release mirror: https://github.com/GyanD/codexffmpeg/releases/tag/9.0.2 . Same114,768,076byte archive/SHA as selected direct source; app-local ffplay required by vendor offline init.
+- Microsoft enforced-policy block diagnosis: https://learn.microsoft.com/en-us/windows/security/application-security/application-control/app-control-for-business/operations/appcontrol-debugging-and-troubleshooting . Local event3077 identifies torch_cuda.dll. Read-only diagnosis; no OS changes.
+- Runtime security audit uses pinned lock and pip-audit advisory service. Audit JSON retained verbatim. Main app0known advisories; vendor90 unresolved. No compatibility claim for major package upgrades or experimental Pillow override.

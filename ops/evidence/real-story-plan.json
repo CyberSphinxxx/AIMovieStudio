@@ -3,52 +3,85 @@
   "is_mock": false,
   "model": "Qwen2.5-0.5B-Instruct-Q4_K_M",
   "status": "STRUCTURED_PLAN_VALID",
-  "elapsed_seconds": 11.078,
+  "elapsed_seconds": 19.422,
   "episode_count": 1,
   "plan": {
-    "title": "The Last Survivor",
-    "logline": "A lighthouse keeper receives a message from a ship lost at sea and chooses to rescue its last survivor.",
-    "ending": "The lighthouse keeper, a seasoned survivor, finds the last survivor of the ship, a young girl, and decides to save her.",
+    "title": "The Last Survivor's Call",
+    "logline": "A lighthouse keeper, Sarah, receives a distress signal from a ship lost at sea. She decides to rescue its last survivor, a young sailor named Jack.",
+    "ending": "As Sarah arrives at the ship, she finds Jack in a state of shock and exhaustion. She must navigate through the chaos, offering comfort and guidance. Jack, though shaken, is grateful for Sarah's presence. They decide to work together to find the ship and bring it back to safety.",
     "world_rules": [
-      "The ending should be a coherent narrative that ends on a positive note.",
-      "The ending should be a logical conclusion to the story arc."
+      "The setting is a lighthouse, a place that has guided ships for centuries. The ship is lost at sea, a situation that challenges the lighthouse keeper's expertise.",
+      "The lighthouse keeper must navigate through various obstacles, including stormy seas, navigational errors, and the crew's distress signals.",
+      "Jack, the young sailor, is in a state of shock and exhaustion, but is grateful for Sarah's presence. They must work together to find the ship and bring it back to safety.",
+      "Sarah's decision to rescue the last survivor is driven by a sense of duty and a desire to help. She must balance her personal concerns with the needs of the ship and its crew.",
+      "The ending is a resolution of the story, where Sarah's decision to rescue the last survivor leads to the ship's rescue and the crew's safety. The ending is a satisfying conclusion to the narrative."
     ],
     "characters": [
       {
-        "id": "6803ea68-73f9-5b7a-86e1-458283d0337b",
-        "name": "Lighthouse Keeper",
-        "appearance": "A middle-aged man with a stern expression",
-        "goal": "Rescue the last survivor",
-        "voice": "A deep, gravelly voice"
+        "id": "2f8ecf8a-a4f5-5cab-8f76-dd40f1e0cc10",
+        "name": "lighthouse keeper",
+        "appearance": "portrait",
+        "goal": "rescue the last survivor",
+        "voice": "default"
       },
       {
-        "id": "578cc1ba-7299-55a7-864b-f93e26d44e82",
-        "name": "Young Girl",
-        "appearance": "A young woman with a gentle expression",
-        "goal": "Find the last survivor",
-        "voice": "A soft, gentle voice"
+        "id": "ab34697b-d137-5977-8b58-422485a5c568",
+        "name": "young sailor",
+        "appearance": "portrait",
+        "goal": "find the ship and bring it back to safety",
+        "voice": "secondary"
       }
     ],
     "locations": [
       {
-        "id": "7e0f2e4b-cf2e-549b-a35e-a7e90cbee23b",
-        "name": "Lighthouse",
-        "description": "A small, ancient structure with a weathered exterior and a large window that overlooks the sea"
-      },
-      {
-        "id": "b69374ea-1163-583c-b4e1-60d2861ab316",
-        "name": "Sea",
-        "description": "A vast body of water with waves crashing against the shore, a small island, and a small boat"
+        "id": "cf2d9833-c28b-560f-99fa-a17b2cdf97f5",
+        "name": "lighthouse",
+        "description": "a place that has guided ships for centuries, a destination for ships lost at sea, a place where the crew is expected to be."
       }
     ],
     "episodes": [
       {
         "number": 1,
-        "title": "The lighthouse keeper finds the last survivor",
-        "summary": "The lighthouse keeper, a seasoned survivor, finds the last survivor of the ship, a young girl, and decides to save her.",
-        "outcome": "The lighthouse keeper, a seasoned survivor, finds the last survivor of the ship, a young girl, and decides to save her."
+        "title": "The Rescue",
+        "summary": "Sarah arrives at the ship, finds Jack in a state of shock and exhaustion, and must navigate through the chaos, offering comfort and guidance. Jack, though shaken, is grateful for Sarah's presence. They decide to work together to find the ship and bring it back to safety.",
+        "outcome": "The rescue is a resolution of the story, where Sarah's decision to rescue the last survivor leads to the ship's rescue and the crew's safety. The ending is a satisfying conclusion to the narrative."
       }
     ]
   },
+  "script": {
+    "number": 1,
+    "screenplay": "The Last Survivor's Call",
+    "shots": [
+      {
+        "id": "6f487dbc-5731-5df7-86b2-b00d4c7eb0fd",
+        "number": 1,
+        "duration": 5.0,
+        "location_id": "cf2d9833-c28b-560f-99fa-a17b2cdf97f5",
+        "character_ids": [
+          "2f8ecf8a-a4f5-5cab-8f76-dd40f1e0cc10"
+        ],
+        "action": "rescue",
+        "camera": "portrait",
+        "narration": "The lighthouse keeper, Sarah, receives a distress signal from a ship lost at sea. She decides to rescue its last survivor, a young sailor named Jack.",
+        "speaker_id": "ab34697b-d137-5977-8b58-422485a5c568",
+        "transition": "cut"
+      },
+      {
+        "id": "ea5b43d5-d553-561f-b512-010f9584389d",
+        "number": 2,
+        "duration": 5.0,
+        "location_id": "cf2d9833-c28b-560f-99fa-a17b2cdf97f5",
+        "character_ids": [
+          "ab34697b-d137-5977-8b58-422485a5c568"
+        ],
+        "action": "find the ship and bring it back to safety",
+        "camera": "portrait",
+        "narration": "As Sarah arrives at the ship, she finds Jack in a state of shock and exhaustion. She must navigate through the chaos, offering comfort and guidance. Jack, though shaken, is grateful for Sarah's presence. They decide to work together to find the ship and bring it back to safety.",
+        "speaker_id": "ab34697b-d137-5977-8b58-422485a5c568",
+        "transition": "cut"
+      }
+    ]
+  },
+  "script_elapsed_seconds": 23.281,
   "quality_review": "Not performed. Small feasibility model; no cinematic/story-quality guarantee."
 }

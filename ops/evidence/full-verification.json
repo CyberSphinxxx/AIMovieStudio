@@ -1,0 +1,27 @@
+{
+  "date": "2026-10-12",
+  "backend": {
+    "passed": 43,
+    "seconds": 40.12,
+    "warning": "Starlette TestClient httpx deprecation"
+  },
+  "frontend": {
+    "vitest_passed": 2,
+    "lint": "PASS",
+    "typescript_and_build": "PASS",
+    "edge_passed": 5,
+    "edge_seconds": 30.1
+  },
+  "main_audits": {
+    "python_known_advisories": 0,
+    "npm_known_advisories": 0
+  },
+  "vendor_lock_audit": {
+    "known_advisories": 90,
+    "affected_packages": 6
+  },
+  "notes": [
+    "Initial browser run failed an ambiguous Series locator after saved project cards existed; exact accessible name fixed, all 5 Edge tests then passed.",
+    "GPU runtime FAILED before inference: OS application-control policy blocked torch_cuda.dll. No actual GPU image/video proof."
+  ]
+}

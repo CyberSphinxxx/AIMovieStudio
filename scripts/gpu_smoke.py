@@ -1,0 +1,99 @@
+"""Real provider smoke only. Generated artifacts require recorded visual review before PASS."""
+
+from __future__ import annotations
+
+import argparse
+import json
+import time
+from pathlib import Path
+from uuid import uuid4
+
+from scripts.setup_gpu import ROOT
+from studio import media
+from studio.providers import WanGPConfig, WanGPProvider, require_resources
+from studio.storage import atomic_json, digest
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("phase", choices=["runtime", "image", "video"])
+    args = parser.parse_args()
+    root = ROOT / "data/gpu-smoke"
+    directory = root / str(uuid4())
+    directory.mkdir(parents=True)
+    report = {"phase": args.phase, "is_mock": False, "status": "STARTED", "directory": str(directory)}
+    evidence = ROOT / f"ops/evidence/real-gpu-{args.phase}.json"
+    started = time.monotonic()
+    config = WanGPConfig(
+        installation=str(ROOT / "tools/wan-gp"),
+        python=str(ROOT / "tools/wan-gp/.venv/Scripts/python.exe"),
+        image_model="flux2_klein_4b",
+        video_model="ti2v_2_2",
+        native_resolution="512x512",
+        steps=4 if args.phase == "image" else 12,
+        license_reviewed=True,
+    )
+    provider = WanGPProvider(config, root)
+    try:
+        report["before"] = require_resources()
+        if args.phase == "runtime":
+            result = provider.request("discover", "", directory, lambda: None)
+            report.update(status="RUNTIME_DISCOVERED_NOT_INFERENCE", result=result)
+        elif args.phase == "image":
+            path, metadata = provider.image(
+                "Cinematic medium portrait of an adult fictional lighthouse keeper, short dark curly hair, ochre waterproof coat, silver compass in hand, blue dusk beside a stone lighthouse, subtle film grain, soft natural light, expressive face, realistic photograph.",
+                directory,
+                (512, 512),
+                lambda: None,
+                seed=42,
+            )
+            report.update(
+                status="GENERATED_PENDING_VISUAL_REVIEW",
+                output=str(path),
+                sha256=digest(path),
+                metadata=metadata,
+            )
+        else:
+            image = json.loads((ROOT / "ops/evidence/real-gpu-image.json").read_text())
+            if image["status"] != "PASS":
+                raise RuntimeError("Video smoke requires reviewed image PASS")
+            source = Path(image["output"]).resolve()
+            if not source.is_relative_to(root) or digest(source) != image["sha256"]:
+                raise RuntimeError("Image smoke source escaped storage or changed")
+            outputs = []
+            for index in range(2):
+                report["before_next_clip"] = require_resources()
+                target = directory / f"clip-{index + 1}"
+                target.mkdir()
+                path, metadata = provider.video(
+                    "The lighthouse keeper turns slightly toward the sea, coat shifting in a light breeze. Slow cinematic camera push in. Preserve facial identity, ochre coat and stone lighthouse. Natural restrained motion.",
+                    source,
+                    target,
+                    (512, 512),
+                    3,
+                    lambda: None,
+                    seed=42 + index,
+                )
+                probe = media.validate_video(path, (512, 512), 3)
+                outputs.append(
+                    {"output": str(path), "sha256": digest(path), "metadata": metadata, "probe": probe}
+                )
+            report.update(status="GENERATED_PENDING_VISUAL_REVIEW", outputs=outputs)
+        report["telemetry"] = [json.loads(p.read_text()) for p in directory.rglob("provider-telemetry.json")]
+    except Exception as error:
+        report.update(status="FAILED", error=str(error))
+        report["telemetry"] = [json.loads(p.read_text()) for p in directory.rglob("provider-telemetry.json")]
+        raise
+    finally:
+        report["elapsed_seconds"] = round(time.monotonic() - started, 3)
+        atomic_json(evidence, report)
+        print(
+            json.dumps(
+                {k: v for k, v in report.items() if k not in {"result", "outputs", "metadata", "telemetry"}},
+                indent=2,
+            )
+        )
+
+
+if __name__ == "__main__":
+    main()

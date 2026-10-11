@@ -14,3 +14,13 @@ Actual machine evidence: ops/evidence/gpu-baseline.txt, os-baseline.json, disk-b
 Real GPU image generation, real GPU video (two reproducible runs), GPU OOM downshift, native portrait/landscape model support, VRAM/RAM peak during inference, temperature/time measurements, character likeness consistency, cinematic quality, sustained feature-length production.
 
 Next hardware procedure: choose licensed low-memory WanGP image/reference-capable + i2v model from installed capability discovery; obtain download approval; one 3–5s shot, modest resolution, `sdpa`/low-memory profile, no concurrent LLM; sample nvidia-smi/OS memory; inspect native+normalized media and hashes; repeat twice; record exact model revision/settings/license. If blocked, continue independent backlog and preserve this NOT TESTED status.
+
+## Approved GPU installation and first actual import — still no inference
+
+Authorization is recorded in APPROVALS.md; versions/file hashes in gpu-download-proposal.json,wan-runtime-lock.txt,wan-runtime-artifacts.json and ignored tools/gpu/download-ledger.json. WanGP6479db36bdc2619a904a852bba9c2d78e1a83f82; Python3.11.14; Torch2.10.0+cu130. Source/runtime and FluxKlein4B int8/Qwen3 int8/FluxVAE/tokenizer files installed, not video files.
+
+Actual command `.venv/Scripts/python.exe -m scripts.gpu_smoke runtime` FAILED after44.0 seconds before model loading. Preflight7.51GiB free RAM,5438MiB free VRAM,72°C. Windows error4551 while loading shm.dll/dependency; Code Integrity3077 identifies torch_cuda.dll blocked by application-control policy. Import-stage telemetry sampled359,653,376bytes process RSS,942,284,800bytes whole-device VRAM,73°C. No GPU image/video was generated. This is not hardware fit proof. No Windows policy changed.
+
+Source diagnosis: Microsoft App Control troubleshooting documentation explains enforced block events3077 and correlation-signature events3089: https://learn.microsoft.com/en-us/windows/security/application-security/application-control/app-control-for-business/operations/appcontrol-debugging-and-troubleshooting (checked2026-10-12). Local event evidence is gpu-code-integrity.json. Vendor audit90 advisories remains unresolved; main-app audit0 is separate.
+
+Next GPU step requires a policy-compatible runtime within authorized scope, then API discovery, one real image plus reference-conditioned variant with manual inspection/telemetry, then image PASS before video downloads. User readiness/resource headroom remains a prerequisite. No automatic security-policy workaround.

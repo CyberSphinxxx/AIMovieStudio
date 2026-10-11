@@ -3,6 +3,7 @@ from types import SimpleNamespace
 import pytest
 
 from studio.vendor_bridge import build_settings, require_success
+from studio.providers import WanGPConfig, WanGPProvider
 
 
 class Session:
@@ -76,3 +77,22 @@ def test_vendor_failure_not_mistaken_for_success(tmp_path):
     outside.write_bytes(b"not media")
     with pytest.raises(RuntimeError, match="scoped"):
         require_success(SimpleNamespace(success=True, generated_files=[str(outside)]), tmp_path)
+
+
+def test_windows_policy_block_has_actionable_error_without_retry_or_fallback(tmp_path, monkeypatch):
+    calls = []
+    provider = WanGPProvider(WanGPConfig(license_reviewed=True), tmp_path)
+    monkeypatch.setattr(provider, "configured", lambda: True)
+
+    def blocked(*args, **kwargs):
+        calls.append(args)
+        raise RuntimeError(
+            "MEDIA_FAILED: [WinError 4551] An Application Control policy has blocked this file."
+        )
+
+    monkeypatch.setattr("studio.providers.media.run", blocked)
+    with pytest.raises(RuntimeError, match="OS_POLICY_BLOCKED") as caught:
+        provider.request("discover", "", tmp_path, lambda: None)
+    assert len(calls) == 1
+    assert "4551" in str(caught.value.__cause__)
+    assert not (tmp_path / "provider-result.json").exists()

@@ -1,0 +1,133 @@
+{
+  "status": "REAL_STORY_PERSISTED_GPU_BLOCKED",
+  "is_mock": false,
+  "model": "Qwen2.5-0.5B-Instruct-Q4_K_M",
+  "elapsed_seconds": 89.656,
+  "project_id": "6f383215-5bfe-46be-91d7-3af119aec32e",
+  "stages": [
+    {
+      "stage": "PLAN",
+      "state": "SUCCEEDED"
+    },
+    {
+      "stage": "SCRIPT",
+      "state": "SUCCEEDED"
+    },
+    {
+      "stage": "REFERENCE",
+      "state": "FAILED"
+    },
+    {
+      "stage": "REFERENCE",
+      "state": "READY"
+    },
+    {
+      "stage": "REFERENCE",
+      "state": "READY"
+    },
+    {
+      "stage": "FRAME",
+      "state": "READY"
+    },
+    {
+      "stage": "CLIP",
+      "state": "READY"
+    },
+    {
+      "stage": "FRAME",
+      "state": "READY"
+    },
+    {
+      "stage": "CLIP",
+      "state": "READY"
+    },
+    {
+      "stage": "AUDIO",
+      "state": "READY"
+    },
+    {
+      "stage": "EXPORT",
+      "state": "READY"
+    }
+  ],
+  "error": "LICENSE_REVIEW_REQUIRED: Review WanGP and selected model rights in Settings before running it.",
+  "plan": {
+    "title": "The Lighthouse Keeper and the Lost Sailor",
+    "logline": "A lighthouse keeper follows a mysterious light to rescue a lost sailor, then returns home.",
+    "ending": "The keeper arrives at the lighthouse, where he finds the lost sailor, who is now a lighthouse keeper himself, following the light. The keeper is initially overwhelmed by the sight of the lost sailor, but he quickly realizes that the light is not just a mirage but a signal of danger. The keeper and the lost sailor work together to find a way to return home, eventually leading to a thrilling conclusion.",
+    "world_rules": [
+      "The setting is a fictional lighthouse town, with a lighthouse keeper and a lost sailor, both of whom are characters in the story.",
+      "The lighthouse keeper is a lighthouse keeper, and the lost sailor is a lighthouse keeper. This is a unique setting, as the keeper is a keeper of a lighthouse, and the sailor is a sailor who has lost a lighthouse.",
+      "The lighthouse keeper and the lost sailor are not characters in the story, but rather characters in the story, as they are characters in the story, not characters in the story.",
+      "The story is set in a fictional world, with a lighthouse town, a lighthouse keeper, and a lost sailor, all of whom are characters in the story."
+    ],
+    "characters": [
+      {
+        "id": "861c55c0-ed58-5a24-b1b4-83dc5a01e94d",
+        "name": "Lighthouse Keeper",
+        "appearance": "A lighthouse keeper, a lighthouse keeper",
+        "goal": "Follow a mysterious light to rescue a lost sailor, then return home",
+        "voice": "default"
+      },
+      {
+        "id": "b25b892c-e450-5005-9fe9-07bf3f8db400",
+        "name": "Lost Sailor",
+        "appearance": "A lighthouse keeper, a lighthouse keeper",
+        "goal": "Find a way to return home, eventually leading to a thrilling conclusion",
+        "voice": "secondary"
+      }
+    ],
+    "locations": [
+      {
+        "id": "27b8f2e3-9cc4-53d2-9c9b-2af8dfe18258",
+        "name": "Lighthouse Town",
+        "description": "A fictional lighthouse town, with a lighthouse keeper and a lost sailor, both of whom are characters in the story."
+      }
+    ],
+    "episodes": [
+      {
+        "number": 1,
+        "title": "The Lighthouse Keeper and the Lost Sailor",
+        "summary": "The keeper arrives at the lighthouse, where he finds the lost sailor, who is now a lighthouse keeper himself, following the light. The keeper is initially overwhelmed by the sight of the lost sailor, but he quickly realizes that the light is not just a mirage but a signal of danger. The keeper and the lost sailor work together to find a way to return home, eventually leading to a thrilling conclusion.",
+        "outcome": "The keeper and the lost sailor find a way to return home, eventually leading to a thrilling conclusion."
+      }
+    ]
+  },
+  "script": {
+    "number": 1,
+    "screenplay": "The Lighthouse Keeper and the Lost Sailor",
+    "shots": [
+      {
+        "id": "014be052-e0de-5a53-9a01-941bcb776a6f",
+        "number": 1,
+        "duration": 5.0,
+        "location_id": "27b8f2e3-9cc4-53d2-9c9b-2af8dfe18258",
+        "character_ids": [
+          "861c55c0-ed58-5a24-b1b4-83dc5a01e94d",
+          "b25b892c-e450-5005-9fe9-07bf3f8db400"
+        ],
+        "action": "follow",
+        "camera": "portrait",
+        "narration": "Offscreen",
+        "speaker_id": "861c55c0-ed58-5a24-b1b4-83dc5a01e94d",
+        "transition": "cut"
+      },
+      {
+        "id": "3f9c2c6e-92a8-5887-ae91-429180b0e549",
+        "number": 2,
+        "duration": 5.0,
+        "location_id": "27b8f2e3-9cc4-53d2-9c9b-2af8dfe18258",
+        "character_ids": [
+          "b25b892c-e450-5005-9fe9-07bf3f8db400",
+          "b25b892c-e450-5005-9fe9-07bf3f8db400"
+        ],
+        "action": "return",
+        "camera": "portrait",
+        "narration": "Offscreen",
+        "speaker_id": "b25b892c-e450-5005-9fe9-07bf3f8db400",
+        "transition": "cut"
+      }
+    ]
+  },
+  "image_video": "NOT TESTED in this fixture; GPU installation/test is separate"
+}

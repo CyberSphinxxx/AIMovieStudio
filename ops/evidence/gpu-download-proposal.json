@@ -1,0 +1,194 @@
+{
+  "status": "PROPOSAL_ONLY_NOT_APPROVED_NOT_INSTALLED",
+  "wan_gp_revision": "6479db36bdc2619a904a852bba9c2d78e1a83f82",
+  "models": {
+    "image": "flux2_klein_4b",
+    "video": "ti2v_2_2"
+  },
+  "files": [
+    {
+      "repo": "DeepBeepMeep/Flux2",
+      "revision": "c976cb238dbf2bee48f0bd65eeb14c039cf45e03",
+      "file": "flux-2-klein-4b_quanto_bf16_int8.safetensors",
+      "bytes": 4072546826,
+      "sha256": "3c4090e193ffafc6db33ebb1b37a06cde0e7d65ef92236518b09f8d4c611b060",
+      "git_blob": "fa14a5225cbc88922d07a04d57ea0df91868c677",
+      "url": "https://huggingface.co/DeepBeepMeep/Flux2/resolve/c976cb238dbf2bee48f0bd65eeb14c039cf45e03/flux-2-klein-4b_quanto_bf16_int8.safetensors"
+    },
+    {
+      "repo": "DeepBeepMeep/Flux2",
+      "revision": "c976cb238dbf2bee48f0bd65eeb14c039cf45e03",
+      "file": "flux2_vae.safetensors",
+      "bytes": 336211292,
+      "sha256": "868fe7b343cc8f3a19dbcfcafbc3d5f888802be3f89bd81b65b3621a066ce8f3",
+      "git_blob": "78f8fcf4adb004763e3335b937a9d7a6dfa9f5b5",
+      "url": "https://huggingface.co/DeepBeepMeep/Flux2/resolve/c976cb238dbf2bee48f0bd65eeb14c039cf45e03/flux2_vae.safetensors"
+    },
+    {
+      "repo": "DeepBeepMeep/Z-Image",
+      "revision": "d2c74b46fb8cf2c5e9821663e31f94267da26be5",
+      "file": "Qwen3/qwen3_quanto_bf16_int8.safetensors",
+      "bytes": 4414004409,
+      "sha256": "9cf81c0990491ba3cee10b5f57792bcb73b056deea13962f8137989e3eebf6de",
+      "git_blob": "4e83ee6d0e8889fdd2d83e0fa6aa6b1b33c2b5c6",
+      "url": "https://huggingface.co/DeepBeepMeep/Z-Image/resolve/d2c74b46fb8cf2c5e9821663e31f94267da26be5/Qwen3/qwen3_quanto_bf16_int8.safetensors"
+    },
+    {
+      "repo": "DeepBeepMeep/Z-Image",
+      "revision": "d2c74b46fb8cf2c5e9821663e31f94267da26be5",
+      "file": "Qwen3/added_tokens.json",
+      "bytes": 707,
+      "sha256": null,
+      "git_blob": "b54f9135e44c1e81047e8d05cb027af8bc039eed",
+      "url": "https://huggingface.co/DeepBeepMeep/Z-Image/resolve/d2c74b46fb8cf2c5e9821663e31f94267da26be5/Qwen3/added_tokens.json"
+    },
+    {
+      "repo": "DeepBeepMeep/Z-Image",
+      "revision": "d2c74b46fb8cf2c5e9821663e31f94267da26be5",
+      "file": "Qwen3/chat_template.jinja",
+      "bytes": 4168,
+      "sha256": null,
+      "git_blob": "01be9b307daa2d425f7c168c9fb145a286e0afb4",
+      "url": "https://huggingface.co/DeepBeepMeep/Z-Image/resolve/d2c74b46fb8cf2c5e9821663e31f94267da26be5/Qwen3/chat_template.jinja"
+    },
+    {
+      "repo": "DeepBeepMeep/Z-Image",
+      "revision": "d2c74b46fb8cf2c5e9821663e31f94267da26be5",
+      "file": "Qwen3/config.json",
+      "bytes": 726,
+      "sha256": null,
+      "git_blob": "e49eccdc32f36da9c09cfa0e737084f9e0105e5e",
+      "url": "https://huggingface.co/DeepBeepMeep/Z-Image/resolve/d2c74b46fb8cf2c5e9821663e31f94267da26be5/Qwen3/config.json"
+    },
+    {
+      "repo": "DeepBeepMeep/Z-Image",
+      "revision": "d2c74b46fb8cf2c5e9821663e31f94267da26be5",
+      "file": "Qwen3/generation_config.json",
+      "bytes": 214,
+      "sha256": null,
+      "git_blob": "f5af93d0c7764fa38e3b1cd3aaba1b6307246d3b",
+      "url": "https://huggingface.co/DeepBeepMeep/Z-Image/resolve/d2c74b46fb8cf2c5e9821663e31f94267da26be5/Qwen3/generation_config.json"
+    },
+    {
+      "repo": "DeepBeepMeep/Z-Image",
+      "revision": "d2c74b46fb8cf2c5e9821663e31f94267da26be5",
+      "file": "Qwen3/merges.txt",
+      "bytes": 1671853,
+      "sha256": null,
+      "git_blob": "31349551d90c7606f325fe0f11bbb8bd5fa0d7c7",
+      "url": "https://huggingface.co/DeepBeepMeep/Z-Image/resolve/d2c74b46fb8cf2c5e9821663e31f94267da26be5/Qwen3/merges.txt"
+    },
+    {
+      "repo": "DeepBeepMeep/Z-Image",
+      "revision": "d2c74b46fb8cf2c5e9821663e31f94267da26be5",
+      "file": "Qwen3/special_tokens_map.json",
+      "bytes": 613,
+      "sha256": null,
+      "git_blob": "ac23c0aaa2434523c494330aeb79c58395378103",
+      "url": "https://huggingface.co/DeepBeepMeep/Z-Image/resolve/d2c74b46fb8cf2c5e9821663e31f94267da26be5/Qwen3/special_tokens_map.json"
+    },
+    {
+      "repo": "DeepBeepMeep/Z-Image",
+      "revision": "d2c74b46fb8cf2c5e9821663e31f94267da26be5",
+      "file": "Qwen3/tokenizer.json",
+      "bytes": 11422654,
+      "sha256": "aeb13307a71acd8fe81861d94ad54ab689df773318809eed3cbe794b4492dae4",
+      "git_blob": "cd71f61a15a522601badb3dc960d800d9cb3766c",
+      "url": "https://huggingface.co/DeepBeepMeep/Z-Image/resolve/d2c74b46fb8cf2c5e9821663e31f94267da26be5/Qwen3/tokenizer.json"
+    },
+    {
+      "repo": "DeepBeepMeep/Z-Image",
+      "revision": "d2c74b46fb8cf2c5e9821663e31f94267da26be5",
+      "file": "Qwen3/tokenizer_config.json",
+      "bytes": 9732,
+      "sha256": null,
+      "git_blob": "417d038a63fa3de29cfde265caedae14d1a58d92",
+      "url": "https://huggingface.co/DeepBeepMeep/Z-Image/resolve/d2c74b46fb8cf2c5e9821663e31f94267da26be5/Qwen3/tokenizer_config.json"
+    },
+    {
+      "repo": "DeepBeepMeep/Z-Image",
+      "revision": "d2c74b46fb8cf2c5e9821663e31f94267da26be5",
+      "file": "Qwen3/vocab.json",
+      "bytes": 2776833,
+      "sha256": null,
+      "git_blob": "4783fe10ac3adce15ac8f358ef5462739852c569",
+      "url": "https://huggingface.co/DeepBeepMeep/Z-Image/resolve/d2c74b46fb8cf2c5e9821663e31f94267da26be5/Qwen3/vocab.json"
+    },
+    {
+      "repo": "DeepBeepMeep/Wan2.2",
+      "revision": "18af79606a99e565d7c5655454c1f827e190eac2",
+      "file": "wan2.2_text2video_5B_quanto_mbf16_int8.safetensors",
+      "bytes": 5231471198,
+      "sha256": "463076f7625d8c7fc8912011cf5d02db7f0a8ae666e1758cd835e5a8517ef0e0",
+      "git_blob": "8750f6167d17d33473b9a519efa6daa76ead192a",
+      "url": "https://huggingface.co/DeepBeepMeep/Wan2.2/resolve/18af79606a99e565d7c5655454c1f827e190eac2/wan2.2_text2video_5B_quanto_mbf16_int8.safetensors"
+    },
+    {
+      "repo": "DeepBeepMeep/Wan2.2",
+      "revision": "18af79606a99e565d7c5655454c1f827e190eac2",
+      "file": "Wan2.2_VAE.safetensors",
+      "bytes": 2818780191,
+      "sha256": "bb6e5e515ca6af2cb2b7bbf8bfc790b8c306832c34e0a76193507c3739ebf54a",
+      "git_blob": "9b3222007d3c8b0da54da0380f0373ffef7c3128",
+      "url": "https://huggingface.co/DeepBeepMeep/Wan2.2/resolve/18af79606a99e565d7c5655454c1f827e190eac2/Wan2.2_VAE.safetensors"
+    },
+    {
+      "repo": "DeepBeepMeep/Wan2.1",
+      "revision": "60fb1c3e42131a9fb04ae4e0c6d489efba5e9f12",
+      "file": "umt5-xxl/models_t5_umt5-xxl-enc-quanto_int8.safetensors",
+      "bytes": 6733337738,
+      "sha256": "5e4961851c78838931990549810ed51c9036081b2ad80bf464c4e2603c5f922c",
+      "git_blob": "4f6f4d0e76f24d8a17c85f30bfe4e94fe4986399",
+      "url": "https://huggingface.co/DeepBeepMeep/Wan2.1/resolve/60fb1c3e42131a9fb04ae4e0c6d489efba5e9f12/umt5-xxl/models_t5_umt5-xxl-enc-quanto_int8.safetensors"
+    },
+    {
+      "repo": "DeepBeepMeep/Wan2.1",
+      "revision": "60fb1c3e42131a9fb04ae4e0c6d489efba5e9f12",
+      "file": "umt5-xxl/special_tokens_map.json",
+      "bytes": 6623,
+      "sha256": null,
+      "git_blob": "14855e7052ffbb595057dfd791d293c1c940db2c",
+      "url": "https://huggingface.co/DeepBeepMeep/Wan2.1/resolve/60fb1c3e42131a9fb04ae4e0c6d489efba5e9f12/umt5-xxl/special_tokens_map.json"
+    },
+    {
+      "repo": "DeepBeepMeep/Wan2.1",
+      "revision": "60fb1c3e42131a9fb04ae4e0c6d489efba5e9f12",
+      "file": "umt5-xxl/spiece.model",
+      "bytes": 4548313,
+      "sha256": "e3909a67b780650b35cf529ac782ad2b6b26e6d1f849d3fbb6a872905f452458",
+      "git_blob": "2fe5f347e9f9367585589ae89e997dfbd5cf802c",
+      "url": "https://huggingface.co/DeepBeepMeep/Wan2.1/resolve/60fb1c3e42131a9fb04ae4e0c6d489efba5e9f12/umt5-xxl/spiece.model"
+    },
+    {
+      "repo": "DeepBeepMeep/Wan2.1",
+      "revision": "60fb1c3e42131a9fb04ae4e0c6d489efba5e9f12",
+      "file": "umt5-xxl/tokenizer.json",
+      "bytes": 16837417,
+      "sha256": "6e197b4d3dbd71da14b4eb255f4fa91c9c1f2068b20a2de2472967ca3d22602b",
+      "git_blob": "7bd4ee3cf5633e49c0e06a3aac2a621559e6222a",
+      "url": "https://huggingface.co/DeepBeepMeep/Wan2.1/resolve/60fb1c3e42131a9fb04ae4e0c6d489efba5e9f12/umt5-xxl/tokenizer.json"
+    },
+    {
+      "repo": "DeepBeepMeep/Wan2.1",
+      "revision": "60fb1c3e42131a9fb04ae4e0c6d489efba5e9f12",
+      "file": "umt5-xxl/tokenizer_config.json",
+      "bytes": 61728,
+      "sha256": null,
+      "git_blob": "4e1cc1cd85599ce0b47fd0a746af188fe4043ff2",
+      "url": "https://huggingface.co/DeepBeepMeep/Wan2.1/resolve/60fb1c3e42131a9fb04ae4e0c6d489efba5e9f12/umt5-xxl/tokenizer_config.json"
+    }
+  ],
+  "revisions": {
+    "DeepBeepMeep/Flux2": "c976cb238dbf2bee48f0bd65eeb14c039cf45e03",
+    "DeepBeepMeep/Z-Image": "d2c74b46fb8cf2c5e9821663e31f94267da26be5",
+    "DeepBeepMeep/Wan2.2": "18af79606a99e565d7c5655454c1f827e190eac2",
+    "DeepBeepMeep/Wan2.1": "60fb1c3e42131a9fb04ae4e0c6d489efba5e9f12"
+  },
+  "model_bytes": 23643693235,
+  "download_ceiling_gb": 32,
+  "disk_growth_ceiling_gb": 40,
+  "runtime": "Separate app-owned Python 3.11, PyTorch 2.10 cu130, pinned WanGP. Dependencies not installed or fully resolved yet.",
+  "hardware_proof": "NOT TESTED; image gate first, video installation/inference only if memory and disk gates pass. No guaranteed 6GB/16GB fit.",
+  "system_changes": "None authorized: no driver, CUDA toolkit, paging, firewall, power or global Python changes.",
+  "rights": "Private local use proposal. WanGP Community License 2.0; Flux Klein 4B, Qwen3 4B, Wan2.2 upstream cards Apache-2.0. Preserve all vendor notices; no paid embedding or redistribution authorization."
+}

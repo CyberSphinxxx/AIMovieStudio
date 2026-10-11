@@ -2,14 +2,37 @@ from __future__ import annotations
 
 import json
 import math
-from typing import Protocol, TypeVar
+import threading
+from typing import Literal, Protocol, TypeVar
 
 import httpx
-from pydantic import BaseModel, ValidationError
+from pydantic import BaseModel, Field, ValidationError, create_model
 
 from studio.domain import Character, EpisodeOutline, EpisodeScript, Location, SeasonPlan, Shot, stable
 
 T = TypeVar("T", bound=BaseModel)
+
+
+def checked_post(client, path, body, check):
+    finished = threading.Event()
+    result = {}
+
+    def request():
+        try:
+            result["response"] = client.post(path, json=body)
+        except Exception as e:
+            result["error"] = e
+        finally:
+            finished.set()
+
+    thread = threading.Thread(target=request, name="local-story-request", daemon=True)
+    thread.start()
+    while not finished.wait(0.2):
+        check()
+    check()
+    if "error" in result:
+        raise result["error"]
+    return result["response"]
 
 
 class StoryProvider(Protocol):
@@ -138,10 +161,11 @@ class DemoStory:
 class OllamaStory:
     """Official localhost /api/chat contract with bounded schema repair and unload."""
 
-    def __init__(self, model: str, transport=None):
+    def __init__(self, model: str, transport=None, check=lambda: None):
         if not model:
             raise RuntimeError("MISSING_MODEL: Choose an installed story model in Settings.")
         self.model, self.transport = model, transport
+        self.check = check
 
     def generate(self, schema: type[T], prompt: str) -> T:
         messages = [
@@ -155,9 +179,10 @@ class OllamaStory:
             base_url="http://127.0.0.1:11434", timeout=180, transport=self.transport, trust_env=False
         ) as client:
             for attempt in range(3):
-                response = client.post(
+                response = checked_post(
+                    client,
                     "/api/chat",
-                    json={
+                    {
                         "model": self.model,
                         "messages": messages,
                         "format": schema.model_json_schema(),
@@ -165,6 +190,7 @@ class OllamaStory:
                         "keep_alive": 0,
                         "options": {"temperature": 0.4, "num_ctx": 8192},
                     },
+                    self.check,
                 )
                 response.raise_for_status()
                 content = response.json()["message"]["content"]
@@ -187,9 +213,18 @@ class OllamaStory:
         raise RuntimeError("BAD_STORY")
 
     def plan(self, project):
+        outline_schema = create_model(
+            "RequestedSeason",
+            __base__=SeasonPlan,
+            episodes=(
+                list[EpisodeOutline],
+                Field(min_length=project["spec"]["episodes"], max_length=project["spec"]["episodes"]),
+            ),
+            world_rules=(list[str], Field(min_length=1, max_length=5)),
+        )
         plan = self.generate(
-            SeasonPlan,
-            f"Plan an original finite movie/series through its ending. Give exactly {project['spec']['episodes']} episode outlines. Character/location IDs may be short unique slugs. Idea and settings: {json.dumps(project['spec'])}",
+            outline_schema,
+            f"Plan an original finite movie/series through its definitive resolved ending. Give exactly {project['spec']['episodes']} ordered episode outlines numbered 1 onward. World rules must describe concrete facts/physics/limitations of this fictional setting, never writing advice or instructions about endings. Character/location IDs may be short unique slugs. Idea and settings: {json.dumps(project['spec'])}",
         )
         # Canonicalize once before any script or reference generation.
         for character in plan.characters:
@@ -201,7 +236,41 @@ class OllamaStory:
         return plan
 
     def script(self, project, number):
-        return self.generate(
-            EpisodeScript,
-            f"Write full screenplay for episode {number}, including offscreen dialogue/narration (no lip-sync claim). Break into 1–5 second cinematic shots, total exactly {project['spec']['target_seconds']} seconds. Use unique shot IDs and ordered numbers. Keep spoken lines short enough for each shot. Fixed plan: {json.dumps(project['plan'])}. Prior canon only: {json.dumps([e for e in project['canon'] if e['episode'] < number])}. Settings: {json.dumps(project['spec'])}",
+        characters = tuple(c["id"] for c in project["plan"]["characters"])
+        locations = tuple(p["id"] for p in project["plan"]["locations"])
+        count = max(1, math.ceil(project["spec"]["target_seconds"] / 5))
+        duration = project["spec"]["target_seconds"] / count
+        cast_type = Literal.__getitem__(characters)
+        shot_schema = create_model(
+            "PinnedShot",
+            __base__=Shot,
+            speaker_id=(cast_type, ...),
+            character_ids=(list[cast_type], Field(min_length=1, max_length=len(characters))),
+            location_id=(Literal.__getitem__(locations), ...),
+            duration=(float, Field(ge=duration, le=duration)),
         )
+        script_schema = create_model(
+            "RequestedScreenplay",
+            __base__=EpisodeScript,
+            number=(Literal.__getitem__((number,)), ...),
+            shots=(list[shot_schema], Field(min_length=count, max_length=count)),
+        )
+        previous_draft = next(
+            (e.get("script") for e in project.get("episodes", []) if e["number"] == number - 1),
+            None,
+        )
+        draft_context = (
+            " Previous episode draft (planned fiction, not completed canon): "
+            + previous_draft["screenplay"][-4000:]
+            if previous_draft
+            else ""
+        )
+        script = self.generate(
+            script_schema,
+            f"Write full screenplay for episode {number}, including offscreen dialogue/narration (no lip-sync claim). Exactly {count} cinematic shots, each duration {duration} seconds. Use ordered shot numbers 1 onward. Use character/location IDs EXACTLY as supplied, never names in ID fields. Keep spoken lines short enough for each shot. Fixed plan: {json.dumps(project['plan'])}. Prior canon only: {json.dumps([e for e in project['canon'] if e['episode'] < number])}. Settings: {json.dumps(project['spec'])}"
+            + draft_context,
+        )
+        for index, shot in enumerate(script.shots):
+            shot.id = stable(project["id"], f"episode:{number}:shot:{index}")
+            shot.number = index + 1
+        return EpisodeScript.model_validate(script.model_dump())

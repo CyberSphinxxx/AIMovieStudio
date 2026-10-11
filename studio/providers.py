@@ -11,6 +11,27 @@ from studio.domain import StrictModel
 from studio.storage import atomic_json
 
 
+def require_resources():
+    from studio.diagnostics import hardware
+
+    report = hardware(refresh=True)
+    memory, gpu = report["memory"], report["gpu"]
+    if not memory.get("available") or not gpu.get("available"):
+        raise RuntimeError(
+            "RESOURCE_UNKNOWN: Local RAM/GPU counters are unavailable; inspect diagnostics before inference."
+        )
+    if memory["free_gb"] < 5 or gpu["total_mb"] - gpu["used_mb"] < 4096:
+        raise RuntimeError(
+            f"RESOURCE_BUSY: Need 5 GB free RAM and 4 GB free VRAM for the initial smoke profile. "
+            f"Currently {memory['free_gb']} GB RAM and {gpu['total_mb'] - gpu['used_mb']} MB VRAM free. Close heavy applications and retry."
+        )
+    if gpu["temperature_c"] >= 85:
+        raise RuntimeError(
+            "RESOURCE_HOT: GPU is at least 85°C before inference; wait for it to cool and retry."
+        )
+    return report
+
+
 class WanGPConfig(StrictModel):
     installation: str = Field(default="", max_length=500)
     python: str = Field(default="", max_length=500)
@@ -52,6 +73,8 @@ class WanGPProvider:
             raise RuntimeError(
                 "MISSING_PROVIDER: Choose an existing separate WanGP Python and installation in Settings."
             )
+        if kind != "discover":
+            require_resources()
         directory = directory.resolve()
         if not directory.is_relative_to(self.data_root):
             raise ValueError("Provider output outside storage root")
@@ -80,6 +103,15 @@ class WanGPProvider:
             )
         except media.Interrupted:
             (directory / "native" / "cancel.request").touch()
+            raise
+        except RuntimeError as error:
+            message = str(error)
+            if "4551" in message or "Application Control policy has blocked" in message:
+                raise RuntimeError(
+                    "OS_POLICY_BLOCKED: Windows Application Control blocked a provider dependency. "
+                    "Generation did not start. Inspect Windows Code Integrity diagnostics; "
+                    "the studio cannot change system security policy."
+                ) from error
             raise
         return json.loads(res.read_text(encoding="utf-8"))
 

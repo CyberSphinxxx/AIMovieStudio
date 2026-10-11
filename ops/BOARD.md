@@ -6,31 +6,31 @@ Do not interpret partial task evidence as full phase acceptance. See PROGRESS an
 |---|---|---|
 | F0.01 | DONE_VERIFIED | ops/evidence/*baseline*, actual workstation commands |
 | F0.02 | IN_PROGRESS | docs/SOURCE_REGISTER.md; private-use assumption; distribution/weight review incomplete |
-| F0.03 | BLOCKED_APPROVAL | GPU inference needs selected model/runtime downloads >1 GB; no approval yet |
+| F0.03 | BLOCKED_OS_POLICY | Approved stack/image files installed; actual API smoke blocked by Windows CUDA DLL policy before inference |
 | F0.04 | DONE_VERIFIED | Architecture implemented + runnable tests; CPU Python 3.12 deviation recorded |
 | F1.01 | DONE_VERIFIED | API and frontend run; build/lint/typecheck pass |
 | F1.02 | DONE_VERIFIED | API persistence/idempotency/reopen tests, browser create |
 | F1.03 | IN_PROGRESS | Responsive screenshots + Axe passed; broader UI/screen-reader review open |
-| F1.04 | IN_PROGRESS | Media/disk/DB/provider settings implemented; richer hardware diagnostics next |
-| F1.05 | DONE_VERIFIED | Three observed Edge E2E flows; latest settings changes need rerun |
-| F2.01 | IN_PROGRESS | Demo + Ollama contracts; actual small CPU plan; full real screenplay/series smoke next |
+| F1.04 | IN_PROGRESS | Live RAM/GPU/temp/driver diagnostics and conservative preflight implemented; CUDA runtime OS-blocked |
+| F1.05 | DONE_VERIFIED | Five Edge flows passed including blocked settings save while loading; actual demo playback/download and series prewrite |
+| F2.01 | IN_PROGRESS | Real CPU plan+screenplay and worker checkpoints observed; weak quality and one exhausted JSON repair attempt |
 | F2.02 | IN_PROGRESS | Finite ending and episode outline persisted; real quality evaluation open |
 | F2.03 | IN_PROGRESS | Full demo screenplay per produced episode; real script batching not proven |
 | F2.04 | IN_PROGRESS | Prior outcomes/death conflicts/revision event log; props/knowledge/flashbacks incomplete |
 | F2.05 | IN_PROGRESS | 10-episode outline fixture; episode2 reference/canon reuse tested; real series not proven |
-| F2.06 | TODO | Prewrite entire season in bounded tasks |
+| F2.06 | DONE_VERIFIED | Ten screenplay checkpoints, interrupted receipt recovery/reuse, no future canon; 3-episode browser flow |
 | F3.01 | DONE_VERIFIED | Demo references/keyframes + sidecar receipts/hash/lineage |
 | F3.02 | DONE_VERIFIED | Serialized references/frames/clip dependencies and pinned reference IDs |
-| F3.03 | BLOCKED_APPROVAL | No real local image generation proof |
+| F3.03 | BLOCKED_OS_POLICY | Approved image weights verified; torch_cuda.dll blocked before actual inference |
 | F3.04 | IN_PROGRESS | Baseline demo character/location images; real variants not verified |
 | F3.05 | IN_PROGRESS | Stage retry/caching; replacement/regeneration UI open |
 | F4.01 | DONE_VERIFIED | Single OS-lock worker, claims/heartbeat/checkpoints |
-| F4.02 | IN_PROGRESS | Replayable SSE + UI polling; SSE reconnection test next |
-| F4.03 | IN_PROGRESS | Pause/cancel/terminal/retry budget and crash tested; active UI control smoke next |
+| F4.02 | DONE_VERIFIED | Persisted SSE cursor/Last-Event-ID replay and frontend polling tested |
+| F4.03 | IN_PROGRESS | Active atomic pause/resume/hash reuse, cancel/no-export, settings freeze and retry budget tests; broader UI smoke open |
 | F4.04 | IN_PROGRESS | Sequential scheduling, CPU unload, disk reserve; quota/resource measurements incomplete |
 | F4.05 | DONE_VERIFIED | Actual hard process kill and hash reuse; corrupt media and interrupted receipts tested |
-| F5.01 | IN_PROGRESS | Official WanGP bridge implemented + fake-session contract tests; runtime unrun |
-| F5.02 | BLOCKED_APPROVAL | Real 6 GB inference (two runs) NOT TESTED |
+| F5.01 | IN_PROGRESS | Official API bridge, offline guard and telemetry; real runtime failed at OS CUDA import; no inference proof |
+| F5.02 | BLOCKED_OS_POLICY | Real 6 GB image/video inference NOT TESTED; video download requires image PASS |
 | F5.03 | TODO | Sequential real shots and inspection |
 | F5.04 | TODO | Validated model-dependent OOM downshift |
 | F5.05 | DEFERRED | FramePack >30 GB; first WanGP gate before fallback |
@@ -44,11 +44,11 @@ Do not interpret partial task evidence as full phase acceptance. See PROGRESS an
 | F7.03 | IN_PROGRESS | Readable workspace views; advanced editing open |
 | F7.04 | IN_PROGRESS | Tested viewport/focus/Axe; broader keyboard/screen-reader work remains |
 | F7.05 | IN_PROGRESS | Episode2 across reopen uses prior outcome/references; longer real movie open |
-| F8.01 | IN_PROGRESS | Launcher/setup/stop/verify scripts written; launcher smoke next, clean-account test open |
-| F8.02 | IN_PROGRESS | README and provider notes; backup/restore open |
+| F8.01 | IN_PROGRESS | Actual localhost launcher stop/start observed; approved app-local GPU install; clean-account test open |
+| F8.02 | IN_PROGRESS | Hashed backup download/CLI new-folder restore tested including interrupted MP4 resume; graphical restore open |
 | F8.03 | TODO | Distribution and bundled-license audit |
 | F8.04 | TODO | Clean Windows account + real GPU resource benchmarks |
-| F8.05 | IN_PROGRESS | Origin/path/size guards + npm audit0; Python audit/security release review open |
+| F8.05 | IN_PROGRESS | Main npm/Python audit0; hostile backups/download budgets tested; vendor90 advisories unresolved |
 | F8.06 | IN_PROGRESS | Screenshots/evidence/run docs; release still blocked by listed gates |
 
-Next unblocked: finish F2.01 CPU screenplay validation, provider configuration contracts, F4 controls/SSE and F8 launcher tests. No model installer, cloud upload or paid action authorized.
+Next unblocked: complete current full regression and checkpoint prewrite/backup/resource/install changes; improve F6.01 dialogue timing without arbitrary speed-up. GPU installation is approved only within the pinned private scope; runtime inference remains OS-blocked. No security changes, cloud or paid action authorized.

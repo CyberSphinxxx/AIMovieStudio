@@ -177,6 +177,7 @@ function Home() {
   const [seconds, setSeconds] = useState(30);
   const [episodes, setEpisodes] = useState(6);
   const [backend, setBackend] = useState<Spec["backend"]>("demo");
+  const [prewrite, setPrewrite] = useState(false);
   const [advanced, setAdvanced] = useState(false);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
@@ -200,6 +201,7 @@ function Home() {
       seconds,
       episodes,
       backend,
+      prewrite,
     });
     if (signature !== submittedSpec.current) {
       key.current = crypto.randomUUID();
@@ -215,6 +217,7 @@ function Home() {
           target_seconds: seconds,
           episodes,
           backend,
+          prewrite_season: kind === "series" && prewrite,
           style: "Cinematic realism",
           language: "English",
           idempotency_key: key.current,
@@ -379,6 +382,16 @@ function Home() {
                 </option>
               </select>
             </label>
+            {kind === "series" && (
+              <label className="check-label">
+                <input
+                  type="checkbox"
+                  checked={prewrite}
+                  onChange={(e) => setPrewrite(e.target.checked)}
+                />
+                Prewrite every episode before making footage
+              </label>
+            )}
             <p>
               English · cinematic style · 24 fps draft export. Real local
               creation saves your story and reports missing providers; it never
@@ -868,15 +881,31 @@ function Studio({ id }: { id: string }) {
                   </button>
                 ))}
               </div>
-              {ep?.status === "PLANNED" && (
-                <button
-                  className="primary"
-                  disabled={busy}
-                  onClick={() => void action("produce", { episode })}
-                >
-                  <Play size={17} /> Produce episode {episode}
-                </button>
-              )}
+              {ep &&
+                ["PLANNED", "DRAFTED", "REVIEW_REQUIRED"].includes(
+                  ep.status,
+                ) && (
+                  <button
+                    className="primary"
+                    disabled={
+                      busy ||
+                      (episode > 1 &&
+                        project.episodes.find((e) => e.number === episode - 1)
+                          ?.status !== "COMPLETED")
+                    }
+                    onClick={() => void action("produce", { episode })}
+                  >
+                    <Play size={17} /> Produce episode {episode}
+                  </button>
+                )}
+              {episode > 1 &&
+                project.episodes.find((e) => e.number === episode - 1)
+                  ?.status !== "COMPLETED" && (
+                  <p className="muted">
+                    Finish episode {episode - 1} before producing this chapter
+                    so its completed canon is available.
+                  </p>
+                )}
             </>
           )}
           {tab === "Export" && (
@@ -898,8 +927,10 @@ function Studio({ id }: { id: string }) {
                       <strong>Episode {episode} · MP4</strong>
                       <p>
                         {movie.metadata.width} × {movie.metadata.height} ·{" "}
-                        {movie.metadata.duration?.toFixed(1)} seconds · draft
-                        demo
+                        {movie.metadata.duration?.toFixed(1)} seconds ·{" "}
+                        {movie.metadata.is_mock
+                          ? "development demo"
+                          : "local generation"}
                       </p>
                     </div>
                   </div>
@@ -1064,6 +1095,18 @@ type Health = {
   worker_alive: boolean;
   media: Record<string, { available: boolean; message?: string }>;
   native_export: string;
+  hardware?: {
+    python: string;
+    memory: { available: boolean; total_gb?: number; free_gb?: number };
+    gpu: {
+      available: boolean;
+      name?: string;
+      total_mb?: number;
+      used_mb?: number;
+      temperature_c?: number;
+      driver?: string;
+    };
+  };
 };
 type Provider = {
   id: string;
@@ -1081,6 +1124,8 @@ function Settings() {
   const [reserve, setReserve] = useState(1024);
   const [error, setError] = useState("");
   const [saved, setSaved] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [settingsLoaded, setSettingsLoaded] = useState(false);
   const [engine, setEngine] = useState("ollama");
   const [wangp, setWangp] = useState({
     installation: "",
@@ -1092,7 +1137,7 @@ function Settings() {
     steps: 12,
   });
   useEffect(() => {
-    Promise.all([
+    Promise.allSettled([
       api<Health>("/health"),
       api<{ providers: Provider[] }>("/providers"),
       api<{
@@ -1102,20 +1147,31 @@ function Settings() {
         speech: string;
         reserve_mb: number;
       }>("/settings"),
-    ])
-      .then(([h, p, s]) => {
-        setHealth(h);
-        setProviders(p.providers);
-        setModel(s.story_model);
-        setEngine(s.story_engine || "ollama");
-        setWangp((w) => ({ ...w, ...s.wangp }));
-        setSpeech(s.speech);
-        setReserve(s.reserve_mb);
-      })
-      .catch((e) => setError(e.message));
+    ]).then(([h, p, s]) => {
+      if (h.status === "fulfilled") setHealth(h.value);
+      if (p.status === "fulfilled") setProviders(p.value.providers);
+      if (s.status === "fulfilled") {
+        setModel(s.value.story_model);
+        setEngine(s.value.story_engine || "ollama");
+        setWangp((w) => ({ ...w, ...s.value.wangp }));
+        setSpeech(s.value.speech);
+        setReserve(s.value.reserve_mb);
+        setSettingsLoaded(true);
+      }
+      setError(
+        [h, p, s]
+          .filter((result) => result.status === "rejected")
+          .map((result) =>
+            String(result.reason?.message || "Studio check failed"),
+          )
+          .join(" "),
+      );
+      setLoading(false);
+    });
   }, []);
   async function save(e: React.FormEvent) {
     e.preventDefault();
+    if (!settingsLoaded) return;
     setSaved(false);
     setError("");
     try {
@@ -1147,7 +1203,8 @@ function Settings() {
       </div>
       <ErrorMessage message={error} />
       <section className="settings-section">
-        <h2>Ready to create</h2>
+        <h2>Your workstation</h2>
+        {loading && <p role="status">Checking your studio…</p>}
         <div className="diagnostics">
           <div>
             <span>Project storage</span>
@@ -1164,21 +1221,69 @@ function Settings() {
           <div>
             <span>Production worker</span>
             <strong>
-              {health?.worker_alive ? "Running · sequential" : "Not running"}
+              {!health
+                ? "Checking…"
+                : health.worker_alive
+                  ? "Running · sequential"
+                  : "Not running"}
             </strong>
           </div>
           <div>
             <span>Media tools</span>
             <strong>
-              {health && Object.values(health.media).every((t) => t.available)
-                ? "FFmpeg + FFprobe ready"
-                : "Setup needed"}
+              {!health
+                ? "Checking…"
+                : Object.values(health.media).every((t) => t.available)
+                  ? "FFmpeg + FFprobe ready"
+                  : "Setup needed"}
             </strong>
           </div>
+          <div>
+            <span>Graphics card</span>
+            <strong>
+              {!health
+                ? "Checking…"
+                : health.hardware?.gpu.available
+                  ? `${health.hardware.gpu.name} · ${health.hardware.gpu.total_mb} MB`
+                  : "Not detected"}
+            </strong>
+          </div>
+          <div>
+            <span>Available memory</span>
+            <strong>
+              {!health
+                ? "Checking…"
+                : health.hardware?.memory.available
+                  ? `${health.hardware.memory.free_gb} / ${health.hardware.memory.total_gb} GB`
+                  : "Not measured"}
+            </strong>
+          </div>
+          <div>
+            <span>GPU temperature</span>
+            <strong>
+              {!health
+                ? "Checking…"
+                : health.hardware?.gpu.available
+                  ? `${health.hardware.gpu.temperature_c} °C`
+                  : "Not measured"}
+            </strong>
+          </div>
+          <div>
+            <span>Python runtime</span>
+            <strong>{health?.hardware?.python || "Checking…"}</strong>
+          </div>
         </div>
+        {health?.hardware?.memory.free_gb !== undefined &&
+          health.hardware.memory.free_gb < 2 && (
+            <p className="resource-note">
+              Available RAM is low. Close other heavy applications before local
+              inference. The studio does not change your power, paging or driver
+              settings.
+            </p>
+          )}
         <p className="muted">
-          Draft export: {health?.native_export}. GPU performance and cinematic
-          quality are not yet verified.
+          {health && `Draft export: ${health.native_export}. `}GPU performance
+          and cinematic quality are not yet verified.
         </p>
       </section>
       <section className="settings-section">
@@ -1200,141 +1305,162 @@ function Settings() {
           </div>
         ))}
       </section>
+      <section className="settings-section">
+        <h2>Your studio backup</h2>
+        <p className="muted">
+          Save all projects, stories, canon and completed media in one portable
+          archive. Models and machine-specific provider settings are excluded.
+          Restore instructions are in the local README.
+        </p>
+        <a className="secondary" href="/api/backup">
+          <Download size={17} /> Download studio backup
+        </a>
+      </section>
       <form onSubmit={save} className="settings-section settings-form">
         <h2>Your defaults</h2>
-        <label>
-          Local story engine
-          <select
-            aria-label="Local story engine"
-            value={engine}
-            onChange={(e) => setEngine(e.target.value)}
-          >
-            <option value="ollama">Ollama · your installed model</option>
-            <option value="small_cpu">
-              Small CPU story · Qwen 0.5B (feasibility)
-            </option>
-          </select>
-        </label>
-        <label>
-          Installed Ollama story model
-          <select value={model} onChange={(e) => setModel(e.target.value)}>
-            <option value="">No local story model selected</option>
-            {providers
-              .find((p) => p.id === "ollama")
-              ?.models?.map((m) => (
-                <option key={m}>{m}</option>
-              ))}
-          </select>
-        </label>
-        <label>
-          Soundtrack
-          <select
-            aria-label="Soundtrack"
-            value={speech}
-            onChange={(e) => setSpeech(e.target.value)}
-          >
-            <option value="windows">
-              Installed Windows voices + synthetic ambience
-            </option>
-            <option value="none">
-              Synthetic ambience only · no spoken dialogue
-            </option>
-          </select>
-        </label>
-        <label>
-          Reserved disk space (MB)
-          <input
-            type="number"
-            min={100}
-            max={102400}
-            value={reserve}
-            onChange={(e) => setReserve(Number(e.target.value))}
-          />
-        </label>
-        <details className="provider-config">
-          <summary>Connect an existing WanGP installation</summary>
+        {!settingsLoaded && (
           <p>
-            Keep its Python/CUDA environment separate. Inference uses installed
-            weights only; provider downloads are blocked. These paths are local
-            settings, never supplied by the story model.
+            {loading
+              ? "Loading saved settings…"
+              : "Saved settings could not be loaded. Reload this page before editing."}
           </p>
+        )}
+        <fieldset disabled={!settingsLoaded} className="settings-fields">
+          <legend>Studio preferences</legend>
           <label>
-            WanGP folder
-            <input
-              aria-label="WanGP folder"
-              value={wangp.installation}
-              onChange={(e) =>
-                setWangp({ ...wangp, installation: e.target.value })
-              }
-              placeholder="C:\\WanGP"
-            />
-          </label>
-          <label>
-            WanGP Python executable
-            <input
-              aria-label="WanGP Python executable"
-              value={wangp.python}
-              onChange={(e) => setWangp({ ...wangp, python: e.target.value })}
-              placeholder="C:\\WanGP\\venv\\Scripts\\python.exe"
-            />
-          </label>
-          <label>
-            Installed image model ID
-            <input
-              value={wangp.image_model}
-              onChange={(e) =>
-                setWangp({ ...wangp, image_model: e.target.value })
-              }
-            />
-          </label>
-          <label>
-            Installed video model ID
-            <input
-              value={wangp.video_model}
-              onChange={(e) =>
-                setWangp({ ...wangp, video_model: e.target.value })
-              }
-            />
-          </label>
-          <label>
-            Native generation format
+            Local story engine
             <select
-              value={wangp.native_resolution}
-              onChange={(e) =>
-                setWangp({ ...wangp, native_resolution: e.target.value })
-              }
+              aria-label="Local story engine"
+              value={engine}
+              onChange={(e) => setEngine(e.target.value)}
             >
-              <option value="480x832">Portrait · 480 × 832</option>
-              <option value="832x480">Landscape · 832 × 480</option>
-              <option value="512x512">Square · 512 × 512</option>
+              <option value="ollama">Ollama · your installed model</option>
+              <option value="small_cpu">
+                Small CPU story · Qwen 0.5B (feasibility)
+              </option>
             </select>
           </label>
-          <label className="check-label">
-            <input
-              type="checkbox"
-              checked={wangp.license_reviewed}
-              onChange={(e) =>
-                setWangp({ ...wangp, license_reviewed: e.target.checked })
-              }
-            />
-            I reviewed WanGP and model rights for my intended use.
+          <label>
+            Installed Ollama story model
+            <select value={model} onChange={(e) => setModel(e.target.value)}>
+              <option value="">No local story model selected</option>
+              {providers
+                .find((p) => p.id === "ollama")
+                ?.models?.map((m) => (
+                  <option key={m}>{m}</option>
+                ))}
+            </select>
           </label>
-          <p>
-            Image models must support reference conditioning for shot identity.
-            Actual 6 GB compatibility and cinematic quality remain unverified.
-            Inspect capabilities before selecting a model.
-          </p>
-        </details>
-        <div>
-          <button className="primary">
-            Save settings <Check size={17} />
-          </button>
-          {saved && (
-            <span role="status" className="saved">
-              Settings saved.
-            </span>
-          )}
-        </div>
+          <label>
+            Soundtrack
+            <select
+              aria-label="Soundtrack"
+              value={speech}
+              onChange={(e) => setSpeech(e.target.value)}
+            >
+              <option value="windows">
+                Installed Windows voices + synthetic ambience
+              </option>
+              <option value="none">
+                Synthetic ambience only · no spoken dialogue
+              </option>
+            </select>
+          </label>
+          <label>
+            Reserved disk space (MB)
+            <input
+              type="number"
+              min={100}
+              max={102400}
+              value={reserve}
+              onChange={(e) => setReserve(Number(e.target.value))}
+            />
+          </label>
+          <details className="provider-config">
+            <summary>Connect an existing WanGP installation</summary>
+            <p>
+              Keep its Python/CUDA environment separate. Inference uses
+              installed weights only; provider downloads are blocked. These
+              paths are local settings, never supplied by the story model.
+            </p>
+            <label>
+              WanGP folder
+              <input
+                aria-label="WanGP folder"
+                value={wangp.installation}
+                onChange={(e) =>
+                  setWangp({ ...wangp, installation: e.target.value })
+                }
+                placeholder="C:\\WanGP"
+              />
+            </label>
+            <label>
+              WanGP Python executable
+              <input
+                aria-label="WanGP Python executable"
+                value={wangp.python}
+                onChange={(e) => setWangp({ ...wangp, python: e.target.value })}
+                placeholder="C:\\WanGP\\venv\\Scripts\\python.exe"
+              />
+            </label>
+            <label>
+              Installed image model ID
+              <input
+                value={wangp.image_model}
+                onChange={(e) =>
+                  setWangp({ ...wangp, image_model: e.target.value })
+                }
+              />
+            </label>
+            <label>
+              Installed video model ID
+              <input
+                value={wangp.video_model}
+                onChange={(e) =>
+                  setWangp({ ...wangp, video_model: e.target.value })
+                }
+              />
+            </label>
+            <label>
+              Native generation format
+              <select
+                value={wangp.native_resolution}
+                onChange={(e) =>
+                  setWangp({ ...wangp, native_resolution: e.target.value })
+                }
+              >
+                <option value="480x832">Portrait · 480 × 832</option>
+                <option value="832x480">Landscape · 832 × 480</option>
+                <option value="512x512">Square · 512 × 512</option>
+              </select>
+            </label>
+            <label className="check-label">
+              <input
+                type="checkbox"
+                checked={wangp.license_reviewed}
+                onChange={(e) =>
+                  setWangp({ ...wangp, license_reviewed: e.target.checked })
+                }
+              />
+              I reviewed WanGP and model rights for my intended use.
+            </label>
+            <p>
+              Image models must support reference conditioning for shot
+              identity. Actual 6 GB compatibility and cinematic quality remain
+              unverified. Inspect capabilities before selecting a model.
+            </p>
+          </details>
+          <div>
+            <button className="primary">
+              Save settings <Check size={17} />
+            </button>
+            {saved && (
+              <span role="status" className="saved">
+                Settings saved.
+              </span>
+            )}
+          </div>
+        </fieldset>
       </form>
       <section className="settings-section">
         <h2>Local model setup</h2>

@@ -1,0 +1,11 @@
+# Explicit approvals — 2026-10-12
+
+Human reply: **“Approve bounded installation and tests”** to the GPU proposal question in this chat.
+
+Authorized: private local WanGP installation and hardware tests described in `docs/GPU_INSTALL_PROPOSAL.md`, selected Flux Klein 4B and Wan2.2 TI2V 5B files, maximum 32 GB download allocation and 40 GB disk growth. Preserve notices. Image gate first; video weights/inference only after a measured image PASS. Approval persists; do not ask again for this same scope.
+
+Not authorized: driver/CUDA toolkit/global Python, paging/firewall/power changes, paid services, cloud uploads, public distribution or paid embedding. Stop and report if such a step becomes necessary.
+
+User separately confirmed no installed local image/video engine. Resource question pending: close heavy apps before smoke. Do not terminate user applications automatically. Initial inference profile refuses <5 GB free RAM, <4 GB free VRAM or pre-run temperature >=85°C. This conservative gate is not a tested performance guarantee.
+
+Downloads/allocations are recorded in ignored `tools/gpu/download-ledger.json`; exact selected runtime artifacts in `ops/evidence/wan-runtime-artifacts.json`. The 8 GB runtime allocation conservatively includes resolver metadata and build overhead; individual tracked downloads reduce that allocation rather than double-counting it.

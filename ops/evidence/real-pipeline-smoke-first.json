@@ -1,0 +1,134 @@
+{
+  "status": "REAL_STORY_PERSISTED_GPU_BLOCKED",
+  "is_mock": false,
+  "model": "Qwen2.5-0.5B-Instruct-Q4_K_M",
+  "elapsed_seconds": 31.078,
+  "project_id": "c36bcab7-1a4c-4ae8-9092-ccbeb68eec43",
+  "stages": [
+    {
+      "stage": "PLAN",
+      "state": "SUCCEEDED"
+    },
+    {
+      "stage": "SCRIPT",
+      "state": "SUCCEEDED"
+    },
+    {
+      "stage": "REFERENCE",
+      "state": "FAILED"
+    },
+    {
+      "stage": "REFERENCE",
+      "state": "READY"
+    },
+    {
+      "stage": "REFERENCE",
+      "state": "READY"
+    },
+    {
+      "stage": "FRAME",
+      "state": "READY"
+    },
+    {
+      "stage": "CLIP",
+      "state": "READY"
+    },
+    {
+      "stage": "FRAME",
+      "state": "READY"
+    },
+    {
+      "stage": "CLIP",
+      "state": "READY"
+    },
+    {
+      "stage": "AUDIO",
+      "state": "READY"
+    },
+    {
+      "stage": "EXPORT",
+      "state": "READY"
+    }
+  ],
+  "error": "LICENSE_REVIEW_REQUIRED: Review WanGP and selected model rights in Settings before running it.",
+  "plan": {
+    "title": "The Lighthouse Keeper and the Lost Sailor",
+    "logline": "A lighthouse keeper follows a mysterious light to rescue a lost sailor, then returns home.",
+    "ending": "The lighthouse keeper, a seasoned lighthouse keeper, follows a mysterious light to a remote lighthouse. The light appears to be from a lost sailor, who has been lost at sea for years. The keeper, determined to find the lost sailor, sets out to rescue him. Along the way, the keeper discovers a hidden treasure hidden in the lighthouse's darkened windows. The treasure is a key to unlocking the lost sailor's identity, which could lead to the sailor's return. The keeper returns home with the treasure and the lost sailor, who is now free from the lighthouse's control.",
+    "world_rules": [
+      "The fictional setting is a lighthouse, with a lighthouse keeper and a mysterious light.",
+      "The lighthouse keeper must follow the mysterious light to rescue a lost sailor.",
+      "The mysterious light appears to be from a lost sailor, who has been lost at sea for years.",
+      "The lighthouse keeper must find the lost sailor's key to unlock the lost sailor's identity.",
+      "The treasure is a key to unlocking the lost sailor's identity, which could lead to the sailor's return."
+    ],
+    "characters": [
+      {
+        "id": "de15f040-a175-54c5-a06a-f9a67ae02e1b",
+        "name": "Lighthouse Keeper",
+        "appearance": "A seasoned lighthouse keeper",
+        "goal": "Follow the mysterious light to rescue a lost sailor",
+        "voice": "default"
+      },
+      {
+        "id": "10d52d68-f87e-51b3-a7ed-714d71c1e6f6",
+        "name": "Lost Sailor",
+        "appearance": "A lost sailor",
+        "goal": "Find the key to unlock the lost sailor's identity",
+        "voice": "secondary"
+      }
+    ],
+    "locations": [
+      {
+        "id": "97d367eb-304a-5dda-a52e-742ad2e4a4f1",
+        "name": "lighthouse",
+        "description": "A lighthouse with a lighthouse keeper and a mysterious light"
+      }
+    ],
+    "episodes": [
+      {
+        "number": 1,
+        "title": "The Lighthouse Keeper and the Lost Sailor",
+        "summary": "A lighthouse keeper follows a mysterious light to rescue a lost sailor, then returns home.",
+        "outcome": "The lighthouse keeper, a seasoned lighthouse keeper, follows a mysterious light to a remote lighthouse. The light appears to be from a lost sailor, who has been lost at sea for years. The keeper, determined to find the lost sailor, sets out to rescue him. Along the way, the keeper discovers a hidden treasure hidden in the lighthouse's darkened windows. The treasure is a key to unlocking the lost sailor's identity, which could lead to the sailor's return. The keeper returns home with the treasure and the lost sailor, who is now free from the lighthouse's control."
+      }
+    ]
+  },
+  "script": {
+    "number": 1,
+    "screenplay": "The Lighthouse Keeper and the Lost Sailor",
+    "shots": [
+      {
+        "id": "7c7bd89c-070c-521e-9705-47d93ba3fecf",
+        "number": 1,
+        "duration": 5.0,
+        "location_id": "97d367eb-304a-5dda-a52e-742ad2e4a4f1",
+        "character_ids": [
+          "de15f040-a175-54c5-a06a-f9a67ae02e1b",
+          "10d52d68-f87e-51b3-a7ed-714d71c1e6f6"
+        ],
+        "action": "follow",
+        "camera": "portrait",
+        "narration": "voice",
+        "speaker_id": "10d52d68-f87e-51b3-a7ed-714d71c1e6f6",
+        "transition": "cut"
+      },
+      {
+        "id": "be73c60e-f0c0-5376-9646-6294f4ea4483",
+        "number": 2,
+        "duration": 5.0,
+        "location_id": "97d367eb-304a-5dda-a52e-742ad2e4a4f1",
+        "character_ids": [
+          "de15f040-a175-54c5-a06a-f9a67ae02e1b",
+          "10d52d68-f87e-51b3-a7ed-714d71c1e6f6"
+        ],
+        "action": "return",
+        "camera": "portrait",
+        "narration": "voice",
+        "speaker_id": "10d52d68-f87e-51b3-a7ed-714d71c1e6f6",
+        "transition": "cut"
+      }
+    ]
+  },
+  "image_video": "NOT TESTED; no installed engine and no large-download approval"
+}

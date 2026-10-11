@@ -12,12 +12,12 @@ import httpx
 from pydantic import ValidationError
 
 from studio.media import ROOT
-from studio.story import OllamaStory, T
+from studio.story import OllamaStory, T, checked_post
 from studio.processes import owned_process
 
 
 @contextmanager
-def cpu_server():
+def cpu_server(check=lambda: None):
     folder = ROOT / "tools" / "story"
     executable, weights = folder / "llama-server.exe", folder / "qwen2.5-0.5b-instruct-q4_k_m.gguf"
     if not executable.exists() or not weights.exists():
@@ -56,6 +56,7 @@ def cpu_server():
         try:
             deadline = time.monotonic() + 45
             while time.monotonic() < deadline:
+                check()
                 if process.poll() is not None:
                     raise RuntimeError(
                         "MODEL_LOAD_FAILED: Check tools/story/runtime.log for CPU runtime diagnostics."
@@ -82,8 +83,9 @@ def cpu_server():
 
 
 class SmallCPUStory(OllamaStory):
-    def __init__(self):
+    def __init__(self, check=lambda: None):
         self.model = "Qwen2.5-0.5B-Instruct-Q4_K_M"
+        self.check = check
 
     def generate(self, schema: type[T], prompt: str) -> T:
         messages = [
@@ -94,13 +96,14 @@ class SmallCPUStory(OllamaStory):
             {"role": "user", "content": prompt},
         ]
         with (
-            cpu_server() as (url, process),
+            cpu_server(self.check) as (url, process),
             httpx.Client(base_url=url, timeout=180, trust_env=False) as client,
         ):
             for attempt in range(3):
-                response = client.post(
+                response = checked_post(
+                    client,
                     "/v1/chat/completions",
-                    json={
+                    {
                         "model": self.model,
                         "messages": messages,
                         "response_format": {
@@ -116,6 +119,7 @@ class SmallCPUStory(OllamaStory):
                         "stream": False,
                         "seed": 42,
                     },
+                    self.check,
                 )
                 response.raise_for_status()
                 content = response.json()["choices"][0]["message"]["content"]
@@ -124,7 +128,11 @@ class SmallCPUStory(OllamaStory):
                 except ValidationError as e:
                     if attempt == 2:
                         raise RuntimeError(
-                            "BAD_STORY: CPU model failed three structured-output attempts."
+                            "BAD_STORY: CPU model failed three structured-output attempts. "
+                            + "; ".join(
+                                f"{'.'.join(map(str, error['loc']))}: {error['msg']}"
+                                for error in e.errors(include_input=False)[:4]
+                            )
                         ) from e
                     messages.extend(
                         [

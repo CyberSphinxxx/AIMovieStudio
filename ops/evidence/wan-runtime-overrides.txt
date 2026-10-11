@@ -1,0 +1,4 @@
+# Gradio's declared <12 Pillow constraint conflicts with available security fixes.
+# Override for the isolated headless API experiment only; compatibility must be
+# demonstrated by real provider calls. This is not general vendor UI certification.
+pillow==12.3.0

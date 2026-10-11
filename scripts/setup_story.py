@@ -16,6 +16,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 MODEL_REPO = "Qwen/Qwen2.5-0.5B-Instruct-GGUF"
 MODEL_FILE = "qwen2.5-0.5b-instruct-q4_k_m.gguf"
+MODEL_REVISION = "9217f5db79a29953eb74d5343926648285ec7e67"
 
 
 def fetch_json(url):
@@ -49,7 +50,7 @@ def download(url, path, max_bytes, expected_hash=None):
 def main():
     target = ROOT / "tools" / "story"
     target.mkdir(parents=True, exist_ok=True)
-    model = fetch_json(f"https://huggingface.co/api/models/{MODEL_REPO}?blobs=true")
+    model = fetch_json(f"https://huggingface.co/api/models/{MODEL_REPO}/revision/{MODEL_REVISION}?blobs=true")
     item = next(s for s in model["siblings"] if s["rfilename"] == MODEL_FILE)
     print(f"CPU-only story smoke model: {MODEL_REPO}, Apache-2.0, {item['size']} bytes", flush=True)
     if item["size"] > 800 * 1024 * 1024:

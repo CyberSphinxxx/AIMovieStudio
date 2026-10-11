@@ -101,7 +101,7 @@ class Store:
             db.execute("BEGIN IMMEDIATE")
             prior = db.execute("SELECT * FROM projects WHERE key=?", (spec.idempotency_key,)).fetchone()
             if prior:
-                if json.loads(prior["spec"]) != spec.model_dump():
+                if ProjectInput.model_validate_json(prior["spec"]).model_dump() != spec.model_dump():
                     raise ValueError("Idempotency key already belongs to a different idea")
                 return prior["id"], False
             pid = str(uuid4())
@@ -212,7 +212,7 @@ class Store:
                     "UPDATE steps SET state='READY',error=NULL WHERE job_id=? AND state='FAILED'",
                     (row["id"],),
                 )
-                if row["state"] == "FAILED":
+                if row["state"] == "FAILED" or not json.loads(row["config"]):
                     db.execute(
                         "UPDATE jobs SET config=? WHERE id=?", (json.dumps(self.settings()), row["id"])
                     )
@@ -221,7 +221,11 @@ class Store:
                         pid,
                         row["id"],
                         "configuration_updated_for_retry",
-                        {"reason": "User requested retry with current settings"},
+                        {
+                            "reason": "User requested retry with current settings"
+                            if row["state"] == "FAILED"
+                            else "User resumed imported/legacy job with current settings"
+                        },
                     )
             db.execute("UPDATE jobs SET state=?,error=NULL WHERE id=?", (states[action], row["id"]))
             db.execute(
