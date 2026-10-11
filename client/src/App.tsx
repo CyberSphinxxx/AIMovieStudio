@@ -765,6 +765,7 @@ function Studio({ id }: { id: string }) {
                 {[
                   ...(project.plan?.characters || []),
                   ...(project.plan?.locations || []),
+                  ...(project.plan?.props || []),
                 ].map((entity) => {
                   const ref = project.assets.find(
                     (a) =>
@@ -776,7 +777,7 @@ function Studio({ id }: { id: string }) {
                       {ref ? (
                         <img
                           src={assetUrl(ref)}
-                          alt={`Demo reference for ${entity.name}`}
+                          alt={`${ref.metadata.is_mock ? "Demo" : "Local"} reference for ${entity.name}`}
                         />
                       ) : (
                         <div className="entity-empty">
@@ -790,10 +791,12 @@ function Studio({ id }: { id: string }) {
                           : entity.description}
                       </p>
                       <small>
-                        Appearance revision 1 ·{" "}
+                        Reference revision 1 ·{" "}
                         {"voice" in entity
                           ? `Voice: ${entity.voice}`
-                          : "Location reference"}
+                          : "owner_id" in entity
+                            ? `Prop owner: ${project.plan?.characters.find((c) => c.id === (project.canon.filter((e) => e.entity_id === entity.id && e.field === "prop_owner" && e.episode <= episode).at(-1)?.value ?? entity.owner_id))?.name || "Unowned"}`
+                            : "Location reference"}
                       </small>
                     </article>
                   );

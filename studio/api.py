@@ -16,7 +16,7 @@ from pydantic import Field
 from starlette.background import BackgroundTask
 
 from studio import media
-from studio.domain import CanonEvent, ProjectInput, StrictModel
+from studio.domain import CanonEvent, ProjectInput, SeasonPlan, StrictModel, validate_canon_value
 from studio.storage import Store, digest
 from studio.worker import Worker
 from studio.providers import WanGPConfig, WanGPProvider
@@ -267,9 +267,24 @@ def create_app(root: Path | None = None, run_worker=True) -> FastAPI:
         project = store.get(pid)
         if value.event.episode > project["spec"]["episodes"]:
             raise ValueError("Event episode is outside the planned season")
-        entities = {pid} | {c["id"] for c in (project["plan"] or {}).get("characters", [])}
+        entities = (
+            {pid}
+            | {c["id"] for c in (project["plan"] or {}).get("characters", [])}
+            | {p["id"] for p in (project["plan"] or {}).get("props", [])}
+        )
         if value.event.entity_id not in entities:
             raise ValueError("Canon event references an unknown character")
+        if value.event.field != "outcome":
+            if not project["plan"]:
+                raise ValueError("Create the story plan before revising canon")
+            validate_canon_value(
+                SeasonPlan.model_validate(project["plan"]),
+                value.event.entity_id,
+                value.event.field,
+                value.event.value,
+            )
+        elif value.event.entity_id != pid:
+            raise ValueError("Outcome events belong to the project")
         with store.connect() as db:
             db.execute("BEGIN IMMEDIATE")
             revision = db.execute("SELECT revision FROM projects WHERE id=?", (pid,)).fetchone()[0]

@@ -16,8 +16,10 @@ export type Character = {
   appearance: string;
   goal: string;
   voice: string;
+  initial_knowledge?: string[];
 };
 export type Place = { id: string; name: string; description: string };
+export type Prop = Place & { owner_id: string };
 export type Outline = {
   number: number;
   title: string;
@@ -34,6 +36,9 @@ export type Shot = {
   speaker_id: string;
   character_ids: string[];
   location_id: string;
+  required_props?: { prop_id: string; character_id: string }[];
+  flashback_episode?: number | null;
+  continuity_note?: string;
 };
 export type Episode = {
   id: string;
@@ -88,6 +93,7 @@ export type Project = {
     world_rules: string[];
     characters: Character[];
     locations: Place[];
+    props?: Prop[];
     episodes: Outline[];
   } | null;
   episodes: Episode[];

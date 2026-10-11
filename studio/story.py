@@ -3,12 +3,23 @@ from __future__ import annotations
 import json
 import math
 import threading
-from typing import Literal, Protocol, TypeVar
+from typing import Literal, Protocol, TypeVar, Union
 
 import httpx
 from pydantic import BaseModel, Field, ValidationError, create_model
 
-from studio.domain import Character, EpisodeOutline, EpisodeScript, Location, SeasonPlan, Shot, stable
+from studio.domain import (
+    CanonChange,
+    Character,
+    EpisodeOutline,
+    EpisodeScript,
+    KnowledgeUse,
+    Location,
+    PropUse,
+    SeasonPlan,
+    Shot,
+    stable,
+)
 
 T = TypeVar("T", bound=BaseModel)
 
@@ -149,9 +160,9 @@ class DemoStory:
         ]
         previous = [e["value"] for e in project["canon"] if e["episode"] < number and e["field"] == "outcome"]
         screenplay = (
-            f"DEMO SCREENPLAY — template writing, not AI generated.\nIdea: {project['spec']['idea']}\nEpisode {number}\nPrior canon: {'; '.join(previous) or 'The journey has not begun.'}\n\n"
+            f"DEMO SCREENPLAY â€” template writing, not AI generated.\nIdea: {project['spec']['idea']}\nEpisode {number}\nPrior canon: {'; '.join(previous) or 'The journey has not begun.'}\n\n"
             + "\n\n".join(
-                f"SCENE {s.number} — {s.camera}\n{s.action}\n{next(c.name for c in plan.characters if c.id == s.speaker_id)} (offscreen): {s.narration}"
+                f"SCENE {s.number} â€” {s.camera}\n{s.action}\n{next(c.name for c in plan.characters if c.id == s.speaker_id)} (offscreen): {s.narration}"
                 for s in shots
             )
         )
@@ -201,15 +212,16 @@ class OllamaStory:
                         raise RuntimeError(
                             "BAD_STORY: Local model returned invalid structured data after three attempts."
                         ) from error
-                    messages.extend(
-                        [
-                            {"role": "assistant", "content": content[:50000]},
-                            {
-                                "role": "user",
-                                "content": f"Repair the JSON. Validation errors: {str(error)[:2000]}",
-                            },
-                        ]
-                    )
+                    messages = messages[:2] + [
+                        {"role": "assistant", "content": content[:4000]},
+                        {
+                            "role": "user",
+                            "content": "Repair the JSON and return the complete object. "
+                            + str(
+                                [(item["loc"], item["msg"]) for item in error.errors(include_input=False)[:8]]
+                            )[:1000],
+                        },
+                    ]
         raise RuntimeError("BAD_STORY")
 
     def plan(self, project):
@@ -227,10 +239,15 @@ class OllamaStory:
             f"Plan an original finite movie/series through its definitive resolved ending. Give exactly {project['spec']['episodes']} ordered episode outlines numbered 1 onward. World rules must describe concrete facts/physics/limitations of this fictional setting, never writing advice or instructions about endings. Character/location IDs may be short unique slugs. Idea and settings: {json.dumps(project['spec'])}",
         )
         # Canonicalize once before any script or reference generation.
+        character_ids = {c.id: stable(project["id"], f"character:{c.id}") for c in plan.characters}
         for character in plan.characters:
-            character.id = stable(project["id"], f"character:{character.id}")
+            character.id = character_ids[character.id]
         for location in plan.locations:
             location.id = stable(project["id"], f"location:{location.id}")
+        for prop in plan.props:
+            prop.id = stable(project["id"], f"prop:{prop.id}")
+            if prop.owner_id:
+                prop.owner_id = character_ids[prop.owner_id]
         for index, character in enumerate(plan.characters):
             character.voice = "default" if index % 2 == 0 else "secondary"
         return plan
@@ -241,6 +258,20 @@ class OllamaStory:
         count = max(1, math.ceil(project["spec"]["target_seconds"] / 5))
         duration = project["spec"]["target_seconds"] / count
         cast_type = Literal.__getitem__(characters)
+        props = tuple(p["id"] for p in project["plan"].get("props", []))
+        knowledge_schema = create_model(
+            "PinnedKnowledgeUse", __base__=KnowledgeUse, character_id=(cast_type, ...)
+        )
+        prop_schema = (
+            create_model(
+                "PinnedPropUse",
+                __base__=PropUse,
+                prop_id=(Literal.__getitem__(props), ...),
+                character_id=(cast_type, ...),
+            )
+            if props
+            else PropUse
+        )
         shot_schema = create_model(
             "PinnedShot",
             __base__=Shot,
@@ -248,12 +279,63 @@ class OllamaStory:
             character_ids=(list[cast_type], Field(min_length=1, max_length=len(characters))),
             location_id=(Literal.__getitem__(locations), ...),
             duration=(float, Field(ge=duration, le=duration)),
+            camera=(
+                Literal[
+                    "Wide establishing shot",
+                    "Medium shot",
+                    "Close-up",
+                    "Tracking shot",
+                    "Over the shoulder",
+                    "Detail insert",
+                    "Wide, slow pullback",
+                    "Static wide shot",
+                    "Gentle pan",
+                    "Low-angle shot",
+                    "Aerial establishing shot",
+                ],
+                ...,
+            ),
+            flashback_episode=(Literal.__getitem__((None, *range(1, number))), None),
+            required_props=(list[prop_schema], Field(default_factory=list, max_length=8 if props else 0)),
+            required_knowledge=(list[knowledge_schema], Field(default_factory=list, max_length=8)),
         )
+        change_types = []
+        for field, entities, before, after in [
+            ("alive", cast_type, Literal["true", "false"], Literal["true", "false"]),
+            ("location", cast_type, Literal.__getitem__(("", *locations)), Literal.__getitem__(locations)),
+            ("knowledge", cast_type, Literal["unknown", "known"], str),
+            *(
+                [
+                    (
+                        "prop_owner",
+                        Literal.__getitem__(props),
+                        Literal.__getitem__(("", *characters)),
+                        Literal.__getitem__(("", *characters)),
+                    )
+                ]
+                if props
+                else []
+            ),
+        ]:
+            change_types.append(
+                create_model(
+                    f"Pinned{field}Change",
+                    __base__=CanonChange,
+                    field=(Literal.__getitem__((field,)), ...),
+                    entity_id=(entities, ...),
+                    before_value=(before, ...),
+                    value=(after, Field(max_length=500, min_length=3) if field == "knowledge" else ...),
+                    after_shot=(int, Field(ge=0, le=count)),
+                )
+            )
+        change_union = Union.__getitem__(tuple(change_types))
         script_schema = create_model(
             "RequestedScreenplay",
             __base__=EpisodeScript,
             number=(Literal.__getitem__((number,)), ...),
+            screenplay=(str, Field(min_length=max(80, count * 80), max_length=50000)),
             shots=(list[shot_schema], Field(min_length=count, max_length=count)),
+            proposed_changes=(list[change_union], Field(default_factory=list, max_length=48)),
         )
         previous_draft = next(
             (e.get("script") for e in project.get("episodes", []) if e["number"] == number - 1),
@@ -268,7 +350,8 @@ class OllamaStory:
         script = self.generate(
             script_schema,
             f"Write full screenplay for episode {number}, including offscreen dialogue/narration (no lip-sync claim). Exactly {count} cinematic shots, each duration {duration} seconds. Use ordered shot numbers 1 onward. Use character/location IDs EXACTLY as supplied, never names in ID fields. Keep spoken lines short enough for each shot. Fixed plan: {json.dumps(project['plan'])}. Prior canon only: {json.dumps([e for e in project['canon'] if e['episode'] < number])}. Settings: {json.dumps(project['spec'])}"
-            + draft_context,
+            + draft_context
+            + " Declare initial prop ownership and character knowledge from the fixed plan. In each shot, required_props lists prop_id/character_id for the specific actor using each prop; required_knowledge lists facts used by that character (not omniscient narrator knowledge). When facts, ownership, life or location change, provide proposed_changes with after_shot (0 means before shot 1), exact before_value, value and causal reason. Knowledge before_value is unknown/known; its value is the exact fact text. Never invent a change merely to bypass a contradiction. Flashbacks require an earlier flashback_episode and continuity_note; their state is the start of that earlier episode and cannot change present canon.",
         )
         for index, shot in enumerate(script.shots):
             shot.id = stable(project["id"], f"episode:{number}:shot:{index}")

@@ -134,10 +134,14 @@ class SmallCPUStory(OllamaStory):
                                 for error in e.errors(include_input=False)[:4]
                             )
                         ) from e
-                    messages.extend(
-                        [
-                            {"role": "assistant", "content": content[:16000]},
-                            {"role": "user", "content": f"Repair the JSON: {str(e)[:1500]}"},
-                        ]
-                    )
+                    messages = messages[:2] + [
+                        {"role": "assistant", "content": content[:4000]},
+                        {
+                            "role": "user",
+                            "content": "Repair the JSON and return the complete object. "
+                            + str([(item["loc"], item["msg"]) for item in e.errors(include_input=False)[:8]])[
+                                :1000
+                            ],
+                        },
+                    ]
         raise RuntimeError("BAD_STORY")

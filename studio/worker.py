@@ -231,7 +231,7 @@ class Worker:
             "license": "Original app-owned development fixture"
             if spec["backend"] == "demo"
             else "WanGP Community License 2.0; individual model rights reviewed by user. Credit WanGP where required.",
-            "prompt_template_version": 1,
+            "prompt_template_version": 2,
         }
         if stage == "PLAN":
             plan = provider.plan(project)
@@ -249,8 +249,20 @@ class Worker:
                 script = provider.script(project, number)
             if script.number != number:
                 raise RuntimeError("BAD_STORY: Script belongs to a different episode.")
-            validate_script(script, SeasonPlan.model_validate(project["plan"]), spec["target_seconds"])
-            conflicts = continuity_errors(script, project["canon"])
+            plan = SeasonPlan.model_validate(project["plan"])
+            validate_script(script, plan, spec["target_seconds"])
+            events = project["canon"]
+            if stage == "DRAFT":
+                # Earlier unfilmed changes are a planning simulation, never persisted canon.
+                events = [
+                    {**change, "episode": e["number"]}
+                    for e in project["episodes"]
+                    if e["number"] < number and e["status"] != "COMPLETED" and e["script"]
+                    for change in sorted(
+                        e["script"].get("proposed_changes", []), key=lambda c: c["after_shot"]
+                    )
+                ] + events
+            conflicts = continuity_errors(script, events, plan)
             if conflicts:
                 raise RuntimeError("CANON_CONFLICT: " + "; ".join(conflicts))
             return {"script": script.model_dump(), "artifacts": []}
@@ -263,17 +275,23 @@ class Worker:
             if stage == "REFERENCE":
                 entity = payload["entity"]
                 title = entity["name"]
-                prompt = entity.get("appearance", entity.get("description"))
+                prompt = spec["style"] + ". " + entity.get("appearance", entity.get("description"))
                 metadata = {"entity_id": entity["id"], "revision": 1, "prompt": prompt, "seed": 0}
             else:
                 shot = payload["shot"]
-                title, prompt = shot["camera"], shot["action"]
+                title, prompt = shot["camera"], f"{spec['style']}. {shot['camera']}. {shot['action']}"
                 refs = [
                     a
                     for a in project["assets"]
                     if a["role"] == "reference"
-                    and a["metadata"]["entity_id"] in shot["character_ids"] + [shot["location_id"]]
+                    and a["metadata"]["entity_id"]
+                    in shot["character_ids"]
+                    + [shot["location_id"]]
+                    + [p["prop_id"] for p in shot.get("required_props", [])]
                 ]
+                for reference in refs:
+                    if digest(self.store.asset_path(reference["id"])[0]) != reference["sha256"]:
+                        raise RuntimeError("BAD_OUTPUT: Entity reference checksum changed")
                 metadata = {
                     "shot_id": shot["id"],
                     "prompt": prompt,
@@ -537,7 +555,7 @@ class Worker:
                 # Speech timing is cheap to check before any GPU visual generation.
                 self.store.add_step(db, jid, ordinal, "AUDIO", {})
                 ordinal += 1
-                for entity in plan["characters"] + plan["locations"]:
+                for entity in plan["characters"] + plan["locations"] + plan.get("props", []):
                     if entity["id"] not in references:
                         self.store.add_step(db, jid, ordinal, "REFERENCE", {"entity": entity})
                         ordinal += 1
@@ -547,11 +565,47 @@ class Worker:
                         ordinal += 1
                 self.store.add_step(db, jid, ordinal, "EXPORT", {})
             elif step["stage"] == "EXPORT":
-                outline = json.loads(
-                    db.execute(
-                        "SELECT outline FROM episodes WHERE project_id=? AND number=?", (pid, step["episode"])
-                    ).fetchone()["outline"]
+                episode_row = db.execute(
+                    "SELECT outline,script FROM episodes WHERE project_id=? AND number=?",
+                    (pid, step["episode"]),
+                ).fetchone()
+                outline = json.loads(episode_row["outline"])
+                script = json.loads(episode_row["script"])
+                revision = db.execute("SELECT revision FROM projects WHERE id=?", (pid,)).fetchone()[
+                    "revision"
+                ]
+                changes = sorted(
+                    enumerate(script.get("proposed_changes", [])), key=lambda item: item[1]["after_shot"]
                 )
+                for index, change in changes:
+                    event_id = stable(pid, f"episode:{step['episode']}:change:{index}")
+                    inserted = db.execute(
+                        "INSERT OR IGNORE INTO canon VALUES(?,?,?,?,?,?,?,?)",
+                        (
+                            event_id,
+                            pid,
+                            change["entity_id"],
+                            step["episode"],
+                            change["field"],
+                            change["value"],
+                            f"After shot {change['after_shot']}: {change['reason']}",
+                            revision,
+                        ),
+                    )
+                    # Source/before-state details stay in the append-only event log and script.
+                    if inserted.rowcount:
+                        self.store.event(
+                            db,
+                            pid,
+                            jid,
+                            "canon_committed",
+                            {
+                                "event_id": event_id,
+                                "source_step_id": step["id"],
+                                "episode": step["episode"],
+                                "change": change,
+                            },
+                        )
                 db.execute(
                     "INSERT OR IGNORE INTO canon VALUES(?,?,?,?,?,?,?,?)",
                     (

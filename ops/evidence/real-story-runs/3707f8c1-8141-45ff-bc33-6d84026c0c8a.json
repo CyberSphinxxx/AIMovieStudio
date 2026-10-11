@@ -1,0 +1,111 @@
+{
+  "backend": "llama.cpp CPU",
+  "is_mock": false,
+  "model": "Qwen2.5-0.5B-Instruct-Q4_K_M",
+  "project_id": "3707f8c1-8141-45ff-bc33-6d84026c0c8a",
+  "status": "FAILED",
+  "stage": "CONTINUITY",
+  "quality_review": "Not performed. Small feasibility model; no cinematic/story-quality guarantee.",
+  "elapsed_seconds": 15.36,
+  "episode_count": 1,
+  "plan": {
+    "title": "The Last Ship",
+    "logline": "A lighthouse keeper receives a message from a ship lost at sea and chooses to rescue its last survivor.",
+    "ending": "The keeper, driven by a desire to protect the last remaining survivor, embarks on a perilous journey to find the ship, navigating through treacherous waters and facing numerous challenges along the way. As they approach the ship, the keeper is confronted by its crew, who have been trapped for years. The keeper must decide whether to risk their own life to save the ship or risk their own safety to save the crew. In the end, the keeper chooses the latter, leading to a tragic but ultimately satisfying resolution.",
+    "world_rules": [
+      "The setting is a world where ships are lost at sea, and the keeper must navigate through these dangers.",
+      "The protagonist is a lighthouse keeper, with a unique ability to communicate with ships."
+    ],
+    "characters": [
+      {
+        "id": "995a39fb-a0f7-5d5e-9271-c66f6687f304",
+        "name": "John",
+        "appearance": "A lighthouse keeper",
+        "goal": "To rescue the last remaining survivor",
+        "voice": "default",
+        "initial_knowledge": [
+          "The keeper has a unique ability to communicate with ships",
+          "The keeper has a history of being the last survivor of ships lost at sea"
+        ]
+      },
+      {
+        "id": "9c041750-435e-58a3-886e-083db7121bb4",
+        "name": "Sarah",
+        "appearance": "A lighthouse keeper",
+        "goal": "To rescue the last remaining survivor",
+        "voice": "secondary",
+        "initial_knowledge": [
+          "The keeper has a unique ability to communicate with ships",
+          "The keeper has a history of being the last survivor of ships lost at sea"
+        ]
+      }
+    ],
+    "locations": [
+      {
+        "id": "9e34994b-726b-5b55-a36d-5a14b9b5342f",
+        "name": "The lighthouse where the keeper works",
+        "description": "A lighthouse that has been lost at sea and is now in the hands of the keeper. The keeper is the only person who can communicate with the ship and navigate through the dangers of the sea."
+      },
+      {
+        "id": "165d23f9-82b5-557f-a6b3-1b61ba539387",
+        "name": "The wasteland where the ship is lost",
+        "description": "A barren wasteland where the ship was lost, with no signs of life or hope for the crew. The keeper must navigate through the harsh conditions of the wasteland to find the ship."
+      }
+    ],
+    "episodes": [
+      {
+        "number": 1,
+        "title": "The Keeper's Journey",
+        "summary": "The Keeper, driven by a desire to protect the last remaining survivor, embarks on a perilous journey to find the ship, navigating through treacherous waters and facing numerous challenges along the way. As they approach the ship, the Keeper is confronted by its crew, who have been trapped for years. The Keeper must decide whether to risk their own life to save the ship or risk their own safety to save the crew. In the end, the Keeper chooses the latter, leading to a tragic but ultimately satisfying resolution.",
+        "outcome": "The Keeper, driven by a desire to protect the last remaining survivor, chooses the latter, leading to a tragic but ultimately satisfying resolution."
+      }
+    ],
+    "props": []
+  },
+  "script": {
+    "number": 1,
+    "screenplay": "The Keeper's Journey",
+    "shots": [
+      {
+        "id": "1702f3b1-0e7e-540f-b227-b4b72ab36dcc",
+        "number": 1,
+        "duration": 5.0,
+        "location_id": "9e34994b-726b-5b55-a36d-5a14b9b5342f",
+        "character_ids": [
+          "995a39fb-a0f7-5d5e-9271-c66f6687f304"
+        ],
+        "action": "start",
+        "camera": "portrait",
+        "narration": "default",
+        "speaker_id": "9c041750-435e-58a3-886e-083db7121bb4",
+        "transition": "cut",
+        "required_props": [],
+        "required_knowledge": [],
+        "flashback_episode": 1,
+        "continuity_note": "The keeper, driven by a desire to protect the last remaining survivor, embarks on a perilous journey to find the ship, navigating through treacherous waters and facing numerous challenges along the way. As they approach the ship, the keeper is confronted by its crew, who have been trapped for years. The keeper must decide whether to risk their own life to save the ship or risk their own safety to save the crew. In the end, the keeper chooses the latter, leading to a tragic but ultimately fitting"
+      },
+      {
+        "id": "4819518f-c01a-53a7-8769-08c2b2ff466f",
+        "number": 2,
+        "duration": 5.0,
+        "location_id": "165d23f9-82b5-557f-a6b3-1b61ba539387",
+        "character_ids": [
+          "995a39fb-a0f7-5d5e-9271-c66f6687f304"
+        ],
+        "action": "start",
+        "camera": "portrait",
+        "narration": "secondary",
+        "speaker_id": "9c041750-435e-58a3-886e-083db7121bb4",
+        "transition": "cut",
+        "required_props": [],
+        "required_knowledge": [],
+        "flashback_episode": 1,
+        "continuity_note": "The keeper, driven by a desire to protect the last remaining survivor, chooses the latter, leading to a tragic but ultimately fitting resolution."
+      }
+    ],
+    "proposed_changes": []
+  },
+  "script_elapsed_seconds": 15.0,
+  "error": "Flashbacks need an earlier episode and explicit continuity explanation",
+  "total_elapsed_seconds": 30.36
+}

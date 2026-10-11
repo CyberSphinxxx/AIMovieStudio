@@ -24,3 +24,7 @@ Actual command `.venv/Scripts/python.exe -m scripts.gpu_smoke runtime` FAILED af
 Source diagnosis: Microsoft App Control troubleshooting documentation explains enforced block events3077 and correlation-signature events3089: https://learn.microsoft.com/en-us/windows/security/application-security/application-control/app-control-for-business/operations/appcontrol-debugging-and-troubleshooting (checked2026-10-12). Local event evidence is gpu-code-integrity.json. Vendor audit90 advisories remains unresolved; main-app audit0 is separate.
 
 Next GPU step requires a policy-compatible runtime within authorized scope, then API discovery, one real image plus reference-conditioned variant with manual inspection/telemetry, then image PASS before video downloads. User readiness/resource headroom remains a prerequisite. No automatic security-policy workaround.
+
+## Latest actual CPU writing review
+
+Added declared-continuity schema exposed weak model output. Run e4daeb5e was structurally valid in37.64s but manual writing review FAILED: title-only screenplay, generic physical descriptions, unsupported death and repeated references. After stricter screenplay/camera gates,781abf8b failed at8192-token context overflow. Repair history is now bounded to the latest failed response and concise errors. Latest f6b050ee still FAILED after three attempts with truncated JSON,297.547s total (plan13.437s). Evidence real-story-runs/ and current real-story-plan.json. Earlier shape-valid results are historical, not a writing quality pass. No additional model downloaded.

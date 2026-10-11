@@ -3,7 +3,7 @@ import json
 import httpx
 import pytest
 
-from studio.domain import EpisodeScript, continuity_errors, validate_script
+from studio.domain import EpisodeScript, Prop, continuity_errors, validate_script
 from studio.story import DemoStory, OllamaStory
 
 
@@ -39,6 +39,9 @@ def test_broken_references_and_duration(store, spec):
         validate_script(script, plan, spec.target_seconds)
     with pytest.raises(ValueError, match="runtime"):
         validate_script(script, plan, 30)
+    script.screenplay = "The Lighthouse Keeper's Decision"
+    with pytest.raises(ValueError, match="Incomplete screenplay"):
+        validate_script(script, plan, spec.target_seconds)
 
 
 def test_ollama_official_contract_and_repair(store, spec):
@@ -66,10 +69,57 @@ def test_ollama_invalid_json_bounded():
     calls = []
 
     def handler(request):
-        calls.append(1)
-        return httpx.Response(200, json={"message": {"content": "not json"}})
+        calls.append(json.loads(request.content))
+        return httpx.Response(200, json={"message": {"content": "not json" * 1000}})
 
     provider = OllamaStory("installed-model", transport=httpx.MockTransport(handler))
     with pytest.raises(RuntimeError, match="three attempts"):
         provider.generate(EpisodeScript, "test")
     assert len(calls) == 3
+    assert len(calls[2]["messages"]) == 4
+    assert len(calls[2]["messages"][2]["content"]) <= 4000
+    assert len(calls[2]["messages"][3]["content"]) < 1100
+
+
+def test_ollama_prop_owner_ids_are_canonicalized_with_cast(store, spec):
+    pid, _ = store.create(spec)
+    project = store.get(pid)
+    source = DemoStory().plan(project)
+    source.props = [
+        Prop(
+            id="compass",
+            name="Compass",
+            description="A silver compass with cracked glass",
+            owner_id=source.characters[0].id,
+        )
+    ]
+    provider = OllamaStory(
+        "installed-model",
+        transport=httpx.MockTransport(
+            lambda _: httpx.Response(200, json={"message": {"content": source.model_dump_json()}})
+        ),
+    )
+    plan = provider.plan(project)
+    assert plan.props[0].id != "compass"
+    assert plan.props[0].owner_id == plan.characters[0].id
+
+
+def test_local_script_schema_excludes_future_flashbacks_and_unknown_entities(store, spec):
+    pid, _ = store.create(spec)
+    project = store.get(pid)
+    project["plan"] = DemoStory().plan(project).model_dump()
+    provider = OllamaStory("installed-model")
+
+    def check_schema(schema, prompt):
+        definitions = schema.model_json_schema()["$defs"]
+        shot = definitions["PinnedShot"]["properties"]
+        assert shot["flashback_episode"]["const"] is None
+        assert shot["required_props"]["maxItems"] == 0
+        alive = definitions["PinnedaliveChange"]["properties"]
+        assert alive["entity_id"]["enum"] == [c["id"] for c in project["plan"]["characters"]]
+        assert alive["value"]["enum"] == ["true", "false"]
+        assert alive["after_shot"]["maximum"] == 1
+        return DemoStory().script(project, 1)
+
+    provider.generate = check_schema
+    provider.script(project, 1)

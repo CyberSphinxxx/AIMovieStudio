@@ -69,7 +69,7 @@ All services bind to localhost. Cross-origin browser writes and external hostnam
 ## Known incomplete work
 
 - Real GPU references/video, guided model setup and measured 6 GB inference.
-- Comprehensive canon rules for knowledge, props, costume changes and world-time flashbacks; current checks cover stable identities, prior outcomes and death contradictions.
+- Declared prop ownership, character knowledge, location/life changes and episode-start flashbacks are checked. Fine-grained world time, costumes, relationships and semantic contradictions in prose remain incomplete.
 - Editing/regeneration, version branches, custom/native HD exports, graphical backup restore and advanced quality evaluation.
 - Clean-machine packaging, dependency/license release review, full GPU OOM testing and cinematic review.
 

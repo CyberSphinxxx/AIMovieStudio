@@ -1,0 +1,148 @@
+{
+  "backend": "llama.cpp CPU",
+  "is_mock": false,
+  "model": "Qwen2.5-0.5B-Instruct-Q4_K_M",
+  "project_id": "e4daeb5e-fcf0-47aa-9402-af06fe1b5711",
+  "status": "STRUCTURED_PLAN_AND_SCRIPT_VALID",
+  "stage": "FINISHED",
+  "quality_review": {
+    "status": "FAIL",
+    "method": "manual inspection of generated text",
+    "findings": [
+      "Screenplay is only a title, not full scene writing.",
+      "Camera field used portrait rather than cinematography.",
+      "Appearance repeats personality/goal instead of physical identity.",
+      "Death event reason describes rescuing survivors rather than a death.",
+      "Repeated actor and knowledge references."
+    ],
+    "limitation": "Schema/causal checks alone cannot prove narrative quality; no cinematic quality or full writing acceptance."
+  },
+  "elapsed_seconds": 14.781,
+  "episode_count": 1,
+  "plan": {
+    "title": "The Last Ship",
+    "logline": "A lighthouse keeper receives a message from a ship lost at sea and chooses to rescue its last survivor.",
+    "ending": "The keeper, driven by a deep-seated sense of duty and a desire to protect the last remaining human, boards the ship, where he finds the ship's captain and the survivors, all lost in a storm. The keeper, with a heart of stone and a resolve to save, decides to use his knowledge of the ship's architecture and the ship's crew to guide the survivors through the storm, ultimately saving their lives.",
+    "world_rules": [
+      "The setting is a fictional lighthouse town with advanced technology and a unique ship design.",
+      "The protagonist is a lighthouse keeper with a deep-seated sense of duty and a desire to protect the last remaining human.",
+      "The story is set in a world with limited resources and a high probability of survival.",
+      "The protagonist's decision to rescue the last survivor is driven by a desire to protect the last remaining human.",
+      "The setting is characterized by advanced technology, a unique ship design, and a high probability of survival."
+    ],
+    "characters": [
+      {
+        "id": "e9e19663-fe12-5093-b3f7-d3d832c0b9a3",
+        "name": "Elijah",
+        "appearance": "A lighthouse keeper with a deep-seated sense of duty and a desire to protect the last remaining human.",
+        "goal": "A lighthouse keeper with a deep-seated sense of duty and a desire to protect the last remaining human.",
+        "voice": "default",
+        "initial_knowledge": [
+          "A lighthouse keeper with a deep-seated sense of duty and a desire to protect the last remaining human.",
+          "A lighthouse keeper with a deep-seated sense of duty and a desire to protect the last remaining human."
+        ]
+      },
+      {
+        "id": "658c2431-013b-5a2a-a516-b78fad0e0e79",
+        "name": "Rex",
+        "appearance": "A human survivor with a deep-seated sense of duty and a desire to protect the last remaining human.",
+        "goal": "A human survivor with a deep-seated sense of duty and a desire to protect the last remaining human.",
+        "voice": "secondary",
+        "initial_knowledge": [
+          "A human survivor with a deep-seated sense of duty and a desire to protect the last remaining human.",
+          "A human survivor with a deep-seated sense of duty and a desire to protect the last remaining human."
+        ]
+      }
+    ],
+    "locations": [
+      {
+        "id": "873bd04f-b7c8-5ec7-b6d8-eafddb90dc9b",
+        "name": "Lighthouse Town",
+        "description": "A lighthouse town with advanced technology and a unique ship design, where the protagonist's decision to rescue the last survivor is driven by a desire to protect the last remaining human."
+      }
+    ],
+    "episodes": [
+      {
+        "number": 1,
+        "title": "The Lighthouse Keeper's Decision",
+        "summary": "The protagonist, driven by a deep-seated sense of duty and a desire to protect the last remaining human, boards the ship and finds the ship's captain and the survivors, all lost in a storm. The protagonist, with a heart of stone and a resolve to save, decides to use his knowledge of the ship's architecture and the ship's crew to guide the survivors through the storm, ultimately saving their lives.",
+        "outcome": "The protagonist, with a heart of stone and a resolve to save, rescues the last remaining human and the survivors, ultimately saving their lives."
+      }
+    ],
+    "props": []
+  },
+  "script": {
+    "number": 1,
+    "screenplay": "The Lighthouse Keeper's Decision",
+    "shots": [
+      {
+        "id": "1cbaadea-d939-5fb8-be02-50c8060d15ae",
+        "number": 1,
+        "duration": 5.0,
+        "location_id": "873bd04f-b7c8-5ec7-b6d8-eafddb90dc9b",
+        "character_ids": [
+          "e9e19663-fe12-5093-b3f7-d3d832c0b9a3",
+          "658c2431-013b-5a2a-a516-b78fad0e0e79"
+        ],
+        "action": "boarding",
+        "camera": "portrait",
+        "narration": "fixed",
+        "speaker_id": "e9e19663-fe12-5093-b3f7-d3d832c0b9a3",
+        "transition": "cut",
+        "required_props": [],
+        "required_knowledge": [
+          {
+            "character_id": "e9e19663-fe12-5093-b3f7-d3d832c0b9a3",
+            "fact": "A lighthouse keeper with a deep-seated sense of duty and a desire to protect the last remaining human."
+          },
+          {
+            "character_id": "658c2431-013b-5a2a-a516-b78fad0e0e79",
+            "fact": "A human survivor with a deep-seated sense of duty and a desire to protect the last remaining human."
+          }
+        ],
+        "flashback_episode": null,
+        "continuity_note": ""
+      },
+      {
+        "id": "c202f931-b867-5a1c-ac92-1cdd397a0512",
+        "number": 2,
+        "duration": 5.0,
+        "location_id": "873bd04f-b7c8-5ec7-b6d8-eafddb90dc9b",
+        "character_ids": [
+          "658c2431-013b-5a2a-a516-b78fad0e0e79",
+          "658c2431-013b-5a2a-a516-b78fad0e0e79"
+        ],
+        "action": "boarding",
+        "camera": "portrait",
+        "narration": "fixed",
+        "speaker_id": "658c2431-013b-5a2a-a516-b78fad0e0e79",
+        "transition": "cut",
+        "required_props": [],
+        "required_knowledge": [
+          {
+            "character_id": "658c2431-013b-5a2a-a516-b78fad0e0e79",
+            "fact": "A human survivor with a deep-seated sense of duty and a desire to protect the last remaining human."
+          },
+          {
+            "character_id": "658c2431-013b-5a2a-a516-b78fad0e0e79",
+            "fact": "A human survivor with a deep-seated sense of duty and a desire to protect the last remaining human."
+          }
+        ],
+        "flashback_episode": null,
+        "continuity_note": ""
+      }
+    ],
+    "proposed_changes": [
+      {
+        "after_shot": 1,
+        "entity_id": "e9e19663-fe12-5093-b3f7-d3d832c0b9a3",
+        "field": "alive",
+        "before_value": "true",
+        "value": "false",
+        "reason": "The protagonist, with a heart of stone and a resolve to save, decides to use his knowledge of the ship's architecture and the ship's crew to guide the survivors through the storm, ultimately saving their lives."
+      }
+    ]
+  },
+  "script_elapsed_seconds": 22.859,
+  "total_elapsed_seconds": 37.64
+}

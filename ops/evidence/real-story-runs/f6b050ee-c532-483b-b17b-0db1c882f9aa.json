@@ -1,0 +1,84 @@
+{
+  "backend": "llama.cpp CPU",
+  "is_mock": false,
+  "model": "Qwen2.5-0.5B-Instruct-Q4_K_M",
+  "project_id": "f6b050ee-c532-483b-b17b-0db1c882f9aa",
+  "status": "FAILED",
+  "stage": "SCRIPT",
+  "quality_review": "Not performed. Small feasibility model; no cinematic/story-quality guarantee.",
+  "elapsed_seconds": 13.437,
+  "episode_count": 1,
+  "plan": {
+    "title": "The Last Ship",
+    "logline": "A lighthouse keeper receives a message from a ship lost at sea and chooses to rescue its last survivor.",
+    "ending": "The keeper, driven by a deep-seated sense of duty and a desire to protect the ship's crew, embarks on a perilous journey to find the ship's last survivor, a brave but unlikely survivor who has been lost at sea for centuries.",
+    "world_rules": [
+      "The setting is a world where ships are lost at sea, and the lighthouse keeper's role is to navigate and rescue the survivors.",
+      "Messages from the ship are conveyed through a series of cryptic messages left by the survivors in the lighthouse keeper's home, which the keeper must decipher and interpret.",
+      "The story is set in a world where the lighthouse keeper's job is to protect the ship's crew from the dangers of the sea, with the ship's captain often being a key figure in the rescue mission.",
+      "The characters include the keeper, the ship's captain, the ship's crew, and the lost ship itself, all of whom must work together to find the ship's last survivor."
+    ],
+    "characters": [
+      {
+        "id": "f0917cc7-31f8-51a0-b9bb-6b47947ed34d",
+        "name": "John",
+        "appearance": "A lighthouse keeper with a stern expression and a beard",
+        "goal": "To rescue the ship's last survivor",
+        "voice": "default",
+        "initial_knowledge": []
+      },
+      {
+        "id": "a74c11e2-d59e-5125-ad1f-874f21c05ea7",
+        "name": "Captain Smith",
+        "appearance": "A stern-faced captain with a stern expression",
+        "goal": "To find the ship's last survivor",
+        "voice": "secondary",
+        "initial_knowledge": []
+      },
+      {
+        "id": "3f244285-bdb9-5499-89c0-cea99580530e",
+        "name": "The Last Survivor",
+        "appearance": "A brave but unlikely survivor",
+        "goal": "To be rescued",
+        "voice": "default",
+        "initial_knowledge": []
+      },
+      {
+        "id": "f2818589-c08b-5a4c-a0e3-c7eea26e3bbd",
+        "name": "The Crew",
+        "appearance": "A diverse group of crew members",
+        "goal": "To work together to find the ship's last survivor",
+        "voice": "secondary",
+        "initial_knowledge": []
+      }
+    ],
+    "locations": [
+      {
+        "id": "f06f2fde-062f-5959-94c4-bbd806fdc24b",
+        "name": "The lighthouse",
+        "description": "A lighthouse with a tower and a beacon, used to navigate and rescue ships lost at sea."
+      },
+      {
+        "id": "c990b1ce-607a-53fc-91b6-c16ab9408c9d",
+        "name": "The ship",
+        "description": "A ship with a crew of survivors, lost at sea for centuries."
+      },
+      {
+        "id": "710e4eea-46c1-504b-9c37-76cfda357899",
+        "name": "The Crew",
+        "description": "A diverse group of crew members, including the Keeper, Captain, and the Last Survivor."
+      }
+    ],
+    "episodes": [
+      {
+        "number": 1,
+        "title": "The Keeper's Choice",
+        "summary": "The Keeper, driven by a deep-seated sense of duty and a desire to protect the ship's crew, embarks on a perilous journey to find the ship's last survivor.",
+        "outcome": "The Keeper chooses to rescue the ship's last survivor, a brave but unlikely survivor who has been lost at sea for centuries."
+      }
+    ],
+    "props": []
+  },
+  "error": "BAD_STORY: CPU model failed three structured-output attempts. : Invalid JSON: EOF while parsing a string at line 3 column 14309",
+  "total_elapsed_seconds": 297.547
+}

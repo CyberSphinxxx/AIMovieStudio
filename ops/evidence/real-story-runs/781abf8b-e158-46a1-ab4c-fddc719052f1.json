@@ -1,0 +1,76 @@
+{
+  "backend": "llama.cpp CPU",
+  "is_mock": false,
+  "model": "Qwen2.5-0.5B-Instruct-Q4_K_M",
+  "project_id": "781abf8b-e158-46a1-ab4c-fddc719052f1",
+  "status": "FAILED",
+  "stage": "SCRIPT",
+  "quality_review": "Not performed. Small feasibility model; no cinematic/story-quality guarantee.",
+  "elapsed_seconds": 14.703,
+  "episode_count": 1,
+  "plan": {
+    "title": "The Last Ship",
+    "logline": "A lighthouse keeper receives a message from a ship lost at sea and chooses to rescue its last survivor.",
+    "ending": "The keeper, driven by a desire to protect the last remaining survivor, embarks on a perilous journey to find the ship, navigating through treacherous waters and encountering obstacles along the way. In a climactic confrontation, the keeper must decide whether to risk the lives of the survivor and the ship's crew, or to risk the lives of the other survivors. The outcome is a heart-wrenching sacrifice, as the keeper chooses to save the last survivor at all costs.",
+    "world_rules": [
+      "The setting is a world where ships are lost at sea, and the keeper is a lighthouse keeper in a small town with limited resources and technology.",
+      "The message from the ship is crucial, providing crucial information about the ship and its location.",
+      "The keeper must make a difficult decision, one that will determine the fate of the ship and its crew.",
+      "The outcome of the decision will be a pivotal moment in the story, leading to a resolution that will have a lasting impact on the characters and the plot."
+    ],
+    "characters": [
+      {
+        "id": "23ffcbd8-1b4d-5876-a0ae-c7c5e7f35b5c",
+        "name": "The Keeper",
+        "appearance": "A lighthouse keeper in a small town with limited resources and technology.",
+        "goal": "To save the last remaining survivor of the ship lost at sea.",
+        "voice": "default",
+        "initial_knowledge": []
+      },
+      {
+        "id": "9b71addb-a2bc-5a71-98bc-df6c8a187ed0",
+        "name": "The Ship's Captain",
+        "appearance": "A seasoned ship captain with extensive experience in maritime rescue operations.",
+        "goal": "To find the last remaining survivor of the ship lost at sea.",
+        "voice": "secondary",
+        "initial_knowledge": []
+      },
+      {
+        "id": "3278b511-ac32-59ad-a9b3-590c969bf71f",
+        "name": "The Survivor",
+        "appearance": "A young woman who has lost her family and is determined to find her way back to her family.",
+        "goal": "To find her way back to her family.",
+        "voice": "default",
+        "initial_knowledge": []
+      }
+    ],
+    "locations": [
+      {
+        "id": "aa16ef80-327b-5a4b-b511-4ba2680f4f8a",
+        "name": "A small town with limited resources and technology",
+        "description": "The harbor is a vital location for the keeper and the ship, with limited resources and technology."
+      },
+      {
+        "id": "4622ae56-71b4-5151-a372-4e75ff0a1ce3",
+        "name": "A dense forest with limited resources and technology",
+        "description": "The woods are a crucial location for the keeper and the ship, with limited resources and technology."
+      },
+      {
+        "id": "912e9134-f53b-5e30-bc89-1bfe8039245a",
+        "name": "A large body of water with limited resources and technology",
+        "description": "The sea is a crucial location for the keeper and the ship, with limited resources and technology."
+      }
+    ],
+    "episodes": [
+      {
+        "number": 1,
+        "title": "The Harbor",
+        "summary": "The Keeper and the ship find themselves in the harbor, navigating through treacherous waters and encountering obstacles along the way. In a climactic confrontation, the Keeper must decide whether to risk the lives of the survivor and the ship's crew, or to risk the lives of the other survivors. The outcome is a heart-wrenching sacrifice, as the Keeper chooses to save the last survivor at all costs.",
+        "outcome": "The Keeper chooses to save the last survivor at all costs, risking the lives of the other survivors. The Keeper's decision leads to a resolution that will have a lasting impact on the characters and the plot."
+      }
+    ],
+    "props": []
+  },
+  "error": "Client error '400 Bad Request' for url 'http://127.0.0.1:54121/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/400",
+  "total_elapsed_seconds": 222.578
+}

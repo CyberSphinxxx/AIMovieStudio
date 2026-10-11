@@ -1,0 +1,60 @@
+All checks passed!
+..............................................................           [100%]
+============================== warnings summary ===============================
+.venv\Lib\site-packages\fastapi\testclient.py:1
+  C:\L3mxr\Github Repositories\AIMovieStudio\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+62 passed, 1 warning in 75.87s (0:01:15)
+No known vulnerabilities found
+
+> ai-movie-studio-client@0.1.0 lint
+> eslint .
+
+
+> ai-movie-studio-client@0.1.0 build
+> tsc --noEmit && vite build
+
+vite v7.3.7 building client environment for production...
+transforming...
+✓ 1743 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                   0.55 kB │ gzip:  0.34 kB
+dist/assets/index-1MQ00OJq.css   20.83 kB │ gzip:  5.22 kB
+dist/assets/index-C2_fGoTS.js   228.88 kB │ gzip: 72.09 kB
+✓ built in 2.18s
+
+> ai-movie-studio-client@0.1.0 test
+> vitest run
+
+
+ RUN  v4.1.11 C:/L3mxr/Github Repositories/AIMovieStudio/client
+
+
+ Test Files  1 passed (1)
+      Tests  2 passed (2)
+   Start at  03:56:23
+   Duration  314ms (transform 44ms, setup 0ms, import 65ms, tests 5ms, environment 0ms)
+
+found 0 vulnerabilities
+
+> ai-movie-studio-client@0.1.0 test:e2e
+> playwright test
+
+
+Running 5 tests using 1 worker
+
+(node:28164) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:28164) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 e2e\studio.spec.ts:4:1 › home is usable at target viewports and keyboard focus is visible (2.2s)
+  ok 2 e2e\studio.spec.ts:45:1 › one idea to playable demo MP4, persisted story, shots, and downloads (9.6s)
+  ok 3 e2e\studio.spec.ts:130:1 › real request fails honestly and settings are actionable (4.9s)
+  ok 4 e2e\studio.spec.ts:161:1 › season prewriting is saved and studio backup is downloadable (12.5s)
+  ok 5 e2e\studio.spec.ts:224:1 › settings cannot overwrite saved configuration while it is loading (3.3s)
+
+  5 passed (34.5s)
+All requested checks passed.
