@@ -56,6 +56,9 @@ export type Asset = {
     height?: number;
     duration?: number;
     dialogue_present?: boolean;
+    speaker_id?: string;
+    shot_number?: number;
+    tempo?: number;
   };
 };
 export type Step = {

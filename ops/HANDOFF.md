@@ -1,10 +1,10 @@
-# Handoff — 2026-10-12
+# Handoff â€” 2026-10-12
 
-Status: ACTIVE DEVELOPMENT; full application unfinished. Original blueprint preserved. Latest coherent checkpoint described in Git log (parent c05ee35, branch main). Main app runs at127.0.0.1:8765 with current backend. No remote changes.
+Status: ACTIVE DEVELOPMENT; full application unfinished. Original blueprint preserved. Latest recorded checkpoint4327fa3; the next speech/restart checkpoint follows it on main (read Git log). Main app runs at127.0.0.1:8765 with current backend. No remote changes.
 
 Environment: Windows11 Home, RTX3060Laptop6144MiB, driver610.88,16GB RAM. Main .venv Python3.12.14; isolated tools/gpu/python Python3.11.14 and tools/wan-gp/.venv Torch2.10.0+cu130. Node24.19/npm11.17. App-owned FFmpeg and tinyCPU Qwen0.5B/llama.cpp. No global driver/Python/security changes.
 
-Verified:43 backend tests(40.12s),2 Vitest,5 Edge flows(30.1s),Ruff/lint/TypeScript/build PASS, main Python/npm audit0. First latest browser run failed ambiguous Series locator; fixed exact name and reran all5 PASS. Tests include hard process termination/hash reuse, active pause/cancel/SSE, ten-episode screenplay checkpoint recovery, backup hostile/corrupt/no-overwrite restore and actual resumed MP4, resource preflight and download budget/resume. See full-verification.json/browser-tests.json. Settings screenshot loaded and inspected.
+Verified:53 backend tests(60.46s),2 Vitest,5 Edge flows(32.1s),Ruff/lint/TypeScript/build PASS, main Python/npm audit0. First latest browser run failed ambiguous Series locator; fixed exact name and reran all5 PASS. Tests include hard process termination/hash reuse, active pause/cancel/SSE, ten-episode screenplay checkpoint recovery, backup hostile/corrupt/no-overwrite restore and actual resumed MP4, resource preflight and download budget/resume. See full-verification.json/browser-tests.json. Settings screenshot loaded and inspected.
 
 Working commands:
 ```powershell
@@ -20,7 +20,7 @@ GPU blocker: Actual API smoke FAILED44.0s before inference. WinError4551 and Cod
 
 CPU story: Direct plan19.422s+script23.281s; worker checkpoints31.078s first/89.656s latest, then missing-provider/license in isolated fixture. One intervening attempt exhausted3 JSON repairs(project b43e1969-addb-4fa6-af87-39b4e95ceeff). Tiny model weak/unreliable; no high-quality real season claim.
 
-Next exact task: F6.01 restrict excessive speech speed-up and move CPU audio validation before expensive references/clips. Add actual Windows overflowing-line regression; preserve raw voice and fail clearly, never cut dialogue to fake success. Then continue F2.04 richer canon or F6.05 export variants. GPU branch requires policy-compatible runtime within approval; no security workaround or video download before reviewed image PASS.
+Completed F6.01 slice:1.15x tempo cap, actual overflow failure before visuals, hashed downloadable source WAVs in backups. Actual restart race SQLITE_IOERR_TRUNCATE repaired with bounded Windows-only fresh-connection initialization retries;3 hardkills passed,2 triggered real retries. Next exact task: F2.04 richer declared prop ownership/character knowledge and before-state validation; current checks remain limited. GPU branch requires policy-compatible runtime within approval; no security workaround or video download before reviewed image PASS.
 
 Main files: studio/{domain,story,storage,worker,backup,media,providers,vendor_bridge,vendor_telemetry,diagnostics,api}.py; scripts/{backup,gpu_smoke,setup_gpu,prepare_gpu_runtime}.py; client/src/App.tsx; tests/. Backups strip executable settings; imported paused jobs freeze current reviewed settings on first resume.
 

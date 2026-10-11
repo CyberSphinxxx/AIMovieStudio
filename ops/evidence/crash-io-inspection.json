@@ -1,0 +1,30 @@
+{
+  "path": "C:\\Users\\USER-PC\\AppData\\Local\\Temp\\pytest-of-USER-PC\\pytest-20\\test_hard_kill_mid_ten_shots_p0\\content with spaces",
+  "exists": true,
+  "files": [
+    {
+      "name": "studio.sqlite3",
+      "bytes": 167936
+    },
+    {
+      "name": "studio.sqlite3-shm",
+      "bytes": 32768
+    },
+    {
+      "name": "studio.sqlite3-wal",
+      "bytes": 37112
+    }
+  ],
+  "integrity_check": [
+    [
+      "ok"
+    ]
+  ],
+  "jobs": [
+    [
+      "75e1e68a-143e-4f58-a3cc-9165ccf30236",
+      "RUNNING",
+      null
+    ]
+  ]
+}

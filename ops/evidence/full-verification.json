@@ -1,8 +1,8 @@
 {
   "date": "2026-10-12",
   "backend": {
-    "passed": 43,
-    "seconds": 40.12,
+    "passed": 53,
+    "seconds": 60.46,
     "warning": "Starlette TestClient httpx deprecation"
   },
   "frontend": {
@@ -10,7 +10,7 @@
     "lint": "PASS",
     "typescript_and_build": "PASS",
     "edge_passed": 5,
-    "edge_seconds": 30.1
+    "edge_seconds": 32.1
   },
   "main_audits": {
     "python_known_advisories": 0,
@@ -22,6 +22,7 @@
   },
   "notes": [
     "Initial browser run failed an ambiguous Series locator after saved project cards existed; exact accessible name fixed, all 5 Edge tests then passed.",
-    "GPU runtime FAILED before inference: OS application-control policy blocked torch_cuda.dll. No actual GPU image/video proof."
+    "GPU runtime FAILED before inference: OS application-control policy blocked torch_cuda.dll. No actual GPU image/video proof.",
+    "New speech/stem suite initially uncovered Windows SQLITE_IOERR_TRUNCATE; narrow startup repair verified3 actual hardkills (2 exercised real retry), then updated full53/2/5 suite passed."
   ]
 }

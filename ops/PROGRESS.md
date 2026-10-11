@@ -43,3 +43,12 @@ Real GPU images/video, OOM recovery/downshift, full prop/knowledge/world-time ca
 - Visual Settings review found initial form editable before saved configuration loaded. Fixed disabled loading/error state and added a gated browser request regression. Latest full regression running; do not infer its outcome from earlier checks.
 
 Final updated verification: Ruff PASS;43 backend tests passed in40.12s;2 Vitest passed; ESLint/TypeScript/Vite build PASS; main Python/npm audit0. First browser run4pass/1fail due ambiguous Series locator matching existing project card. Fixed exact accessible name; rerun5 Edge tests passed in30.1s. Settings screenshot now waits for loaded data; manual visual review performed. Evidence full-verification.json and browser-tests.json.
+
+
+## Dialogue quality, source stems and Windows restart repair
+
+Speech now runs before visual stages for new jobs. Measured lines exceeding1.15x tempo fail DIALOGUE_TOO_LONG without trimmed/raced dialogue. Actual Windows overflowing-line regression preserved raw WAV and generated no visuals; short speech/subtitles passed. Original voice, scene track and ambience WAVs are immutable hashed assets with soundtrack parent lineage, portable-backup tests (including silent first shot/voice2 identity), and optional Export downloads. Existing jobs retain persisted step order.
+
+First audio regression46 passed; then latest full run46pass/1fail uncovered immediate post-hardkill SQLite disk I/O error. Added extended error diagnostics and3 repeated actual kills:2pass/1fail, identified SQLITE_IOERR_TRUNCATE1546. Failed DB integrity_check=ok. Narrow Windows startup retry uses fresh connections for this code only (3 total attempts,100/200ms), never deletes WAL or retries corruption/write failure. After repair7 tests passed21.87s, including3 actual hard kills;2 actually encountered the truncate error and recovered on retry. Evidence crash-io-inspection.json/crash-truncate-recovery.json. Full updated regression running; do not present earlier passes as its result.
+
+Final speech/restart verify.ps1 -Browser PASS:53 backend60.46s,2 Vitest,5 Edge32.1s; Ruff/ESLint/TypeScript/build and main Python/npm audits0. Browser fetched real RIFF WAV stem. No new GPU inference proof.

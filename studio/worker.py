@@ -352,15 +352,54 @@ class Worker:
             enabled = settings["speech"] == "windows"
             timeline = media.soundtrack(script, project["plan"], path, directory, enabled, check)
             metadata = {
-                "provider": "windows-speech+synthetic-ambience" if enabled else "synthetic-ambience",
+                "provider": "windows-speech+synthetic-ambience" if timeline else "synthetic-ambience",
                 "is_mock": False,
-                "dialogue_present": enabled,
+                "dialogue_present": bool(timeline),
                 "music": "none",
                 "license": "Installed Windows speech; original synthetic ambience. Voice redistribution rights require review before distribution.",
                 "timeline": timeline,
                 "duration": spec["target_seconds"],
             }
-            return {"artifacts": [self.artifact(step, "soundtrack", path, metadata)]}
+            stems = [
+                self.artifact(
+                    step,
+                    role,
+                    directory / filename,
+                    {
+                        "provider": "windows-speech" if role.startswith("voice-") else "studio-audio",
+                        "is_mock": False,
+                        "audio_kind": role,
+                        "license": metadata["license"],
+                        **timing,
+                    },
+                )
+                for role, filename, timing in [
+                    (
+                        "dialogue",
+                        "dialogue.wav",
+                        {"duration": spec["target_seconds"], "dialogue_present": bool(timeline)},
+                    ),
+                    ("ambience", "ambience.wav", {"duration": spec["target_seconds"]}),
+                    *[
+                        (
+                            f"voice-{t['shot_number']}",
+                            t["raw_voice_file"],
+                            {
+                                "speaker_id": t["speaker_id"],
+                                "shot_number": t["shot_number"],
+                                "text": t["text"],
+                                "duration": t["raw_duration"],
+                                "tempo": t["tempo"],
+                            },
+                        )
+                        for t in timeline
+                    ],
+                ]
+            ]
+            metadata.update(
+                parent_asset_ids=[a["id"] for a in stems], parent_hashes=[a["sha256"] for a in stems]
+            )
+            return {"artifacts": [*stems, self.artifact(step, "soundtrack", path, metadata)]}
         if stage == "EXPORT":
             clips = sorted(
                 [
@@ -495,6 +534,9 @@ class Worker:
                     )
                 }
                 ordinal = step["ordinal"] + 1
+                # Speech timing is cheap to check before any GPU visual generation.
+                self.store.add_step(db, jid, ordinal, "AUDIO", {})
+                ordinal += 1
                 for entity in plan["characters"] + plan["locations"]:
                     if entity["id"] not in references:
                         self.store.add_step(db, jid, ordinal, "REFERENCE", {"entity": entity})
@@ -503,8 +545,7 @@ class Worker:
                     for stage in ("FRAME", "CLIP"):
                         self.store.add_step(db, jid, ordinal, stage, {"shot": shot})
                         ordinal += 1
-                self.store.add_step(db, jid, ordinal, "AUDIO", {})
-                self.store.add_step(db, jid, ordinal + 1, "EXPORT", {})
+                self.store.add_step(db, jid, ordinal, "EXPORT", {})
             elif step["stage"] == "EXPORT":
                 outline = json.loads(
                     db.execute(

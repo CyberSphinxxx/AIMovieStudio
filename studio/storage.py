@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import logging
 import os
 import sqlite3
 import time
@@ -35,6 +36,32 @@ class Store:
         self.root = root.resolve()
         self.root.mkdir(parents=True, exist_ok=True)
         self.database = self.root / "studio.sqlite3"
+        self.initialization_retries = 0
+        for attempt in range(3):
+            try:
+                self.migrate()
+                break
+            except sqlite3.Error as error:
+                # A killed Windows process can briefly retain a WAL file handle.
+                # Retry only the observed truncate error, using a fresh connection.
+                # Never delete/replace WAL files or retry corruption/write failures.
+                if (
+                    os.name == "nt"
+                    and error.sqlite_errorcode == sqlite3.SQLITE_IOERR_TRUNCATE
+                    and attempt < 2
+                ):
+                    self.initialization_retries += 1
+                    logging.getLogger(__name__).warning(
+                        "Retrying SQLite startup file truncation (%s), attempt %s",
+                        error.sqlite_errorname,
+                        attempt + 1,
+                    )
+                    time.sleep(0.1 * (attempt + 1))
+                    continue
+                error.add_note(f"SQLite initialization: {error.sqlite_errorname} ({error.sqlite_errorcode})")
+                raise
+
+    def migrate(self):
         with self.connect() as db:
             db.executescript("""
                 PRAGMA journal_mode=WAL;

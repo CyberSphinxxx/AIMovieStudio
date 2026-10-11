@@ -26,3 +26,5 @@ All model weights, LoRAs, voices and media need separate rights/provenance. No t
 - Gyan FFmpeg9.0.2 official GitHub release mirror: https://github.com/GyanD/codexffmpeg/releases/tag/9.0.2 . Same114,768,076byte archive/SHA as selected direct source; app-local ffplay required by vendor offline init.
 - Microsoft enforced-policy block diagnosis: https://learn.microsoft.com/en-us/windows/security/application-security/application-control/app-control-for-business/operations/appcontrol-debugging-and-troubleshooting . Local event3077 identifies torch_cuda.dll. Read-only diagnosis; no OS changes.
 - Runtime security audit uses pinned lock and pip-audit advisory service. Audit JSON retained verbatim. Main app0known advisories; vendor90 unresolved. No compatibility claim for major package upgrades or experimental Pillow override.
+
+- SQLite error codes: https://www.sqlite.org/rescode.html#ioerr_truncate (checked2026-10-12). Extended TRUNCATE code1546 observed locally immediately after Windows hardkill. Specific file-handle race is an inference; retry outcome measured, no data-file cleanup.

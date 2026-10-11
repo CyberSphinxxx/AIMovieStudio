@@ -963,6 +963,41 @@ function Studio({ id }: { id: string }) {
                     </a>
                   ))}
               </div>
+              {movie && (
+                <details className="provider-config">
+                  <summary>Audio stems for editing</summary>
+                  <p className="muted">
+                    Saved WAV sources, including untrimmed spoken lines when
+                    dialogue is enabled.
+                  </p>
+                  <div className="download-list">
+                    {project.assets
+                      .filter(
+                        (a) =>
+                          a.metadata.episode === episode &&
+                          (["dialogue", "ambience", "soundtrack"].includes(
+                            a.role,
+                          ) ||
+                            a.role.startsWith("voice-")),
+                      )
+                      .map((a) => (
+                        <a key={a.id} href={assetUrl(a, true)}>
+                          <Download size={16} />
+                          {a.role.startsWith("voice-")
+                            ? `Shot ${a.metadata.shot_number} · ${project.plan?.characters.find((c) => c.id === a.metadata.speaker_id)?.name || "Voice"} · original voice`
+                            : {
+                                dialogue: a.metadata.dialogue_present
+                                  ? "Dialogue track"
+                                  : "Scene atmosphere",
+                                ambience: "Original ambience",
+                                soundtrack: "Mixed soundtrack",
+                              }[a.role]}
+                          {" · WAV"}
+                        </a>
+                      ))}
+                  </div>
+                </details>
+              )}
             </>
           )}
         </section>

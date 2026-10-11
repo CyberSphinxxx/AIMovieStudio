@@ -1,0 +1,19 @@
+{
+  "date": "2026-10-12",
+  "sqlite_version": "3.53.1",
+  "failure": "SQLITE_IOERR_TRUNCATE (1546) immediately after Windows hard process termination",
+  "before_fix_repetition": {
+    "passed": 2,
+    "failed": 1
+  },
+  "database_integrity_after_failure": "ok",
+  "fix": "Windows-only startup retry for extended TRUNCATE error, 3 total attempts, fresh connections, 100/200ms delays; no WAL deletion or corruption/write retry",
+  "after_fix": {
+    "tests_passed": 7,
+    "seconds": 21.87,
+    "actual_hard_kills": 3,
+    "real_truncate_errors_recovered": 2
+  },
+  "source": "https://www.sqlite.org/rescode.html#ioerr_truncate",
+  "limitation": "Observed local restart recovery; not general disk failure mitigation."
+}

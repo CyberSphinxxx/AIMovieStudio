@@ -18,6 +18,7 @@ from studio.processes import owned_process
 
 ROOT = Path(__file__).resolve().parents[1]
 SIZES = {"portrait": (360, 640), "landscape": (640, 360), "square": (480, 480)}
+MAX_SPEECH_TEMPO = 1.15
 
 
 class Interrupted(Exception):
@@ -240,14 +241,15 @@ def soundtrack(script: dict, plan: dict, output: Path, directory: Path, enabled:
             length = speech(narration, voice, raw, check)
             available = max(0.5, shot["duration"] - 0.25)
             speed = max(1.0, length / available)
-            # Multiple legal atempo factors instead of clipping dialogue.
-            factors = []
-            while speed > 2:
-                factors.append("atempo=2")
-                speed /= 2
-            factors.append(f"atempo={speed:.6f}")
+            if speed > MAX_SPEECH_TEMPO:
+                raise RuntimeError(
+                    f"DIALOGUE_TOO_LONG: Shot {shot['number']} needs {length:.2f}s of speech "
+                    f"but has {available:.2f}s available. Maximum tempo correction is 1.15x. "
+                    "Create a project with a longer runtime and shorter lines, or select "
+                    "ambience-only in Settings and retry to omit spoken dialogue. Raw voice is preserved."
+                )
             normalized_length = min(length, available)
-            filters = ",".join(factors + ["apad", f"atrim=duration={shot['duration']}"])
+            filters = f"atempo={speed:.6f},apad,atrim=duration={shot['duration']}"
             run(
                 [
                     binary("ffmpeg"),
@@ -272,6 +274,10 @@ def soundtrack(script: dict, plan: dict, output: Path, directory: Path, enabled:
                     "end": start + normalized_length,
                     "text": narration,
                     "speaker_id": shot["speaker_id"],
+                    "shot_number": shot["number"],
+                    "raw_duration": length,
+                    "tempo": speed,
+                    "raw_voice_file": raw.name,
                 }
             )
         else:

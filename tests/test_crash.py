@@ -2,6 +2,7 @@ import os
 import subprocess
 import sys
 import time
+import pytest
 
 from studio.storage import Store
 
@@ -16,7 +17,8 @@ def await_condition(check, timeout=60):
     raise AssertionError("Timed out waiting for worker state")
 
 
-def test_hard_kill_mid_ten_shots_preserves_committed_hashes(store, spec):
+@pytest.mark.parametrize("repetition", range(3))
+def test_hard_kill_mid_ten_shots_preserves_committed_hashes(store, spec, repetition):
     spec.kind, spec.target_seconds = "drama", 50
     pid, _ = store.create(spec)
     with store.connect() as db:

@@ -101,6 +101,14 @@ test("one idea to playable demo MP4, persisted story, shots, and downloads", asy
   );
   expect(response.status()).toBe(200);
   expect(response.headers()["content-type"]).toBe("video/mp4");
+  await page.getByText("Audio stems for editing", { exact: true }).click();
+  const stem = page.getByRole("link", {
+    name: "Original ambience · WAV",
+    exact: true,
+  });
+  const audio = await request.get((await stem.getAttribute("href"))!);
+  expect(audio.headers()["content-type"]).toBe("audio/wav");
+  expect((await audio.body()).subarray(0, 4).toString()).toBe("RIFF");
   await page.reload();
   await expect(page.getByLabel("Movie preview")).toBeVisible();
   await page.setViewportSize({ width: 390, height: 844 });

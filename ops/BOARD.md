@@ -1,4 +1,4 @@
-# Active backlog — 2026-10-12
+# Active backlog â€” 2026-10-12
 
 Do not interpret partial task evidence as full phase acceptance. See PROGRESS and HANDOFF.
 
@@ -34,7 +34,7 @@ Do not interpret partial task evidence as full phase acceptance. See PROGRESS an
 | F5.03 | TODO | Sequential real shots and inspection |
 | F5.04 | TODO | Validated model-dependent OOM downshift |
 | F5.05 | DEFERRED | FramePack >30 GB; first WanGP gate before fallback |
-| F6.01 | IN_PROGRESS | Actual SAPI speech, duration fitting/SRT and embedded subtitles tested; comprehensive voice QA open |
+| F6.01 | IN_PROGRESS | Actual SAPI, <=1.15x correction, overflow fails before visuals, hashed WAV stems/SRT/backups tested; broad voice QA open |
 | F6.02 | IN_PROGRESS | Original synthetic ambience, no music; managed SFX library open |
 | F6.03 | DONE_VERIFIED | Aspect-correct draft demo EDL/concat/shot fades |
 | F6.04 | DONE_VERIFIED | Atomic H264/AAC export + FFprobe/full decode/hash |
@@ -51,4 +51,4 @@ Do not interpret partial task evidence as full phase acceptance. See PROGRESS an
 | F8.05 | IN_PROGRESS | Main npm/Python audit0; hostile backups/download budgets tested; vendor90 advisories unresolved |
 | F8.06 | IN_PROGRESS | Screenshots/evidence/run docs; release still blocked by listed gates |
 
-Next unblocked: complete current full regression and checkpoint prewrite/backup/resource/install changes; improve F6.01 dialogue timing without arbitrary speed-up. GPU installation is approved only within the pinned private scope; runtime inference remains OS-blocked. No security changes, cloud or paid action authorized.
+Next unblocked: F2.04 typed prop ownership/character knowledge and before-state continuity across episodes. Speech/restart checkpoint verified53 backend/2 frontend/5 Edge. GPU installation is approved only within the pinned private scope; runtime inference remains OS-blocked. No security changes, cloud or paid action authorized.
