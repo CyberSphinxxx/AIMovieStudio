@@ -1,0 +1,10 @@
+{
+  "command": "python -m pytest tests/test_story_review.py tests/test_controls.py tests/test_backup.py tests/test_crash.py -q",
+  "outcome": "14 passed,1 failed",
+  "seconds": 44.43,
+  "failed_test": "test_hard_kill_mid_ten_shots_preserves_committed_hashes[1]",
+  "exception": "sqlite3.OperationalError: disk I/O error on first SELECT in Store.get after process restart",
+  "extended_code": "NOT_CAPTURED on this original failure; connection error notes now added",
+  "preserved_database_integrity": "ok",
+  "repro_followup": "3 actual kills passed26.55s; full run3 kills passed; second3 kills passed29.84s. Error not reproduced; no repair claim."
+}

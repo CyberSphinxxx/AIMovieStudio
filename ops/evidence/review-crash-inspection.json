@@ -1,0 +1,32 @@
+[
+  {
+    "database": "C:\\Users\\USER-PC\\AppData\\Local\\Temp\\pytest-of-USER-PC\\pytest-53\\test_hard_kill_mid_ten_shots_p0\\content with spaces\\studio.sqlite3",
+    "integrity": "ok",
+    "states": [
+      [
+        "COMPLETED"
+      ]
+    ],
+    "sqlite": "3.53.1"
+  },
+  {
+    "database": "C:\\Users\\USER-PC\\AppData\\Local\\Temp\\pytest-of-USER-PC\\pytest-53\\test_hard_kill_mid_ten_shots_p1\\content with spaces\\studio.sqlite3",
+    "integrity": "ok",
+    "states": [
+      [
+        "FRAME"
+      ]
+    ],
+    "sqlite": "3.53.1"
+  },
+  {
+    "database": "C:\\Users\\USER-PC\\AppData\\Local\\Temp\\pytest-of-USER-PC\\pytest-53\\test_hard_kill_mid_ten_shots_p2\\content with spaces\\studio.sqlite3",
+    "integrity": "ok",
+    "states": [
+      [
+        "COMPLETED"
+      ]
+    ],
+    "sqlite": "3.53.1"
+  }
+]

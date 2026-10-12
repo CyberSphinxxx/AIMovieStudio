@@ -180,6 +180,7 @@ function Home() {
   const [episodes, setEpisodes] = useState(6);
   const [backend, setBackend] = useState<Spec["backend"]>("demo");
   const [prewrite, setPrewrite] = useState(false);
+  const [reviewStory, setReviewStory] = useState(false);
   const [advanced, setAdvanced] = useState(false);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
@@ -204,6 +205,7 @@ function Home() {
       episodes,
       backend,
       prewrite,
+      reviewStory,
     });
     if (signature !== submittedSpec.current) {
       key.current = crypto.randomUUID();
@@ -220,6 +222,7 @@ function Home() {
           episodes,
           backend,
           prewrite_season: kind === "series" && prewrite,
+          review_story: reviewStory,
           style: "Cinematic realism",
           language: "English",
           idempotency_key: key.current,
@@ -394,6 +397,10 @@ function Home() {
                 Prewrite every episode before making footage
               </label>
             )}
+            <label className="check-label">
+              <input type="checkbox" checked={reviewStory} onChange={(e) => setReviewStory(e.target.checked)} />
+              Review the screenplay before making footage
+            </label>
             <p>
               English · cinematic style · 24 fps draft export. Real local
               creation saves your story and reports missing providers; it never
@@ -582,8 +589,9 @@ function Studio({ id }: { id: string }) {
   const frame = project.assets.find(
     (a) => a.role === "keyframe" && a.metadata.episode === episode,
   );
-  const done = job?.steps.filter((s) => s.state === "SUCCEEDED").length || 0;
-  const count = job?.steps.length || 1;
+  const currentSteps = job?.steps.filter((s) => s.state !== "SUPERSEDED") || [];
+  const done = currentSteps.filter((s) => s.state === "SUCCEEDED").length;
+  const count = currentSteps.length || 1;
   const running = job?.state === "RUNNING" || job?.state === "QUEUED";
   const active = job?.steps.find((s) => s.state === "RUNNING");
   const episodeState = ep?.status === "REVIEW_REQUIRED" ? ep.status : job?.state || ep?.status || project.status;
@@ -738,7 +746,7 @@ function Studio({ id }: { id: string }) {
                     {ep?.script?.screenplay ||
                       "The screenplay will appear when this episode is prepared."}
                   </pre>
-                  {ep?.script && project.spec.kind === "series" && (
+                  {ep?.script && (
                     <DraftEditor key={`${id}:${episode}`} project={project} episode={ep} onSaved={reload} />
                   )}
                   <h3>Saved continuity</h3>
@@ -1023,7 +1031,9 @@ function Studio({ id }: { id: string }) {
               : movie
                 ? "Your draft passed media validation."
                 : job?.state === "PAUSED"
-                  ? "Saved progress. Resume when you’re ready."
+                  ? ep?.can_edit_draft
+                    ? "Your screenplay is saved. Review it in Story, then resume to make footage."
+                    : "Saved progress. Resume when you’re ready."
                   : job?.state === "FAILED"
                     ? "Your completed work is safe."
                     : job?.state === "CANCELLED"
@@ -1055,7 +1065,7 @@ function Studio({ id }: { id: string }) {
               "EXPORT",
             ].map((stage) => {
               const steps =
-                job?.steps.filter(
+                currentSteps.filter(
                   (s) =>
                     s.stage === stage ||
                     (stage === "SCRIPT" &&
@@ -1084,6 +1094,9 @@ function Studio({ id }: { id: string }) {
             })}
           </ol>
           <div className="production-actions">
+            {ep?.can_edit_draft && ["PAUSED", "FAILED"].includes(job?.state || "") && (
+              <button className="secondary" onClick={() => setTab("Story")}>Review or edit screenplay</button>
+            )}
             {running && (
               <>
                 <button

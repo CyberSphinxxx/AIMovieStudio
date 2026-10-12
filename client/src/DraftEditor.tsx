@@ -24,10 +24,7 @@ export function DraftEditor({ project, episode, onSaved }: {
       setHistoryError(failure instanceof Error ? failure.message : "History could not be loaded");
     }
   }
-  const canEdit =
-    !!episode.script &&
-    ["DRAFTED", "REVIEW_REQUIRED"].includes(episode.status) &&
-    !project.jobs.some((j) => j.episode === episode.number || ["QUEUED", "RUNNING", "PAUSED"].includes(j.state));
+  const canEdit = !!episode.can_edit_draft;
 
   function begin() {
     original.current = episode.script!.shots;
@@ -76,7 +73,7 @@ export function DraftEditor({ project, episode, onSaved }: {
       {!draft ? (
         <>
           <button className="secondary" disabled={!canEdit} onClick={begin}>Edit saved draft</button>
-          {!canEdit && <p className="muted">Available for unproduced episodes after the current production stops.</p>}
+          {!canEdit && <p className="muted">{episode.draft_edit_reason || "Wait for a stopped saved draft before editing."}</p>}
         </>
       ) : (
         <form onSubmit={(event) => void save(event)}>

@@ -81,12 +81,12 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 1737,
+                  "duration": 3105,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-12T04:48:49.801Z",
+                  "startTime": "2026-10-12T05:09:25.635Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -115,12 +115,12 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 10887,
+                  "duration": 13218,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-12T04:48:51.894Z",
+                  "startTime": "2026-10-12T05:09:29.712Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -149,12 +149,12 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 5009,
+                  "duration": 5202,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-12T04:49:02.798Z",
+                  "startTime": "2026-10-12T05:09:42.950Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -183,12 +183,12 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 17244,
+                  "duration": 25848,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-12T04:49:07.828Z",
+                  "startTime": "2026-10-12T05:09:48.167Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -217,12 +217,12 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 6277,
+                  "duration": 7771,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-12T04:49:25.088Z",
+                  "startTime": "2026-10-12T05:10:14.038Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -234,15 +234,49 @@
           "file": "studio.spec.ts",
           "line": 251,
           "column": 1
+        },
+        {
+          "title": "optional screenplay review edits and resumes before any footage",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 6245,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-12T05:10:21.882Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "64bdea7002f9c9cea9f4-7b8a4047694316aeb709",
+          "file": "studio.spec.ts",
+          "line": 288,
+          "column": 1
         }
       ]
     }
   ],
   "errors": [],
   "stats": {
-    "startTime": "2026-10-12T04:48:48.501Z",
-    "duration": 43231.585,
-    "expected": 5,
+    "startTime": "2026-10-12T05:09:23.750Z",
+    "duration": 64884.52099999999,
+    "expected": 6,
     "skipped": 0,
     "unexpected": 0,
     "flaky": 0

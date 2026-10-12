@@ -32,6 +32,7 @@ from studio.worker import Worker
 from studio.providers import WanGPConfig, WanGPProvider
 from studio.diagnostics import hardware
 from studio.setup_status import classify, read_runtime_status
+from studio.draft_editing import edit_eligibility
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -333,19 +334,10 @@ def create_app(root: Path | None = None, run_worker=True) -> FastAPI:
             project = store.get(pid)
             if value.revision != project["revision"]:
                 raise ValueError("Story changed in another window. Reload before editing.")
-            if any(j["state"] in {"RUNNING", "QUEUED", "PAUSED"} for j in project["jobs"]):
-                raise ValueError("Finish or stop the current production before editing saved drafts")
-            if any(j["episode"] == number for j in project["jobs"]):
-                raise ValueError(
-                    "This episode already has a production job. Editing its saved assets is not supported yet."
-                )
             episode = next((e for e in project["episodes"] if e["number"] == number), None)
-            if (
-                not episode
-                or not episode["script"]
-                or episode["status"] not in {"DRAFTED", "REVIEW_REQUIRED"}
-            ):
-                raise ValueError("Choose an unproduced episode with a saved draft")
+            allowed, reason = edit_eligibility(project, episode)
+            if not allowed:
+                raise ValueError(reason)
             original = episode["script"]
             script = EpisodeScript.model_validate(original)
             shots = {s.id: s for s in script.shots}
@@ -397,6 +389,28 @@ def create_app(root: Path | None = None, run_worker=True) -> FastAPI:
                     "edits": [e.model_dump(exclude_none=True) for e in value.edits],
                 },
             )
+            target = next((j for j in project["jobs"] if j["episode"] == number), None)
+            if target:
+                db.execute(
+                    "UPDATE steps SET state='SUPERSEDED' WHERE job_id=? AND state IN ('READY','FAILED')",
+                    (target["id"],),
+                )
+                ordinal = (
+                    db.execute("SELECT MAX(ordinal) FROM steps WHERE job_id=?", (target["id"],)).fetchone()[0]
+                    + 1
+                )
+                store.add_step(
+                    db, target["id"], ordinal, "SCRIPT", {"episode": number, "reviewed_edit": True}
+                )
+                db.execute("UPDATE jobs SET state='PAUSED',error=NULL WHERE id=?", (target["id"],))
+                db.execute("UPDATE projects SET status='PAUSED' WHERE id=?", (pid,))
+                store.event(
+                    db,
+                    pid,
+                    target["id"],
+                    "production_steps_superseded",
+                    {"episode": number, "revision": revision},
+                )
         return store.get(pid)
 
     @app.post("/api/projects/{pid}/canon")

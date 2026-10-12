@@ -16,7 +16,9 @@ Open http://127.0.0.1:8765. Type an idea and press **Create movie**. The default
 
 For a series, Creative settings includes **Prewrite every episode**. Each screenplay is saved through resumable writing checkpoints. Future drafts are planned fiction; canon records only completed episodes. Saved drafts are validated against current canon before production.
 
-For an unproduced saved episode, Story → **Edit saved draft** changes scene action, camera, speaker and spoken lines. Timing/identities stay fixed. Saves retain previous text under **Previous draft text**, increment the story revision and mark later drafts for review. Finish or stop current production first; already produced episodes cannot be edited in this slice.
+For an unproduced saved episode, Story → **Edit saved draft** changes scene action, camera, speaker and spoken lines. Timing/identities stay fixed. Saves retain previous text under **Previous draft text**, increment the story revision and mark later drafts for review. Finish or stop current production first; already produced media cannot be edited in this slice.
+
+Creative settings also offers **Review the screenplay before making footage**. It pauses after writing and before audio/images. A stopped complete screenplay with no committed episode media can be edited and resumed; an overflowing speech line can be shortened there. Each saved revision keeps old pending steps and raw failed voices locally, creates fresh production steps and stays paused until **Resume movie**. Saved drafts are reused without requiring a story-model reload. Backups carry completed assets and edited steps; uncommitted failed raw files remain in the original data folder.
 
 New longer productions write in saved sections of at most four shots. Interrupted writing resumes at its next unfinished section; assembly checks the entire runtime and declared continuity before audio or visuals. Previously persisted jobs retain their original checkpoints. This bounds requests and preserves work; it does not establish the tiny CPU model's writing quality.
 
@@ -78,5 +80,6 @@ All services bind to localhost. Cross-origin browser writes and external hostnam
 - Declared prop ownership, character knowledge, location/life changes and episode-start flashbacks are checked. Fine-grained world time, costumes, relationships and semantic contradictions in prose remain incomplete.
 - Editing/regeneration, version branches, custom/native HD exports, graphical backup restore and advanced quality evaluation.
 - Clean-machine packaging, dependency/license release review, full GPU OOM testing and cinematic review.
+- An intermittent first-read SQLite I/O error occurred after a hard kill. The preserved database passed integrity_check and subsequent kill runs passed; its extended code/root cause remain unconfirmed.
 
 The copied root specs, backlog and acceptance checklists define the full goal. The original blueprint folder is preserved untouched. See `ops/BOARD.md`, `ops/PROGRESS.md`, `ops/BLOCKERS.md` and `ops/HANDOFF.md` for truthful implementation status and the exact next task.

@@ -1,16 +1,16 @@
 {
   "date": "2026-10-12",
   "backend": {
-    "passed": 97,
-    "seconds": 102.81,
+    "passed": 105,
+    "seconds": 120.53,
     "warning": "Starlette TestClient httpx deprecation"
   },
   "frontend": {
     "vitest_passed": 2,
     "lint": "PASS",
     "typescript_and_build": "PASS",
-    "edge_passed": 5,
-    "edge_seconds": 43.2
+    "edge_passed": 6,
+    "edge_seconds": 64.88
   },
   "main_audits": {
     "python_known_advisories": 0,
@@ -28,6 +28,7 @@
     "Durable four-shot sections: script-batch-verification.log71/2/5 PASS. 600s deterministic writing fixture recovered receipt and restored partial backup with no section rewrite; actual GPU and writing quality unproven.",
     "CPU profile/helper regression cpu-profile-verification.log81/2/5 PASS. Afterwards completed-partial EOF resume repair passed10 targeted download tests0.15s. No1.5B weights installed or inference; approval pending.",
     "Draft editing full91 backend/2 frontend PASS; initial Edge4pass/1fail at implicit textarea exact-label lookup. Explicit control IDs repaired, final5 Edge39.2s PASS. Added history API and then14 story/edit checks14.09s PASS; lint/build/Vitest and visual390px review PASS. 1.5B model installed within approval but actual inference refused2.44GiB RAM, zero samples.",
-    "Setup classification/refresh full97 backend102.81s/2 Vitest/5 Edge41.9s PASS. Afterwards8 setup/smoke-summary fixtures0.15s PASS and all5 Edge43.2s PASS after navigation scroll reset; no real inference."
+    "Setup classification/refresh full97 backend102.81s/2 Vitest/5 Edge41.9s PASS. Afterwards8 setup/smoke-summary fixtures0.15s PASS and all5 Edge43.2s PASS after navigation scroll reset; no real inference.",
+    "Review workflow full105 backend120.53s/2 Vitest/6 Edge50.4s PASS; latest frontend lint/build and6 Edge after explanatory review CTA PASS (exact duration from browser-tests.json). Targeted earlier14pass/1fail exposed unclassified post-hardkill read I/O;9 subsequent actual kills passed across full/diagnosis runs, error remains OPEN. Final RAM1.25GiB; heavy work stopped."
   ]
 }

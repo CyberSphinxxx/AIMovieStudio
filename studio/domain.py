@@ -24,6 +24,7 @@ class ProjectInput(StrictModel):
     style: str = Field(default="Cinematic realism", max_length=100)
     backend: Literal["demo", "local"] = "demo"
     prewrite_season: bool = False
+    review_story: bool = False
     idempotency_key: str = Field(min_length=8, max_length=100)
 
     @field_validator("idea")

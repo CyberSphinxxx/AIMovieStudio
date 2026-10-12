@@ -284,3 +284,28 @@ test("settings cannot overwrite saved configuration while it is loading", async 
   await expect(page.getByLabel("Local story engine", { exact: true })).toHaveValue("cpu_1_5b");
   expect(await (await request.get("/api/settings")).json()).toEqual(saved);
 });
+
+test("optional screenplay review edits and resumes before any footage", async ({ page, request }) => {
+  await request.patch("/api/settings", { data: { speech: "none" } });
+  await page.goto("/");
+  await page.getByLabel("SECONDS", { exact: true }).fill("5");
+  await page.getByRole("button", { name: "Creative settings", exact: true }).click();
+  await page.getByLabel("Review the screenplay before making footage", { exact: true }).check();
+  await page.getByLabel("What’s your movie about?").fill("A lighthouse keeper follows a signal and chooses to return home.");
+  await page.getByRole("button", { name: "Create movie", exact: true }).click();
+  await expect(page.getByRole("button", { name: "Resume movie", exact: true })).toBeVisible({ timeout: 30000 });
+  const id = page.url().split("/").pop();
+  const paused = await (await request.get(`/api/projects/${id}`)).json();
+  expect(paused.assets).toHaveLength(0);
+  expect(paused.jobs[0].state).toBe("PAUSED");
+  await page.getByRole("tab", { name: "Story", exact: true }).click();
+  await page.getByRole("button", { name: "Edit saved draft", exact: true }).click();
+  await page.getByLabel("Spoken line 1", { exact: true }).fill("We reached home.");
+  await page.getByRole("button", { name: "Save draft", exact: true }).click();
+  await expect(page.getByRole("status")).toHaveText("Draft saved. Previous text is retained in story history.");
+  await page.getByRole("button", { name: "Resume movie", exact: true }).click();
+  await expect(page.getByRole("heading", { name: "That’s a wrap." })).toBeVisible({ timeout: 60000 });
+  const finished = await (await request.get(`/api/projects/${id}`)).json();
+  expect(finished.episodes[0].script.shots[0].narration).toBe("We reached home.");
+  expect(finished.jobs[0].steps.some((s: { state: string }) => s.state === "SUPERSEDED")).toBe(true);
+});

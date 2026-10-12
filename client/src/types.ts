@@ -6,6 +6,7 @@ export type Spec = {
   episodes: number;
   backend: "demo" | "local";
   prewrite_season?: boolean;
+  review_story?: boolean;
   language: "English";
   style: string;
   idempotency_key: string;
@@ -45,6 +46,8 @@ export type Episode = {
   number: number;
   outline: Outline;
   status: string;
+  can_edit_draft?: boolean;
+  draft_edit_reason?: string;
   script: { number: number; screenplay: string; shots: Shot[] } | null;
 };
 export type Asset = {

@@ -12,6 +12,7 @@ from pathlib import Path
 from uuid import uuid4
 
 from studio.domain import ProjectInput
+from studio.draft_editing import edit_eligibility
 
 
 def digest(path: Path) -> str:
@@ -112,7 +113,9 @@ class Store:
         try:
             yield db
             db.commit()
-        except BaseException:
+        except BaseException as error:
+            if isinstance(error, sqlite3.Error):
+                error.add_note(f"SQLite connection: {error.sqlite_errorname} ({error.sqlite_errorcode})")
             db.rollback()
             raise
         finally:
@@ -177,6 +180,8 @@ class Store:
                 dict(r)
                 for r in db.execute("SELECT * FROM canon WHERE project_id=? ORDER BY episode,rowid", (pid,))
             ]
+            for episode in project["episodes"]:
+                episode["can_edit_draft"], episode["draft_edit_reason"] = edit_eligibility(project, episode)
             return project
 
     def enqueue(self, pid: str, episode: int = 1) -> str:

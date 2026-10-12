@@ -114,7 +114,7 @@ class Worker:
             db.execute("BEGIN IMMEDIATE")
             row = db.execute("""SELECT s.*, j.project_id, j.episode, j.config FROM steps s JOIN jobs j ON j.id=s.job_id
                 WHERE s.state='READY' AND j.state IN ('QUEUED','RUNNING') AND s.attempts<s.max_attempts
-                AND NOT EXISTS(SELECT 1 FROM steps p WHERE p.job_id=s.job_id AND p.ordinal<s.ordinal AND p.state!='SUCCEEDED')
+                AND NOT EXISTS(SELECT 1 FROM steps p WHERE p.job_id=s.job_id AND p.ordinal<s.ordinal AND p.state NOT IN ('SUCCEEDED','SUPERSEDED'))
                 ORDER BY j.created,s.ordinal LIMIT 1""").fetchone()
             if not row:
                 return None
@@ -219,19 +219,17 @@ class Worker:
         def check():
             self.check(step)
 
-        if (
-            stage not in {"PLAN", "SCRIPT", "DRAFT", "SCRIPT_BATCH", "DRAFT_BATCH"}
-            or spec["backend"] == "demo"
-        ):
-            provider = DemoStory()
-        elif settings["story_engine"] in {"small_cpu", "cpu_1_5b"}:
-            from studio.local_story import SmallCPUStory
+        def story_provider():
+            if spec["backend"] == "demo":
+                return DemoStory()
+            if settings["story_engine"] in {"small_cpu", "cpu_1_5b"}:
+                from studio.local_story import SmallCPUStory
 
-            provider = SmallCPUStory(
-                check=check, profile=settings["story_engine"], observer=self.story_observer
-            )
-        else:
-            provider = OllamaStory(settings["story_model"], check=check)
+                return SmallCPUStory(
+                    check=check, profile=settings["story_engine"], observer=self.story_observer
+                )
+            return OllamaStory(settings["story_model"], check=check)
+
         base = {
             "provider": "demo" if spec["backend"] == "demo" else "WanGP",
             "model": "deterministic-fixture-v1"
@@ -244,7 +242,7 @@ class Worker:
             "prompt_template_version": 2,
         }
         if stage == "PLAN":
-            plan = provider.plan(project)
+            plan = story_provider().plan(project)
             if len(plan.episodes) != spec["episodes"]:
                 raise RuntimeError("BAD_STORY: Model did not plan the requested number of episodes.")
             return {"plan": plan.model_dump(), "artifacts": []}
@@ -264,7 +262,9 @@ class Worker:
             if stage == "SCRIPT" and episode["status"] == "DRAFTED" and episode["script"]:
                 script = EpisodeScript.model_validate(episode["script"])
             elif stage.endswith("_BATCH"):
-                section = provider.script_batch(project, number, payload["start"], payload["count"], sections)
+                section = story_provider().script_batch(
+                    project, number, payload["start"], payload["count"], sections
+                )
                 if section.number != number:
                     raise RuntimeError("BAD_STORY: Screenplay section belongs to another episode.")
                 validate_section(
@@ -278,7 +278,7 @@ class Worker:
             elif sections:
                 script = merge_sections(sections, number)
             else:
-                script = provider.script(project, number)
+                script = story_provider().script(project, number)
             if script.number != number:
                 raise RuntimeError("BAD_STORY: Script belongs to a different episode.")
             plan = SeasonPlan.model_validate(project["plan"])
@@ -600,6 +600,13 @@ class Worker:
                         self.store.add_step(db, jid, ordinal, stage, {"shot": shot})
                         ordinal += 1
                 self.store.add_step(db, jid, ordinal, "EXPORT", {})
+                spec = json.loads(
+                    db.execute("SELECT spec FROM projects WHERE id=?", (pid,)).fetchone()["spec"]
+                )
+                if spec.get("review_story") and not step["payload"].get("reviewed_edit"):
+                    db.execute("UPDATE jobs SET state='PAUSED' WHERE id=?", (jid,))
+                    db.execute("UPDATE projects SET status='PAUSED' WHERE id=?", (pid,))
+                    self.store.event(db, pid, jid, "story_review_ready", {"episode": step["episode"]})
             elif step["stage"] == "EXPORT":
                 episode_row = db.execute(
                     "SELECT outline,script FROM episodes WHERE project_id=? AND number=?",

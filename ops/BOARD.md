@@ -28,7 +28,7 @@ Do not interpret partial task evidence as full phase acceptance. See PROGRESS an
 | F4.02 | DONE_VERIFIED | Persisted SSE cursor/Last-Event-ID replay and frontend polling tested |
 | F4.03 | IN_PROGRESS | Active atomic pause/resume/hash reuse, cancel/no-export, settings freeze and retry budget tests; broader UI smoke open |
 | F4.04 | IN_PROGRESS | Sequential scheduling, CPU unload, disk reserve; quota/resource measurements incomplete |
-| F4.05 | DONE_VERIFIED | Actual hard process kill and hash reuse; corrupt media and interrupted receipts tested |
+| F4.05 | IN_PROGRESS | Hash recovery/hardkills passed; intermittent unclassified first-read I/O after kill remains OPEN despite9 later passes |
 | F5.01 | IN_PROGRESS | Official API bridge, offline guard and telemetry; real runtime failed at OS CUDA import; no inference proof |
 | F5.02 | BLOCKED_OS_POLICY | Real 6 GB image/video inference NOT TESTED; video download requires image PASS |
 | F5.03 | TODO | Sequential real shots and inspection |
@@ -41,7 +41,7 @@ Do not interpret partial task evidence as full phase acceptance. See PROGRESS an
 | F6.05 | IN_PROGRESS | Preview/download/sidecars; re-export and open-folder controls open |
 | F7.01 | DONE_VERIFIED | One-click demo through playable MP4, real failures never substitute demos |
 | F7.02 | IN_PROGRESS | Hard media/hash gates; cinematic review not performed |
-| F7.03 | IN_PROGRESS | Saved future-draft text/camera/speaker editing +history/optimistic guards/production reuse/Edge verified; produced-asset editing/regeneration open |
+| F7.03 | IN_PROGRESS | Optional review/current pre-media repair +saved future text editing/history/revision guards/reuse/Edge verified; produced-asset editing/regeneration open |
 | F7.04 | IN_PROGRESS | Tested viewport/focus/Axe; broader keyboard/screen-reader work remains |
 | F7.05 | IN_PROGRESS | Episode2 across reopen uses prior outcome/references; longer real movie open |
 | F8.01 | IN_PROGRESS | Actual localhost launcher stop/start observed; approved app-local GPU install; clean-account test open |
@@ -51,4 +51,4 @@ Do not interpret partial task evidence as full phase acceptance. See PROGRESS an
 | F8.05 | IN_PROGRESS | Main npm/Python audit0; hostile backups/download budgets tested; vendor90 advisories unresolved |
 | F8.06 | IN_PROGRESS | Screenshots/evidence/run docs; release still blocked by listed gates |
 
-Next unblocked: F7.03 optional screenplay review before footage and safe repair of pre-media failed/paused scripts. CPU1.5B installed/approved but no inference below5GiB RAM (latest3.26GiB). GPU App Control block persists; no OS changes.
+Next: reproduce/diagnose post-kill read I/O with extended codes, then produced-asset versioning/graphical restore/licensing. Heavy work paused at1.25GiB freeRAM; do not load models below5GiB. Approved1.5B installation complete, inference NOT RUN. GPU App Control remains blocked; no system changes.
