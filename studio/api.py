@@ -4,6 +4,8 @@ import asyncio
 import json
 import os
 import shutil
+import sqlite3
+import zipfile
 from contextlib import asynccontextmanager
 from pathlib import Path
 
@@ -34,6 +36,7 @@ from studio.diagnostics import hardware
 from studio.setup_status import classify, read_runtime_status
 from studio.draft_editing import edit_eligibility
 from studio.export_variants import ExportCopy, enqueue_copy
+from studio import backup_import
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -71,6 +74,15 @@ class DraftRevision(StrictModel):
 def create_app(root: Path | None = None, run_worker=True) -> FastAPI:
     store = Store(root or Path(os.environ.get("STUDIO_DATA", ROOT / "data")))
     worker = Worker(store)
+    active_restores: set[str] = set()
+
+    async def finish_owned_restore(function, *args):
+        task = asyncio.create_task(asyncio.to_thread(function, *args))
+        try:
+            return await asyncio.shield(task)
+        except asyncio.CancelledError:
+            await task  # Owned thread keeps its staging until it finishes.
+            raise
 
     @asynccontextmanager
     async def lifespan(app):
@@ -109,7 +121,8 @@ def create_app(root: Path | None = None, run_worker=True) -> FastAPI:
                 },
                 403,
             )
-        if request.method in {"POST", "PUT", "PATCH"}:
+        streaming_restore = request.method == "POST" and request.url.path == "/api/backup/restore"
+        if request.method in {"POST", "PUT", "PATCH"} and not streaming_restore:
             body = bytearray()
             async for chunk in request.stream():
                 body.extend(chunk)
@@ -553,6 +566,84 @@ def create_app(root: Path | None = None, run_worker=True) -> FastAPI:
             filename="movie-studio-backup.zip",
             background=BackgroundTask(path.unlink, missing_ok=True),
         )
+
+    @app.get("/api/backup/restores")
+    def unfinished_restores():
+        return {"operations": backup_import.pending_imports(store, active_restores)}
+
+    @app.post("/api/backup/restores/{identity}/discard")
+    async def discard_restore_upload(identity: str):
+        if identity in active_restores:
+            raise ValueError("This restore is still running")
+        active_restores.add(identity)
+        try:
+            await finish_owned_restore(backup_import.discard_prepared, store, identity)
+            return {"discarded": True}
+        finally:
+            active_restores.discard(identity)
+
+    @app.post("/api/backup/restores/{identity}/resume")
+    async def resume_restore(identity: str):
+        if identity in active_restores:
+            raise ValueError("This restore is still running")
+        active_restores.add(identity)
+        try:
+            return await finish_owned_restore(backup_import.commit_import, store, identity)
+        except (OSError, sqlite3.Error) as error:
+            raise HTTPException(
+                409, "Restore stopped. Keep the original ZIP and return to Settings to retry."
+            ) from error
+        finally:
+            active_restores.discard(identity)
+
+    @app.post("/api/backup/restore")
+    async def restore(request: Request):
+        if request.headers.get("content-type", "").split(";")[0] != "application/zip":
+            raise HTTPException(415, "Choose a Movie Studio ZIP backup.")
+        length = request.headers.get("content-length")
+        if length is not None:
+            try:
+                declared = int(length)
+            except ValueError:
+                raise HTTPException(422, "Invalid backup size")
+            if not 0 < declared <= backup_import.MAX_UPLOAD:
+                raise HTTPException(413, "Backup must be between 1 byte and 20 GB.")
+        if shutil.disk_usage(store.root).free < backup_import.RESERVE:
+            raise HTTPException(409, "Restore requires a 1 GB free-space reserve.")
+        identity, directory = backup_import.begin_upload(store)
+        active_restores.add(identity)
+        try:
+            total = 0
+            with (directory / "upload.zip").open("xb") as file:
+                async for chunk in request.stream():
+                    total += len(chunk)
+                    if total > backup_import.MAX_UPLOAD:
+                        raise HTTPException(413, "Backup exceeds the 20 GB upload limit.")
+                    if shutil.disk_usage(store.root).free < len(chunk) + backup_import.RESERVE:
+                        raise HTTPException(409, "Restore stopped to preserve 1 GB of free disk space.")
+                    file.write(chunk)
+                file.flush()
+                os.fsync(file.fileno())
+            if length is not None and total != declared:
+                raise HTTPException(422, "Backup upload was incomplete. Choose the original ZIP again.")
+
+            def finish_restore():
+                backup_import.prepare_import(store, identity)
+                return backup_import.commit_import(store, identity)
+
+            return await finish_owned_restore(finish_restore)
+        except (zipfile.BadZipFile, KeyError, sqlite3.Error) as error:
+            raise HTTPException(
+                409, "Backup is invalid or inconsistent; your current projects were left unchanged."
+            ) from error
+        except OSError as error:
+            raise HTTPException(
+                409,
+                "Restore could not finish. Return to Settings to resume a prepared copy; keep the original ZIP.",
+            ) from error
+        finally:
+            active_restores.discard(identity)
+            backup_import.discard_unprepared(store, identity)
 
     dist = ROOT / "client" / "dist"
     if (dist / "assets").exists():

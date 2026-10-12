@@ -1,15 +1,14 @@
 # Active plan — 2026-10-12
-Task/ID: F4.05 bounded SQLite-only restart diagnosis.
-Motivation: Capture the extended error code behind the intermittent first-read disk I/O after a hard kill without video/AI workload.
-Ground truth: Prior original read failure unclassified; startup IOERR_TRUNCATE is separately identified. Store.connect currently can let rollback failure mask the original exception and setup failures occur outside its diagnostic scope.
-Research: Official https://www.sqlite.org/rescode.html checked2026-10-12 distinguishes IOERR_TRUNCATE, FSTAT and other VFS codes; do not assume all disk I/O errors have one cause.
-Slice: Three small writer/read/kill/reopen cycles on newly generated sample data, bounded timeout/memory guard, child logs and structured SQLite codes; retain fixture for inspection. Preserve original exception if rollback also fails, attach cleanup diagnostic rather than replacing it. No retry-policy change.
-Files: scripts/sqlite_restart_probe.py, studio/storage.py, tests/test_storage_startup.py; memory/evidence.
-Safety: No real projects/models/user processes/security changes, no deletion. App-owned child and generated data paths only; no blanket read/write retry or WAL deletion. Probe stops on first failure/resource guard.
-Exit: Code capture fixtures (setup/operation/rollback errors); actual three kills, inspect report/database; distinguish not-reproduced from repaired. Only lightweight tests now (initial freeRAM0.68GiB).
-Rollback: No schema/retry changes. New sample fixtures are independent; original app data intact.
-Progress: Recon complete, implement probe/diagnostic preservation.
+Task/ID: F8.02 graphical backup restore into Library.
+Behavior: Select a local ZIP in Settings and restore missing projects without commands, overwriting originals, importing provider commands or starting jobs. Clear progress, conflicts and interrupted-import Resume controls.
+Ground truth: Existing safe ZIP/manifest/hash validator and new-folder restore; machine settings stripped, unfinished jobs paused. Existing app uses one Store and worker. Restored IDs must stay stable, current projects must never be replaced.
+Slice: Stream raw ZIP to bounded app-owned staging (20GB,1GB reserve, existing localhost/origin guards). Existing CLI restoration validates/extracts. Durable operation journal pins validated import manifest; publish only new project directories with operation ownership marker. One SQLite transaction imports rows/events with fresh event sequence; configs empty, unfinished jobs paused. Interruption leaves a resumable operation; explicit Resume validates files again. Already committed operation recognized by stored import event, no duplicates. UI reports missing-project-only/no overwrite and excludes machine defaults.
+Components: backup_import.py/API streaming endpoint; BackupRestore.tsx/Settings; API hostile/duplicate/rollback/resume/media and browser restore tests.
+Safety: No remote transfers/models/system changes or original deletion. Confined canonical UUIDs, no file paths from browser, scoped temp cleanup only before publication. Reject ID/key/directory conflicts before publishing; retain prepared operations on interrupted publication. No imported jobs auto-run. File+DB commit gap is journaled, not called globally atomic.
+Exit: Actual ZIP through UI/API appears in Library with original IDs/hashes, completed playback and paused unfinished work; machine defaults unchanged; duplicates/hostile/corrupt/large/disk guard reject; partial publish/DB interruption explicitly resumes once. Keyboard/mobile/Axe checked if RAM permits.
+Rollback: Existing projects untouched; recover pending journal with current code. Keep user source archive. Main data root remains the same.
+Progress: Implement next after verified9f9867f SQLite repair; RAM1.76GiB allows serial small checks, no models.
 Result: IN_PROGRESS.
 
-Progress: First probe captured actual first-read IOERR_TRUNCATE1546. Implemented read-only bounded Windows retry and atomic query-only snapshot, preserved original cleanup exceptions.23 unit/API checks PASS3.44s;6 SQLite kills PASS (5 actualread/1startup retry);3 media hardkills+5export tests PASS39.24s;RuffPASS. FinalRAM1.76GiB.
-Result: Observed first-read class repaired/verified, not a claim that every possible disk I/O cause is solved. Native inference blocked. Next F8.02 graphicalrestore.
+Progress: ZIP streaming/import journal/no-overwrite/paused jobs/explicit recovery and Settings UI implemented.9 new restore tests plus3 malformed-shape cases. Full134 backend173.89s/2Vitest/static/main audits0PASS; all8EdgePASS1.3min with restore/playback/defaults/error/mobile/Axe/explicitResume. Real hardkill during publication and DB-commit/journal gap verified. FinalRAM1.59GiB; no models or system changes.
+Result: Graphical restore slice DONE_VERIFIED. Entire application unfinished; next F7.03 produced-asset regeneration and F8.03 inventory. Native GPU blocked/CPU quality unproven.

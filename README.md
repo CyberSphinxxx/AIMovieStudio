@@ -65,7 +65,11 @@ Start Studio first for browser tests. Tests use installed Microsoft Edge. Backen
 
 `data/studio.sqlite3` stores projects, episodes, jobs, manifests and append-only events with WAL and transactional migrations. Media lives under UUID folders in `data/`; hashes and parent IDs pin lineage. `STUDIO_DATA` overrides the data root. Generated source media is never automatically deleted.
 
-Settings → **Download studio backup** exports a consistent database snapshot and saved media with hashes. Models, machine-specific provider commands/settings, unfinished files and server logs are excluded. Backup archives have a 20 GB limit and require a 1 GB free-space reserve. Restoring never overwrites an existing folder or starts imported jobs. A command-line alternative:
+Settings → **Download studio backup** exports a consistent database snapshot and saved media with hashes. Models, machine-specific provider commands/settings, unfinished files and server logs are excluded. Backup archives have a 20 GB limit and require a 1 GB free-space reserve. Restoring never overwrites existing data or starts imported jobs.
+
+Settings → **Restore projects from a backup** accepts a local ZIP and adds its missing projects to Library with their original IDs and media hashes. Existing projects, media and defaults are preserved; unfinished productions remain paused. Duplicates or conflicting identities are rejected. If file publication is interrupted, return to Settings → **Unfinished restores** → **Resume restore**. An incomplete upload must be selected again; **Discard partial upload** removes only its staged copy. Prepared copies can be discarded before publication. Published copies are preserved for recovery. Keep the original ZIP until you have inspected the restored projects. Restoring files and committing database rows use a durable journal; they are not one filesystem/database transaction. Restores never download models or run imported commands.
+
+For a separate studio copy in a new folder, use:
 
 ```powershell
 .venv/Scripts/python.exe -m scripts.backup create --archive studio-backup.zip
@@ -80,8 +84,8 @@ All services bind to localhost. Cross-origin browser writes and external hostnam
 
 - Real GPU references/video, guided model setup and measured 6 GB inference.
 - Declared prop ownership, character knowledge, location/life changes and episode-start flashbacks are checked. Fine-grained world time, costumes, relationships and semantic contradictions in prose remain incomplete.
-- Editing/regeneration, version branches, custom/native HD exports, open-folder controls, graphical backup restore and advanced quality evaluation. Draft aspect copies are available.
+- Editing/regeneration, version branches, custom/native HD exports, open-folder controls and advanced quality evaluation. Draft aspect copies and graphical restore of missing projects are available.
 - Clean-machine packaging, dependency/license release review, full GPU OOM testing and cinematic review.
-- An intermittent first-read SQLite I/O error occurred after a hard kill. The preserved database passed integrity_check and subsequent kill runs passed; its extended code/root cause remain unconfirmed.
+- A first-read recovery I/O error was reproduced as Windows SQLITE_IOERR_TRUNCATE after a hard kill. Read-only project snapshots now retry this specific error on fresh connections, with three total attempts; actual recovery checks passed. Other I/O/corruption/write faults still fail immediately. The original older failure had no recorded code, so this does not establish that every possible storage fault is resolved.
 
 The copied root specs, backlog and acceptance checklists define the full goal. The original blueprint folder is preserved untouched. See `ops/BOARD.md`, `ops/PROGRESS.md`, `ops/BLOCKERS.md` and `ops/HANDOFF.md` for truthful implementation status and the exact next task.

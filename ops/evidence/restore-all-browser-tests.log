@@ -1,0 +1,17 @@
+
+Running 8 tests using 1 worker
+
+(node:7492) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:7492) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 e2e\studio.spec.ts:6:1 › ZIP backup restores a playable project through Settings without replacing defaults (10.7s)
+  ok 2 e2e\studio.spec.ts:112:1 › saved movie exports another aspect without rewriting its story (8.5s)
+  ok 3 e2e\studio.spec.ts:179:1 › home is usable at target viewports and keyboard focus is visible (2.2s)
+  ok 4 e2e\studio.spec.ts:220:1 › one idea to playable demo MP4, persisted story, shots, and downloads (12.2s)
+  ok 5 e2e\studio.spec.ts:305:1 › real request fails honestly and settings are actionable (5.0s)
+  ok 6 e2e\studio.spec.ts:337:1 › season prewriting is saved and studio backup is downloadable (21.7s)
+  ok 7 e2e\studio.spec.ts:445:1 › settings cannot overwrite saved configuration while it is loading (6.4s)
+  ok 8 e2e\studio.spec.ts:490:1 › optional screenplay review edits and resumes before any footage (6.1s)
+
+  8 passed (1.3m)

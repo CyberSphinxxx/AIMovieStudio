@@ -21,6 +21,7 @@ import {
 import { api, assetUrl, stageLabel, stepLabel } from "./types";
 import type { Project, Recent, Spec } from "./types";
 import { DraftEditor } from "./DraftEditor";
+import { BackupRestore } from "./BackupRestore";
 
 const EXAMPLE =
   "A lighthouse keeper receives a message from a ship that vanished thirty years ago. Tonight, the light begins to answer.";
@@ -1493,11 +1494,13 @@ function Settings() {
         <p className="muted">
           Save all projects, stories, canon and completed media in one portable
           archive. Models and machine-specific provider settings are excluded.
-          Restore instructions are in the local README.
+          Restore missing projects below, or use the local README for a separate
+          studio copy.
         </p>
         <a className="secondary" href="/api/backup">
           <Download size={17} /> Download studio backup
         </a>
+        <BackupRestore />
       </section>
       <form onSubmit={save} className="settings-section settings-form">
         <h2>Your defaults</h2>

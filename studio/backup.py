@@ -28,6 +28,12 @@ MAX_MANIFEST = 64 * 1024**2
 MAX_EXPANDED = 20 * 1024**3
 
 
+def validate_zip_entries(entries):
+    supported = {zipfile.ZIP_STORED, zipfile.ZIP_DEFLATED, zipfile.ZIP_BZIP2, zipfile.ZIP_LZMA}
+    if any(e.flag_bits & 1 or e.compress_type not in supported for e in entries):
+        raise ValueError("Encrypted or unsupported ZIP backups cannot be restored")
+
+
 def media_name(relative: str) -> str:
     parts = PurePosixPath(relative.replace("\\", "/")).parts
     if len(parts) != 4 or any(p in {".", ".."} for p in parts):
@@ -89,16 +95,18 @@ def create_backup(store: Store, destination: Path) -> Path:
 
 
 def validate_document(data):
+    if not isinstance(data, dict):
+        raise ValueError("Invalid backup document")
     if data.get("format") != "ai-movie-studio-backup" or data.get("version") != 1:
         raise ValueError("Unsupported backup format")
-    if set(data.get("tables", {})) != set(TABLES):
+    if not isinstance(data.get("tables"), dict) or set(data["tables"]) != set(TABLES):
         raise ValueError("Backup table inventory does not match")
     for table, fields in TABLES.items():
         rows = data["tables"][table]
         if not isinstance(rows, list) or len(rows) > MAX_FILES:
             raise ValueError("Backup row limit exceeded")
         for row in rows:
-            if set(row) != set(fields.split()):
+            if not isinstance(row, dict) or set(row) != set(fields.split()):
                 raise ValueError("Invalid backup fields")
             if any(not isinstance(v, (str, int, float, type(None))) for v in row.values()):
                 raise ValueError("Invalid backup field type")
@@ -153,6 +161,7 @@ def restore_backup(source: Path, destination: Path) -> Store:
     try:
         with zipfile.ZipFile(source) as archive:
             entries = archive.infolist()
+            validate_zip_entries(entries)
             names = [e.filename for e in entries]
             if len(names) != len(set(names)) or len(names) > MAX_FILES + 1:
                 raise ValueError("Duplicate or excessive archive entries")

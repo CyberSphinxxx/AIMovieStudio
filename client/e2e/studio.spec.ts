@@ -1,5 +1,113 @@
 import { test, expect } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
+import { execFileSync } from "node:child_process";
+import { resolve } from "node:path";
+
+test("ZIP backup restores a playable project through Settings without replacing defaults", async ({
+  page,
+  request,
+}) => {
+  const repo = resolve(process.cwd(), "..");
+  const fixture = JSON.parse(
+    execFileSync(
+      resolve(repo, ".venv/Scripts/python.exe"),
+      ["-m", "scripts.backup_browser_fixture"],
+      { cwd: repo, encoding: "utf8" },
+    ),
+  );
+  const defaults = await (await request.get("/api/settings")).json();
+  await page.goto("/settings");
+  await page
+    .getByLabel("Movie Studio backup · ZIP, up to 20 GB")
+    .setInputFiles(fixture.archive);
+  await page
+    .getByRole("button", { name: "Restore backup", exact: true })
+    .click();
+  await expect(
+    page.getByText("1 project restored.", { exact: true }),
+  ).toBeVisible({ timeout: 30000 });
+  const restored = await (
+    await request.get(`/api/projects/${fixture.id}`)
+  ).json();
+  expect(restored.status).toBe("COMPLETED");
+  expect(
+    Object.fromEntries(
+      restored.assets.map((a: { id: string; sha256: string }) => [
+        a.id,
+        a.sha256,
+      ]),
+    ),
+  ).toEqual(fixture.asset_hashes);
+  expect(await (await request.get("/api/settings")).json()).toEqual(defaults);
+  await page.setViewportSize({ width: 390, height: 844 });
+  await expect(
+    page.getByRole("button", { name: "Save settings", exact: true }),
+  ).toBeEnabled({ timeout: 30000 });
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth <= window.innerWidth,
+    ),
+  ).toBe(true);
+  expect(
+    (
+      await new AxeBuilder({ page })
+        .withTags(["wcag2a", "wcag2aa", "wcag21aa"])
+        .analyze()
+    ).violations,
+  ).toEqual([]);
+  await page.screenshot({
+    path: "../ops/evidence/backup-restore-mobile.png",
+    fullPage: true,
+  });
+  await page
+    .getByRole("link", { name: "Open your Library", exact: true })
+    .click();
+  await page.getByLabel("Find a project").fill(fixture.title);
+  await page
+    .getByRole("button")
+    .filter({
+      has: page.getByRole("heading", { name: fixture.title, exact: true }),
+    })
+    .click();
+  const video = page.getByLabel("Movie preview");
+  await expect(video).toBeVisible();
+  await video.evaluate((e: HTMLVideoElement) => e.play());
+  await expect
+    .poll(() => video.evaluate((e: HTMLVideoElement) => e.currentTime))
+    .toBeGreaterThan(0.3);
+  await video.evaluate((e: HTMLVideoElement) => e.pause());
+  await page.goto("/settings");
+  await page
+    .getByLabel("Movie Studio backup · ZIP, up to 20 GB")
+    .setInputFiles(fixture.archive);
+  await page
+    .getByRole("button", { name: "Restore backup", exact: true })
+    .click();
+  await expect(
+    page.getByRole("alert").filter({ hasText: "already exists" }),
+  ).toBeVisible();
+  const pending = JSON.parse(
+    execFileSync(
+      resolve(repo, ".venv/Scripts/python.exe"),
+      ["-m", "scripts.backup_browser_fixture", "--pending"],
+      { cwd: repo, encoding: "utf8" },
+    ),
+  );
+  await page.reload();
+  const operation = page.locator(`[data-restore-id="${pending.operation_id}"]`);
+  await expect(
+    operation.getByText(pending.title, { exact: true }),
+  ).toBeVisible();
+  await operation
+    .getByRole("button", { name: "Resume restore", exact: true })
+    .click();
+  await expect(
+    page.getByText("1 project restored.", { exact: true }),
+  ).toBeVisible({ timeout: 30000 });
+  expect(
+    (await (await request.get(`/api/projects/${pending.id}`)).json()).status,
+  ).toBe("COMPLETED");
+});
 
 test("saved movie exports another aspect without rewriting its story", async ({
   page,

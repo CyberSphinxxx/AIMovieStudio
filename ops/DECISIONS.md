@@ -39,3 +39,6 @@ REFORMAT is a durable export-only stage appended to completed episode jobs, neve
 
 
 A witnessed first-read restart error now identifies IOERR_TRUNCATE1546. Retry only Store.get read-only snapshots on Windows,3 total attempts/fresh connections/100-200ms; never general connect/write retry. Query-only BEGIN prevents mixed project/job/asset revisions. Preserve initial exceptions across rollback/close failures. SQLite-only reproduction keeps sample fixtures and logs with exact codes; report observed successful recovery separately from absence of errors. Original older uncaptured code remains unknowable.
+
+
+Graphical restore imports only missing projects into the existing Library, preserving IDs and immutable media. Stream local ZIP to bounded staging with original security guards; never overwrite projects/settings or execute imported commands. Journal the file/DB gap with owned markers, pinned compact manifest and authoritative committed import event. Explicit Resume handles interrupted publication; imported backup-restored history cannot act as a live operation marker. Fresh event sequence preserves SSE monotonicity. Discard is limited to unpublished app-owned staging; published copies remain for recovery. Use existing CLI new-folder restore for a separate studio copy rather than replacing current data.

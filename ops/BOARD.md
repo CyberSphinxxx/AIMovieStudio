@@ -45,10 +45,10 @@ Do not interpret partial task evidence as full phase acceptance. See PROGRESS an
 | F7.04 | IN_PROGRESS | Tested viewport/focus/Axe; broader keyboard/screen-reader work remains |
 | F7.05 | IN_PROGRESS | Episode2 across reopen uses prior outcome/references; longer real movie open |
 | F8.01 | IN_PROGRESS | Actual localhost launcher stop/start observed; approved app-local GPU install; clean-account test open |
-| F8.02 | IN_PROGRESS | Hashed backup download/CLI new-folder restore tested including interrupted MP4 resume; graphical restore open |
+| F8.02 | IN_PROGRESS | ZIP-to-Library UI, explicit interrupted-restore resume, paused jobs/IDs/hashes/defaults retained, conflict/security/hardkill/Edge verified; broader manual/troubleshooting review remains |
 | F8.03 | TODO | Distribution and bundled-license audit |
 | F8.04 | TODO | Clean Windows account + real GPU resource benchmarks |
 | F8.05 | IN_PROGRESS | Main npm/Python audit0; hostile backups/download budgets tested; vendor90 advisories unresolved |
 | F8.06 | IN_PROGRESS | Screenshots/evidence/run docs; release still blocked by listed gates |
 
-Next: graphical restore, then produced-asset versioning/licensing. Latest freeRAM1.76GiB; model loading still requires5GiB. Approved1.5B installation complete, inference NOT RUN. GPU App Control remains blocked; no system changes.
+Next: F7.03 produced-shot regeneration with retained originals/editions, then F8.03 license inventory. Full134 backend/2Vitest/8Edge PASS. Latest freeRAM1.59GiB; model loading still requires5GiB. Approved1.5B installation complete, inference NOT RUN. GPU App Control remains blocked; no system changes.
