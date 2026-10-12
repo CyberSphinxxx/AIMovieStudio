@@ -1,6 +1,6 @@
 # Handoff â€” 2026-10-12
 
-Status: ACTIVE DEVELOPMENT; full application unfinished. Original blueprint preserved. Previous checkpoint574f933; optional-review/repair checkpoint follows it (read Git log). Main app runs at127.0.0.1:8765 with current backend. No remote changes.
+Status: ACTIVE DEVELOPMENT; full application unfinished. Original blueprint preserved. Last implementation checkpoint: c8af09b on main (optional review/repair, code and evidence). Any following handoff-only commit does not change implementation. Main app runs at127.0.0.1:8765 with current backend. No remote changes.
 
 Environment: Windows11 Home, RTX3060Laptop6144MiB, driver610.88,16GB RAM. Main .venv Python3.12.14; isolated tools/gpu/python Python3.11.14 and tools/wan-gp/.venv Torch2.10.0+cu130. Node24.19/npm11.17. App-owned FFmpeg and tinyCPU Qwen0.5B/llama.cpp. No global driver/Python/security changes.
 
@@ -39,3 +39,5 @@ Latest code: review_story defaultfalse, backend can_edit_draft/reason, explicit 
 OPEN read restart error: targeted14pass/1fail44.43s at first Store.get SELECT, extended code NOT_CAPTURED. Preserved fixture pytest-53/test_hard_kill_mid_ten_shots_p1/content with spaces/studio.sqlite3 integrity=ok/statusFRAME. Nine later kills passed; diagnostics notes now record extended code. No new retry policy/fix claim. Next command when resources permit: .venv/Scripts/python.exe -m pytest tests/test_crash.py -q (capture output). Review review-crash-first-failure.json and inspection/logs first. If failure recurs capture sqlite_errorcode/name; no WAL deletion, corruption masking or broad write retry.
 
 Final resource boundary1.25GiB RAM/91% load; no active model inference, no background development promise. Main app remains development build. CPU1.5B approved/installed; first preflight7059fecb blocked2.44GiB. GPU DLL policy block unchanged. User resource-readiness reply still pending. Once >=5GiB, bounded scripts.story_batch_smoke is already approved; preserve failures and review quality separately.
+
+Server note: the current launcher service has the verified review/repair features; the later SQLite error-note instrumentation is in source and loads on the next normal restart. No restart or further heavy checks at the final1.25GiB boundary.
