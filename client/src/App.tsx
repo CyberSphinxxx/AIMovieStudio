@@ -33,6 +33,7 @@ const modes = [
 function navigate(path: string) {
   window.history.pushState({}, "", path);
   window.dispatchEvent(new PopStateEvent("popstate"));
+  window.scrollTo(0, 0);
 }
 
 export function App() {
@@ -1162,6 +1163,9 @@ type Provider = {
   is_mock: boolean;
   models?: string[];
   message?: string;
+  status?: string;
+  attention?: boolean;
+  last_check_at?: number;
 };
 function Settings() {
   const [health, setHealth] = useState<Health | null>(null);
@@ -1172,6 +1176,7 @@ function Settings() {
   const [error, setError] = useState("");
   const [saved, setSaved] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
   const [settingsLoaded, setSettingsLoaded] = useState(false);
   const [engine, setEngine] = useState("ollama");
   const [wangp, setWangp] = useState({
@@ -1237,6 +1242,15 @@ function Settings() {
       setError(e instanceof Error ? e.message : "Could not save settings");
     }
   }
+  async function refreshDiagnostics() {
+    setRefreshing(true);
+    const checks = await Promise.allSettled([api<Health>("/health"), api<{ providers: Provider[] }>("/providers")]);
+    if (checks[0].status === "fulfilled") setHealth(checks[0].value);
+    if (checks[1].status === "fulfilled") setProviders(checks[1].value.providers);
+    const failures = checks.filter((c) => c.status === "rejected");
+    if (failures.length) setError("Some diagnostics could not be refreshed. Saved preferences are preserved.");
+    setRefreshing(false);
+  }
   return (
     <>
       <div className="page-heading">
@@ -1251,6 +1265,7 @@ function Settings() {
       <ErrorMessage message={error} />
       <section className="settings-section">
         <h2>Your workstation</h2>
+        <button className="secondary" disabled={loading || refreshing} onClick={() => void refreshDiagnostics()}>{refreshing ? "Refreshing…" : "Refresh diagnostics"}</button>
         {loading && <p role="status">Checking your studio…</p>}
         <div className="diagnostics">
           <div>
@@ -1321,11 +1336,11 @@ function Settings() {
           </div>
         </div>
         {health?.hardware?.memory.free_gb !== undefined &&
-          health.hardware.memory.free_gb < 2 && (
+          health.hardware.memory.free_gb < 5 && (
             <p className="resource-note">
-              Available RAM is low. Close other heavy applications before local
-              inference. The studio does not change your power, paging or driver
-              settings.
+              The initial GPU and 1.5B CPU profiles require at least 5 GiB free RAM.
+              Close heavy applications and refresh
+              diagnostics. This resource check does not prove model fit.
             </p>
           )}
         <p className="muted">
@@ -1345,9 +1360,10 @@ function Settings() {
                     ? "Watermarked abstract fixtures for workflow development."
                     : "Installed models are discovered locally.")}
               </p>
+              {p.last_check_at && <small>Last runtime check: {new Date(p.last_check_at * 1000).toLocaleString()}</small>}
             </div>
-            <span className={p.available ? "available" : "unavailable"}>
-              {p.available ? "Available" : "Setup needed"}
+            <span className={p.attention || !p.available ? "unavailable" : "available"}>
+              {p.status || (p.available ? "Installed" : "Setup needed")}
             </span>
           </div>
         ))}

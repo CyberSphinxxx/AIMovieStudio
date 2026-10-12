@@ -150,6 +150,7 @@ test("real request fails honestly and settings are actionable", async ({
     fullPage: true,
   });
   await page.getByRole("link", { name: "Settings", exact: true }).click();
+  await expect.poll(() => page.evaluate(() => window.scrollY)).toBe(0);
   await expect(
     page.getByRole("heading", { name: "The studio behind the scenes." }),
   ).toBeVisible();
@@ -249,6 +250,7 @@ test("season prewriting is saved and studio backup is downloadable", async ({
 
 test("settings cannot overwrite saved configuration while it is loading", async ({
   page,
+  request,
 }) => {
   let release: () => void = () => {};
   const gate = new Promise<void>((resolve) => {
@@ -275,4 +277,10 @@ test("settings cannot overwrite saved configuration while it is loading", async 
   await expect(
     page.getByText("Checking your studio…", { exact: true }),
   ).toHaveCount(0);
+  const saved = await (await request.get("/api/settings")).json();
+  await page.getByLabel("Local story engine", { exact: true }).selectOption("cpu_1_5b");
+  await page.getByRole("button", { name: "Refresh diagnostics", exact: true }).click();
+  await expect(page.getByRole("button", { name: "Refresh diagnostics", exact: true })).toBeEnabled();
+  await expect(page.getByLabel("Local story engine", { exact: true })).toHaveValue("cpu_1_5b");
+  expect(await (await request.get("/api/settings")).json()).toEqual(saved);
 });

@@ -37,6 +37,7 @@ def main():
     try:
         report["before"] = require_resources()
         if args.phase == "runtime":
+            report["runtime_attempted"] = True
             result = provider.request("discover", "", directory, lambda: None)
             report.update(status="RUNTIME_DISCOVERED_NOT_INFERENCE", result=result)
         elif args.phase == "image":
@@ -87,6 +88,23 @@ def main():
     finally:
         report["elapsed_seconds"] = round(time.monotonic() - started, 3)
         atomic_json(evidence, report)
+        if args.phase == "runtime" and report.get("runtime_attempted"):
+            error = report.get("error", "")
+            code = (
+                "OS_POLICY_BLOCKED" if "4551" in error or "OS_POLICY_BLOCKED" in error else report["status"]
+            )
+            if code not in {"OS_POLICY_BLOCKED", "RUNTIME_DISCOVERED_NOT_INFERENCE"}:
+                code = "FAILED"
+            atomic_json(
+                ROOT / "tools/gpu/runtime-status.json",
+                {
+                    "code": code,
+                    "checked_at": time.time(),
+                    "installation": config.installation,
+                    "python": config.python,
+                    "evidence_sha256": digest(evidence),
+                },
+            )
         print(
             json.dumps(
                 {k: v for k, v in report.items() if k not in {"result", "outputs", "metadata", "telemetry"}},

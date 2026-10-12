@@ -1,10 +1,9 @@
 # Active plan — 2026-10-12
-Task/ID: F7.03 optional future-draft editing.
-User behavior: Edit scene action/camera/spoken lines/speaker in a saved unproduced episode. Saves retain old draft history and optimistic revision; later drafts require review. Normal one-button production remains unchanged.
-Ground truth:56ce212 CPU proposal/profile verified81/2/5 (plus10 download fixtures); real generation gates blocked/pending. Saved season drafts exist; editing is absent. Existing worker validates a saved DRAFTED script before production.
-Slice: Typed sparse shot edits API; selected episode must have saved script/no production job; project cannot be queued/running/paused. Transaction checks revision, full script/declared continuity, stores append-only previous version and changes, increments revision, marks later drafts REVIEW_REQUIRED. Optional Story view editor with preserved unsaved values and accessible labels.
-Safety: No media deletion/overwrite; refuse already produced/active scripts. No model downloads. Earlier planned changes are simulated solely for draft validation, never committed canon. Stable identities/runtime retained.
-Tests: API stale/active/produced/unknown shot/speaker/duration content, history/restart, future invalidation, production consumes edited script unchanged, actual Edge edit/reload/episode2 export, responsive/keyboard.
-Recovery: Existing script receipt retained; append-only edit event preserves original; future production rechecks completed canon.
-Progress: Implemented typed patches/history/UI; initial exact-label browser failure fixed with explicit IDs. Full91 backend, latest14 story/edit,2 Vitest and final5 Edge passed;390px visual/Axe reviewed.
-Result: Saved future-draft editing slice DONE_VERIFIED; full editing/regeneration remains incomplete; CPU approval remains pending.
+Task/ID: F1.04 setup and resource diagnostics.
+Behavior: Settings distinguishes installed files from proven inference, shows CPU RAM readiness and the last observed Windows GPU runtime block, and lets users refresh measurements without overwriting unsaved preferences.
+Ground truth:529f026 verified draft edits/history and real CPU installed but refused2.44GiB RAM; GPU actual WinError4551/CodeIntegrity3077. Provider rows currently call configured/installed stacks Available. GPU runtime status should be app-owned machine evidence, not an unbounded import on page load.
+Slice: Small persisted last-check summary from bounded smoke, pure provider-readiness classification, refreshable Settings diagnostics and precise labels. Keep available as discovery signal; no claim of6GB fit or quality. No automatic model loading/downloading or OS changes.
+Tests: Installed/absent/low/unknownRAM, failedOScheck versus untested/otherinstall, stale/invalid reports, refresh preserves form selections; current browser paths still pass and visual Settings review.
+Recovery: Additive JSON status/readiness fields; absence/corruption means untested, never inferred success. Existing jobs/config preserved.
+Progress: Implemented statuses/summary/refresh. Full97 backend/2 Vitest/5 Edge passed, then8 targeted summary guards and final5 Edge after scroll fix passed. Visual Settings/Axe checked.
+Result: Setup readiness slice DONE_VERIFIED; GPU inference/CPU1.5B quality and guided full installation remain blocked/unproven.

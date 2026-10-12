@@ -31,6 +31,7 @@ from studio.storage import Store, digest
 from studio.worker import Worker
 from studio.providers import WanGPConfig, WanGPProvider
 from studio.diagnostics import hardware
+from studio.setup_status import classify, read_runtime_status
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -189,7 +190,7 @@ def create_app(root: Path | None = None, run_worker=True) -> FastAPI:
                 models = [m["name"] for m in response.json()["models"]]
         except (httpx.HTTPError, KeyError):
             pass
-        return {
+        result = {
             "providers": [
                 {
                     "id": "demo",
@@ -244,6 +245,11 @@ def create_app(root: Path | None = None, run_worker=True) -> FastAPI:
                 },
             ]
         }
+
+        result["providers"] = classify(
+            result["providers"], hardware()["memory"], read_runtime_status(ROOT), config.installation
+        )
+        return result
 
     @app.get("/api/settings")
     def settings():

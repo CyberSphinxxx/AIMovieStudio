@@ -11,7 +11,7 @@ Do not interpret partial task evidence as full phase acceptance. See PROGRESS an
 | F1.01 | DONE_VERIFIED | API and frontend run; build/lint/typecheck pass |
 | F1.02 | DONE_VERIFIED | API persistence/idempotency/reopen tests, browser create |
 | F1.03 | IN_PROGRESS | Responsive screenshots + Axe passed; broader UI/screen-reader review open |
-| F1.04 | IN_PROGRESS | Live RAM/GPU/temp/driver diagnostics and conservative preflight implemented; CUDA runtime OS-blocked |
+| F1.04 | IN_PROGRESS | Live RAM/GPU/temp/driver, install versus proof statuses, resource guidance and last native block/refresh tested; CUDA runtime OS-blocked |
 | F1.05 | DONE_VERIFIED | Five Edge flows passed including blocked settings save while loading; actual demo playback/download and series prewrite |
 | F2.01 | IN_PROGRESS | 0.5B quality/schema failures retained; approved1.5B installed/hash-verified but inference refused2.44GiB RAM; no reliable writing proof |
 | F2.02 | IN_PROGRESS | Finite ending and episode outline persisted; real quality evaluation open |
@@ -51,4 +51,4 @@ Do not interpret partial task evidence as full phase acceptance. See PROGRESS an
 | F8.05 | IN_PROGRESS | Main npm/Python audit0; hostile backups/download budgets tested; vendor90 advisories unresolved |
 | F8.06 | IN_PROGRESS | Screenshots/evidence/run docs; release still blocked by listed gates |
 
-Next unblocked: F1.04 truthful setup diagnostics and resource recovery guidance; F7.03 produced-asset versioning/regeneration remains open. CPU1.5B is approved/installed but inference waits5GiB RAM (latest2.88GiB); preserve preflight failure. GPU App Control block remains; no system changes/cloud/paid action.
+Next unblocked: F7.03 optional screenplay review before footage and safe repair of pre-media failed/paused scripts. CPU1.5B installed/approved but no inference below5GiB RAM (latest3.26GiB). GPU App Control block persists; no OS changes.
