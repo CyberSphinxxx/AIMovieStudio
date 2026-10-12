@@ -1,6 +1,6 @@
 # Handoff — 2026-10-12
 
-ACTIVE DEVELOPMENT. The complete application is unfinished. Branch: main. Previous HEAD: 6731e46; previous implementation: c8af09b. New checkpoint pending: durable alternate-aspect exports. No remote changes or original deletion; blueprint preserved.
+ACTIVE DEVELOPMENT. The complete application is unfinished. Branch: main. Previous HEAD: 6731e46; previous implementation: c8af09b. Verified implementation checkpoint: dd1da30 (durable alternate-aspect exports). No remote changes or original deletion; blueprint preserved.
 
 Environment: Windows 11 Home, RTX 3060 Laptop (6144 MiB), driver 610.88, 16 GB RAM. Main .venv Python 3.12.14; Node 24.19/npm 11.17. Separate app-owned GPU Python 3.11.14/Torch 2.10+cu130; app-local FFmpeg; llama.cpp CPU b11558 and Qwen 0.5B/approved 1.5B. Latest available RAM: 0.24 GiB, 98% load. Heavy work stopped. Current server is ready at http://127.0.0.1:8765 with new source, database ok and worker alive. It was absent before normal launch; cause unknown.
 
