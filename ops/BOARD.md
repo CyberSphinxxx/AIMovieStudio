@@ -28,7 +28,7 @@ Do not interpret partial task evidence as full phase acceptance. See PROGRESS an
 | F4.02 | DONE_VERIFIED | Persisted SSE cursor/Last-Event-ID replay and frontend polling tested |
 | F4.03 | IN_PROGRESS | Active atomic pause/resume/hash reuse, cancel/no-export, settings freeze and retry budget tests; broader UI smoke open |
 | F4.04 | IN_PROGRESS | Sequential scheduling, CPU unload, disk reserve; quota/resource measurements incomplete |
-| F4.05 | IN_PROGRESS | Hash recovery/hardkills passed; intermittent unclassified first-read I/O after kill remains OPEN despite9 later passes |
+| F4.05 | IN_PROGRESS | First-read IOERR_TRUNCATE reproduced/captured; bounded Windows snapshot retry, atomic read consistency,6 SQLite kills+3 media kills verified; broader interruption release gate open |
 | F5.01 | IN_PROGRESS | Official API bridge, offline guard and telemetry; real runtime failed at OS CUDA import; no inference proof |
 | F5.02 | BLOCKED_OS_POLICY | Real 6 GB image/video inference NOT TESTED; video download requires image PASS |
 | F5.03 | TODO | Sequential real shots and inspection |
@@ -51,4 +51,4 @@ Do not interpret partial task evidence as full phase acceptance. See PROGRESS an
 | F8.05 | IN_PROGRESS | Main npm/Python audit0; hostile backups/download budgets tested; vendor90 advisories unresolved |
 | F8.06 | IN_PROGRESS | Screenshots/evidence/run docs; release still blocked by listed gates |
 
-Next: diagnose post-kill read I/O with extended codes when resources permit, then graphical restore/produced-asset versioning/licensing. Latest freeRAM0.24GiB (98%load); stop heavy checks, do not load models below5GiB. Approved1.5B installation complete, inference NOT RUN. GPU App Control remains blocked; no system changes.
+Next: graphical restore, then produced-asset versioning/licensing. Latest freeRAM1.76GiB; model loading still requires5GiB. Approved1.5B installation complete, inference NOT RUN. GPU App Control remains blocked; no system changes.

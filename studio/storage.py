@@ -39,6 +39,7 @@ class Store:
         self.root.mkdir(parents=True, exist_ok=True)
         self.database = self.root / "studio.sqlite3"
         self.initialization_retries = 0
+        self.read_retries = 0
         for attempt in range(3):
             try:
                 self.migrate()
@@ -107,19 +108,34 @@ class Store:
 
     @contextmanager
     def connect(self):
-        db = sqlite3.connect(self.database, timeout=10)
-        db.row_factory = sqlite3.Row
-        db.execute("PRAGMA foreign_keys=ON")
+        db, original_error = None, None
         try:
+            db = sqlite3.connect(self.database, timeout=10)
+            db.row_factory = sqlite3.Row
+            db.execute("PRAGMA foreign_keys=ON")
             yield db
             db.commit()
         except BaseException as error:
+            original_error = error
             if isinstance(error, sqlite3.Error):
-                error.add_note(f"SQLite connection: {error.sqlite_errorname} ({error.sqlite_errorcode})")
-            db.rollback()
+                error.add_note(
+                    f"SQLite connection: {getattr(error, 'sqlite_errorname', 'UNKNOWN')} "
+                    f"({getattr(error, 'sqlite_errorcode', 'UNKNOWN')})"
+                )
+            if db is not None:
+                try:
+                    db.rollback()
+                except Exception as cleanup_error:
+                    error.add_note(f"SQLite rollback also failed: {cleanup_error!r}")
             raise
         finally:
-            db.close()
+            if db is not None:
+                try:
+                    db.close()
+                except Exception as cleanup_error:
+                    if original_error is None:
+                        raise
+                    original_error.add_note(f"SQLite close also failed: {cleanup_error!r}")
 
     def event(self, db, pid: str, jid: str | None, kind: str, data: dict):
         db.execute(
@@ -145,7 +161,31 @@ class Store:
         return pid, True
 
     def get(self, pid: str) -> dict:
+        for attempt in range(3):
+            try:
+                return self._project_snapshot(pid)
+            except sqlite3.Error as error:
+                # Reproduced first-read recovery truncation after TerminateProcess.
+                # Only this read-only snapshot is safe to restart; never replay writes.
+                if (
+                    os.name == "nt"
+                    and getattr(error, "sqlite_errorcode", None) == sqlite3.SQLITE_IOERR_TRUNCATE
+                    and attempt < 2
+                ):
+                    self.read_retries += 1
+                    logging.getLogger(__name__).warning(
+                        "Retrying SQLite project snapshot truncation (%s), attempt %s",
+                        error.sqlite_errorname,
+                        attempt + 1,
+                    )
+                    time.sleep(0.1 * (attempt + 1))
+                    continue
+                raise
+
+    def _project_snapshot(self, pid: str) -> dict:
         with self.connect() as db:
+            db.execute("PRAGMA query_only=ON")
+            db.execute("BEGIN")
             row = db.execute("SELECT * FROM projects WHERE id=?", (pid,)).fetchone()
             if not row:
                 raise KeyError(pid)

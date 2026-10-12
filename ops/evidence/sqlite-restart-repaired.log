@@ -1,0 +1,53 @@
+Retrying SQLite project snapshot truncation (SQLITE_IOERR_TRUNCATE), attempt 1
+Retrying SQLite project snapshot truncation (SQLITE_IOERR_TRUNCATE), attempt 1
+Retrying SQLite startup file truncation (SQLITE_IOERR_TRUNCATE), attempt 1
+{
+  "status": "NOT_REPRODUCED",
+  "is_mock": true,
+  "scope": "SQLite-only sample; no media/inference",
+  "sqlite_version": "3.53.1",
+  "preflight": {
+    "available": true,
+    "total_gb": 15.19,
+    "free_gb": 0.77,
+    "load_percent": 94
+  },
+  "rounds": [
+    {
+      "number": 1,
+      "reads_before_kill": 20,
+      "reads_after_restart": 20,
+      "sampled_writer_rss_bytes": 4890624,
+      "hard_kill_exit_code": 1,
+      "first_read_truncate_retries": 1,
+      "startup_truncate_retries": 0,
+      "integrity": "ok",
+      "reopened_read_truncate_retries": 0
+    },
+    {
+      "number": 2,
+      "reads_before_kill": 20,
+      "reads_after_restart": 20,
+      "sampled_writer_rss_bytes": 4886528,
+      "hard_kill_exit_code": 1,
+      "first_read_truncate_retries": 1,
+      "startup_truncate_retries": 0,
+      "integrity": "ok",
+      "reopened_read_truncate_retries": 0
+    },
+    {
+      "number": 3,
+      "reads_before_kill": 20,
+      "reads_after_restart": 20,
+      "sampled_writer_rss_bytes": 4886528,
+      "hard_kill_exit_code": 1,
+      "first_read_truncate_retries": 0,
+      "startup_truncate_retries": 1,
+      "integrity": "ok",
+      "reopened_read_truncate_retries": 0
+    }
+  ],
+  "fixture": "C:\\L3mxr\\Github Repositories\\AIMovieStudio\\data\\sqlite-restart-probes\\ec3b8872-2d3e-4735-86c7-ad5ee981102b",
+  "errors": [],
+  "seconds": 0.938
+}

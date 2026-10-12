@@ -36,3 +36,6 @@ Use explicit SUPERSEDED step state for a user-requested pre-media revision; pres
 
 
 REFORMAT is a durable export-only stage appended to completed episode jobs, never recommits canon. Source/profile request is idempotent, immutable original/checksum is authoritative, variants retain whole frame with black padding and existing AAC/subtitles/provider/quality labels. UI offers separate copies/provenance; do not represent resizing as AI regeneration or nativeHD. Existing worker retry/cancel boundaries apply; stopped production must be resolved before another format. Backup supports REFORMAT; originals remain usable regardless of copy state.
+
+
+A witnessed first-read restart error now identifies IOERR_TRUNCATE1546. Retry only Store.get read-only snapshots on Windows,3 total attempts/fresh connections/100-200ms; never general connect/write retry. Query-only BEGIN prevents mixed project/job/asset revisions. Preserve initial exceptions across rollback/close failures. SQLite-only reproduction keeps sample fixtures and logs with exact codes; report observed successful recovery separately from absence of errors. Original older uncaptured code remains unknowable.

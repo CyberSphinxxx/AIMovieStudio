@@ -1,12 +1,15 @@
 # Active plan — 2026-10-12
-Task/ID: F6.05 durable alternate-aspect exports.
-Behavior: Download a completed movie in portrait, landscape or square without rerunning writing, speech or AI footage; preserve original files/canon/provider labels.
-Ground truth: serialized worker, hashed receipts, unique job per episode. F4.05 intermittent read I/O remains open, not repaired by this slice.
-Research: https://www.ffmpeg.org/ffmpeg-filters.html checked2026-10-12 confirms scale decrease/divisible-by and centered pad. Fit complete frame with black bars; no cropping/HD claim.
-Slice: typed REFORMAT appended to completed job, idempotent source/profile, no other unfinished jobs; pinned source/hash, two-thread argv FFmpeg, AAC/subtitle copy, probe/decode/atomic publish/receipt recovery/backup validation. Export UI separate download and provenance.
-Files: export_variants/media/worker/api/backup; client App/types; API/media/recovery/backup/browser tests.
-Safety: no models/downloads/system changes/deletions; scoped UUID files; one worker, bounded attempts, checksum and disk guards.
-Exit: concurrent requests create one step; aspects/duration/AAC/subtitles retained; original hashes/canon unchanged; receipt and restored pending stage recover; browser download/mobile/Axe verified. Checks serial and resource-bounded.
-Rollback: original files/steps untouched; current app required for new REFORMAT stages.
-Progress:5 new tests;15 targeted export/backup/review tests PASS26.43s, Ruff/lint/type/build PASS,1 Edge PASS12.6s. Actual hardkill after receipt, recovery, backup resume, AAC packet hash/subtitle text/padding, concurrent duplicate requests, original/canon preservation verified. Mobile390px screenshot visually inspected; Axe PASS. Main server was absent, normal launcher startup PASS; current source loaded.
-Result: Alternate-aspect slice DONE_VERIFIED against development media. Full suite not rerun at new RAM boundary0.24GiB/98%; prior105 backend/2Vitest/6Edge evidence remains historical. F6.05 overall IN_PROGRESS (open-folder/custom HD). Real inference and unclassified SQLite read blocker unchanged.
+Task/ID: F4.05 bounded SQLite-only restart diagnosis.
+Motivation: Capture the extended error code behind the intermittent first-read disk I/O after a hard kill without video/AI workload.
+Ground truth: Prior original read failure unclassified; startup IOERR_TRUNCATE is separately identified. Store.connect currently can let rollback failure mask the original exception and setup failures occur outside its diagnostic scope.
+Research: Official https://www.sqlite.org/rescode.html checked2026-10-12 distinguishes IOERR_TRUNCATE, FSTAT and other VFS codes; do not assume all disk I/O errors have one cause.
+Slice: Three small writer/read/kill/reopen cycles on newly generated sample data, bounded timeout/memory guard, child logs and structured SQLite codes; retain fixture for inspection. Preserve original exception if rollback also fails, attach cleanup diagnostic rather than replacing it. No retry-policy change.
+Files: scripts/sqlite_restart_probe.py, studio/storage.py, tests/test_storage_startup.py; memory/evidence.
+Safety: No real projects/models/user processes/security changes, no deletion. App-owned child and generated data paths only; no blanket read/write retry or WAL deletion. Probe stops on first failure/resource guard.
+Exit: Code capture fixtures (setup/operation/rollback errors); actual three kills, inspect report/database; distinguish not-reproduced from repaired. Only lightweight tests now (initial freeRAM0.68GiB).
+Rollback: No schema/retry changes. New sample fixtures are independent; original app data intact.
+Progress: Recon complete, implement probe/diagnostic preservation.
+Result: IN_PROGRESS.
+
+Progress: First probe captured actual first-read IOERR_TRUNCATE1546. Implemented read-only bounded Windows retry and atomic query-only snapshot, preserved original cleanup exceptions.23 unit/API checks PASS3.44s;6 SQLite kills PASS (5 actualread/1startup retry);3 media hardkills+5export tests PASS39.24s;RuffPASS. FinalRAM1.76GiB.
+Result: Observed first-read class repaired/verified, not a claim that every possible disk I/O cause is solved. Native inference blocked. Next F8.02 graphicalrestore.
