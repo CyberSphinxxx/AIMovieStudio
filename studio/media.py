@@ -87,7 +87,13 @@ def probe(path: Path) -> dict:
     )
 
 
-def validate_video(path: Path, size: tuple[int, int], duration: float, audio: bool = False) -> dict:
+def validate_video(
+    path: Path,
+    size: tuple[int, int],
+    duration: float,
+    audio: bool = False,
+    check: Callable[[], None] = lambda: None,
+) -> dict:
     result = probe(path)
     video = next((s for s in result["streams"] if s["codec_type"] == "video"), None)
     if not video or (video["width"], video["height"]) != size or video["codec_name"] != "h264":
@@ -97,8 +103,63 @@ def validate_video(path: Path, size: tuple[int, int], duration: float, audio: bo
     if audio and not any(s["codec_type"] == "audio" and s["codec_name"] == "aac" for s in result["streams"]):
         raise RuntimeError("BAD_OUTPUT: AAC soundtrack is missing.")
     # Decode the whole tiny draft output; a parseable container alone is insufficient.
-    run([binary("ffmpeg"), "-v", "error", "-i", str(path), "-f", "null", "-"], timeout=120)
+    run(
+        [binary("ffmpeg"), "-v", "error", "-threads", "2", "-i", str(path), "-f", "null", "-"],
+        check,
+        timeout=120,
+    )
     return result
+
+
+def reformat(source: Path, output: Path, size: tuple[int, int], check):
+    width, height = size
+    # Preserve the whole composition, including development watermarks.
+    filters = (
+        f"scale={width}:{height}:force_original_aspect_ratio=decrease:force_divisible_by=2,"
+        f"pad={width}:{height}:(ow-iw)/2:(oh-ih)/2:color=black,setsar=1"
+    )
+    run(
+        [
+            binary("ffmpeg"),
+            "-y",
+            "-v",
+            "error",
+            "-threads",
+            "2",
+            "-i",
+            str(source),
+            "-map",
+            "0:v:0",
+            "-map",
+            "0:a:0",
+            "-map",
+            "0:s?",
+            "-vf",
+            filters,
+            "-filter_threads",
+            "1",
+            "-c:v",
+            "libx264",
+            "-threads",
+            "2",
+            "-preset",
+            "fast",
+            "-crf",
+            "20",
+            "-pix_fmt",
+            "yuv420p",
+            "-c:a",
+            "copy",
+            "-c:s",
+            "copy",
+            "-movflags",
+            "+faststart",
+            "-f",
+            "mp4",
+            str(output),
+        ],
+        check,
+    )
 
 
 def font(size: int):

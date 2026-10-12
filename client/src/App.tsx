@@ -398,7 +398,11 @@ function Home() {
               </label>
             )}
             <label className="check-label">
-              <input type="checkbox" checked={reviewStory} onChange={(e) => setReviewStory(e.target.checked)} />
+              <input
+                type="checkbox"
+                checked={reviewStory}
+                onChange={(e) => setReviewStory(e.target.checked)}
+              />
               Review the screenplay before making footage
             </label>
             <p>
@@ -594,7 +598,10 @@ function Studio({ id }: { id: string }) {
   const count = currentSteps.length || 1;
   const running = job?.state === "RUNNING" || job?.state === "QUEUED";
   const active = job?.steps.find((s) => s.state === "RUNNING");
-  const episodeState = ep?.status === "REVIEW_REQUIRED" ? ep.status : job?.state || ep?.status || project.status;
+  const episodeState =
+    ep?.status === "REVIEW_REQUIRED"
+      ? ep.status
+      : job?.state || ep?.status || project.status;
   return (
     <>
       <button
@@ -694,7 +701,9 @@ function Studio({ id }: { id: string }) {
                   <div className="preview-empty">
                     <Clapperboard size={42} />
                     <p>Your story is taking shape.</p>
-                    <small>{active ? stepLabel(active) : stageLabel(project.status)}</small>
+                    <small>
+                      {active ? stepLabel(active) : stageLabel(project.status)}
+                    </small>
                   </div>
                 )}
               </div>
@@ -727,45 +736,49 @@ function Studio({ id }: { id: string }) {
             </>
           )}
           <div hidden={tab !== "Story"}>
-              <h2>The story bible</h2>
-              {project.plan ? (
-                <>
-                  <p className="lead">{project.plan.logline}</p>
-                  <details className="ending">
-                    <summary>Planned ending · contains spoilers</summary>
-                    <p>{project.plan.ending}</p>
-                  </details>
-                  <h3>World rules</h3>
-                  <ul>
-                    {project.plan.world_rules.map((rule) => (
-                      <li key={rule}>{rule}</li>
-                    ))}
-                  </ul>
-                  <h3>Episode {episode} screenplay</h3>
-                  <pre className="screenplay">
-                    {ep?.script?.screenplay ||
-                      "The screenplay will appear when this episode is prepared."}
-                  </pre>
-                  {ep?.script && (
-                    <DraftEditor key={`${id}:${episode}`} project={project} episode={ep} onSaved={reload} />
-                  )}
-                  <h3>Saved continuity</h3>
-                  {project.canon.length ? (
-                    project.canon.map((event, i) => (
-                      <p key={i}>
-                        Episode {event.episode} · {event.value}
-                      </p>
-                    ))
-                  ) : (
-                    <p className="muted">
-                      Episode outcomes commit after the export passes
-                      validation.
+            <h2>The story bible</h2>
+            {project.plan ? (
+              <>
+                <p className="lead">{project.plan.logline}</p>
+                <details className="ending">
+                  <summary>Planned ending · contains spoilers</summary>
+                  <p>{project.plan.ending}</p>
+                </details>
+                <h3>World rules</h3>
+                <ul>
+                  {project.plan.world_rules.map((rule) => (
+                    <li key={rule}>{rule}</li>
+                  ))}
+                </ul>
+                <h3>Episode {episode} screenplay</h3>
+                <pre className="screenplay">
+                  {ep?.script?.screenplay ||
+                    "The screenplay will appear when this episode is prepared."}
+                </pre>
+                {ep?.script && (
+                  <DraftEditor
+                    key={`${id}:${episode}`}
+                    project={project}
+                    episode={ep}
+                    onSaved={reload}
+                  />
+                )}
+                <h3>Saved continuity</h3>
+                {project.canon.length ? (
+                  project.canon.map((event, i) => (
+                    <p key={i}>
+                      Episode {event.episode} · {event.value}
                     </p>
-                  )}
-                </>
-              ) : (
-                <p className="empty">Preparing the story plan…</p>
-              )}
+                  ))
+                ) : (
+                  <p className="muted">
+                    Episode outcomes commit after the export passes validation.
+                  </p>
+                )}
+              </>
+            ) : (
+              <p className="empty">Preparing the story plan…</p>
+            )}
           </div>
           {tab === "Cast & World" && (
             <>
@@ -957,6 +970,73 @@ function Studio({ id }: { id: string }) {
                       ? "Windows synthetic speech + original ambience."
                       : "Soundtrack only · dialogue omitted in Settings."}
                   </p>
+                  <div className="provider-config">
+                    <h3>Make a copy for another screen</h3>
+                    <p className="muted">
+                      Keeps the whole picture with black bars, plus your audio
+                      and subtitles. Uses the saved movie; no AI generation.
+                    </p>
+                    <div className="download-list">
+                      {(
+                        [
+                          ["portrait", "Portrait · 9:16", 360, 640],
+                          ["landscape", "Landscape · 16:9", 640, 360],
+                          ["square", "Square · 1:1", 480, 480],
+                        ] as const
+                      ).map(([orientation, label, width, height]) => {
+                        const copy = project.assets.find(
+                          (a) =>
+                            ["export", "export-variant"].includes(a.role) &&
+                            a.metadata.episode === episode &&
+                            a.metadata.width === width &&
+                            a.metadata.height === height,
+                        );
+                        return copy ? (
+                          <a key={orientation} href={assetUrl(copy, true)}>
+                            <Download size={16} /> Download {label} · MP4
+                          </a>
+                        ) : (
+                          <button
+                            key={orientation}
+                            className="secondary"
+                            disabled={
+                              busy ||
+                              project.jobs.some((j) => j.state !== "SUCCEEDED")
+                            }
+                            onClick={() =>
+                              void action(`episodes/${episode}/export-copy`, {
+                                orientation,
+                              })
+                            }
+                          >
+                            <Film size={16} /> Make {label} copy
+                          </button>
+                        );
+                      })}
+                    </div>
+                    {job?.steps.some(
+                      (s) => s.stage === "REFORMAT" && s.state !== "SUCCEEDED",
+                    ) && (
+                      <p className="muted" role="status">
+                        {running
+                          ? "Making your copy. The original movie is ready to download."
+                          : "Copy stopped. Use the production controls in Overview to resume or inspect the error."}
+                      </p>
+                    )}
+                    {project.assets
+                      .filter(
+                        (a) =>
+                          a.role === "manifest-variant" &&
+                          a.metadata.episode === episode,
+                      )
+                      .map((a) => (
+                        <p key={a.id}>
+                          <a href={assetUrl(a, true)}>
+                            {a.metadata.orientation} copy provenance · JSON
+                          </a>
+                        </p>
+                      ))}
+                  </div>
                 </>
               )}
               <div className="download-list">
@@ -1069,7 +1149,9 @@ function Studio({ id }: { id: string }) {
                   (s) =>
                     s.stage === stage ||
                     (stage === "SCRIPT" &&
-                      ["SCRIPT_BATCH", "DRAFT_BATCH", "DRAFT"].includes(s.stage)),
+                      ["SCRIPT_BATCH", "DRAFT_BATCH", "DRAFT"].includes(
+                        s.stage,
+                      )),
                 ) || [];
               const finished =
                 steps.length > 0 && steps.every((s) => s.state === "SUCCEEDED");
@@ -1094,9 +1176,12 @@ function Studio({ id }: { id: string }) {
             })}
           </ol>
           <div className="production-actions">
-            {ep?.can_edit_draft && ["PAUSED", "FAILED"].includes(job?.state || "") && (
-              <button className="secondary" onClick={() => setTab("Story")}>Review or edit screenplay</button>
-            )}
+            {ep?.can_edit_draft &&
+              ["PAUSED", "FAILED"].includes(job?.state || "") && (
+                <button className="secondary" onClick={() => setTab("Story")}>
+                  Review or edit screenplay
+                </button>
+              )}
             {running && (
               <>
                 <button
@@ -1257,11 +1342,18 @@ function Settings() {
   }
   async function refreshDiagnostics() {
     setRefreshing(true);
-    const checks = await Promise.allSettled([api<Health>("/health"), api<{ providers: Provider[] }>("/providers")]);
+    const checks = await Promise.allSettled([
+      api<Health>("/health"),
+      api<{ providers: Provider[] }>("/providers"),
+    ]);
     if (checks[0].status === "fulfilled") setHealth(checks[0].value);
-    if (checks[1].status === "fulfilled") setProviders(checks[1].value.providers);
+    if (checks[1].status === "fulfilled")
+      setProviders(checks[1].value.providers);
     const failures = checks.filter((c) => c.status === "rejected");
-    if (failures.length) setError("Some diagnostics could not be refreshed. Saved preferences are preserved.");
+    if (failures.length)
+      setError(
+        "Some diagnostics could not be refreshed. Saved preferences are preserved.",
+      );
     setRefreshing(false);
   }
   return (
@@ -1278,7 +1370,13 @@ function Settings() {
       <ErrorMessage message={error} />
       <section className="settings-section">
         <h2>Your workstation</h2>
-        <button className="secondary" disabled={loading || refreshing} onClick={() => void refreshDiagnostics()}>{refreshing ? "Refreshing…" : "Refresh diagnostics"}</button>
+        <button
+          className="secondary"
+          disabled={loading || refreshing}
+          onClick={() => void refreshDiagnostics()}
+        >
+          {refreshing ? "Refreshing…" : "Refresh diagnostics"}
+        </button>
         {loading && <p role="status">Checking your studio…</p>}
         <div className="diagnostics">
           <div>
@@ -1351,9 +1449,9 @@ function Settings() {
         {health?.hardware?.memory.free_gb !== undefined &&
           health.hardware.memory.free_gb < 5 && (
             <p className="resource-note">
-              The initial GPU and 1.5B CPU profiles require at least 5 GiB free RAM.
-              Close heavy applications and refresh
-              diagnostics. This resource check does not prove model fit.
+              The initial GPU and 1.5B CPU profiles require at least 5 GiB free
+              RAM. Close heavy applications and refresh diagnostics. This
+              resource check does not prove model fit.
             </p>
           )}
         <p className="muted">
@@ -1373,9 +1471,18 @@ function Settings() {
                     ? "Watermarked abstract fixtures for workflow development."
                     : "Installed models are discovered locally.")}
               </p>
-              {p.last_check_at && <small>Last runtime check: {new Date(p.last_check_at * 1000).toLocaleString()}</small>}
+              {p.last_check_at && (
+                <small>
+                  Last runtime check:{" "}
+                  {new Date(p.last_check_at * 1000).toLocaleString()}
+                </small>
+              )}
             </div>
-            <span className={p.attention || !p.available ? "unavailable" : "available"}>
+            <span
+              className={
+                p.attention || !p.available ? "unavailable" : "available"
+              }
+            >
               {p.status || (p.available ? "Installed" : "Setup needed")}
             </span>
           </div>
@@ -1415,7 +1522,11 @@ function Settings() {
                 Small CPU story · Qwen 0.5B (feasibility)
               </option>
               <option value="cpu_1_5b">
-                CPU story · Qwen 1.5B (experiment{providers.find((p) => p.id === "cpu-1-5b")?.available ? ", installed" : ", separate install"})
+                CPU story · Qwen 1.5B (experiment
+                {providers.find((p) => p.id === "cpu-1-5b")?.available
+                  ? ", installed"
+                  : ", separate install"}
+                )
               </option>
             </select>
           </label>

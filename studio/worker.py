@@ -25,6 +25,7 @@ STAGES = {
     "CLIP": "Animating shots",
     "AUDIO": "Building the soundtrack",
     "EXPORT": "Finishing your movie",
+    "REFORMAT": "Making an export copy",
 }
 
 
@@ -294,6 +295,50 @@ class Worker:
             if conflicts:
                 raise RuntimeError("CANON_CONFLICT: " + "; ".join(conflicts))
             return {"script": (section if stage.endswith("_BATCH") else script).model_dump(), "artifacts": []}
+        if stage == "REFORMAT":
+            # Budget beyond the reserved free space for the bounded draft copy.
+            if shutil.disk_usage(self.store.root).free < reserve + 64 * 1024**2:
+                raise RuntimeError("DISK_FULL: Export copy needs 64 MB above the configured disk reserve.")
+            source = next((a for a in project["assets"] if a["id"] == step["payload"]["source_id"]), None)
+            if not source or source["role"] != "export" or source["metadata"]["episode"] != step["episode"]:
+                raise RuntimeError("BAD_OUTPUT: Export copy source does not belong to this episode.")
+            path, _ = self.store.asset_path(source["id"])
+            if not path.is_file() or digest(path) != step["payload"]["source_sha256"]:
+                raise RuntimeError("BAD_OUTPUT: Original movie is missing or its checksum changed.")
+            original = source["metadata"]
+            source_probe = media.validate_video(
+                path, (original["width"], original["height"]), original["duration"], audio=True, check=check
+            )
+            size = media.SIZES[step["payload"]["orientation"]]
+            partial, final = directory / "copy.partial.mp4", directory / "copy.mp4"
+            media.reformat(path, partial, size, check)
+            validation = media.validate_video(partial, size, original["duration"], audio=True, check=check)
+            source_subtitles = sum(s["codec_type"] == "subtitle" for s in source_probe["streams"])
+            if sum(s["codec_type"] == "subtitle" for s in validation["streams"]) != source_subtitles:
+                raise RuntimeError("BAD_OUTPUT: Export copy lost an embedded subtitle track.")
+            os.replace(partial, final)
+            metadata = {
+                **original,
+                "width": size[0],
+                "height": size[1],
+                "orientation": step["payload"]["orientation"],
+                "reframe": "fit with black bars",
+                "profile_version": 1,
+                "parent_asset_ids": [source["id"]],
+                "parent_hashes": [source["sha256"]],
+            }
+            movie = self.artifact(step, "export-variant", final, metadata)
+            manifest = directory / "manifest.json"
+            atomic_json(
+                manifest,
+                {
+                    "schema_version": 1,
+                    "export": movie,
+                    "source_asset_id": source["id"],
+                    "media_probe": validation,
+                },
+            )
+            return {"artifacts": [movie, self.artifact(step, "manifest-variant", manifest, metadata)]}
         real_provider = WanGPProvider(WanGPConfig.model_validate(settings.get("wangp", {})), self.store.root)
         size = media.SIZES[spec["orientation"]]
         payload = step["payload"]
@@ -607,6 +652,10 @@ class Worker:
                     db.execute("UPDATE jobs SET state='PAUSED' WHERE id=?", (jid,))
                     db.execute("UPDATE projects SET status='PAUSED' WHERE id=?", (pid,))
                     self.store.event(db, pid, jid, "story_review_ready", {"episode": step["episode"]})
+            elif step["stage"] == "REFORMAT":
+                # Export-only work never recommits story facts or episode outcomes.
+                db.execute("UPDATE jobs SET state='SUCCEEDED',error=NULL WHERE id=?", (jid,))
+                db.execute("UPDATE projects SET status='COMPLETED',updated=? WHERE id=?", (time.time(), pid))
             elif step["stage"] == "EXPORT":
                 episode_row = db.execute(
                     "SELECT outline,script FROM episodes WHERE project_id=? AND number=?",

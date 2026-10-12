@@ -24,6 +24,8 @@ New longer productions write in saved sections of at most four shots. Interrupte
 
 Speech is measured before visual generation in new productions. A line that would need more than 1.15× tempo correction fails with its measured duration; the studio preserves the raw voice rather than racing or truncating dialogue. Export → **Audio stems for editing** downloads original voices, scene audio, ambience and the mixed WAV. These hashed source assets are included in portable backups.
 
+Export → **Make a copy for another screen** produces portrait, landscape or square MP4 copies from the completed original. It fits the whole picture with black bars and preserves audio, embedded subtitles, provider labels and demo watermarks. Copies have separate provenance, survive interruption and travel in backups. This performs no AI regeneration or HD enhancement. Finish or resolve stopped production before requesting another format; duplicate requests reuse the existing copy and retry budget. Originals and completed story canon stay intact.
+
 Double-click `StopStudio.cmd` to stop the server. Relaunch to resume interrupted work. Pause finishes the current atomic step; Stop production cancels that job permanently and preserves its assets. Failed steps have a finite retry budget. A changed or missing source asset blocks export with diagnostics.
 
 ## Setup from source
@@ -78,7 +80,7 @@ All services bind to localhost. Cross-origin browser writes and external hostnam
 
 - Real GPU references/video, guided model setup and measured 6 GB inference.
 - Declared prop ownership, character knowledge, location/life changes and episode-start flashbacks are checked. Fine-grained world time, costumes, relationships and semantic contradictions in prose remain incomplete.
-- Editing/regeneration, version branches, custom/native HD exports, graphical backup restore and advanced quality evaluation.
+- Editing/regeneration, version branches, custom/native HD exports, open-folder controls, graphical backup restore and advanced quality evaluation. Draft aspect copies are available.
 - Clean-machine packaging, dependency/license release review, full GPU OOM testing and cinematic review.
 - An intermittent first-read SQLite I/O error occurred after a hard kill. The preserved database passed integrity_check and subsequent kill runs passed; its extended code/root cause remain unconfirmed.
 

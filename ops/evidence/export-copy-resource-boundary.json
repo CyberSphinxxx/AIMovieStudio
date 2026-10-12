@@ -1,0 +1,22 @@
+{
+  "checked_at": "2026-10-12T05:33:34.835881+00:00",
+  "hardware": {
+    "gpu": {
+      "available": true,
+      "name": "NVIDIA GeForce RTX 3060 Laptop GPU",
+      "driver": "610.88",
+      "total_mb": 6144,
+      "used_mb": 1940,
+      "temperature_c": 71
+    },
+    "python": "3.12.14",
+    "memory": {
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 0.24,
+      "load_percent": 98
+    },
+    "measured_at": 1791783215.0632112
+  },
+  "decision": "No model loading or heavy checks below resource floor; existing approvals unchanged"
+}

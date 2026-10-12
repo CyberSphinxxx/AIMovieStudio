@@ -136,6 +136,7 @@ def validate_document(data):
             "CLIP",
             "AUDIO",
             "EXPORT",
+            "REFORMAT",
         }:
             raise ValueError("Unknown restored stage")
         json.loads(step["payload"])

@@ -1,6 +1,73 @@
 import { test, expect } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 
+test("saved movie exports another aspect without rewriting its story", async ({
+  page,
+  request,
+}) => {
+  await request.patch("/api/settings", {
+    data: { story_model: "", speech: "none", reserve_mb: 1024 },
+  });
+  const created = await request.post("/api/projects", {
+    data: {
+      idea: "An observatory finds an old signal. Export copy test.",
+      kind: "clip",
+      orientation: "portrait",
+      target_seconds: 5,
+      episodes: 1,
+      backend: "demo",
+      language: "English",
+      style: "Cinematic",
+      idempotency_key: `copy-${Date.now()}`,
+    },
+  });
+  expect(created.status()).toBe(201);
+  const pid = (await created.json()).id;
+  await page.goto(`/project/${pid}`);
+  await expect(
+    page.getByRole("heading", { name: "That’s a wrap." }),
+  ).toBeVisible({ timeout: 90000 });
+  const before = await (await request.get(`/api/projects/${pid}`)).json();
+  await page.getByRole("tab", { name: "Export", exact: true }).click();
+  await page
+    .getByRole("button", { name: "Make Landscape · 16:9 copy", exact: true })
+    .click();
+  const download = page.getByRole("link", {
+    name: "Download Landscape · 16:9 · MP4",
+    exact: true,
+  });
+  await expect(download).toBeVisible({ timeout: 30000 });
+  const response = await request.get((await download.getAttribute("href"))!);
+  expect(response.status()).toBe(200);
+  expect(response.headers()["content-type"]).toBe("video/mp4");
+  const after = await (await request.get(`/api/projects/${pid}`)).json();
+  expect(after.canon).toEqual(before.canon);
+  expect(after.episodes).toEqual(before.episodes);
+  expect(
+    after.assets.filter((a: { role: string }) => a.role === "export-variant"),
+  ).toHaveLength(1);
+  await page.setViewportSize({ width: 390, height: 844 });
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth <= window.innerWidth,
+    ),
+  ).toBe(true);
+  expect(
+    (
+      await new AxeBuilder({ page })
+        .withTags(["wcag2a", "wcag2aa", "wcag21aa"])
+        .analyze()
+    ).violations,
+  ).toEqual([]);
+  await page.screenshot({
+    path: "../ops/evidence/export-copies-mobile.png",
+    fullPage: true,
+  });
+  await page.reload();
+  await page.getByRole("tab", { name: "Export", exact: true }).click();
+  await expect(download).toBeVisible();
+});
+
 test("home is usable at target viewports and keyboard focus is visible", async ({
   page,
 }) => {
@@ -198,24 +265,43 @@ test("season prewriting is saved and studio backup is downloadable", async ({
   await page.getByRole("tab", { name: "Story", exact: true }).click();
   await expect(page.locator(".state-label")).toHaveText("Draft saved");
   await expect(page.locator(".screenplay").first()).not.toContainText("â");
-  await page.getByRole("button", { name: "Edit saved draft", exact: true }).click();
-  await page.getByLabel("Spoken line 1", { exact: true }).fill("We followed the signal home.");
+  await page
+    .getByRole("button", { name: "Edit saved draft", exact: true })
+    .click();
+  await page
+    .getByLabel("Spoken line 1", { exact: true })
+    .fill("We followed the signal home.");
   // Normal polling must preserve unsaved text.
-  await page.waitForResponse((response) => response.url().endsWith(`/api/projects/${id}`) && response.request().method() === "GET");
+  await page.waitForResponse(
+    (response) =>
+      response.url().endsWith(`/api/projects/${id}`) &&
+      response.request().method() === "GET",
+  );
   await page.getByRole("tab", { name: "Shots", exact: true }).click();
   await page.getByRole("tab", { name: "Story", exact: true }).click();
-  await expect(page.getByLabel("Spoken line 1", { exact: true })).toHaveValue("We followed the signal home.");
+  await expect(page.getByLabel("Spoken line 1", { exact: true })).toHaveValue(
+    "We followed the signal home.",
+  );
   await page.setViewportSize({ width: 390, height: 844 });
-  await page.screenshot({ path: "../ops/evidence/draft-editor-mobile.png", fullPage: true });
-  const editorA11y = await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa", "wcag21aa"]).analyze();
+  await page.screenshot({
+    path: "../ops/evidence/draft-editor-mobile.png",
+    fullPage: true,
+  });
+  const editorA11y = await new AxeBuilder({ page })
+    .withTags(["wcag2a", "wcag2aa", "wcag21aa"])
+    .analyze();
   expect(editorA11y.violations).toEqual([]);
   await page.getByRole("button", { name: "Save draft", exact: true }).click();
-  await expect(page.getByRole("status")).toHaveText("Draft saved. Previous text is retained in story history.");
+  await expect(page.getByRole("status")).toHaveText(
+    "Draft saved. Previous text is retained in story history.",
+  );
   await page.getByText("Previous draft text", { exact: true }).click();
   await page.getByText("Before revision 2", { exact: true }).click();
   await expect(page.getByText(/DEMO SCREENPLAY/).last()).toBeVisible();
   const edited = await (await request.get(`/api/projects/${id}`)).json();
-  expect(edited.episodes[1].script.shots[0].narration).toBe("We followed the signal home.");
+  expect(edited.episodes[1].script.shots[0].narration).toBe(
+    "We followed the signal home.",
+  );
   expect(edited.episodes[2].status).toBe("REVIEW_REQUIRED");
   await page.setViewportSize({ width: 1366, height: 900 });
   await page.reload();
@@ -278,34 +364,67 @@ test("settings cannot overwrite saved configuration while it is loading", async 
     page.getByText("Checking your studio…", { exact: true }),
   ).toHaveCount(0);
   const saved = await (await request.get("/api/settings")).json();
-  await page.getByLabel("Local story engine", { exact: true }).selectOption("cpu_1_5b");
-  await page.getByRole("button", { name: "Refresh diagnostics", exact: true }).click();
-  await expect(page.getByRole("button", { name: "Refresh diagnostics", exact: true })).toBeEnabled();
-  await expect(page.getByLabel("Local story engine", { exact: true })).toHaveValue("cpu_1_5b");
+  await page
+    .getByLabel("Local story engine", { exact: true })
+    .selectOption("cpu_1_5b");
+  await page
+    .getByRole("button", { name: "Refresh diagnostics", exact: true })
+    .click();
+  await expect(
+    page.getByRole("button", { name: "Refresh diagnostics", exact: true }),
+  ).toBeEnabled();
+  await expect(
+    page.getByLabel("Local story engine", { exact: true }),
+  ).toHaveValue("cpu_1_5b");
   expect(await (await request.get("/api/settings")).json()).toEqual(saved);
 });
 
-test("optional screenplay review edits and resumes before any footage", async ({ page, request }) => {
+test("optional screenplay review edits and resumes before any footage", async ({
+  page,
+  request,
+}) => {
   await request.patch("/api/settings", { data: { speech: "none" } });
   await page.goto("/");
   await page.getByLabel("SECONDS", { exact: true }).fill("5");
-  await page.getByRole("button", { name: "Creative settings", exact: true }).click();
-  await page.getByLabel("Review the screenplay before making footage", { exact: true }).check();
-  await page.getByLabel("What’s your movie about?").fill("A lighthouse keeper follows a signal and chooses to return home.");
+  await page
+    .getByRole("button", { name: "Creative settings", exact: true })
+    .click();
+  await page
+    .getByLabel("Review the screenplay before making footage", { exact: true })
+    .check();
+  await page
+    .getByLabel("What’s your movie about?")
+    .fill("A lighthouse keeper follows a signal and chooses to return home.");
   await page.getByRole("button", { name: "Create movie", exact: true }).click();
-  await expect(page.getByRole("button", { name: "Resume movie", exact: true })).toBeVisible({ timeout: 30000 });
+  await expect(
+    page.getByRole("button", { name: "Resume movie", exact: true }),
+  ).toBeVisible({ timeout: 30000 });
   const id = page.url().split("/").pop();
   const paused = await (await request.get(`/api/projects/${id}`)).json();
   expect(paused.assets).toHaveLength(0);
   expect(paused.jobs[0].state).toBe("PAUSED");
   await page.getByRole("tab", { name: "Story", exact: true }).click();
-  await page.getByRole("button", { name: "Edit saved draft", exact: true }).click();
-  await page.getByLabel("Spoken line 1", { exact: true }).fill("We reached home.");
+  await page
+    .getByRole("button", { name: "Edit saved draft", exact: true })
+    .click();
+  await page
+    .getByLabel("Spoken line 1", { exact: true })
+    .fill("We reached home.");
   await page.getByRole("button", { name: "Save draft", exact: true }).click();
-  await expect(page.getByRole("status")).toHaveText("Draft saved. Previous text is retained in story history.");
+  await expect(page.getByRole("status")).toHaveText(
+    "Draft saved. Previous text is retained in story history.",
+  );
   await page.getByRole("button", { name: "Resume movie", exact: true }).click();
-  await expect(page.getByRole("heading", { name: "That’s a wrap." })).toBeVisible({ timeout: 60000 });
+  await expect(
+    page.getByRole("heading", { name: "That’s a wrap." }),
+  ).toBeVisible({ timeout: 60000 });
   const finished = await (await request.get(`/api/projects/${id}`)).json();
-  expect(finished.episodes[0].script.shots[0].narration).toBe("We reached home.");
-  expect(finished.jobs[0].steps.some((s: { state: string }) => s.state === "SUPERSEDED")).toBe(true);
+  expect(finished.episodes[0].script.shots[0].narration).toBe(
+    "We reached home.",
+  );
+  expect(
+    finished.jobs[0].steps.some(
+      (s: { state: string }) => s.state === "SUPERSEDED",
+    ),
+  ).toBe(true);
 });

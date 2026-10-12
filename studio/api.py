@@ -33,6 +33,7 @@ from studio.providers import WanGPConfig, WanGPProvider
 from studio.diagnostics import hardware
 from studio.setup_status import classify, read_runtime_status
 from studio.draft_editing import edit_eligibility
+from studio.export_variants import ExportCopy, enqueue_copy
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -290,6 +291,10 @@ def create_app(root: Path | None = None, run_worker=True) -> FastAPI:
     @app.post("/api/projects/{pid}/produce", status_code=202)
     def produce(pid: str, value: EpisodeRequest):
         return {"job_id": store.enqueue(pid, value.episode)}
+
+    @app.post("/api/projects/{pid}/episodes/{number}/export-copy", status_code=202)
+    def export_copy(pid: str, number: int, value: ExportCopy):
+        return enqueue_copy(store, pid, number, value)
 
     for action in ("pause", "resume", "cancel"):
 

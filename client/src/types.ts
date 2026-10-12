@@ -67,6 +67,8 @@ export type Asset = {
     speaker_id?: string;
     shot_number?: number;
     tempo?: number;
+    orientation?: Spec["orientation"];
+    reframe?: string;
   };
 };
 export type Step = {
@@ -75,7 +77,12 @@ export type Step = {
   state: string;
   attempts: number;
   error: string | null;
-  payload?: { episode?: number; start?: number; count?: number; total?: number };
+  payload?: {
+    episode?: number;
+    start?: number;
+    count?: number;
+    total?: number;
+  };
 };
 export type Job = {
   id: string;
@@ -146,6 +153,7 @@ export const stageLabel = (stage: string) =>
     CLIP: "Animating shots",
     AUDIO: "Building soundtrack",
     EXPORT: "Finishing movie",
+    REFORMAT: "Making an export copy",
     COMPLETED: "Ready to watch",
     SUCCEEDED: "Ready to watch",
     DRAFTED: "Draft saved",

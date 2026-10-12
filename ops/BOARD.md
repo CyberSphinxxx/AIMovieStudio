@@ -38,7 +38,7 @@ Do not interpret partial task evidence as full phase acceptance. See PROGRESS an
 | F6.02 | IN_PROGRESS | Original synthetic ambience, no music; managed SFX library open |
 | F6.03 | DONE_VERIFIED | Aspect-correct draft demo EDL/concat/shot fades |
 | F6.04 | DONE_VERIFIED | Atomic H264/AAC export + FFprobe/full decode/hash |
-| F6.05 | IN_PROGRESS | Preview/download/sidecars; re-export and open-folder controls open |
+| F6.05 | IN_PROGRESS | Durable portrait/landscape/square fit copies, original/hash/canon preservation, subtitle/audio retention, hardkill/backup/API/Edge verified; open-folder/custom HD open |
 | F7.01 | DONE_VERIFIED | One-click demo through playable MP4, real failures never substitute demos |
 | F7.02 | IN_PROGRESS | Hard media/hash gates; cinematic review not performed |
 | F7.03 | IN_PROGRESS | Optional review/current pre-media repair +saved future text editing/history/revision guards/reuse/Edge verified; produced-asset editing/regeneration open |
@@ -51,4 +51,4 @@ Do not interpret partial task evidence as full phase acceptance. See PROGRESS an
 | F8.05 | IN_PROGRESS | Main npm/Python audit0; hostile backups/download budgets tested; vendor90 advisories unresolved |
 | F8.06 | IN_PROGRESS | Screenshots/evidence/run docs; release still blocked by listed gates |
 
-Next: reproduce/diagnose post-kill read I/O with extended codes, then produced-asset versioning/graphical restore/licensing. Heavy work paused at1.25GiB freeRAM; do not load models below5GiB. Approved1.5B installation complete, inference NOT RUN. GPU App Control remains blocked; no system changes.
+Next: diagnose post-kill read I/O with extended codes when resources permit, then graphical restore/produced-asset versioning/licensing. Latest freeRAM0.24GiB (98%load); stop heavy checks, do not load models below5GiB. Approved1.5B installation complete, inference NOT RUN. GPU App Control remains blocked; no system changes.
