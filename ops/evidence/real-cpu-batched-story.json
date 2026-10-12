@@ -1,0 +1,23 @@
+{
+  "project_id": "7059fecb-b435-4463-baa9-2f1a152528c8",
+  "is_mock": false,
+  "model": "Qwen2.5-1.5B-Instruct-Q4_K_M",
+  "profile": "CPU only; four threads;8192 context; max4 shots/section;three attempts/section",
+  "status": "FAILED",
+  "quality_review": "NOT_PERFORMED",
+  "preflight_memory": {
+    "available": true,
+    "total_gb": 15.19,
+    "free_gb": 2.44,
+    "load_percent": 83
+  },
+  "samples": 0,
+  "sampled_peak_server_rss_bytes": null,
+  "sampled_min_available_ram_gib": null,
+  "completed_steps": [],
+  "stage": "PLAN",
+  "error": "RESOURCE_BUSY: The 1.5B CPU experiment requires at least 5 GiB free RAM before loading.",
+  "elapsed_seconds": 0.062,
+  "plan": null,
+  "script": null
+}

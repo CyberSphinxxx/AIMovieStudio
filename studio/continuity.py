@@ -1,6 +1,16 @@
 """Declared causal checks. Free-form screenplay prose is not a semantic proof."""
 
 
+def draft_events(project, number):
+    """Earlier planned changes are simulation inputs, never completed canon."""
+    return [
+        {**change, "episode": e["number"]}
+        for e in project["episodes"]
+        if e["number"] < number and e["status"] != "COMPLETED" and e["script"]
+        for change in sorted(e["script"].get("proposed_changes", []), key=lambda c: c["after_shot"])
+    ] + project["canon"]
+
+
 def snapshot(events, episode, plan):
     state = {
         "alive": {},

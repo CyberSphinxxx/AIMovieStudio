@@ -16,7 +16,17 @@ from pydantic import Field
 from starlette.background import BackgroundTask
 
 from studio import media
-from studio.domain import CanonEvent, ProjectInput, SeasonPlan, StrictModel, validate_canon_value
+from studio.domain import (
+    CanonEvent,
+    EpisodeScript,
+    ProjectInput,
+    SeasonPlan,
+    StrictModel,
+    validate_canon_value,
+    validate_script,
+    continuity_errors,
+)
+from studio.continuity import draft_events
 from studio.storage import Store, digest
 from studio.worker import Worker
 from studio.providers import WanGPConfig, WanGPProvider
@@ -40,6 +50,19 @@ class EpisodeRequest(StrictModel):
 class CanonRevision(StrictModel):
     revision: int = Field(ge=1)
     event: CanonEvent
+
+
+class ShotDraftEdit(StrictModel):
+    shot_id: str = Field(min_length=1, max_length=100)
+    action: str | None = Field(default=None, min_length=5, max_length=1500)
+    camera: str | None = Field(default=None, min_length=3, max_length=400)
+    narration: str | None = Field(default=None, max_length=600)
+    speaker_id: str | None = Field(default=None, min_length=1, max_length=100)
+
+
+class DraftRevision(StrictModel):
+    revision: int = Field(ge=1)
+    edits: list[ShotDraftEdit] = Field(min_length=1, max_length=120)
 
 
 def create_app(root: Path | None = None, run_worker=True) -> FastAPI:
@@ -208,7 +231,9 @@ def create_app(root: Path | None = None, run_worker=True) -> FastAPI:
                     and (ROOT / "tools/story/qwen2.5-1.5b-instruct-q4_k_m.gguf").is_file(),
                     "is_mock": False,
                     "verified": False,
-                    "message": "Separate 1.2 GB download approval required. CPU writing quality/performance unproven; requires 5 GiB free RAM.",
+                    "message": "Installed CPU experiment; checksum is checked at load. Writing quality/performance unproven; requires 5 GiB free RAM."
+                    if (ROOT / "tools/story/qwen2.5-1.5b-instruct-q4_k_m.gguf").is_file()
+                    else "Separate 1.2 GB download approval required. CPU writing quality/performance unproven; requires 5 GiB free RAM.",
                 },
                 {
                     "id": "windows-speech",
@@ -270,6 +295,103 @@ def create_app(root: Path | None = None, run_worker=True) -> FastAPI:
             app.post(f"/api/projects/{{pid}}/{action}")(control)
 
         register(action)
+
+    @app.get("/api/projects/{pid}/episodes/{number}/draft-history")
+    def draft_history(pid: str, number: int):
+        project = store.get(pid)
+        if not 1 <= number <= project["spec"]["episodes"]:
+            raise ValueError("Episode is outside the season plan")
+        history = []
+        with store.connect() as db:
+            for row in db.execute(
+                "SELECT data,created FROM events WHERE project_id=? AND kind='draft_revision' ORDER BY seq DESC LIMIT 500",
+                (pid,),
+            ):
+                event = json.loads(row["data"])
+                if event["episode"] == number:
+                    history.append(
+                        {
+                            "before_revision": event["revision"],
+                            "created": row["created"],
+                            "screenplay": event["original_script"]["screenplay"],
+                        }
+                    )
+                    if len(history) == 25:
+                        break
+        return {"revisions": history, "limit": 25}
+
+    @app.patch("/api/projects/{pid}/episodes/{number}/draft")
+    def edit_draft(pid: str, number: int, value: DraftRevision):
+        with store.connect() as db:
+            db.execute("BEGIN IMMEDIATE")
+            project = store.get(pid)
+            if value.revision != project["revision"]:
+                raise ValueError("Story changed in another window. Reload before editing.")
+            if any(j["state"] in {"RUNNING", "QUEUED", "PAUSED"} for j in project["jobs"]):
+                raise ValueError("Finish or stop the current production before editing saved drafts")
+            if any(j["episode"] == number for j in project["jobs"]):
+                raise ValueError(
+                    "This episode already has a production job. Editing its saved assets is not supported yet."
+                )
+            episode = next((e for e in project["episodes"] if e["number"] == number), None)
+            if (
+                not episode
+                or not episode["script"]
+                or episode["status"] not in {"DRAFTED", "REVIEW_REQUIRED"}
+            ):
+                raise ValueError("Choose an unproduced episode with a saved draft")
+            original = episode["script"]
+            script = EpisodeScript.model_validate(original)
+            shots = {s.id: s for s in script.shots}
+            if len({e.shot_id for e in value.edits}) != len(value.edits):
+                raise ValueError("A shot may appear only once in a draft edit")
+            for edit in value.edits:
+                if edit.shot_id not in shots:
+                    raise ValueError("Draft edit references an unknown shot")
+                fields = edit.model_dump(exclude_none=True, exclude={"shot_id"})
+                if not fields:
+                    raise ValueError("Provide scene action, camera, spoken text or a speaker to edit")
+                for field, content in fields.items():
+                    setattr(shots[edit.shot_id], field, content)
+            cast = {c["id"]: c["name"] for c in project["plan"]["characters"]}
+            script.screenplay = (
+                f"USER-EDITED SAVED DRAFT — Episode {number}. Scene timing and identities retained.\n\n"
+                + "\n\n".join(
+                    f"SCENE {s.number} — {s.camera}\n{s.action}\n{cast.get(s.speaker_id, 'Unknown speaker')} (offscreen): {s.narration}"
+                    for s in script.shots
+                )
+            )
+            script = EpisodeScript.model_validate(script.model_dump())
+            plan = SeasonPlan.model_validate(project["plan"])
+            validate_script(script, plan, project["spec"]["target_seconds"])
+            conflicts = continuity_errors(script, draft_events(project, number), plan)
+            if conflicts:
+                raise ValueError("CANON_CONFLICT: " + "; ".join(conflicts))
+            revision = project["revision"] + 1
+            db.execute(
+                "UPDATE episodes SET script=?,status='DRAFTED' WHERE project_id=? AND number=?",
+                (script.model_dump_json(), pid, number),
+            )
+            db.execute(
+                "UPDATE episodes SET status='REVIEW_REQUIRED' WHERE project_id=? AND number>? AND status IN ('DRAFTED','REVIEW_REQUIRED')",
+                (pid, number),
+            )
+            db.execute(
+                "UPDATE projects SET revision=?,updated=strftime('%s','now') WHERE id=?", (revision, pid)
+            )
+            store.event(
+                db,
+                pid,
+                None,
+                "draft_revision",
+                {
+                    "episode": number,
+                    "revision": revision,
+                    "original_script": original,
+                    "edits": [e.model_dump(exclude_none=True) for e in value.edits],
+                },
+            )
+        return store.get(pid)
 
     @app.post("/api/projects/{pid}/canon")
     def revise_canon(pid: str, value: CanonRevision):

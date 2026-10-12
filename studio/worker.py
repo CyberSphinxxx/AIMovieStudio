@@ -9,6 +9,7 @@ import time
 from studio import media
 from studio.domain import EpisodeScript, SeasonPlan, continuity_errors, stable, validate_script
 from studio.script_batches import merge_sections, validate_section
+from studio.continuity import draft_events
 from studio.storage import Store, atomic_json, digest
 from studio.story import DemoStory, OllamaStory
 from studio.providers import WanGPConfig, WanGPProvider
@@ -288,15 +289,7 @@ class Worker:
             )
             events = project["canon"]
             if stage.startswith("DRAFT"):
-                # Earlier unfilmed changes are a planning simulation, never persisted canon.
-                events = [
-                    {**change, "episode": e["number"]}
-                    for e in project["episodes"]
-                    if e["number"] < number and e["status"] != "COMPLETED" and e["script"]
-                    for change in sorted(
-                        e["script"].get("proposed_changes", []), key=lambda c: c["after_shot"]
-                    )
-                ] + events
+                events = draft_events(project, number)
             conflicts = continuity_errors(script, events, plan)
             if conflicts:
                 raise RuntimeError("CANON_CONFLICT: " + "; ".join(conflicts))

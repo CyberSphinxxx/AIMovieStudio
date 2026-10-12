@@ -14,7 +14,9 @@ powershell -NoProfile -ExecutionPolicy Bypass -File scripts/run.ps1
 
 Open http://127.0.0.1:8765. Type an idea and press **Create movie**. The default is a 30-second portrait development demo. Optional Film/Drama/Series and format controls are in the composer. Series plans have a finite ending; render episode 1, then choose episode 2 in Episodes. Export provides MP4, timed SRT when speech is enabled, and JSON provenance.
 
-For a series, Creative settings includes **Prewrite every episode**. Each screenplay is a separate resumable step. Future drafts are planned fiction; canon records only completed episodes. Saved drafts are validated against current canon before production.
+For a series, Creative settings includes **Prewrite every episode**. Each screenplay is saved through resumable writing checkpoints. Future drafts are planned fiction; canon records only completed episodes. Saved drafts are validated against current canon before production.
+
+For an unproduced saved episode, Story → **Edit saved draft** changes scene action, camera, speaker and spoken lines. Timing/identities stay fixed. Saves retain previous text under **Previous draft text**, increment the story revision and mark later drafts for review. Finish or stop current production first; already produced episodes cannot be edited in this slice.
 
 New longer productions write in saved sections of at most four shots. Interrupted writing resumes at its next unfinished section; assembly checks the entire runtime and declared continuity before audio or visuals. Previously persisted jobs retain their original checkpoints. This bounds requests and preserves work; it does not establish the tiny CPU model's writing quality.
 
@@ -43,7 +45,7 @@ An optional tiny CPU feasibility model can be prepared with `.venv/Scripts/pytho
 
 Select **Small CPU feasibility model** in Settings to use that installed runtime. It unloads after each story step. The observed worker persisted a real plan and screenplay, then stopped at missing image/video setup. Some attempts exhausted schema repairs; this tiny model remains a writing feasibility test.
 
-The additional **Qwen 1.5B CPU experiment** has an explicit profile, checksum/RAM guards and a bounded writing-only smoke harness. Its separate download approval is pending; no 1.5B inference or quality pass is claimed. Scope: `docs/CPU_STORY_INSTALL_PROPOSAL.md`. The helper refuses to download without its approval flag, and the missing model fails without falling back to a demo.
+The additional **Qwen 1.5B CPU experiment** is approved and installed with verified hashes. Its first writing test stopped before loading at 2.44 GiB free RAM; the guarded profile requires 5 GiB. No 1.5B inference or quality pass is claimed. Scope: `docs/CPU_STORY_INSTALL_PROPOSAL.md`. It uses the existing CPU runtime and never falls back to a demo.
 
 The user approved the bounded private GPU installation in `docs/GPU_INSTALL_PROPOSAL.md`. Its source, isolated runtime and image weights are installed with recorded checksums. **The first runtime smoke failed before inference: Windows Application Control blocked PyTorch's CUDA DLL.** No real GPU image or video has been generated. Video weights remain gated on a reviewed image test. See `ops/HARDWARE_PROOF.md` and `ops/APPROVALS.md`. The studio does not alter Windows security policy. Vendor dependencies also have unresolved audit advisories and are not release-certified.
 

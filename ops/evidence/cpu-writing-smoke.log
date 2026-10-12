@@ -1,0 +1,44 @@
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "C:\L3mxr\Github Repositories\AIMovieStudio\scripts\story_batch_smoke.py", line 101, in <module>
+    main()
+  File "C:\L3mxr\Github Repositories\AIMovieStudio\scripts\story_batch_smoke.py", line 70, in main
+    output = worker.execute(step)
+             ^^^^^^^^^^^^^^^^^^^^
+  File "C:\L3mxr\Github Repositories\AIMovieStudio\studio\worker.py", line 247, in execute
+    plan = provider.plan(project)
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\L3mxr\Github Repositories\AIMovieStudio\studio\story.py", line 257, in plan
+    plan = self.generate(
+           ^^^^^^^^^^^^^^
+  File "C:\L3mxr\Github Repositories\AIMovieStudio\studio\local_story.py", line 137, in generate
+    cpu_server(self.check, self.profile, self.observer) as (url, process),
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\USER-PC\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\contextlib.py", line 137, in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+  File "C:\L3mxr\Github Repositories\AIMovieStudio\studio\local_story.py", line 54, in cpu_server
+    raise RuntimeError(
+RuntimeError: RESOURCE_BUSY: The 1.5B CPU experiment requires at least 5 GiB free RAM before loading.
+{
+  "project_id": "7059fecb-b435-4463-baa9-2f1a152528c8",
+  "is_mock": false,
+  "model": "Qwen2.5-1.5B-Instruct-Q4_K_M",
+  "profile": "CPU only; four threads;8192 context; max4 shots/section;three attempts/section",
+  "status": "FAILED",
+  "quality_review": "NOT_PERFORMED",
+  "preflight_memory": {
+    "available": true,
+    "total_gb": 15.19,
+    "free_gb": 2.44,
+    "load_percent": 83
+  },
+  "samples": 0,
+  "sampled_peak_server_rss_bytes": null,
+  "sampled_min_available_ram_gib": null,
+  "completed_steps": [],
+  "stage": "PLAN",
+  "error": "RESOURCE_BUSY: The 1.5B CPU experiment requires at least 5 GiB free RAM before loading.",
+  "elapsed_seconds": 0.062
+}

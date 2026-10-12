@@ -8,4 +8,6 @@ Not authorized: driver/CUDA toolkit/global Python, paging/firewall/power changes
 
 User separately confirmed no installed local image/video engine. Resource question pending: close heavy apps before smoke. Do not terminate user applications automatically. Initial inference profile refuses <5 GB free RAM, <4 GB free VRAM or pre-run temperature >=85°C. This conservative gate is not a tested performance guarantee.
 
+Additional human reply on2026-10-12: **“Approve bounded CPU installation and tests”** to `docs/CPU_STORY_INSTALL_PROPOSAL.md`. Authorized official pinned Qwen1.5B Q4_K_M plus model license/card, additional cumulative1.2GB downloads/1.5GB disk, reuse installed CPU runtime only, CPU-only bounded writing tests. Stop at a failed section or ten minutes, RAM preflight5GiB. No system changes. This approval persists and is separate from the pinned GPU scope. No inference/quality success is implied by approval.
+
 Downloads/allocations are recorded in ignored `tools/gpu/download-ledger.json`; exact selected runtime artifacts in `ops/evidence/wan-runtime-artifacts.json`. The 8 GB runtime allocation conservatively includes resolver metadata and build overhead; individual tracked downloads reduce that allocation rather than double-counting it.

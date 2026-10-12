@@ -13,7 +13,7 @@ Do not interpret partial task evidence as full phase acceptance. See PROGRESS an
 | F1.03 | IN_PROGRESS | Responsive screenshots + Axe passed; broader UI/screen-reader review open |
 | F1.04 | IN_PROGRESS | Live RAM/GPU/temp/driver diagnostics and conservative preflight implemented; CUDA runtime OS-blocked |
 | F1.05 | DONE_VERIFIED | Five Edge flows passed including blocked settings save while loading; actual demo playback/download and series prewrite |
-| F2.01 | IN_PROGRESS | Real CPU plan+screenplay and worker checkpoints observed; weak quality and one exhausted JSON repair attempt |
+| F2.01 | IN_PROGRESS | 0.5B quality/schema failures retained; approved1.5B installed/hash-verified but inference refused2.44GiB RAM; no reliable writing proof |
 | F2.02 | IN_PROGRESS | Finite ending and episode outline persisted; real quality evaluation open |
 | F2.03 | IN_PROGRESS | Durable four-shot batches,600s fixture/recovery/partial backup and whole-script continuity verified; real writing quality unproven |
 | F2.04 | IN_PROGRESS | Declared ownership/knowledge/location/life before-state checks, export-only canon, prop reference lineage and episode-start flashbacks tested; precise world time/prose semantics open |
@@ -41,7 +41,7 @@ Do not interpret partial task evidence as full phase acceptance. See PROGRESS an
 | F6.05 | IN_PROGRESS | Preview/download/sidecars; re-export and open-folder controls open |
 | F7.01 | DONE_VERIFIED | One-click demo through playable MP4, real failures never substitute demos |
 | F7.02 | IN_PROGRESS | Hard media/hash gates; cinematic review not performed |
-| F7.03 | IN_PROGRESS | Readable workspace views; advanced editing open |
+| F7.03 | IN_PROGRESS | Saved future-draft text/camera/speaker editing +history/optimistic guards/production reuse/Edge verified; produced-asset editing/regeneration open |
 | F7.04 | IN_PROGRESS | Tested viewport/focus/Axe; broader keyboard/screen-reader work remains |
 | F7.05 | IN_PROGRESS | Episode2 across reopen uses prior outcome/references; longer real movie open |
 | F8.01 | IN_PROGRESS | Actual localhost launcher stop/start observed; approved app-local GPU install; clean-account test open |
@@ -51,4 +51,4 @@ Do not interpret partial task evidence as full phase acceptance. See PROGRESS an
 | F8.05 | IN_PROGRESS | Main npm/Python audit0; hostile backups/download budgets tested; vendor90 advisories unresolved |
 | F8.06 | IN_PROGRESS | Screenshots/evidence/run docs; release still blocked by listed gates |
 
-Next unblocked: F2.01 stronger CPU writing proposal/installer and bounded observed test (new download requires approval). The tiny CPU model fails the writing quality gate and latest three-attempt schema run; preserve those failures. GPU installation is approved only within the pinned private scope; runtime inference remains OS-blocked. No security changes, cloud or paid action authorized.
+Next unblocked: F1.04 truthful setup diagnostics and resource recovery guidance; F7.03 produced-asset versioning/regeneration remains open. CPU1.5B is approved/installed but inference waits5GiB RAM (latest2.88GiB); preserve preflight failure. GPU App Control block remains; no system changes/cloud/paid action.

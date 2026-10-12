@@ -1,0 +1,18 @@
+
+> ai-movie-studio-client@0.1.0 test:e2e
+> playwright test
+
+
+Running 5 tests using 1 worker
+
+(node:12756) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:12756) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 e2e\studio.spec.ts:4:1 › home is usable at target viewports and keyboard focus is visible (1.9s)
+  ok 2 e2e\studio.spec.ts:45:1 › one idea to playable demo MP4, persisted story, shots, and downloads (10.0s)
+  ok 3 e2e\studio.spec.ts:130:1 › real request fails honestly and settings are actionable (5.0s)
+  ok 4 e2e\studio.spec.ts:161:1 › season prewriting is saved and studio backup is downloadable (16.9s)
+  ok 5 e2e\studio.spec.ts:250:1 › settings cannot overwrite saved configuration while it is loading (3.3s)
+
+  5 passed (39.2s)

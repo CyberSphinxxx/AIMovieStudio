@@ -163,9 +163,9 @@ class DemoStory:
         ]
         previous = [e["value"] for e in project["canon"] if e["episode"] < number and e["field"] == "outcome"]
         screenplay = (
-            f"DEMO SCREENPLAY â€” template writing, not AI generated.\nIdea: {project['spec']['idea']}\nEpisode {number}\nPrior canon: {'; '.join(previous) or 'The journey has not begun.'}\n\n"
+            f"DEMO SCREENPLAY — template writing, not AI generated.\nIdea: {project['spec']['idea']}\nEpisode {number}\nPrior canon: {'; '.join(previous) or 'The journey has not begun.'}\n\n"
             + "\n\n".join(
-                f"SCENE {s.number} â€” {s.camera}\n{s.action}\n{next(c.name for c in plan.characters if c.id == s.speaker_id)} (offscreen): {s.narration}"
+                f"SCENE {s.number} — {s.camera}\n{s.action}\n{next(c.name for c in plan.characters if c.id == s.speaker_id)} (offscreen): {s.narration}"
                 for s in shots
             )
         )

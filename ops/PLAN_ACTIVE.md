@@ -1,10 +1,10 @@
 # Active plan — 2026-10-12
-Task/ID: F2.01 additional CPU writing experiment.
-Behavior: Reuse installed CPU runtime with official pinned1.5B weight, guard RAM/hash, bounded resumable real writing-only test and truthful evidence.
-Ground truth: Tiny0.5B failed quality/schema;8d30498 bounded orchestration verified71/2/5. Exact official model metadata/license in cpu-story-download-proposal.json.
-Slice: Separate reviewed proposal/approval-gated installer, explicit profile, CPU-only sampling, ten-minute/failure ceiling, persisted sections and manual quality review.
-Safety: No download until separate human approval. Additional1.2GB network/1.5GB disk; no system changes; original0.5B files retained.
-Tests:4 installer fixtures initially PASS;23 profile/API/story PASS; full81 backend/2 Vitest/5 Edge PASS. Later completed-partial EOF repair10 targeted PASS. No actual1.5B inference.
-Recovery: Existing runtime/profile/defaults preserved; explicit selection only; interrupted downloads retain charged partials and checked publish.
-Progress: Code/proposal verified; human approval question pending. No weights downloaded.
-Result: APPROVAL_PENDING for actual installation/inference, not a writing quality pass. Continue independent F7.03 draft editing while waiting.
+Task/ID: F7.03 optional future-draft editing.
+User behavior: Edit scene action/camera/spoken lines/speaker in a saved unproduced episode. Saves retain old draft history and optimistic revision; later drafts require review. Normal one-button production remains unchanged.
+Ground truth:56ce212 CPU proposal/profile verified81/2/5 (plus10 download fixtures); real generation gates blocked/pending. Saved season drafts exist; editing is absent. Existing worker validates a saved DRAFTED script before production.
+Slice: Typed sparse shot edits API; selected episode must have saved script/no production job; project cannot be queued/running/paused. Transaction checks revision, full script/declared continuity, stores append-only previous version and changes, increments revision, marks later drafts REVIEW_REQUIRED. Optional Story view editor with preserved unsaved values and accessible labels.
+Safety: No media deletion/overwrite; refuse already produced/active scripts. No model downloads. Earlier planned changes are simulated solely for draft validation, never committed canon. Stable identities/runtime retained.
+Tests: API stale/active/produced/unknown shot/speaker/duration content, history/restart, future invalidation, production consumes edited script unchanged, actual Edge edit/reload/episode2 export, responsive/keyboard.
+Recovery: Existing script receipt retained; append-only edit event preserves original; future production rechecks completed canon.
+Progress: Implemented typed patches/history/UI; initial exact-label browser failure fixed with explicit IDs. Full91 backend, latest14 story/edit,2 Vitest and final5 Edge passed;390px visual/Axe reviewed.
+Result: Saved future-draft editing slice DONE_VERIFIED; full editing/regeneration remains incomplete; CPU approval remains pending.

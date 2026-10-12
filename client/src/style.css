@@ -1605,3 +1605,22 @@ select {
   width: 20px;
   flex-shrink: 0;
 }
+.draft-editor {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 20px;
+  margin: 24px 0;
+}
+.draft-editor fieldset { border: 0; padding: 0; min-width: 0; }
+.draft-editor legend { font-size: 13px; color: var(--muted); }
+.draft-editor label { display: flex; flex-direction: column; gap: 8px; margin: 14px 0; }
+.draft-editor textarea, .draft-editor input, .draft-editor select { width: 100%; min-width: 0; }
+.draft-scene { padding: 18px 0; border-bottom: 1px solid var(--border); }
+.draft-scene h4 { font-size: 14px; margin: 0; }
+.draft-scene small { color: var(--muted); line-height: 1.6; }
+.draft-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.draft-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 20px; }
+.draft-history { margin-top: 20px; }
+.draft-history summary { cursor: pointer; color: var(--accent); font-size: 14px; padding: 8px 0; }
+.draft-editor textarea { min-height: 90px; border: 1px solid var(--border); border-radius: 6px; padding: 12px; background: var(--surface); }
+@media (max-width: 600px) { .draft-fields { grid-template-columns: 1fr; gap: 0; } }

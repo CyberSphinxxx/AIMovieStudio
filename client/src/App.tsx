@@ -20,6 +20,7 @@ import {
 } from "lucide-react";
 import { api, assetUrl, stageLabel, stepLabel } from "./types";
 import type { Project, Recent, Spec } from "./types";
+import { DraftEditor } from "./DraftEditor";
 
 const EXAMPLE =
   "A lighthouse keeper receives a message from a ship that vanished thirty years ago. Tonight, the light begins to answer.";
@@ -584,6 +585,7 @@ function Studio({ id }: { id: string }) {
   const count = job?.steps.length || 1;
   const running = job?.state === "RUNNING" || job?.state === "QUEUED";
   const active = job?.steps.find((s) => s.state === "RUNNING");
+  const episodeState = ep?.status === "REVIEW_REQUIRED" ? ep.status : job?.state || ep?.status || project.status;
   return (
     <>
       <button
@@ -605,7 +607,7 @@ function Studio({ id }: { id: string }) {
         <span
           className={`state-label ${job?.state === "FAILED" ? "failed" : ""}`}
         >
-          {active ? stepLabel(active) : stageLabel(project.status)}
+          {active ? stepLabel(active) : stageLabel(episodeState)}
         </span>
       </div>
       {project.spec.backend === "demo" && <DemoNotice />}
@@ -715,8 +717,7 @@ function Studio({ id }: { id: string }) {
               </div>
             </>
           )}
-          {tab === "Story" && (
-            <>
+          <div hidden={tab !== "Story"}>
               <h2>The story bible</h2>
               {project.plan ? (
                 <>
@@ -736,6 +737,9 @@ function Studio({ id }: { id: string }) {
                     {ep?.script?.screenplay ||
                       "The screenplay will appear when this episode is prepared."}
                   </pre>
+                  {ep?.script && project.spec.kind === "series" && (
+                    <DraftEditor key={`${id}:${episode}`} project={project} episode={ep} onSaved={reload} />
+                  )}
                   <h3>Saved continuity</h3>
                   {project.canon.length ? (
                     project.canon.map((event, i) => (
@@ -753,8 +757,7 @@ function Studio({ id }: { id: string }) {
               ) : (
                 <p className="empty">Preparing the story plan…</p>
               )}
-            </>
-          )}
+          </div>
           {tab === "Cast & World" && (
             <>
               <h2>Cast & world</h2>
@@ -1011,7 +1014,7 @@ function Studio({ id }: { id: string }) {
               ? "That’s a wrap."
               : running
                 ? "Making your movie."
-                : stageLabel(job?.state || "PLANNED")}
+                : stageLabel(episodeState)}
           </h2>
           <p aria-live="polite" className="muted">
             {active
@@ -1383,7 +1386,7 @@ function Settings() {
                 Small CPU story · Qwen 0.5B (feasibility)
               </option>
               <option value="cpu_1_5b">
-                CPU story · Qwen 1.5B (experiment, separate install)
+                CPU story · Qwen 1.5B (experiment{providers.find((p) => p.id === "cpu-1-5b")?.available ? ", installed" : ", separate install"})
               </option>
             </select>
           </label>

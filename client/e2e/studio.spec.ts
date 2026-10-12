@@ -194,6 +194,32 @@ test("season prewriting is saved and studio backup is downloadable", async ({
     page.getByRole("button", { name: "Produce episode 3" }),
   ).toBeDisabled();
   await page.getByRole("button", { name: /02 Chapter 2/ }).click();
+  await page.getByRole("tab", { name: "Story", exact: true }).click();
+  await expect(page.locator(".state-label")).toHaveText("Draft saved");
+  await expect(page.locator(".screenplay").first()).not.toContainText("â");
+  await page.getByRole("button", { name: "Edit saved draft", exact: true }).click();
+  await page.getByLabel("Spoken line 1", { exact: true }).fill("We followed the signal home.");
+  // Normal polling must preserve unsaved text.
+  await page.waitForResponse((response) => response.url().endsWith(`/api/projects/${id}`) && response.request().method() === "GET");
+  await page.getByRole("tab", { name: "Shots", exact: true }).click();
+  await page.getByRole("tab", { name: "Story", exact: true }).click();
+  await expect(page.getByLabel("Spoken line 1", { exact: true })).toHaveValue("We followed the signal home.");
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.screenshot({ path: "../ops/evidence/draft-editor-mobile.png", fullPage: true });
+  const editorA11y = await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa", "wcag21aa"]).analyze();
+  expect(editorA11y.violations).toEqual([]);
+  await page.getByRole("button", { name: "Save draft", exact: true }).click();
+  await expect(page.getByRole("status")).toHaveText("Draft saved. Previous text is retained in story history.");
+  await page.getByText("Previous draft text", { exact: true }).click();
+  await page.getByText("Before revision 2", { exact: true }).click();
+  await expect(page.getByText(/DEMO SCREENPLAY/).last()).toBeVisible();
+  const edited = await (await request.get(`/api/projects/${id}`)).json();
+  expect(edited.episodes[1].script.shots[0].narration).toBe("We followed the signal home.");
+  expect(edited.episodes[2].status).toBe("REVIEW_REQUIRED");
+  await page.setViewportSize({ width: 1366, height: 900 });
+  await page.reload();
+  await page.getByRole("tab", { name: "Episodes", exact: true }).click();
+  await page.getByRole("button", { name: /02 Chapter 2/ }).click();
   await page.getByRole("button", { name: "Produce episode 2" }).click();
   await expect(
     page.getByRole("heading", { name: "That’s a wrap." }),

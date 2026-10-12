@@ -1,0 +1,35 @@
+{
+  "approval": "Human2026-10-12: Approve bounded CPU installation and tests",
+  "status": "FILES_VERIFIED_INFERENCE_BLOCKED_RAM",
+  "received_bytes": 1117336935,
+  "cap_bytes": 1200000000,
+  "artifacts": {
+    "qwen2.5-1.5b-instruct-q4_k_m.gguf": {
+      "bytes": 1117320736,
+      "sha256": "6a1a2eb6d15622bf3c96857206351ba97e1af16c30d7a74ee38970e434e9407e",
+      "url": "https://huggingface.co/Qwen/Qwen2.5-1.5B-Instruct-GGUF/resolve/91cad51170dc346986eccefdc2dd33a9da36ead9/qwen2.5-1.5b-instruct-q4_k_m.gguf"
+    },
+    "qwen1.5b-LICENSE": {
+      "bytes": 11343,
+      "sha256": "832dd9e00a68dd83b3c3fb9f5588dad7dcf337a0db50f7d9483f310cd292e92e",
+      "url": "https://huggingface.co/Qwen/Qwen2.5-1.5B-Instruct-GGUF/resolve/91cad51170dc346986eccefdc2dd33a9da36ead9/LICENSE"
+    },
+    "qwen1.5b-MODEL-CARD.md": {
+      "bytes": 4856,
+      "sha256": "57c72d4010fb11a98fc8e62dc8ef112b23a7a7525b71e571ca978d35cb3b2eec",
+      "url": "https://huggingface.co/Qwen/Qwen2.5-1.5B-Instruct-GGUF/resolve/91cad51170dc346986eccefdc2dd33a9da36ead9/README.md"
+    }
+  },
+  "artifact_disk_bytes": 1117337907,
+  "disk_cap_bytes": 1500000000,
+  "inference": "FAILED",
+  "preflight_memory": {
+    "available": true,
+    "total_gb": 15.19,
+    "free_gb": 2.44,
+    "load_percent": 83
+  },
+  "error": "RESOURCE_BUSY: The 1.5B CPU experiment requires at least 5 GiB free RAM before loading.",
+  "no_system_changes": true,
+  "quality": "NOT_PERFORMED"
+}

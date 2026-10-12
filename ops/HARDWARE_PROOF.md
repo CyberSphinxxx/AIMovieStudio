@@ -28,3 +28,7 @@ Next GPU step requires a policy-compatible runtime within authorized scope, then
 ## Latest actual CPU writing review
 
 Added declared-continuity schema exposed weak model output. Run e4daeb5e was structurally valid in37.64s but manual writing review FAILED: title-only screenplay, generic physical descriptions, unsupported death and repeated references. After stricter screenplay/camera gates,781abf8b failed at8192-token context overflow. Repair history is now bounded to the latest failed response and concise errors. Latest f6b050ee still FAILED after three attempts with truncated JSON,297.547s total (plan13.437s). Evidence real-story-runs/ and current real-story-plan.json. Earlier shape-valid results are historical, not a writing quality pass. No additional model downloaded.
+
+## Approved1.5B CPU installation — inference not run
+
+Human approved bounded CPU installation/tests. Official model/license/card SHA and byte lengths verified; received1,117,336,935bytes, artifact+ledger footprint1,117,337,907bytes (test evidence separately small). First writing-only smoke project7059fecb refused loading at2.44GiB free RAM, below5GiB guard.0 process samples,0 model inference, no writing/fit/quality proof. Later read2.99GiB still insufficient. No user apps killed/system settings changed. Evidence cpu-story-install-result.json and real-cpu-batched-story.json.
