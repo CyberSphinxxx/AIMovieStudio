@@ -1,0 +1,116 @@
+All checks passed!
+........................................................................ [ 48%]
+........................................................................ [ 97%]
+....                                                                     [100%]
+============================== warnings summary ===============================
+.venv\Lib\site-packages\fastapi\testclient.py:1
+  C:\L3mxr\Github Repositories\AIMovieStudio\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+148 passed, 1 warning in 210.76s (0:03:30)
+No known vulnerabilities found
+
+> ai-movie-studio-client@0.1.0 lint
+> eslint .
+
+
+> ai-movie-studio-client@0.1.0 build
+> tsc --noEmit && vite build
+
+vite v7.3.7 building client environment for production...
+transforming...
+✓ 1745 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                   0.55 kB │ gzip:  0.34 kB
+dist/assets/index-AjZ58FRD.css   21.80 kB │ gzip:  5.38 kB
+dist/assets/index-CxrlWX2r.js   242.19 kB │ gzip: 75.73 kB
+✓ built in 2.28s
+
+> ai-movie-studio-client@0.1.0 test
+> vitest run
+
+
+ RUN  v4.1.11 C:/L3mxr/Github Repositories/AIMovieStudio/client
+
+
+ Test Files  1 passed (1)
+      Tests  2 passed (2)
+   Start at  19:15:57
+   Duration  248ms (transform 35ms, setup 0ms, import 51ms, tests 4ms, environment 0ms)
+
+found 0 vulnerabilities
+
+> ai-movie-studio-client@0.1.0 test:e2e
+> playwright test
+
+
+Running 9 tests using 1 worker
+
+(node:17940) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:17940) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  1 e2e\retakes.spec.ts:5:1 › another take publishes a playable cut with original downloads and pinned story (19.5s)
+(node:23168) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:23168) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 2 e2e\studio.spec.ts:6:1 › ZIP backup restores a playable project through Settings without replacing defaults (9.7s)
+  ok 3 e2e\studio.spec.ts:112:1 › saved movie exports another aspect without rewriting its story (8.6s)
+  ok 4 e2e\studio.spec.ts:179:1 › home is usable at target viewports and keyboard focus is visible (2.0s)
+  ok 5 e2e\studio.spec.ts:220:1 › one idea to playable demo MP4, persisted story, shots, and downloads (11.1s)
+  ok 6 e2e\studio.spec.ts:305:1 › real request fails honestly and settings are actionable (5.0s)
+  ok 7 e2e\studio.spec.ts:337:1 › season prewriting is saved and studio backup is downloadable (22.0s)
+  ok 8 e2e\studio.spec.ts:445:1 › settings cannot overwrite saved configuration while it is loading (6.4s)
+  ok 9 e2e\studio.spec.ts:490:1 › optional screenplay review edits and resumes before any footage (6.1s)
+
+
+  1) e2e\retakes.spec.ts:5:1 › another take publishes a playable cut with original downloads and pinned story 
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoBeVisible[2m([22m[2m)[22m failed
+
+    Locator: getByRole('link', { name: 'Download cut 1 · landscape copy · MP4', exact: true })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+    [2m  - Expect "toBeVisible" with timeout 5000ms[22m
+    [2m  - waiting for getByRole('link', { name: 'Download cut 1 · landscape copy · MP4', exact: true })[22m
+
+
+      141 |         exact: true,
+      142 |       }),
+    > 143 |     ).toBeVisible();
+          |       ^
+      144 |     await page
+      145 |       .getByRole("button", { name: "Make Landscape · 16:9 copy", exact: true })
+      146 |       .click();
+        at C:\L3mxr\Github Repositories\AIMovieStudio\client\e2e\retakes.spec.ts:143:7
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\retakes-another-take-publi-1b5ec--downloads-and-pinned-story\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\retakes-another-take-publi-1b5ec--downloads-and-pinned-story\error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results\retakes-another-take-publi-1b5ec--downloads-and-pinned-story\trace.zip
+    Usage:
+
+        npx playwright show-trace test-results\retakes-another-take-publi-1b5ec--downloads-and-pinned-story\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    e2e\retakes.spec.ts:5:1 › another take publishes a playable cut with original downloads and pinned story 
+  8 passed (1.6m)
+Check failed: npm.cmd run test:e2e
+At C:\L3mxr\Github Repositories\AIMovieStudio\scripts\verify.ps1:6 char:27
++ ... if($LASTEXITCODE -ne 0){throw "Check failed: $Executable $Arguments"}
++                             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : OperationStopped: (Check failed: npm.cmd run test:e2e:String) [], RuntimeException
+    + FullyQualifiedErrorId : Check failed: npm.cmd run test:e2e
+ 

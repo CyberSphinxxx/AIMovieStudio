@@ -23,7 +23,7 @@ def enqueue_copy(store: Store, pid: str, number: int, value: ExportCopy) -> dict
             raise ValueError("Finish this episode before making an export copy")
         source = db.execute(
             "SELECT a.* FROM assets a JOIN steps s ON s.id=a.step_id "
-            "WHERE a.project_id=? AND s.job_id=? AND a.role='export'",
+            "WHERE a.project_id=? AND s.job_id=? AND a.role IN ('export','export-edition') ORDER BY a.rowid DESC LIMIT 1",
             (pid, job["id"]),
         ).fetchone()
         if not source:

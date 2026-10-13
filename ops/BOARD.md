@@ -1,4 +1,4 @@
-# Active backlog â€” 2026-10-12
+# Active backlog — 2026-10-13
 
 Do not interpret partial task evidence as full phase acceptance. See PROGRESS and HANDOFF.
 
@@ -41,7 +41,7 @@ Do not interpret partial task evidence as full phase acceptance. See PROGRESS an
 | F6.05 | IN_PROGRESS | Durable portrait/landscape/square fit copies, original/hash/canon preservation, subtitle/audio retention, hardkill/backup/API/Edge verified; open-folder/custom HD open |
 | F7.01 | DONE_VERIFIED | One-click demo through playable MP4, real failures never substitute demos |
 | F7.02 | IN_PROGRESS | Hard media/hash gates; cinematic review not performed |
-| F7.03 | IN_PROGRESS | Optional review/current pre-media repair +saved future text editing/history/revision guards/reuse/Edge verified; produced-asset editing/regeneration open |
+| F7.03 | IN_PROGRESS | Optional review/pre-media/future edits; immutable one-shot seed retakes, cumulative MP4 cuts, pinned references/audio/canon, originals/earlier copies, bounded attempts, pause/discard/backup/hardkill/API verified; produced-story edits/reference variants/version branches open |
 | F7.04 | IN_PROGRESS | Tested viewport/focus/Axe; broader keyboard/screen-reader work remains |
 | F7.05 | IN_PROGRESS | Episode2 across reopen uses prior outcome/references; longer real movie open |
 | F8.01 | IN_PROGRESS | Actual localhost launcher stop/start observed; approved app-local GPU install; clean-account test open |
@@ -51,4 +51,4 @@ Do not interpret partial task evidence as full phase acceptance. See PROGRESS an
 | F8.05 | IN_PROGRESS | Main npm/Python audit0; hostile backups/download budgets tested; vendor90 advisories unresolved |
 | F8.06 | IN_PROGRESS | Screenshots/evidence/run docs; release still blocked by listed gates |
 
-Next: F7.03 produced-shot regeneration with retained originals/editions, then F8.03 license inventory. Full134 backend/2Vitest/8Edge PASS. Latest freeRAM1.59GiB; model loading still requires5GiB. Approved1.5B installation complete, inference NOT RUN. GPU App Control remains blocked; no system changes.
+Next: F8.03 observed dependency/license inventory, then produced-story/reference revisions. Full148 backend PASS210.76s/2Vitest/static/main audits0, corrected final9Edge PASS86.956s. Latest freeRAM1.89GiB; model loading still requires5GiB. Approved1.5B installation complete, inference NOT RUN. GPU App Control remains blocked; no system changes.

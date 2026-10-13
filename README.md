@@ -80,11 +80,17 @@ To inspect a restored studio, stop the existing server, set `$env:STUDIO_DATA` t
 
 All services bind to localhost. Cross-origin browser writes and external hostnames are rejected. Prompts remain data; neither model output nor user text is evaluated as code. FFmpeg uses argv and confined files. Disk reserve defaults to 1 GB. One worker holds an OS lock, preventing concurrent GPU work in the same data root.
 
+## Another take and saved movie cuts
+
+After an episode finishes, open **Shots → Another take**. Studio regenerates just that shot's keyframe and clip using a different seed and the same pinned character/location/prop references. The story, camera, timing and soundtrack stay fixed. It then saves a separate validated MP4 cut; Overview and Export show the latest cut. **Export → Earlier movie cuts** downloads previous cuts and their screen-format copies. Each shot permits two requested retakes, including discarded requests, with the existing three-attempt limit per failed step. Demo retakes remain conspicuously labeled mock footage; another seed does not guarantee better cinematic quality.
+
+Pause waits for the current atomic step. Resume/retry applies to the selected episode. A paused, failed or cancelled retake can **Keep current cut & discard unfinished take** once its step stops. Earlier files and generated candidates remain saved; unused steps are superseded. Discard never resets the retake allowance or stage attempt history. Corrupted inputs or changed story/movie revisions block publication, preserving the last validated cut. Backups retain editions and unfinished take checkpoints; restored unfinished jobs require explicit Resume. New take stages require the current app version.
+
 ## Known incomplete work
 
 - Real GPU references/video, guided model setup and measured 6 GB inference.
 - Declared prop ownership, character knowledge, location/life changes and episode-start flashbacks are checked. Fine-grained world time, costumes, relationships and semantic contradictions in prose remain incomplete.
-- Editing/regeneration, version branches, custom/native HD exports, open-folder controls and advanced quality evaluation. Draft aspect copies and graphical restore of missing projects are available.
+- Produced-story edits, character reference variants, version branches, custom/native HD exports, open-folder controls and advanced quality evaluation. Immutable single-shot retakes, draft aspect copies and graphical restore of missing projects are available.
 - Clean-machine packaging, dependency/license release review, full GPU OOM testing and cinematic review.
 - A first-read recovery I/O error was reproduced as Windows SQLITE_IOERR_TRUNCATE after a hard kill. Read-only project snapshots now retry this specific error on fresh connections, with three total attempts; actual recovery checks passed. Other I/O/corruption/write faults still fail immediately. The original older failure had no recorded code, so this does not establish that every possible storage fault is resolved.
 

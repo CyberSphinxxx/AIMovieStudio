@@ -1,0 +1,14 @@
+
+> ai-movie-studio-client@0.1.0 test:e2e
+> playwright test e2e/retakes.spec.ts
+
+
+Running 1 test using 1 worker
+
+(node:24900) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:24900) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 e2e\retakes.spec.ts:5:1 › another take publishes a playable cut with original downloads and pinned story (13.4s)
+
+  1 passed (16.2s)

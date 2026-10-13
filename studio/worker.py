@@ -13,6 +13,7 @@ from studio.continuity import draft_events
 from studio.storage import Store, atomic_json, digest
 from studio.story import DemoStory, OllamaStory
 from studio.providers import WanGPConfig, WanGPProvider
+from studio.shot_revisions import MOVIE_ROLES, TAKE_STAGES, execute_retake
 
 STAGES = {
     "PLAN": "Preparing your story",
@@ -26,6 +27,9 @@ STAGES = {
     "AUDIO": "Building the soundtrack",
     "EXPORT": "Finishing your movie",
     "REFORMAT": "Making an export copy",
+    "RETAKE_FRAME": "Composing another take",
+    "RETAKE_CLIP": "Animating another take",
+    "RECUT": "Saving a new movie cut",
 }
 
 
@@ -295,12 +299,18 @@ class Worker:
             if conflicts:
                 raise RuntimeError("CANON_CONFLICT: " + "; ".join(conflicts))
             return {"script": (section if stage.endswith("_BATCH") else script).model_dump(), "artifacts": []}
+        if stage in TAKE_STAGES:
+            return execute_retake(self, project, step, settings)
         if stage == "REFORMAT":
             # Budget beyond the reserved free space for the bounded draft copy.
             if shutil.disk_usage(self.store.root).free < reserve + 64 * 1024**2:
                 raise RuntimeError("DISK_FULL: Export copy needs 64 MB above the configured disk reserve.")
             source = next((a for a in project["assets"] if a["id"] == step["payload"]["source_id"]), None)
-            if not source or source["role"] != "export" or source["metadata"]["episode"] != step["episode"]:
+            if (
+                not source
+                or source["role"] not in MOVIE_ROLES
+                or source["metadata"]["episode"] != step["episode"]
+            ):
                 raise RuntimeError("BAD_OUTPUT: Export copy source does not belong to this episode.")
             path, _ = self.store.asset_path(source["id"])
             if not path.is_file() or digest(path) != step["payload"]["source_sha256"]:
@@ -566,6 +576,23 @@ class Worker:
             if job["state"] == "CANCELLED":
                 db.execute("UPDATE steps SET state='CANCELLED' WHERE id=?", (step["id"],))
                 return
+            if step["stage"] in TAKE_STAGES:
+                payload = step["payload"]
+                if isinstance(payload, str):
+                    payload = json.loads(payload)
+                revision = db.execute("SELECT revision FROM projects WHERE id=?", (pid,)).fetchone()[0]
+                source = db.execute(
+                    "SELECT a.id FROM assets a JOIN steps s ON s.id=a.step_id "
+                    "WHERE a.project_id=? AND s.job_id=? AND a.role IN ('export','export-edition') "
+                    "ORDER BY a.rowid DESC LIMIT 1",
+                    (pid, jid),
+                ).fetchone()
+                if (
+                    revision != payload["request"]["revision"]
+                    or not source
+                    or source[0] != payload["source_export"]["id"]
+                ):
+                    raise RuntimeError("CANON_CONFLICT: Movie or story changed before publishing this take")
             for asset in output.get("artifacts", []):
                 db.execute(
                     "INSERT OR IGNORE INTO assets VALUES(?,?,?,?,?,?,?)",
@@ -652,7 +679,7 @@ class Worker:
                     db.execute("UPDATE jobs SET state='PAUSED' WHERE id=?", (jid,))
                     db.execute("UPDATE projects SET status='PAUSED' WHERE id=?", (pid,))
                     self.store.event(db, pid, jid, "story_review_ready", {"episode": step["episode"]})
-            elif step["stage"] == "REFORMAT":
+            elif step["stage"] in {"REFORMAT", "RECUT"}:
                 # Export-only work never recommits story facts or episode outcomes.
                 db.execute("UPDATE jobs SET state='SUCCEEDED',error=NULL WHERE id=?", (jid,))
                 db.execute("UPDATE projects SET status='COMPLETED',updated=? WHERE id=?", (time.time(), pid))

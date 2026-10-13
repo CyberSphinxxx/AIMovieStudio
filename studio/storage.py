@@ -236,6 +236,10 @@ class Store:
             ).fetchone()
             if previous:
                 return previous["id"]
+            if db.execute(
+                "SELECT 1 FROM jobs WHERE project_id=? AND state!='SUCCEEDED' LIMIT 1", (pid,)
+            ).fetchone():
+                raise ValueError("Finish or resolve unfinished work before producing another episode")
             if episode > 1:
                 prior = db.execute(
                     "SELECT state FROM jobs WHERE project_id=? AND episode=?", (pid, episode - 1)
@@ -292,12 +296,13 @@ class Store:
         self.add_step(db, jid, ordinal, stage, {"episode": episode, "batch_ids": batches})
         return ordinal + 1
 
-    def control(self, pid: str, action: str):
+    def control(self, pid: str, action: str, episode: int | None = None):
         states = {"pause": "PAUSED", "cancel": "CANCELLED", "resume": "QUEUED"}
         with self.connect() as db:
             db.execute("BEGIN IMMEDIATE")
             row = db.execute(
-                "SELECT * FROM jobs WHERE project_id=? ORDER BY episode DESC LIMIT 1", (pid,)
+                "SELECT * FROM jobs WHERE project_id=? AND (? IS NULL OR episode=?) ORDER BY episode DESC LIMIT 1",
+                (pid, episode, episode),
             ).fetchone()
             if not row:
                 raise ValueError("There is no production job to control")

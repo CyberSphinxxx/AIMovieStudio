@@ -36,6 +36,7 @@ from studio.diagnostics import hardware
 from studio.setup_status import classify, read_runtime_status
 from studio.draft_editing import edit_eligibility
 from studio.export_variants import ExportCopy, enqueue_copy
+from studio.shot_revisions import RetakeRequest, enqueue_retake, discard_retake
 from studio import backup_import
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -309,6 +310,15 @@ def create_app(root: Path | None = None, run_worker=True) -> FastAPI:
     def export_copy(pid: str, number: int, value: ExportCopy):
         return enqueue_copy(store, pid, number, value)
 
+    @app.post("/api/projects/{pid}/episodes/{number}/shots/{shot_id}/retake", status_code=202)
+    def retake(pid: str, number: int, shot_id: str, value: RetakeRequest):
+        return enqueue_retake(store, pid, number, shot_id, value)
+
+    @app.post("/api/projects/{pid}/episodes/{number}/discard-retake")
+    def discard_take(pid: str, number: int):
+        discard_retake(store, pid, number)
+        return store.get(pid)
+
     for action in ("pause", "resume", "cancel"):
 
         def register(action):
@@ -318,6 +328,13 @@ def create_app(root: Path | None = None, run_worker=True) -> FastAPI:
                 return store.get(pid)
 
             app.post(f"/api/projects/{{pid}}/{action}")(control)
+
+            def episode_control(pid: str, number: int):
+                store.get(pid)
+                store.control(pid, action, number)
+                return store.get(pid)
+
+            app.post(f"/api/projects/{{pid}}/episodes/{{number}}/{action}")(episode_control)
 
         register(action)
 

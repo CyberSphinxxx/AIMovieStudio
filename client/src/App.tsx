@@ -585,12 +585,21 @@ function Studio({ id }: { id: string }) {
     );
   const job = project.jobs.find((j) => j.episode === episode);
   const ep = project.episodes.find((e) => e.number === episode);
-  const clips = project.assets.filter(
-    (a) => a.role === "clip" && a.metadata.episode === episode,
+  const movies = project.assets.filter(
+    (a) =>
+      ["export", "export-edition"].includes(a.role) &&
+      a.metadata.episode === episode,
   );
-  const movie = project.assets.find(
-    (a) => a.role === "export" && a.metadata.episode === episode,
-  );
+  const movie = movies.at(-1);
+  const clips = movie
+    ? (movie.metadata.parent_asset_ids || []).flatMap((aid) =>
+        project.assets.filter(
+          (a) => a.id === aid && ["clip", "clip-revision"].includes(a.role),
+        ),
+      )
+    : project.assets.filter(
+        (a) => a.role === "clip" && a.metadata.episode === episode,
+      );
   const frame = project.assets.find(
     (a) => a.role === "keyframe" && a.metadata.episode === episode,
   );
@@ -599,6 +608,11 @@ function Studio({ id }: { id: string }) {
   const count = currentSteps.length || 1;
   const running = job?.state === "RUNNING" || job?.state === "QUEUED";
   const active = job?.steps.find((s) => s.state === "RUNNING");
+  const unfinishedTake = currentSteps.some(
+    (s) =>
+      ["RETAKE_FRAME", "RETAKE_CLIP", "RECUT"].includes(s.stage) &&
+      s.state !== "SUCCEEDED",
+  );
   const episodeState =
     ep?.status === "REVIEW_REQUIRED"
       ? ep.status
@@ -711,7 +725,7 @@ function Studio({ id }: { id: string }) {
               <div className="preview-meta">
                 <span>
                   {movie
-                    ? "Draft export"
+                    ? `Draft export · Cut ${movie.metadata.edition || 1}`
                     : clips.length
                       ? `${clips.length} shots saved`
                       : "Your movie preview"}
@@ -837,23 +851,39 @@ function Studio({ id }: { id: string }) {
                 {clips.length} of {ep?.script?.shots.length || 0} clips saved ·
                 pinned character and location references
               </p>
+              {movie && (
+                <p className="muted">
+                  Another take keeps the story, timing, references and
+                  soundtrack. Two retakes per shot; each saves a separate movie
+                  cut. Demo takes remain mock footage.
+                </p>
+              )}
               <div className="shot-list">
                 {ep?.script?.shots.map((shot) => {
-                  const image = project.assets.find(
-                    (a) =>
-                      a.role === "keyframe" && a.metadata.shot_id === shot.id,
-                  );
                   const clip = clips.find(
                     (a) => a.metadata.shot_id === shot.id,
                   );
+                  const image = project.assets.find((a) =>
+                    clip
+                      ? a.id === clip.metadata.parent_asset_ids?.[0]
+                      : a.role === "keyframe" && a.metadata.shot_id === shot.id,
+                  );
+                  const used =
+                    job?.steps.filter(
+                      (s) =>
+                        s.stage === "RETAKE_FRAME" &&
+                        s.payload?.shot?.id === shot.id,
+                    ).length || 0;
                   return (
                     <article className="shot" key={shot.id}>
                       <div className="shot-visual">
                         {clip ? (
                           <video
+                            key={clip.id}
                             controls
                             preload="none"
                             src={assetUrl(clip)}
+                            poster={image ? assetUrl(image) : undefined}
                             aria-label={`Shot ${shot.number}`}
                           />
                         ) : image ? (
@@ -874,6 +904,44 @@ function Studio({ id }: { id: string }) {
                         <h3>{shot.camera}</h3>
                         <p>{shot.action}</p>
                         <blockquote>{shot.narration}</blockquote>
+                        {movie && (
+                          <>
+                            <button
+                              className="secondary"
+                              aria-label={`Another take for shot ${shot.number}`}
+                              disabled={
+                                busy ||
+                                used >= 2 ||
+                                ep?.status !== "COMPLETED" ||
+                                project.jobs.some(
+                                  (j) => j.state !== "SUCCEEDED",
+                                )
+                              }
+                              onClick={() => {
+                                const frameId =
+                                  clip?.metadata.parent_asset_ids?.[0];
+                                const seed =
+                                  project.assets.find((a) => a.id === frameId)
+                                    ?.metadata.seed || 0;
+                                void action(
+                                  `episodes/${episode}/shots/${shot.id}/retake`,
+                                  {
+                                    source_export_id: movie.id,
+                                    revision: project.revision,
+                                    idempotency_key: crypto.randomUUID(),
+                                    seed: (seed + 1) % 2147483648,
+                                  },
+                                );
+                              }}
+                            >
+                              <Film size={16} /> Another take
+                            </button>
+                            <small className="muted">
+                              {" "}
+                              {used} of 2 retakes requested
+                            </small>
+                          </>
+                        )}
                       </div>
                     </article>
                   );
@@ -918,6 +986,7 @@ function Studio({ id }: { id: string }) {
                     className="primary"
                     disabled={
                       busy ||
+                      project.jobs.some((j) => j.state !== "SUCCEEDED") ||
                       (episode > 1 &&
                         project.episodes.find((e) => e.number === episode - 1)
                           ?.status !== "COMPLETED")
@@ -953,7 +1022,10 @@ function Studio({ id }: { id: string }) {
                   <div className="export-summary">
                     <Film size={30} />
                     <div>
-                      <strong>Episode {episode} · MP4</strong>
+                      <strong>
+                        Episode {episode} · Cut {movie.metadata.edition || 1} ·
+                        MP4
+                      </strong>
                       <p>
                         {movie.metadata.width} × {movie.metadata.height} ·{" "}
                         {movie.metadata.duration?.toFixed(1)} seconds ·{" "}
@@ -987,7 +1059,10 @@ function Studio({ id }: { id: string }) {
                       ).map(([orientation, label, width, height]) => {
                         const copy = project.assets.find(
                           (a) =>
-                            ["export", "export-variant"].includes(a.role) &&
+                            (a.id === movie.id ||
+                              (a.role === "export-variant" &&
+                                a.metadata.parent_asset_ids?.[0] ===
+                                  movie.id)) &&
                             a.metadata.episode === episode &&
                             a.metadata.width === width &&
                             a.metadata.height === height,
@@ -1020,7 +1095,7 @@ function Studio({ id }: { id: string }) {
                     ) && (
                       <p className="muted" role="status">
                         {running
-                          ? "Making your copy. The original movie is ready to download."
+                          ? "Making your copy. The current cut is ready to download."
                           : "Copy stopped. Use the production controls in Overview to resume or inspect the error."}
                       </p>
                     )}
@@ -1040,6 +1115,36 @@ function Studio({ id }: { id: string }) {
                   </div>
                 </>
               )}
+              {movies.length > 1 && (
+                <details className="provider-config">
+                  <summary>Earlier movie cuts</summary>
+                  <p className="muted">
+                    Your earlier footage and exports are preserved.
+                  </p>
+                  <div className="download-list">
+                    {movies.slice(0, -1).map((a) => (
+                      <a key={a.id} href={assetUrl(a, true)}>
+                        <Download size={16} /> Download cut{" "}
+                        {a.metadata.edition || 1} · MP4
+                      </a>
+                    ))}
+                    {project.assets
+                      .filter(
+                        (a) =>
+                          a.role === "export-variant" &&
+                          a.metadata.episode === episode &&
+                          a.metadata.parent_asset_ids?.[0] !== movie?.id,
+                      )
+                      .map((a) => (
+                        <a key={a.id} href={assetUrl(a, true)}>
+                          <Download size={16} /> Download cut{" "}
+                          {a.metadata.edition || 1} · {a.metadata.orientation}{" "}
+                          copy · MP4
+                        </a>
+                      ))}
+                  </div>
+                </details>
+              )}
               <div className="download-list">
                 <a href={`/api/projects/${id}/manifest`}>
                   <Download size={16} /> Story & project manifest
@@ -1047,15 +1152,20 @@ function Studio({ id }: { id: string }) {
                 {project.assets
                   .filter(
                     (a) =>
-                      ["manifest", "subtitles"].includes(a.role) &&
-                      a.metadata.episode === episode,
+                      [
+                        "manifest",
+                        "subtitles",
+                        "manifest-edition",
+                        "subtitles-edition",
+                      ].includes(a.role) && a.metadata.episode === episode,
                   )
                   .map((a) => (
                     <a key={a.id} href={assetUrl(a, true)}>
                       <Download size={16} />
-                      {a.role === "subtitles"
+                      {a.role.startsWith("subtitles")
                         ? "Timed subtitles · SRT"
-                        : "Export provenance · JSON"}
+                        : "Export provenance · JSON"}{" "}
+                      · Cut {a.metadata.edition || 1}
                     </a>
                   ))}
               </div>
@@ -1100,16 +1210,16 @@ function Studio({ id }: { id: string }) {
         <aside className="progress-panel">
           <p className="eyebrow">PRODUCTION</p>
           <h2>
-            {movie
-              ? "That’s a wrap."
-              : running
-                ? "Making your movie."
+            {running
+              ? "Making your movie."
+              : movie && job?.state === "SUCCEEDED"
+                ? "That’s a wrap."
                 : stageLabel(episodeState)}
           </h2>
           <p aria-live="polite" className="muted">
             {active
               ? stepLabel(active)
-              : movie
+              : movie && job?.state === "SUCCEEDED"
                 ? "Your draft passed media validation."
                 : job?.state === "PAUSED"
                   ? ep?.can_edit_draft
@@ -1149,6 +1259,9 @@ function Studio({ id }: { id: string }) {
                 currentSteps.filter(
                   (s) =>
                     s.stage === stage ||
+                    (stage === "FRAME" && s.stage === "RETAKE_FRAME") ||
+                    (stage === "CLIP" && s.stage === "RETAKE_CLIP") ||
+                    (stage === "EXPORT" && s.stage === "RECUT") ||
                     (stage === "SCRIPT" &&
                       ["SCRIPT_BATCH", "DRAFT_BATCH", "DRAFT"].includes(
                         s.stage,
@@ -1188,14 +1301,14 @@ function Studio({ id }: { id: string }) {
                 <button
                   className="secondary"
                   disabled={busy}
-                  onClick={() => void action("pause")}
+                  onClick={() => void action(`episodes/${episode}/pause`)}
                 >
                   <Pause size={16} /> Pause after this step
                 </button>
                 <button
                   className="text-button"
                   disabled={busy}
-                  onClick={() => void action("cancel")}
+                  onClick={() => void action(`episodes/${episode}/cancel`)}
                 >
                   <Square size={13} /> Stop production
                 </button>
@@ -1205,12 +1318,26 @@ function Studio({ id }: { id: string }) {
               <button
                 className="primary"
                 disabled={busy}
-                onClick={() => void action("resume")}
+                onClick={() => void action(`episodes/${episode}/resume`)}
               >
                 <Play size={16} />
                 {job?.state === "FAILED" ? "Retry safely" : "Resume movie"}
               </button>
             )}
+            {movie &&
+              unfinishedTake &&
+              !active &&
+              ["PAUSED", "FAILED", "CANCELLED"].includes(job?.state || "") && (
+                <button
+                  className="secondary"
+                  disabled={busy}
+                  onClick={() =>
+                    void action(`episodes/${episode}/discard-retake`)
+                  }
+                >
+                  Keep current cut & discard unfinished take
+                </button>
+              )}
             {movie && (
               <button className="primary" onClick={() => setTab("Export")}>
                 <Download size={16} /> Get your movie
