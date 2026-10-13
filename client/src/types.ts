@@ -71,6 +71,8 @@ export type Asset = {
     reframe?: string;
     edition?: number;
     seed?: number;
+    revision?: number;
+    requested_view?: string;
     parent_asset_ids?: string[];
     source_export_id?: string;
   };
@@ -87,6 +89,7 @@ export type Step = {
     count?: number;
     total?: number;
     shot?: Shot;
+    entity?: { id: string };
   };
 };
 export type Job = {
@@ -115,6 +118,10 @@ export type Project = {
   episodes: Episode[];
   jobs: Job[];
   assets: Asset[];
+  reference_choices: Record<
+    string,
+    { asset_id: string; sha256: string; revision: number }
+  >;
   canon: {
     entity_id: string;
     episode: number;
@@ -154,6 +161,7 @@ export const stageLabel = (stage: string) =>
     DRAFT_BATCH: "Prewriting episode scenes",
     DRAFT: "Prewriting the season",
     REFERENCE: "Creating references",
+    REFERENCE_VARIANT: "Creating another reference view",
     FRAME: "Composing keyframes",
     CLIP: "Animating shots",
     AUDIO: "Building soundtrack",

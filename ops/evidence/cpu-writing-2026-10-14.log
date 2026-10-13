@@ -1,0 +1,41 @@
+{
+  "project_id": "bd5734a1-771f-458a-8ba3-11aefbce80e9",
+  "is_mock": false,
+  "model": "Qwen2.5-1.5B-Instruct-Q4_K_M",
+  "profile": "CPU only; four threads;8192 context; max4 shots/section;three attempts/section",
+  "status": "STRUCTURED_BATCHED_SCRIPT_VALID",
+  "quality_review": "NOT_PERFORMED",
+  "preflight_memory": {
+    "available": true,
+    "total_gb": 15.19,
+    "free_gb": 6.83,
+    "load_percent": 55
+  },
+  "samples": 704,
+  "sampled_peak_server_rss_bytes": 2013237248,
+  "sampled_min_available_ram_gib": 4.16,
+  "completed_steps": [
+    {
+      "id": "73cfdc1f-2310-4d15-be83-08d497a23d81",
+      "stage": "PLAN",
+      "seconds": 28.625
+    },
+    {
+      "id": "08ecfcd5-7e56-4b7c-a3d9-79c0d9d36aab",
+      "stage": "SCRIPT_BATCH",
+      "seconds": 65.375
+    },
+    {
+      "id": "dff11533-688d-4db5-b787-03d00b68af17",
+      "stage": "SCRIPT_BATCH",
+      "seconds": 78.391
+    },
+    {
+      "id": "2625e884-3853-4c15-b6b0-559ee21bf310",
+      "stage": "SCRIPT",
+      "seconds": 0.046
+    }
+  ],
+  "stage": "SCRIPT",
+  "elapsed_seconds": 172.625
+}

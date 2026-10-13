@@ -14,6 +14,7 @@ from studio.storage import Store, atomic_json, digest
 from studio.story import DemoStory, OllamaStory
 from studio.providers import WanGPConfig, WanGPProvider
 from studio.shot_revisions import MOVIE_ROLES, TAKE_STAGES, execute_retake
+from studio.reference_variants import REFERENCE_ROLES, execute_variant, verified_asset
 
 STAGES = {
     "PLAN": "Preparing your story",
@@ -22,6 +23,7 @@ STAGES = {
     "SCRIPT_BATCH": "Writing screenplay scenes",
     "DRAFT_BATCH": "Prewriting episode scenes",
     "REFERENCE": "Creating character references",
+    "REFERENCE_VARIANT": "Creating another reference view",
     "FRAME": "Composing shot keyframes",
     "CLIP": "Animating shots",
     "AUDIO": "Building the soundtrack",
@@ -227,7 +229,7 @@ class Worker:
         def story_provider():
             if spec["backend"] == "demo":
                 return DemoStory()
-            if settings["story_engine"] in {"small_cpu", "cpu_1_5b"}:
+            if settings["story_engine"] in {"small_cpu", "cpu_1_5b", "cpu_4b"}:
                 from studio.local_story import SmallCPUStory
 
                 return SmallCPUStory(
@@ -299,6 +301,8 @@ class Worker:
             if conflicts:
                 raise RuntimeError("CANON_CONFLICT: " + "; ".join(conflicts))
             return {"script": (section if stage.endswith("_BATCH") else script).model_dump(), "artifacts": []}
+        if stage == "REFERENCE_VARIANT":
+            return execute_variant(self, project, step, settings)
         if stage in TAKE_STAGES:
             return execute_retake(self, project, step, settings)
         if stage == "REFORMAT":
@@ -372,9 +376,27 @@ class Worker:
                     + [shot["location_id"]]
                     + [p["prop_id"] for p in shot.get("required_props", [])]
                 ]
+                if "reference_inputs" in payload:
+                    refs = []
+                    for pin in payload["reference_inputs"]:
+                        reference = next((a for a in project["assets"] if a["id"] == pin["id"]), None)
+                        if (
+                            not reference
+                            or reference["role"] not in REFERENCE_ROLES
+                            or reference["metadata"]["entity_id"] != pin["entity_id"]
+                            or (pin.get("sha256") and pin["sha256"] != reference["sha256"])
+                        ):
+                            raise RuntimeError("BAD_OUTPUT: Pinned reference snapshot changed")
+                        refs.append(reference)
+                    expected = set(
+                        shot["character_ids"]
+                        + [shot["location_id"]]
+                        + [p["prop_id"] for p in shot.get("required_props", [])]
+                    )
+                    if len(refs) != len(expected) or {a["metadata"]["entity_id"] for a in refs} != expected:
+                        raise RuntimeError("BAD_OUTPUT: Pinned reference snapshot does not match the shot")
                 for reference in refs:
-                    if digest(self.store.asset_path(reference["id"])[0]) != reference["sha256"]:
-                        raise RuntimeError("BAD_OUTPUT: Entity reference checksum changed")
+                    verified_asset(self.store, project, reference["id"])
                 metadata = {
                     "shot_id": shot["id"],
                     "prompt": prompt,
@@ -382,6 +404,9 @@ class Worker:
                     "parent_asset_ids": [a["id"] for a in refs],
                     "parent_hashes": [a["sha256"] for a in refs],
                     "reference_revision": 1,
+                    "reference_versions": {
+                        a["metadata"]["entity_id"]: a["metadata"].get("revision", 1) for a in refs
+                    },
                 }
             if spec["backend"] == "demo":
                 media.demo_image(path, size, title, prompt, metadata["seed"])
@@ -576,6 +601,16 @@ class Worker:
             if job["state"] == "CANCELLED":
                 db.execute("UPDATE steps SET state='CANCELLED' WHERE id=?", (step["id"],))
                 return
+            if step["stage"] == "REFERENCE_VARIANT":
+                payload = (
+                    step["payload"] if isinstance(step["payload"], dict) else json.loads(step["payload"])
+                )
+                revision = db.execute("SELECT revision FROM projects WHERE id=?", (pid,)).fetchone()[0]
+                if revision != payload["request"]["revision"]:
+                    raise RuntimeError("CANON_CONFLICT: Story changed before publishing this reference view")
+                source, _ = verified_asset(self.store, self.store.get(pid), payload["source"]["id"])
+                if source["sha256"] != payload["source"]["sha256"]:
+                    raise RuntimeError("BAD_OUTPUT: Original reference changed before publication")
             if step["stage"] in TAKE_STAGES:
                 payload = step["payload"]
                 if isinstance(payload, str):
@@ -653,11 +688,10 @@ class Worker:
                 plan = json.loads(
                     db.execute("SELECT plan FROM projects WHERE id=?", (pid,)).fetchone()["plan"]
                 )
+                snapshot = self.store.get(pid)
                 references = {
-                    json.loads(r["metadata"])["entity_id"]
-                    for r in db.execute(
-                        "SELECT metadata FROM assets WHERE project_id=? AND role='reference'", (pid,)
-                    )
+                    entity_id: {"entity_id": entity_id, "id": choice["asset_id"], "sha256": choice["sha256"]}
+                    for entity_id, choice in snapshot["reference_choices"].items()
                 }
                 ordinal = step["ordinal"] + 1
                 # Speech timing is cheap to check before any GPU visual generation.
@@ -665,11 +699,31 @@ class Worker:
                 ordinal += 1
                 for entity in plan["characters"] + plan["locations"] + plan.get("props", []):
                     if entity["id"] not in references:
-                        self.store.add_step(db, jid, ordinal, "REFERENCE", {"entity": entity})
+                        reference_step = self.store.add_step(
+                            db, jid, ordinal, "REFERENCE", {"entity": entity}
+                        )
+                        references[entity["id"]] = {
+                            "entity_id": entity["id"],
+                            "id": stable(reference_step, "reference"),
+                            "sha256": None,
+                        }
                         ordinal += 1
                 for shot in script["shots"]:
+                    entities = list(
+                        dict.fromkeys(
+                            shot["character_ids"]
+                            + [shot["location_id"]]
+                            + [p["prop_id"] for p in shot.get("required_props", [])]
+                        )
+                    )
                     for stage in ("FRAME", "CLIP"):
-                        self.store.add_step(db, jid, ordinal, stage, {"shot": shot})
+                        self.store.add_step(
+                            db,
+                            jid,
+                            ordinal,
+                            stage,
+                            {"shot": shot, "reference_inputs": [references[eid] for eid in entities]},
+                        )
                         ordinal += 1
                 self.store.add_step(db, jid, ordinal, "EXPORT", {})
                 spec = json.loads(
@@ -679,7 +733,7 @@ class Worker:
                     db.execute("UPDATE jobs SET state='PAUSED' WHERE id=?", (jid,))
                     db.execute("UPDATE projects SET status='PAUSED' WHERE id=?", (pid,))
                     self.store.event(db, pid, jid, "story_review_ready", {"episode": step["episode"]})
-            elif step["stage"] in {"REFORMAT", "RECUT"}:
+            elif step["stage"] in {"REFORMAT", "RECUT", "REFERENCE_VARIANT"}:
                 # Export-only work never recommits story facts or episode outcomes.
                 db.execute("UPDATE jobs SET state='SUCCEEDED',error=NULL WHERE id=?", (jid,))
                 db.execute("UPDATE projects SET status='COMPLETED',updated=? WHERE id=?", (time.time(), pid))

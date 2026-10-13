@@ -1,0 +1,90 @@
+All checks passed!
+............................F........................................... [ 42%]
+........................................................................ [ 85%]
+........................                                                 [100%]
+================================== FAILURES ===================================
+________ test_corrupt_reference_is_rejected_before_keyframe_generation ________
+
+store = <studio.storage.Store object at 0x0000020345F5C530>
+spec = ProjectInput(idea='A lighthouse remembers a vanished ship.', kind='clip', orientation='portrait', target_seconds=5, ep...e='Cinematic realism', backend='demo', prewrite_season=False, review_story=False, idempotency_key='fixture-unique-key')
+
+    def test_corrupt_reference_is_rejected_before_keyframe_generation(store, spec):
+        pid, _ = store.create(spec)
+        set_silent(store)
+        store.enqueue(pid)
+        worker = Worker(store)
+        project = produce_until(store, worker, pid, "REFERENCE", 4)
+        reference = project["assets"][
+            next(i for i, a in enumerate(project["assets"]) if a["role"] == "reference")
+        ]
+        path, _ = store.asset_path(reference["id"])
+        path.write_bytes(b"changed reference")
+        step = worker.claim()
+        assert step["stage"] == "FRAME"
+        with pytest.raises(RuntimeError, match="reference checksum"):
+>           worker.execute(step)
+
+tests\test_continuity.py:236: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+studio\worker.py:399: in execute
+    verified_asset(self.store, project, reference["id"])
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+store = <studio.storage.Store object at 0x0000020345F5C530>
+project = {'assets': [{'id': '614e90dd-b967-59bd-95ea-863e51614e64', 'metadata': {'audio_kind': 'dialogue', 'dialogue_present': ...; produced/cancelled episodes remain unchanged', 'id': '00121ca4-825f-5030-8295-4e04ca145184', 'number': 1, ...}], ...}
+asset_id = 'dad4979d-d87f-52ee-9ce4-448062e08e82'
+
+    def verified_asset(store, project, asset_id):
+        from studio.storage import digest
+    
+        asset = next((a for a in project["assets"] if a["id"] == asset_id), None)
+        if not asset or asset["role"] not in REFERENCE_ROLES:
+            raise ValueError("Reference does not belong to this project")
+        path, _ = store.asset_path(asset_id)
+        if not path.is_file() or digest(path) != asset["sha256"]:
+>           raise RuntimeError("BAD_OUTPUT: Reference checksum changed")
+E           RuntimeError: BAD_OUTPUT: Reference checksum changed
+
+studio\reference_variants.py:91: RuntimeError
+
+During handling of the above exception, another exception occurred:
+
+store = <studio.storage.Store object at 0x0000020345F5C530>
+spec = ProjectInput(idea='A lighthouse remembers a vanished ship.', kind='clip', orientation='portrait', target_seconds=5, ep...e='Cinematic realism', backend='demo', prewrite_season=False, review_story=False, idempotency_key='fixture-unique-key')
+
+    def test_corrupt_reference_is_rejected_before_keyframe_generation(store, spec):
+        pid, _ = store.create(spec)
+        set_silent(store)
+        store.enqueue(pid)
+        worker = Worker(store)
+        project = produce_until(store, worker, pid, "REFERENCE", 4)
+        reference = project["assets"][
+            next(i for i, a in enumerate(project["assets"]) if a["role"] == "reference")
+        ]
+        path, _ = store.asset_path(reference["id"])
+        path.write_bytes(b"changed reference")
+        step = worker.claim()
+        assert step["stage"] == "FRAME"
+>       with pytest.raises(RuntimeError, match="reference checksum"):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: Regex pattern did not match.
+E         Expected regex: 'reference checksum'
+E         Actual message: 'BAD_OUTPUT: Reference checksum changed'
+
+tests\test_continuity.py:235: AssertionError
+============================== warnings summary ===============================
+.venv\Lib\site-packages\fastapi\testclient.py:1
+  C:\L3mxr\Github Repositories\AIMovieStudio\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ===========================
+FAILED tests/test_continuity.py::test_corrupt_reference_is_rejected_before_keyframe_generation
+1 failed, 167 passed, 1 warning in 321.22s (0:05:21)
+Check failed: ./.venv/Scripts/python.exe -m pytest -q
+At C:\L3mxr\Github Repositories\AIMovieStudio\scripts\verify.ps1:6 char:27
++ ... if($LASTEXITCODE -ne 0){throw "Check failed: $Executable $Arguments"}
++                             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : OperationStopped: (Check failed: ....xe -m pytest -q:String) [], RuntimeException
+    + FullyQualifiedErrorId : Check failed: ./.venv/Scripts/python.exe -m pytest -q
+ 

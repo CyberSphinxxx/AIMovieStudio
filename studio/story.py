@@ -6,7 +6,8 @@ import threading
 from typing import Literal, Protocol, TypeVar, Union
 
 import httpx
-from pydantic import BaseModel, Field, ValidationError, create_model
+from pydantic import BaseModel, Field, ValidationError, create_model, field_validator
+from studio.screenplay_text import validate_shot_headings
 
 from studio.domain import (
     CanonChange,
@@ -360,9 +361,16 @@ class OllamaStory:
                 )
             )
         change_union = Union.__getitem__(tuple(change_types))
+
+        @field_validator("screenplay")
+        @classmethod
+        def section_text(cls, value):
+            return validate_shot_headings(value, range(start + 1, start + count + 1))
+
         script_schema = create_model(
             "RequestedScreenplay",
             __base__=EpisodeScript,
+            __validators__={"section_text": section_text},
             number=(Literal.__getitem__((number,)), ...),
             screenplay=(str, Field(min_length=max(80, count * 80), max_length=min(50000, count * 400))),
             shots=(list[shot_schema], Field(min_length=count, max_length=count)),
@@ -386,7 +394,7 @@ class OllamaStory:
             "earlier_episode_changes": [c.model_dump() for part in previous for c in part.proposed_changes],
         }
         prompt = (
-            f"Write screenplay scenes for episode {number}, shots {start + 1} through {start + count} of {total}. Exactly {count} cinematic shots, each duration {duration} seconds. Include scene action and offscreen dialogue/narration (no lip-sync claim); screenplay must describe these scenes, not just a title. Use global shot numbers {start + 1} onward. Follow the episode outline, reaching its outcome only in the final section. Use character/location IDs EXACTLY as supplied. Keep spoken lines short enough for each shot; empty narration is allowed. Fixed plan: {json.dumps(fixed_plan)}. Prior canon only: {json.dumps([e for e in project['canon'] if e['episode'] < number])}. Settings: {json.dumps(project['spec'])}. Earlier sections in this episode: {json.dumps(section_context)}"
+            f"Write screenplay scenes for episode {number}, shots {start + 1} through {start + count} of {total}. Exactly {count} cinematic shots, each duration {duration} seconds. Include scene action and offscreen dialogue/narration (no lip-sync claim); screenplay must describe these scenes, not just a title. If numbering shots in the screenplay, use ONLY {list(range(start + 1, start + count + 1))}, once each, in that order. Stop at shot {start + count}; no earlier/later shot text. Continue after earlier sections without copying their actions. Follow the episode outline, reaching its outcome only in the final section. Preserve the idea's specific sacrifice and resolution; show them happening rather than stating they occurred. Use character/location IDs EXACTLY as supplied. Keep spoken lines concise and complete; empty narration is allowed. Fixed plan: {json.dumps(fixed_plan)}. Prior canon only: {json.dumps([e for e in project['canon'] if e['episode'] < number])}. Settings: {json.dumps(project['spec'])}. Earlier sections in this episode: {json.dumps(section_context)}"
             + draft_context
             + f" In each shot, required_props lists prop_id/character_id for the specific actor using each prop; required_knowledge lists facts used by that character. When facts, ownership, life or location change, provide proposed_changes with global after_shot ({start} means before this section), exact before_value, value and causal reason. Knowledge before_value is unknown/known; its value is exact fact text. Changes from earlier sections already apply; do not repeat them. Never invent a change merely to bypass a contradiction. Flashbacks require an earlier flashback_episode and continuity_note; their state is the start of that earlier episode and cannot change present canon."
         )

@@ -128,6 +128,19 @@ def validate_document(data):
             raise ValueError("Media ownership mismatch")
         if asset["step_id"] not in steps or parts[2] != steps[asset["step_id"]]["job_id"]:
             raise ValueError("Media job mismatch")
+    assets = {a["id"]: a for a in data["tables"]["assets"]}
+    for event in data["tables"]["events"]:
+        if event["kind"] == "reference_selected":
+            choice = json.loads(event["data"])
+            asset = assets.get(choice.get("asset_id")) if isinstance(choice, dict) else None
+            if (
+                not asset
+                or asset["project_id"] != event["project_id"]
+                or asset["role"] not in {"reference", "reference-variant"}
+                or json.loads(asset["metadata"]).get("entity_id") != choice.get("entity_id")
+                or asset["sha256"] != choice.get("sha256")
+            ):
+                raise ValueError("Invalid restored reference choice")
     for episode in data["tables"]["episodes"]:
         EpisodeOutline.model_validate_json(episode["outline"])
         if episode["script"]:
@@ -140,6 +153,7 @@ def validate_document(data):
             "SCRIPT_BATCH",
             "DRAFT_BATCH",
             "REFERENCE",
+            "REFERENCE_VARIANT",
             "FRAME",
             "CLIP",
             "AUDIO",

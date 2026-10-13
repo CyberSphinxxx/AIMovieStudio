@@ -28,7 +28,33 @@ def read_runtime_status(root: Path):
         return None
 
 
-def classify(providers, memory, last_runtime=None, selected_installation=""):
+def read_cpu_status(root: Path, profile="cpu_1_5b"):
+    model = {"cpu_1_5b": "Qwen2.5-1.5B-Instruct-Q4_K_M", "cpu_4b": "Qwen3-4B-Instruct-2507-Q4_K_M"}[profile]
+    filename = "cpu-4b-writing-status.json" if profile == "cpu_4b" else "cpu-writing-status.json"
+    path = root / "tools/story" / filename
+    try:
+        if path.stat().st_size > 65536:
+            return None
+        record = json.loads(path.read_text(encoding="utf-8"))
+        if (
+            record.get("code") not in {"STRUCTURE_PASS_QUALITY_FAILED", "WRITING_FAILED"}
+            or record.get("model") != model
+            or Path(record.get("installation", "")).resolve() != (root / "tools/story").resolve()
+        ):
+            return None
+        for key in ("checked_at", "elapsed_seconds", "sampled_peak_server_rss_bytes"):
+            if (
+                not isinstance(record.get(key), (int, float))
+                or not math.isfinite(record[key])
+                or record[key] <= 0
+            ):
+                return None
+        return record
+    except (OSError, ValueError, AttributeError, TypeError):
+        return None
+
+
+def classify(providers, memory, last_runtime=None, selected_installation="", last_cpu=None, last_cpu_4b=None):
     for provider in providers:
         installed = provider["available"]
         provider["status"] = (
@@ -39,18 +65,32 @@ def classify(providers, memory, last_runtime=None, selected_installation=""):
             else "Setup needed"
         )
         provider["attention"] = not installed
-        if provider["id"] == "cpu-1-5b" and installed:
+        if provider["id"] in {"cpu-1-5b", "cpu-4b"} and installed:
+            minimum = 7 if provider["id"] == "cpu-4b" else 5
+            observation = last_cpu_4b if provider["id"] == "cpu-4b" else last_cpu
             free = memory.get("free_gb")
             if not memory.get("available") or free is None:
                 provider.update(status="RAM not measured", attention=True)
                 provider["message"] += " Memory counters must be available before loading."
-            elif free < 5:
+            elif free < minimum:
                 provider.update(status="Needs free RAM", attention=True)
                 provider["message"] += (
-                    f" Currently {free} GiB free; minimum 5 GiB. Close heavy applications and refresh diagnostics."
+                    f" Currently {free} GiB free; minimum {minimum} GiB. Close heavy applications and refresh diagnostics."
                 )
             else:
                 provider["status"] = "Installed · untested"
+            if observation:
+                provider.update(last_check_at=observation["checked_at"], attention=True, verified=False)
+                if provider["status"] == "Installed · untested":
+                    provider["status"] = "Tested · writing needs work"
+                detail = (
+                    "its structure passed but manual writing quality failed"
+                    if observation["code"] == "STRUCTURE_PASS_QUALITY_FAILED"
+                    else "writing failed the current validation gates"
+                )
+                provider["message"] += (
+                    f" Last CPU writing test: {observation['elapsed_seconds']:.1f} seconds; {detail}. No image/video generation was tested."
+                )
         if provider["id"] == "small-cpu" and installed:
             provider["status"] = "Feasibility only"
         if provider["id"] == "windows-speech" and installed:

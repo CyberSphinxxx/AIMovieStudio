@@ -22,6 +22,7 @@ import { api, assetUrl, stageLabel, stepLabel } from "./types";
 import type { Project, Recent, Spec } from "./types";
 import { DraftEditor } from "./DraftEditor";
 import { BackupRestore } from "./BackupRestore";
+import { ReferenceViews } from "./ReferenceViews";
 
 const EXAMPLE =
   "A lighthouse keeper receives a message from a ship that vanished thirty years ago. Tonight, the light begins to answer.";
@@ -563,10 +564,20 @@ function Studio({ id }: { id: string }) {
     setBusy(true);
     setError("");
     try {
-      await api(`/projects/${id}/${name}`, {
-        method: "POST",
-        body: body ? JSON.stringify(body) : "{}",
-      });
+      const result = await api<{ episode?: number }>(
+        `/projects/${id}/${name}`,
+        {
+          method: "POST",
+          body: body ? JSON.stringify(body) : "{}",
+        },
+      );
+      if (
+        name.startsWith("references/") &&
+        name.endsWith("/variants") &&
+        result.episode !== undefined
+      ) {
+        setEpisode(result.episode);
+      }
       await reload();
     } catch (e) {
       setError(e instanceof Error ? e.message : "Action failed");
@@ -612,6 +623,9 @@ function Studio({ id }: { id: string }) {
     (s) =>
       ["RETAKE_FRAME", "RETAKE_CLIP", "RECUT"].includes(s.stage) &&
       s.state !== "SUCCEEDED",
+  );
+  const unfinishedReferenceView = currentSteps.some(
+    (s) => s.stage === "REFERENCE_VARIANT" && s.state !== "SUCCEEDED",
   );
   const episodeState =
     ep?.status === "REVIEW_REQUIRED"
@@ -809,8 +823,7 @@ function Studio({ id }: { id: string }) {
                 ].map((entity) => {
                   const ref = project.assets.find(
                     (a) =>
-                      a.role === "reference" &&
-                      a.metadata.entity_id === entity.id,
+                      a.id === project.reference_choices[entity.id]?.asset_id,
                   );
                   return (
                     <article className="entity" key={entity.id}>
@@ -831,13 +844,21 @@ function Studio({ id }: { id: string }) {
                           : entity.description}
                       </p>
                       <small>
-                        Reference revision 1 ·{" "}
+                        Reference revision {ref?.metadata.revision || 1} ·{" "}
                         {"voice" in entity
                           ? `Voice: ${entity.voice}`
                           : "owner_id" in entity
                             ? `Prop owner: ${project.plan?.characters.find((c) => c.id === (project.canon.filter((e) => e.entity_id === entity.id && e.field === "prop_owner" && e.episode <= episode).at(-1)?.value ?? entity.owner_id))?.name || "Unowned"}`
                             : "Location reference"}
                       </small>
+                      <ReferenceViews
+                        project={project}
+                        entityId={entity.id}
+                        entityName={entity.name}
+                        character={"appearance" in entity}
+                        busy={busy}
+                        action={action}
+                      />
                     </article>
                   );
                 })}
@@ -1259,6 +1280,8 @@ function Studio({ id }: { id: string }) {
                 currentSteps.filter(
                   (s) =>
                     s.stage === stage ||
+                    (stage === "REFERENCE" &&
+                      s.stage === "REFERENCE_VARIANT") ||
                     (stage === "FRAME" && s.stage === "RETAKE_FRAME") ||
                     (stage === "CLIP" && s.stage === "RETAKE_CLIP") ||
                     (stage === "EXPORT" && s.stage === "RECUT") ||
@@ -1336,6 +1359,19 @@ function Studio({ id }: { id: string }) {
                   }
                 >
                   Keep current cut & discard unfinished take
+                </button>
+              )}
+            {unfinishedReferenceView &&
+              !active &&
+              ["PAUSED", "FAILED", "CANCELLED"].includes(job?.state || "") && (
+                <button
+                  className="secondary"
+                  disabled={busy}
+                  onClick={() =>
+                    void action(`episodes/${episode}/discard-reference-view`)
+                  }
+                >
+                  Keep current reference & discard unfinished view
                 </button>
               )}
             {movie && (
@@ -1657,6 +1693,9 @@ function Settings() {
                   ? ", installed"
                   : ", separate install"}
                 )
+              </option>
+              <option value="cpu_4b" disabled={!providers.find((p) => p.id === "cpu-4b")?.available}>
+                CPU story · Qwen3 4B (experiment, requires 7 GB free RAM)
               </option>
             </select>
           </label>

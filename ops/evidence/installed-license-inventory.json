@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-10-13T11:30:46.970987+00:00",
+  "generated_at": "2026-10-13T19:10:39.983872+00:00",
   "status": "INVENTORY_ONLY_NOT_CLEARED",
   "scope": "Installed workstation packages, including development tools; not a complete binary SBOM",
   "no_network": true,
@@ -7005,6 +7005,21 @@
       "path": "tools/story/qwen1.5b-LICENSE",
       "sha256": "832dd9e00a68dd83b3c3fb9f5588dad7dcf337a0db50f7d9483f310cd292e92e",
       "bytes": 11343
+    },
+    {
+      "path": "tools/story/qwen4b-LICENSE",
+      "sha256": "832dd9e00a68dd83b3c3fb9f5588dad7dcf337a0db50f7d9483f310cd292e92e",
+      "bytes": 11343
+    },
+    {
+      "path": "tools/story/qwen4b-UPSTREAM-CARD.md",
+      "sha256": "8e3dd0c3b5b11897cc71092ccfe517bb7a9783479baa3665aad73c8d1a2041cd",
+      "bytes": 8168
+    },
+    {
+      "path": "tools/story/qwen4b-CONVERTER-CARD.md",
+      "sha256": "c18c2d01645e709fcc0bfd593291d3dc43e51873f5af170a082c36ccd95988c3",
+      "bytes": 11207
     },
     {
       "path": "tools/wan-gp/mmgp/LICENSE.md",

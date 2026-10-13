@@ -150,6 +150,16 @@ def inventory(root: Path):
         root / "tools/wan-gp/LICENSE.txt",
         root / "tools/story/qwen1.5b-LICENSE",
     ]
+    # Optional approved writer: inventory only when present, no download or clearance.
+    notice_files.extend(
+        path
+        for path in [
+            root / "tools/story/qwen4b-LICENSE",
+            root / "tools/story/qwen4b-UPSTREAM-CARD.md",
+            root / "tools/story/qwen4b-CONVERTER-CARD.md",
+        ]
+        if path.is_file()
+    )
     notice_files.extend(
         [
             root / "tools/wan-gp/mmgp/LICENSE.md",

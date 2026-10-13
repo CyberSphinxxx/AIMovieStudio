@@ -33,17 +33,18 @@ from studio.storage import Store, digest
 from studio.worker import Worker
 from studio.providers import WanGPConfig, WanGPProvider
 from studio.diagnostics import hardware
-from studio.setup_status import classify, read_runtime_status
+from studio.setup_status import classify, read_runtime_status, read_cpu_status
 from studio.draft_editing import edit_eligibility
 from studio.export_variants import ExportCopy, enqueue_copy
 from studio.shot_revisions import RetakeRequest, enqueue_retake, discard_retake
+from studio.reference_variants import ReferenceVariant, ReferenceSelection, enqueue_variant, select_reference
 from studio import backup_import
 
 ROOT = Path(__file__).resolve().parents[1]
 
 
 class SettingsInput(StrictModel):
-    story_engine: str = Field(default="ollama", pattern=r"^(ollama|small_cpu|cpu_1_5b)$")
+    story_engine: str = Field(default="ollama", pattern=r"^(ollama|small_cpu|cpu_1_5b|cpu_4b)$")
     story_model: str = Field(default="", max_length=100, pattern=r"^[\w.:/-]*$")
     speech: str = Field(default="windows", pattern=r"^(windows|none)$")
     reserve_mb: int = Field(default=1024, ge=100, le=102400)
@@ -253,6 +254,15 @@ def create_app(root: Path | None = None, run_worker=True) -> FastAPI:
                     else "Separate 1.2 GB download approval required. CPU writing quality/performance unproven; requires 5 GiB free RAM.",
                 },
                 {
+                    "id": "cpu-4b",
+                    "name": "CPU story · Qwen3 4B experiment",
+                    "available": (ROOT / "tools/story/llama-server.exe").is_file()
+                    and (ROOT / "tools/story/qwen3-4b-instruct-2507-q4_k_m.gguf").is_file(),
+                    "is_mock": False,
+                    "verified": False,
+                    "message": "Optional CPU writing experiment; checksum checked at load. Requires 7 GiB free RAM; story quality/performance unproven.",
+                },
+                {
                     "id": "windows-speech",
                     "name": "Installed Windows speech",
                     "available": os.name == "nt",
@@ -263,7 +273,12 @@ def create_app(root: Path | None = None, run_worker=True) -> FastAPI:
         }
 
         result["providers"] = classify(
-            result["providers"], hardware()["memory"], read_runtime_status(ROOT), config.installation
+            result["providers"],
+            hardware()["memory"],
+            read_runtime_status(ROOT),
+            config.installation,
+            read_cpu_status(ROOT),
+            read_cpu_status(ROOT, "cpu_4b"),
         )
         return result
 
@@ -317,6 +332,19 @@ def create_app(root: Path | None = None, run_worker=True) -> FastAPI:
     @app.post("/api/projects/{pid}/episodes/{number}/discard-retake")
     def discard_take(pid: str, number: int):
         discard_retake(store, pid, number)
+        return store.get(pid)
+
+    @app.post("/api/projects/{pid}/references/{entity_id}/variants", status_code=202)
+    def reference_variant(pid: str, entity_id: str, value: ReferenceVariant):
+        return enqueue_variant(store, pid, entity_id, value)
+
+    @app.post("/api/projects/{pid}/references/{entity_id}/select")
+    def choose_reference(pid: str, entity_id: str, value: ReferenceSelection):
+        return select_reference(store, pid, entity_id, value)
+
+    @app.post("/api/projects/{pid}/episodes/{number}/discard-reference-view")
+    def discard_reference_view(pid: str, number: int):
+        discard_retake(store, pid, number, allowed_stages={"REFERENCE_VARIANT"})
         return store.get(pid)
 
     for action in ("pause", "resume", "cancel"):

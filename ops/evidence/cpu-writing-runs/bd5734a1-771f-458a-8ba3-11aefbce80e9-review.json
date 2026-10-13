@@ -1,0 +1,38 @@
+{
+  "project_id": "bd5734a1-771f-458a-8ba3-11aefbce80e9",
+  "model": "Qwen2.5-1.5B-Instruct-Q4_K_M",
+  "structural_status": "STRUCTURED_BATCHED_SCRIPT_VALID",
+  "quality_review": "FAILED",
+  "reviewer": "Codex manual evidence review",
+  "is_mock": false,
+  "elapsed_seconds": 172.625,
+  "findings": [
+    {
+      "severity": "failure",
+      "evidence": "script.shots[2].action == script.shots[4].action; script.shots[3].action == script.shots[5].action == script.shots[7].action",
+      "issue": "Exact scene/action repetition without progressing the rescue or showing a justified flashback."
+    },
+    {
+      "severity": "failure",
+      "evidence": "First four-shot section screenplay includes [Shot 9]; second four-shot section includes [Shot 14].",
+      "issue": "Screenplay prose exceeds the requested section and contradicts the eight-shot structured inventory."
+    },
+    {
+      "severity": "failure",
+      "evidence": "Input requires giving up the lamp and survivor ashore; final action hands over a key and turns to the ocean.",
+      "issue": "Requested sacrifice and visible safe-shore resolution absent."
+    },
+    {
+      "severity": "warning",
+      "evidence": "All eight location_id values point at Lighthouse while several actions describe Ocean/ship bow.",
+      "issue": "Declared locations do not reflect the screenplay staging."
+    },
+    {
+      "severity": "warning",
+      "evidence": "Character appearances lack hair/clothing descriptors; props list and declared proposed_changes empty despite repeated key transfer.",
+      "issue": "Insufficient physical/prop detail for robust reference/canon planning."
+    }
+  ],
+  "hardware_scope": "CPU only; sampled RSS2013237248 bytes/min availableRAM4.16GiB; GPU inference NOT_TESTED",
+  "next": "Add deterministic bounded-section prose gates before another writing test; preserve raw output and no visual generation."
+}

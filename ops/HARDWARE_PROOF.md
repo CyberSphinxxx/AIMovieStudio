@@ -32,3 +32,9 @@ Added declared-continuity schema exposed weak model output. Run e4daeb5e was str
 ## Approved1.5B CPU installation — inference not run
 
 Human approved bounded CPU installation/tests. Official model/license/card SHA and byte lengths verified; received1,117,336,935bytes, artifact+ledger footprint1,117,337,907bytes (test evidence separately small). First writing-only smoke project7059fecb refused loading at2.44GiB free RAM, below5GiB guard.0 process samples,0 model inference, no writing/fit/quality proof. Later read2.99GiB still insufficient. No user apps killed/system settings changed. Evidence cpu-story-install-result.json and real-cpu-batched-story.json.
+# Latest update — 2026-10-14
+
+1.5B Qwen CPU inference observed on three writing-only samples:172.625/151.844/137.110s (461.579total). Structured plan/sections/assembly pass; all manual writing reviews FAILED. Sampled working set peak2,017,505,280bytes, minimum free RAM4.16GiB; only these bounded CPU samples show RAM fit. No reliable writer, long series or GPU compatibility claim. Final shot-number gates fix observed structure only. Raw run/review evidence retained in cpu-writing-runs/.
+
+Approved4B Qwen3 candidate files and notices installed/hash-verified,2,497,364,354received bytes under2.9GB/3.5GB caps. No4B inference: currently6.2GiB available, below7GiB guard. Existing CPU runtime reused; no default/system/security changes. User will report readiness after closing apps. GPU AppControl block persists; no image/video inference or video weights. Historical entries below retain earlier snapshots; this section supersedes previous1.5B-not-run status.
+

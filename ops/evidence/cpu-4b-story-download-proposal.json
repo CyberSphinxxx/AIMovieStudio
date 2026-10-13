@@ -1,0 +1,44 @@
+{
+  "status": "APPROVED_INSTALLED_INFERENCE_PENDING",
+  "candidate": "Qwen3-4B-Instruct-2507-Q4_K_M",
+  "converter_repo": "unsloth/Qwen3-4B-Instruct-2507-GGUF",
+  "converter_revision": "a06e946bb6b655725eafa393f4a9745d460374c9",
+  "upstream_repo": "Qwen/Qwen3-4B-Instruct-2507",
+  "upstream_revision": "cdbee75f17c01a7cc42f958dc650907174af0554",
+  "license": "apache-2.0",
+  "upstream_license": "apache-2.0",
+  "model_file": "Qwen3-4B-Instruct-2507-Q4_K_M.gguf",
+  "model_bytes": 2497281120,
+  "model_sha256": "3605803b982cb64aead44f6c1b2ae36e3acdb41d8e46c8a94c6533bc4c67e597",
+  "model_url": "https://huggingface.co/unsloth/Qwen3-4B-Instruct-2507-GGUF/resolve/a06e946bb6b655725eafa393f4a9745d460374c9/Qwen3-4B-Instruct-2507-Q4_K_M.gguf",
+  "preapproval_metadata_received_bytes": 52516,
+  "network_cap_bytes": 2900000000,
+  "disk_cap_bytes": 3500000000,
+  "tests": "Reuse installed llama.cpp b11558 CPU/4threads/8192context/no GPU,>=7GiBfreeRAM upfront,stopbelow2GiBduring sampling,3repairs/section,<=600seconds,manualqualityreview separate. Not proven on this laptop.",
+  "files": [
+    {
+      "target": "qwen3-4b-instruct-2507-q4_k_m.gguf",
+      "url": "https://huggingface.co/unsloth/Qwen3-4B-Instruct-2507-GGUF/resolve/a06e946bb6b655725eafa393f4a9745d460374c9/Qwen3-4B-Instruct-2507-Q4_K_M.gguf",
+      "bytes": 2497281120,
+      "sha256": "3605803b982cb64aead44f6c1b2ae36e3acdb41d8e46c8a94c6533bc4c67e597"
+    },
+    {
+      "target": "qwen4b-LICENSE",
+      "url": "https://huggingface.co/Qwen/Qwen3-4B-Instruct-2507/resolve/cdbee75f17c01a7cc42f958dc650907174af0554/LICENSE",
+      "bytes": 11343,
+      "sha256": "832dd9e00a68dd83b3c3fb9f5588dad7dcf337a0db50f7d9483f310cd292e92e"
+    },
+    {
+      "target": "qwen4b-UPSTREAM-CARD.md",
+      "url": "https://huggingface.co/Qwen/Qwen3-4B-Instruct-2507/resolve/cdbee75f17c01a7cc42f958dc650907174af0554/README.md",
+      "bytes": 8168,
+      "sha256": "8e3dd0c3b5b11897cc71092ccfe517bb7a9783479baa3665aad73c8d1a2041cd"
+    },
+    {
+      "target": "qwen4b-CONVERTER-CARD.md",
+      "url": "https://huggingface.co/unsloth/Qwen3-4B-Instruct-2507-GGUF/resolve/a06e946bb6b655725eafa393f4a9745d460374c9/README.md",
+      "bytes": 11207,
+      "sha256": "c18c2d01645e709fcc0bfd593291d3dc43e51873f5af170a082c36ccd95988c3"
+    }
+  ]
+}

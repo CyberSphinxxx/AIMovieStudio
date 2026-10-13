@@ -54,7 +54,8 @@ def run(args: list[str], check: Callable[[], None] = lambda: None, timeout: floa
             stderr=errors,
             creationflags=subprocess.CREATE_NO_WINDOW if os.name == "nt" else 0,
         )
-        ownership.enter_context(owned_process(process))
+        leaf = Path(args[0]).name.lower() in {"ffmpeg.exe", "ffprobe.exe", "ffmpeg", "ffprobe"}
+        ownership.enter_context(owned_process(process, completed_leaf=leaf))
         started = time.monotonic()
         try:
             while process.poll() is None:

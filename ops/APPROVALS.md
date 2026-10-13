@@ -1,5 +1,7 @@
 # Explicit approvals — 2026-10-12
 
+Additional human reply on 2026-10-14: **“Approve bounded 4B installation and test”** to `docs/CPU_4B_STORY_INSTALL_PROPOSAL.md`. Authorized pinned Qwen3 4B Q4_K_M weights and notices, cumulative 2.9 GB downloads (including previously fetched proposal metadata), 3.5 GB added disk, reuse existing CPU runtime, no system/security changes. Require 7 GiB free RAM before loading; stop below 2 GiB during testing, at a failed section, or after ten minutes. No default engine change. Quality and RAM fit remain unproven until observed. This approval persists; do not ask again for this scope.
+
 Human reply: **“Approve bounded installation and tests”** to the GPU proposal question in this chat.
 
 Authorized: private local WanGP installation and hardware tests described in `docs/GPU_INSTALL_PROPOSAL.md`, selected Flux Klein 4B and Wan2.2 TI2V 5B files, maximum 32 GB download allocation and 40 GB disk growth. Preserve notices. Image gate first; video weights/inference only after a measured image PASS. Approval persists; do not ask again for this same scope.

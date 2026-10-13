@@ -1611,16 +1611,144 @@ select {
   padding: 20px;
   margin: 24px 0;
 }
-.draft-editor fieldset { border: 0; padding: 0; min-width: 0; }
-.draft-editor legend { font-size: 13px; color: var(--muted); }
-.draft-editor label { display: flex; flex-direction: column; gap: 8px; margin: 14px 0; }
-.draft-editor textarea, .draft-editor input, .draft-editor select { width: 100%; min-width: 0; }
-.draft-scene { padding: 18px 0; border-bottom: 1px solid var(--border); }
-.draft-scene h4 { font-size: 14px; margin: 0; }
-.draft-scene small { color: var(--muted); line-height: 1.6; }
-.draft-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-.draft-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 20px; }
-.draft-history { margin-top: 20px; }
-.draft-history summary { cursor: pointer; color: var(--accent); font-size: 14px; padding: 8px 0; }
-.draft-editor textarea { min-height: 90px; border: 1px solid var(--border); border-radius: 6px; padding: 12px; background: var(--surface); }
-@media (max-width: 600px) { .draft-fields { grid-template-columns: 1fr; gap: 0; } }
+.draft-editor fieldset {
+  border: 0;
+  padding: 0;
+  min-width: 0;
+}
+.draft-editor legend {
+  font-size: 13px;
+  color: var(--muted);
+}
+.draft-editor label {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 14px 0;
+}
+.draft-editor textarea,
+.draft-editor input,
+.draft-editor select {
+  width: 100%;
+  min-width: 0;
+}
+.draft-scene {
+  padding: 18px 0;
+  border-bottom: 1px solid var(--border);
+}
+.draft-scene h4 {
+  font-size: 14px;
+  margin: 0;
+}
+.draft-scene small {
+  color: var(--muted);
+  line-height: 1.6;
+}
+.draft-fields {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+.draft-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 20px;
+}
+.draft-history {
+  margin-top: 20px;
+}
+.draft-history summary {
+  cursor: pointer;
+  color: var(--accent);
+  font-size: 14px;
+  padding: 8px 0;
+}
+.draft-editor textarea {
+  min-height: 90px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 12px;
+  background: var(--surface);
+}
+@media (max-width: 600px) {
+  .draft-fields {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+}
+.entity > img {
+  object-fit: contain;
+}
+.reference-views {
+  margin-top: 16px;
+  border-top: 1px solid var(--border);
+  padding-top: 12px;
+}
+.reference-views summary {
+  cursor: pointer;
+  color: var(--accent);
+  font-size: 12px;
+  padding: 6px 0;
+}
+.reference-views > p {
+  margin: 12px 0;
+  line-height: 1.6;
+}
+.reference-options {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 110px), 1fr));
+  gap: 12px;
+}
+.reference-option {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  min-width: 0;
+  font-size: 11px;
+}
+.reference-option img {
+  height: 130px;
+  object-fit: contain;
+  margin: 0;
+}
+.reference-option > span {
+  line-height: 1.5;
+}
+.reference-option > a:last-child {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--muted);
+  padding: 6px 0;
+}
+.reference-option button {
+  font-size: 11px;
+  padding: 9px;
+  min-height: 36px;
+}
+.reference-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 16px 0 12px;
+}
+.reference-buttons button {
+  padding: 9px 12px;
+  font-size: 11px;
+}
+.reference-buttons svg {
+  flex-shrink: 0;
+}
+.reference-views > small {
+  display: block;
+  line-height: 1.7;
+}
+@media (max-width: 600px) {
+  .asset-grid:has(.reference-views[open]) {
+    grid-template-columns: 1fr;
+  }
+  .reference-option img {
+    height: 150px;
+  }
+}

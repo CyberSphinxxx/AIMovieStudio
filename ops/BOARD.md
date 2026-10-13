@@ -1,4 +1,4 @@
-# Active backlog — 2026-10-13
+# Active backlog — 2026-10-14
 
 Do not interpret partial task evidence as full phase acceptance. See PROGRESS and HANDOFF.
 
@@ -13,7 +13,7 @@ Do not interpret partial task evidence as full phase acceptance. See PROGRESS an
 | F1.03 | IN_PROGRESS | Responsive screenshots + Axe passed; broader UI/screen-reader review open |
 | F1.04 | IN_PROGRESS | Live RAM/GPU/temp/driver, install versus proof statuses, resource guidance and last native block/refresh tested; CUDA runtime OS-blocked |
 | F1.05 | DONE_VERIFIED | Five Edge flows passed including blocked settings save while loading; actual demo playback/download and series prewrite |
-| F2.01 | IN_PROGRESS | 0.5B quality/schema failures retained; approved1.5B installed/hash-verified but inference refused2.44GiB RAM; no reliable writing proof |
+| F2.01 | IN_PROGRESS | 1.5B real CPU trials 461.579s total: structure passed, manual writing failed; approved 4B installed/hash-verified, awaiting 7GiB RAM; no reliable writer proof |
 | F2.02 | IN_PROGRESS | Finite ending and episode outline persisted; real quality evaluation open |
 | F2.03 | IN_PROGRESS | Durable four-shot batches,600s fixture/recovery/partial backup and whole-script continuity verified; real writing quality unproven |
 | F2.04 | IN_PROGRESS | Declared ownership/knowledge/location/life before-state checks, export-only canon, prop reference lineage and episode-start flashbacks tested; precise world time/prose semantics open |
@@ -22,8 +22,8 @@ Do not interpret partial task evidence as full phase acceptance. See PROGRESS an
 | F3.01 | DONE_VERIFIED | Demo references/keyframes + sidecar receipts/hash/lineage |
 | F3.02 | DONE_VERIFIED | Serialized references/frames/clip dependencies and pinned reference IDs |
 | F3.03 | BLOCKED_OS_POLICY | Approved image weights verified; torch_cuda.dll blocked before actual inference |
-| F3.04 | IN_PROGRESS | Baseline demo character/location images; real variants not verified |
-| F3.05 | IN_PROGRESS | Stage retry/caching; replacement/regeneration UI open |
+| F3.04 | IN_PROGRESS | Immutable portrait/profile/full-body/angle candidates and future-only selection; mock end-to-end/backup/recovery verified; native view quality blocked |
+| F3.05 | IN_PROGRESS | Bounded reference-view requests, original lineage/hash, optimistic selection, pending discard and future-shot pins verified; real inference unverified |
 | F4.01 | DONE_VERIFIED | Single OS-lock worker, claims/heartbeat/checkpoints |
 | F4.02 | DONE_VERIFIED | Persisted SSE cursor/Last-Event-ID replay and frontend polling tested |
 | F4.03 | IN_PROGRESS | Active atomic pause/resume/hash reuse, cancel/no-export, settings freeze and retry budget tests; broader UI smoke open |
@@ -51,4 +51,4 @@ Do not interpret partial task evidence as full phase acceptance. See PROGRESS an
 | F8.05 | IN_PROGRESS | Main npm/Python audit0; hostile backups/download budgets tested; vendor90 advisories unresolved |
 | F8.06 | IN_PROGRESS | Screenshots/evidence/run docs; release still blocked by listed gates |
 
-Next: F8.03 per-file converted model/VAE/encoder provenance and missing notices, then produced-story/reference revisions. Full148 backend PASS210.76s/2Vitest/static/main audits0, corrected final9Edge PASS86.956s; later10 inventory tests+16 storage PASS2.21s. Latest freeRAM2.43GiB; model loading still requires5GiB. Approved1.5B installed, inference NOT RUN. GPU App Control remains blocked; no system changes.
+Next: bounded approved 4B writing test after 7GiB free-RAM guard/readiness, then inspect narrative separately from schema. Independent: F8.03 converted VAE/encoder provenance and missing notices; produced-story revisions/export controls. Latest full core 189 backend PASS259.65s, 34 CPU-profile/setup/status checks PASS5.22s and 10 license checks PASS0.17s; lint/type/build/2Vitest and main audits0. Final 10 Edge flows PASS (see reference-4b-browser-final.log/browser-tests.json). Native GPU remains OS-blocked; no security changes. App remains unfinished.

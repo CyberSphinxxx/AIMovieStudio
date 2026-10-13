@@ -1,0 +1,27 @@
+{
+  "project_id": "16774fb5-7545-4bc4-825c-1f52570e650d",
+  "model": "Qwen2.5-1.5B-Instruct-Q4_K_M",
+  "structural_status": "STRUCTURED_BATCHED_SCRIPT_VALID",
+  "quality_review": "FAILED",
+  "is_mock": false,
+  "elapsed_seconds": 151.844,
+  "findings": [
+    {
+      "evidence": "script.screenplay bracketed numbered entries [9], [10], [11] beyond the eight-shot inventory",
+      "issue": "Unlabeled numeric heading bypass; now added to deterministic regression gate."
+    },
+    {
+      "evidence": "script.shots[2].action == script.shots[5].action; shots[1].action == shots[4].action",
+      "issue": "Repeats giving away and deciding to keep the same lamp without new story progress."
+    },
+    {
+      "evidence": "shot3 gives lamp away; shot7 keeper holds lamp without declared return; props/proposed_changes empty",
+      "issue": "Unjustified physical continuity reversal."
+    },
+    {
+      "evidence": "Repeated truncated narration ends guide/is/the/and followed by newline padding; all location_ids Lighthouse despite walking to Ship",
+      "issue": "Incomplete speech and staging not tied to structured locations."
+    }
+  ],
+  "next": "Reject both Shot N and bracketed numeric entries beyond checkpoint; keep manual writing quality separate."
+}

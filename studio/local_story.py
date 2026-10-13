@@ -18,6 +18,12 @@ from studio.story import OllamaStory, T, checked_post
 from studio.processes import owned_process
 
 CPU_PROFILES = {
+    "cpu_4b": (
+        "Qwen3-4B-Instruct-2507-Q4_K_M",
+        "qwen3-4b-instruct-2507-q4_k_m.gguf",
+        2497281120,
+        "3605803b982cb64aead44f6c1b2ae36e3acdb41d8e46c8a94c6533bc4c67e597",
+    ),
     "small_cpu": (
         "Qwen2.5-0.5B-Instruct-Q4_K_M",
         "qwen2.5-0.5b-instruct-q4_k_m.gguf",
@@ -48,11 +54,12 @@ def cpu_server(check=lambda: None, profile="small_cpu", observer=None):
             "MISSING_MODEL: The selected CPU writing experiment is not installed. Review its setup/download approval first."
         )
     check()
-    if profile == "cpu_1_5b":
+    if profile in {"cpu_1_5b", "cpu_4b"}:
         memory = memory_status()
-        if not memory.get("available") or memory["free_gb"] < 5:
+        minimum = 7 if profile == "cpu_4b" else 5
+        if not memory.get("available") or memory["free_gb"] < minimum:
             raise RuntimeError(
-                "RESOURCE_BUSY: The 1.5B CPU experiment requires at least 5 GiB free RAM before loading."
+                f"RESOURCE_BUSY: The selected CPU experiment requires at least {minimum} GiB free RAM before loading."
             )
     if weights.stat().st_size != size or digest(weights) != sha:
         raise RuntimeError(

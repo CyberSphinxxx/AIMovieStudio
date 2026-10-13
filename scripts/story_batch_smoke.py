@@ -1,6 +1,7 @@
 """Bounded real CPU writing test. No downloads or demo fallback; quality is separate."""
 
 import json
+import argparse
 import time
 from pathlib import Path
 from uuid import uuid4
@@ -9,11 +10,20 @@ from studio.diagnostics import memory_status
 from studio.domain import ProjectInput
 from studio.storage import Store, atomic_json
 from studio.worker import Worker
+from studio.local_story import CPU_PROFILES
 
 
 def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--max-seconds", type=int, default=600, help="Shorter test ceiling, at most 600 seconds"
+    )
+    parser.add_argument("--profile", choices=["cpu_1_5b", "cpu_4b"], default="cpu_1_5b")
+    args = parser.parse_args()
+    if not 1 <= args.max_seconds <= 600:
+        parser.error("Writing test ceiling must be between 1 and 600 seconds")
     started = time.monotonic()
-    store = Store(Path("data/cpu-writing-smoke"))
+    store = Store(Path("data/cpu-4b-writing-smoke" if args.profile == "cpu_4b" else "data/cpu-writing-smoke"))
     spec = ProjectInput(
         idea="A lighthouse keeper receives a message from a ship lost at sea. She rescues its last survivor by giving up the lamp that guides ships home. End with the survivor safely ashore and the keeper facing the cost of her choice.",
         kind="drama",
@@ -23,14 +33,15 @@ def main():
     )
     pid, _ = store.create(spec)
     with store.connect() as db:
-        db.execute("INSERT OR REPLACE INTO settings VALUES('story_engine','\"cpu_1_5b\"')")
+        db.execute("INSERT OR REPLACE INTO settings VALUES('story_engine',?)", (json.dumps(args.profile),))
         db.execute("INSERT OR REPLACE INTO settings VALUES('speech','\"none\"')")
     store.enqueue(pid)
     report = {
         "project_id": pid,
         "is_mock": False,
-        "model": "Qwen2.5-1.5B-Instruct-Q4_K_M",
+        "model": CPU_PROFILES[args.profile][0],
         "profile": "CPU only; four threads;8192 context; max4 shots/section;three attempts/section",
+        "max_seconds": args.max_seconds,
         "status": "STARTED",
         "quality_review": "NOT_PERFORMED",
         "preflight_memory": memory_status(),
@@ -55,8 +66,10 @@ def main():
 
     class BoundedWorker(Worker):
         def check(self, step):
-            if time.monotonic() - started > 600:
-                raise RuntimeError("TIMEOUT: CPU writing smoke reached its ten-minute ceiling.")
+            if time.monotonic() - started > args.max_seconds:
+                raise RuntimeError(
+                    f"TIMEOUT: CPU writing smoke reached its {args.max_seconds}-second ceiling."
+                )
             super().check(step)
 
     worker = BoundedWorker(store, story_observer=observe)
@@ -93,7 +106,14 @@ def main():
             script=project["episodes"][0]["script"] if project["episodes"] else None,
         )
         atomic_json(Path(f"ops/evidence/cpu-writing-runs/{pid}.json"), report)
-        atomic_json(Path("ops/evidence/real-cpu-batched-story.json"), report)
+        atomic_json(
+            Path(
+                "ops/evidence/real-cpu-4b-batched-story.json"
+                if args.profile == "cpu_4b"
+                else "ops/evidence/real-cpu-batched-story.json"
+            ),
+            report,
+        )
         print(json.dumps({k: v for k, v in report.items() if k not in {"plan", "script"}}, indent=2))
 
 

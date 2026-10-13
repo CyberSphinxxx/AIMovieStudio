@@ -1,0 +1,28 @@
+{
+  "project_id": "183c6a46-692b-4eba-bcff-17374b8cb807",
+  "model": "Qwen2.5-1.5B-Instruct-Q4_K_M",
+  "structural_status": "STRUCTURED_BATCHED_SCRIPT_VALID",
+  "quality_review": "FAILED",
+  "is_mock": false,
+  "elapsed_seconds": 137.11,
+  "findings": [
+    {
+      "evidence": "Shot headers now scoped1-4 and5-8; all eight declared shots validate",
+      "issue": "Numbered prose gap fixed; structural success still does not certify the narrative."
+    },
+    {
+      "evidence": "shots2-4 repeat turns off lamp; shots6-8 repeat turns off lamp and rescues survivor",
+      "issue": "Repeated rescue/actions, no progressing causal sequence or justified flashback."
+    },
+    {
+      "evidence": "Narration repeatedly ends decide/survivor mid-clause; rescue asserted without shown action; first section already states final outcome",
+      "issue": "Incomplete spoken lines and premature/unexplained resolution."
+    },
+    {
+      "evidence": "props/proposed_changes empty; all locations Lighthouse; appearances generic",
+      "issue": "Physical and location continuity underdeclared."
+    }
+  ],
+  "cumulative_cpu_test_seconds": 461.579,
+  "next": "Stop the three bounded1.5B trials. Prepare a stronger small CPU writing candidate for a separately approved download; no reliable-writer or GPU/video pass."
+}

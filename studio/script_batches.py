@@ -28,4 +28,6 @@ def validate_section(section, plan: SeasonPlan, start, count, seconds_per_shot):
         shot.number -= start
     for change in local.proposed_changes:
         change.after_shot -= start
-    validate_script(local, plan, count * seconds_per_shot)
+    validate_script(
+        local, plan, count * seconds_per_shot, screenplay_numbers=range(start + 1, start + count + 1)
+    )

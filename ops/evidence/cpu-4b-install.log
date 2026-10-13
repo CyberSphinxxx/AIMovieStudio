@@ -1,0 +1,5 @@
+Verified qwen3-4b-instruct-2507-q4_k_m.gguf: 2497281120bytes
+Verified qwen4b-LICENSE: 11343bytes
+Verified qwen4b-UPSTREAM-CARD.md: 8168bytes
+Verified qwen4b-CONVERTER-CARD.md: 11207bytes
+4B files verified; writing quality/RAM fit are still unproven. No default or system setting changed.

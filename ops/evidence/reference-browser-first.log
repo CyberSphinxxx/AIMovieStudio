@@ -1,0 +1,14 @@
+
+> ai-movie-studio-client@0.1.0 test:e2e
+> playwright test e2e/references.spec.ts
+
+
+Running 1 test using 1 worker
+
+(node:27836) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:27836) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 e2e\references.spec.ts:5:1 › reference views retain originals and pin the chosen view only in new episode shots (13.2s)
+
+  1 passed (15.9s)

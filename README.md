@@ -49,7 +49,9 @@ An optional tiny CPU feasibility model can be prepared with `.venv/Scripts/pytho
 
 Select **Small CPU feasibility model** in Settings to use that installed runtime. It unloads after each story step. The observed worker persisted a real plan and screenplay, then stopped at missing image/video setup. Some attempts exhausted schema repairs; this tiny model remains a writing feasibility test.
 
-The additional **Qwen 1.5B CPU experiment** is approved and installed with verified hashes. Its first writing test stopped before loading at 2.44 GiB free RAM; the guarded profile requires 5 GiB. No 1.5B inference or quality pass is claimed. Scope: `docs/CPU_STORY_INSTALL_PROPOSAL.md`. It uses the existing CPU runtime and never falls back to a demo.
+The approved **Qwen 1.5B CPU experiment** ran three real writing trials in 461.579 seconds total. Structured output passed after adding screenplay shot-number gates, but all three failed manual writing review: repeated action, incomplete spoken lines and underdeclared physical continuity. Sampled server working set peaked near 2 GB; this is sample evidence, not a reliable writer or long-series proof. Scope: `docs/CPU_STORY_INSTALL_PROPOSAL.md`.
+
+The separately approved **Qwen3 4B CPU experiment** is installed and checksum-verified, with an explicit option in Settings. It reuses the existing runtime, requires 7 GiB free RAM before loading and does not change defaults. Inference is currently waiting for sufficient RAM; quality and performance are unproven. Scope: `docs/CPU_4B_STORY_INSTALL_PROPOSAL.md`. Neither experiment substitutes demo output after a real-provider failure. Developer writing-only test: `.venv/Scripts/python.exe -m scripts.story_batch_smoke --profile cpu_4b --max-seconds 600`.
 
 The user approved the bounded private GPU installation in `docs/GPU_INSTALL_PROPOSAL.md`. Its source, isolated runtime and image weights are installed with recorded checksums. **The first runtime smoke failed before inference: Windows Application Control blocked PyTorch's CUDA DLL.** No real GPU image or video has been generated. Video weights remain gated on a reviewed image test. See `ops/HARDWARE_PROOF.md` and `ops/APPROVALS.md`. The studio does not alter Windows security policy. Vendor dependencies also have unresolved audit advisories and are not release-certified.
 
@@ -88,11 +90,13 @@ Pause waits for the current atomic step. Resume/retry applies to the selected ep
 
 ## Known incomplete work
 
+After production finishes, **Cast & World → Reference views** saves alternate portraits, side profiles, full-body views or location/prop angles as separate candidates. Explicitly choose a candidate for new episode shots; old keyframes, movies and retakes keep their saved reference pins. Originals, choices and candidates travel in backups. Each entity allows three requested views, including discarded requests, with finite stage retries. Resolve unfinished view work through its episode controls. Demo views remain abstract mock images; native view/identity quality has not been verified.
+
 Installed dependency declarations and notice hashes can be inspected in [the license review](docs/INSTALLED_LICENSE_REVIEW.md). `.venv/Scripts/python.exe -m scripts.license_inventory` refreshes the offline inventory without loading AI libraries. This inventory does not clear a release or redistribution.
 
 - Real GPU references/video, guided model setup and measured 6 GB inference.
 - Declared prop ownership, character knowledge, location/life changes and episode-start flashbacks are checked. Fine-grained world time, costumes, relationships and semantic contradictions in prose remain incomplete.
-- Produced-story edits, character reference variants, version branches, custom/native HD exports, open-folder controls and advanced quality evaluation. Immutable single-shot retakes, draft aspect copies and graphical restore of missing projects are available.
+- Produced-story edits, native reference-view quality, version branches, custom/native HD exports, open-folder controls and advanced quality evaluation. Immutable single-shot retakes, future-only reference choices, draft aspect copies and graphical restore of missing projects are available.
 - Clean-machine packaging, dependency/license release review, full GPU OOM testing and cinematic review.
 - A first-read recovery I/O error was reproduced as Windows SQLITE_IOERR_TRUNCATE after a hard kill. Read-only project snapshots now retry this specific error on fresh connections, with three total attempts; actual recovery checks passed. Other I/O/corruption/write faults still fail immediately. The original older failure had no recorded code, so this does not establish that every possible storage fault is resolved.
 

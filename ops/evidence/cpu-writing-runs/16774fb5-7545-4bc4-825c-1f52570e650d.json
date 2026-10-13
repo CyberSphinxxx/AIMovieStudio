@@ -1,0 +1,255 @@
+{
+  "project_id": "16774fb5-7545-4bc4-825c-1f52570e650d",
+  "is_mock": false,
+  "model": "Qwen2.5-1.5B-Instruct-Q4_K_M",
+  "profile": "CPU only; four threads;8192 context; max4 shots/section;three attempts/section",
+  "max_seconds": 420,
+  "status": "STRUCTURED_BATCHED_SCRIPT_VALID",
+  "quality_review": "NOT_PERFORMED",
+  "preflight_memory": {
+    "available": true,
+    "total_gb": 15.19,
+    "free_gb": 7.09,
+    "load_percent": 53
+  },
+  "samples": 692,
+  "sampled_peak_server_rss_bytes": 2017505280,
+  "sampled_min_available_ram_gib": 5.27,
+  "completed_steps": [
+    {
+      "id": "2bd801ce-c206-4c61-90df-29ae8963e5c9",
+      "stage": "PLAN",
+      "seconds": 19.14
+    },
+    {
+      "id": "bd6c4b7a-969a-40e1-ad5b-b1247df7ce6d",
+      "stage": "SCRIPT_BATCH",
+      "seconds": 58.406
+    },
+    {
+      "id": "233323ae-8791-4b84-b400-b01533ec8b1d",
+      "stage": "SCRIPT_BATCH",
+      "seconds": 74.188
+    },
+    {
+      "id": "75209d12-86b9-460e-b014-1cff82591851",
+      "stage": "SCRIPT",
+      "seconds": 0.016
+    }
+  ],
+  "stage": "SCRIPT",
+  "elapsed_seconds": 151.844,
+  "plan": {
+    "title": "The Lighthouse Keeper's Sacrifice",
+    "logline": "A lighthouse keeper must choose between saving a ship's last survivor or keeping the lamp that guides ships home.",
+    "ending": "The survivor safely ashore, and the keeper facing the cost of her choice.",
+    "world_rules": [
+      "The lighthouse is the only source of light in the area, guiding ships home.",
+      "The keeper must choose between saving the last survivor or keeping the lamp.",
+      "The lamp is the only source of light in the area, guiding ships home.",
+      "The keeper must choose between saving the last survivor or keeping the lamp, and she must make this choice."
+    ],
+    "characters": [
+      {
+        "id": "eea82d06-b948-509d-bbfe-b3307d0dfbd5",
+        "name": "Lighthouse Keeper",
+        "appearance": "A middle-aged woman with a kind face and a strong sense of duty",
+        "goal": "To save the last survivor of a ship lost at sea",
+        "voice": "default",
+        "initial_knowledge": [
+          "The lighthouse is the only source of light in the area, guiding ships home. The keeper must choose between saving the last survivor or keeping the lamp."
+        ]
+      },
+      {
+        "id": "2b1795d5-0425-53ac-912a-9364130dab61",
+        "name": "Last Survivor",
+        "appearance": "A young man with a kind face and a strong sense of duty",
+        "goal": "To be rescued by the lighthouse keeper",
+        "voice": "secondary",
+        "initial_knowledge": [
+          "The lighthouse is the only source of light in the area, guiding ships home. The keeper must choose between saving the last survivor or keeping the lamp."
+        ]
+      }
+    ],
+    "locations": [
+      {
+        "id": "f8246cd1-0a8f-5ec8-96f6-02855650a3fb",
+        "name": "Lighthouse",
+        "description": "The only source of light in the area, guiding ships home."
+      },
+      {
+        "id": "bae730eb-7278-52b2-83b9-8f8014e61afd",
+        "name": "Ship",
+        "description": "The ship that was lost at sea."
+      }
+    ],
+    "episodes": [
+      {
+        "number": 1,
+        "title": "The Lighthouse Keeper's Sacrifice",
+        "summary": "The keeper receives a message from the last survivor of the ship, and she must choose between saving the survivor or keeping the lamp that guides ships home.",
+        "outcome": "The survivor safely ashore, and the keeper facing the cost of her choice."
+      }
+    ],
+    "props": []
+  },
+  "script": {
+    "number": 1,
+    "screenplay": "The Lighthouse Keeper's Sacrifice\n\n[1] [eea82d06-b948-509d-bbfe-b3307d0dfbd5, 2b1795d5-0425-53ac-912a-9364130dab61] The Lighthouse Keeper receives a message from the last survivor of the ship, who is stranded on the shore. She must choose between saving the survivor or keeping the lamp that guides ships home.\n\n[2] [eea82d06-b948-509d-bbfe-b3307d0dfbd5, 2b1795d5-0425-53ac-912a-9364130dab61] The Keeper looks at the lamp, deciding to keep it to guide ships home.\n\n[3] [eea82d06-b948-509d-bbfe-b3307d0dfbd5, 2b1795d5-0425-53ac-912a-9364130dab61] The Keeper walks to the ship, where the last survivor is waiting. She gives him the lamp, knowing that it will guide ships home.\n\n[4] [eea82d06-b948-509d-bbfe-b3307d0dfbd5, 2b1795d5-0425-53ac-912a-9364130dab61] The Keeper returns to the lighthouse, where she faces the cost of her choice: she has lost the lamp that guides ships home, but has saved the last survivor. She is now alone and vulnerable, knowing that she must continue to guide ships home without the lamp.\n\nThe Keeper looks at the lamp, deciding to keep it to guide ships home.\n\n[5] [eea82d06-b948-509d-bbfe-b3307d0dfbd5, 2b1795d5-0425-53ac-912a-9364130dab61] The Keeper walks to the ship, where the last survivor is waiting. She gives him the lamp, knowing that it will guide ships home.\n\n[6] [eea82d06-b948-509d-bbfe-b3307d0dfbd5, 2b1795d5-0425-53ac-912a-9364130dab61] The Keeper returns to the lighthouse, where she faces the cost of her choice: she has lost the lamp that guides ships home, but has saved the last survivor. She is now alone and vulnerable, knowing that she must continue to guide ships home without the lamp.\n\n[7] [eea82d06-b948-509d-bbfe-b3307d0dfbd5, 2b1795d5-0425-53ac-912a-9364130dab61] The Keeper stands at the lighthouse, holding the lamp, and watches as ships pass by, guided by the light of the lighthouse.\n\n[8] [eea82d06-b948-509d-bbfe-b3307d0dfbd5, 2b1795d5-0425-53ac-912a-9364130dab61] The Keeper looks at the lamp, knowing that she has made her choice and now faces the consequences of her sacrifice. She stands alone, the only light in the area, guiding ships home without the lamp.\n\n[9] [eea82d06-b948-509d-bbfe-b3307d0dfbd5, 2b1795d5-0425-53ac-912a-9364130dab61] The Keeper watches as the ships pass by, guided by the light of the lighthouse, knowing that she has made her choice and now faces the consequences of her sacrifice.\n\n[10] [eea82d06-b948-509d-bbfe-b3307d0dfbd5, 2b1795d5-0425-53ac-912a-9364130dab61] The Keeper stands at the lighthouse, holding the lamp, and watches as ships pass by, guided by the light of the lighthouse.\n\n[11] [eea82d06-b948-509d-bbfe-b330",
+    "shots": [
+      {
+        "id": "a7c1d5a1-ff44-5b61-b8d6-3502e02d019e",
+        "number": 1,
+        "duration": 5.0,
+        "location_id": "f8246cd1-0a8f-5ec8-96f6-02855650a3fb",
+        "character_ids": [
+          "eea82d06-b948-509d-bbfe-b3307d0dfbd5",
+          "2b1795d5-0425-53ac-912a-9364130dab61"
+        ],
+        "action": "The Keeper receives a message from the last survivor of the ship, who is stranded on the shore. She must choose between saving the survivor or keeping the lamp that guides ships home.",
+        "camera": "Close-up",
+        "narration": "The Keeper looks at the lamp, deciding to keep it to guide\n\n",
+        "speaker_id": "eea82d06-b948-509d-bbfe-b3307d0dfbd5",
+        "transition": "cut",
+        "required_props": [],
+        "required_knowledge": [],
+        "flashback_episode": null,
+        "continuity_note": ""
+      },
+      {
+        "id": "ee69ac89-fe74-5670-83e4-a481fd4a88bf",
+        "number": 2,
+        "duration": 5.0,
+        "location_id": "f8246cd1-0a8f-5ec8-96f6-02855650a3fb",
+        "character_ids": [
+          "eea82d06-b948-509d-bbfe-b3307d0dfbd5",
+          "2b1795d5-0425-53ac-912a-9364130dab61"
+        ],
+        "action": "The Keeper looks at the lamp, deciding to keep it to guide ships home.",
+        "camera": "Close-up",
+        "narration": "The Keeper looks at the lamp, deciding to keep it to guide\n\n",
+        "speaker_id": "eea82d06-b948-509d-bbfe-b3307d0dfbd5",
+        "transition": "cut",
+        "required_props": [],
+        "required_knowledge": [],
+        "flashback_episode": null,
+        "continuity_note": ""
+      },
+      {
+        "id": "b701f8ce-0c12-5599-bad3-20810de8a964",
+        "number": 3,
+        "duration": 5.0,
+        "location_id": "f8246cd1-0a8f-5ec8-96f6-02855650a3fb",
+        "character_ids": [
+          "eea82d06-b948-509d-bbfe-b3307d0dfbd5",
+          "2b1795d5-0425-53ac-912a-9364130dab61"
+        ],
+        "action": "The Keeper walks to the ship, where the last survivor is waiting. She gives him the lamp, knowing that it will guide ships home.",
+        "camera": "Medium shot",
+        "narration": "The Keeper walks to the ship, where the last survivor is\n\n",
+        "speaker_id": "eea82d06-b948-509d-bbfe-b3307d0dfbd5",
+        "transition": "cut",
+        "required_props": [],
+        "required_knowledge": [],
+        "flashback_episode": null,
+        "continuity_note": ""
+      },
+      {
+        "id": "7f6c8d33-675d-5518-9815-aa1941c0ee21",
+        "number": 4,
+        "duration": 5.0,
+        "location_id": "f8246cd1-0a8f-5ec8-96f6-02855650a3fb",
+        "character_ids": [
+          "eea82d06-b948-509d-bbfe-b3307d0dfbd5",
+          "2b1795d5-0425-53ac-912a-9364130dab61"
+        ],
+        "action": "The Keeper returns to the lighthouse, where she faces the cost of her choice: she has lost the lamp that guides ships home, but has saved the last survivor. She is now alone and vulnerable, knowing that she must continue to guide ships home without the lamp.",
+        "camera": "Medium shot",
+        "narration": "The Keeper returns to the lighthouse, where she faces the\n\n",
+        "speaker_id": "eea82d06-b948-509d-bbfe-b3307d0dfbd5",
+        "transition": "cut",
+        "required_props": [],
+        "required_knowledge": [],
+        "flashback_episode": null,
+        "continuity_note": ""
+      },
+      {
+        "id": "e1bc099b-dea4-59b2-bedb-9b193038967f",
+        "number": 5,
+        "duration": 5.0,
+        "location_id": "f8246cd1-0a8f-5ec8-96f6-02855650a3fb",
+        "character_ids": [
+          "eea82d06-b948-509d-bbfe-b3307d0dfbd5",
+          "2b1795d5-0425-53ac-912a-9364130dab61"
+        ],
+        "action": "The Keeper looks at the lamp, deciding to keep it to guide ships home.",
+        "camera": "Medium shot",
+        "narration": "The Keeper looks at the lamp, deciding to keep it to guide\n\n",
+        "speaker_id": "eea82d06-b948-509d-bbfe-b3307d0dfbd5",
+        "transition": "cut",
+        "required_props": [],
+        "required_knowledge": [],
+        "flashback_episode": null,
+        "continuity_note": ""
+      },
+      {
+        "id": "f99f45e5-146c-57ea-b293-9d27fd15275e",
+        "number": 6,
+        "duration": 5.0,
+        "location_id": "f8246cd1-0a8f-5ec8-96f6-02855650a3fb",
+        "character_ids": [
+          "eea82d06-b948-509d-bbfe-b3307d0dfbd5",
+          "2b1795d5-0425-53ac-912a-9364130dab61"
+        ],
+        "action": "The Keeper walks to the ship, where the last survivor is waiting. She gives him the lamp, knowing that it will guide ships home.",
+        "camera": "Medium shot",
+        "narration": "The Keeper walks to the ship, where the last survivor is\n\n",
+        "speaker_id": "eea82d06-b948-509d-bbfe-b3307d0dfbd5",
+        "transition": "cut",
+        "required_props": [],
+        "required_knowledge": [],
+        "flashback_episode": null,
+        "continuity_note": ""
+      },
+      {
+        "id": "6cd96225-b4e2-5fea-8b2c-7cbdd9431588",
+        "number": 7,
+        "duration": 5.0,
+        "location_id": "f8246cd1-0a8f-5ec8-96f6-02855650a3fb",
+        "character_ids": [
+          "eea82d06-b948-509d-bbfe-b3307d0dfbd5",
+          "2b1795d5-0425-53ac-912a-9364130dab61"
+        ],
+        "action": "The Keeper stands at the lighthouse, holding the lamp, and watches as ships pass by, guided by the light of the lighthouse.",
+        "camera": "Medium shot",
+        "narration": "The Keeper stands at the lighthouse, holding the lamp, and\n\n",
+        "speaker_id": "eea82d06-b948-509d-bbfe-b3307d0dfbd5",
+        "transition": "cut",
+        "required_props": [],
+        "required_knowledge": [],
+        "flashback_episode": null,
+        "continuity_note": ""
+      },
+      {
+        "id": "8be8dd5d-99b5-5ca5-a505-c283eeb3681f",
+        "number": 8,
+        "duration": 5.0,
+        "location_id": "f8246cd1-0a8f-5ec8-96f6-02855650a3fb",
+        "character_ids": [
+          "eea82d06-b948-509d-bbfe-b3307d0dfbd5",
+          "2b1795d5-0425-53ac-912a-9364130dab61"
+        ],
+        "action": "The Keeper looks at the lamp, knowing that she has made her choice and now faces the consequences of her sacrifice. She stands alone, the only light in the area, guiding ships home without the lamp.",
+        "camera": "Medium shot",
+        "narration": "The Keeper looks at the lamp, knowing that she has made her\n",
+        "speaker_id": "eea82d06-b948-509d-bbfe-b3307d0dfbd5",
+        "transition": "cut",
+        "required_props": [],
+        "required_knowledge": [],
+        "flashback_episode": null,
+        "continuity_note": ""
+      }
+    ],
+    "proposed_changes": []
+  }
+}

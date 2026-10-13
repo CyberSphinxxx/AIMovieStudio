@@ -1,0 +1,258 @@
+{
+  "project_id": "183c6a46-692b-4eba-bcff-17374b8cb807",
+  "is_mock": false,
+  "model": "Qwen2.5-1.5B-Instruct-Q4_K_M",
+  "profile": "CPU only; four threads;8192 context; max4 shots/section;three attempts/section",
+  "max_seconds": 270,
+  "status": "STRUCTURED_BATCHED_SCRIPT_VALID",
+  "quality_review": "NOT_PERFORMED",
+  "preflight_memory": {
+    "available": true,
+    "total_gb": 15.19,
+    "free_gb": 7.04,
+    "load_percent": 53
+  },
+  "samples": 625,
+  "sampled_peak_server_rss_bytes": 2009976832,
+  "sampled_min_available_ram_gib": 5.29,
+  "completed_steps": [
+    {
+      "id": "c39acd2f-43da-4cc5-a129-5bffd6f9930f",
+      "stage": "PLAN",
+      "seconds": 18.313
+    },
+    {
+      "id": "375a23d2-db7c-4c21-98c9-e01bd7adf302",
+      "stage": "SCRIPT_BATCH",
+      "seconds": 51.562
+    },
+    {
+      "id": "5a89f551-ad3d-4875-9bad-b6ae1cb74edf",
+      "stage": "SCRIPT_BATCH",
+      "seconds": 67.141
+    },
+    {
+      "id": "688f216a-4372-4810-b88d-805f3d6573a4",
+      "stage": "SCRIPT",
+      "seconds": 0.031
+    }
+  ],
+  "stage": "SCRIPT",
+  "elapsed_seconds": 137.11,
+  "plan": {
+    "title": "The Lighthouse Keeper's Dilemma",
+    "logline": "A lighthouse keeper must choose between saving a ship's last survivor or turning off the lamp that guides ships home.",
+    "ending": "The survivor safely ashore, the keeper facing the cost of her decision.",
+    "world_rules": [
+      "The lighthouse is the only source of light in the area.",
+      "The keeper must decide whether to turn off the lamp or not.",
+      "The ship's last survivor is the only person who can be saved.",
+      "The keeper can only turn off the lamp once.",
+      "The lamp is crucial for guiding ships home and ensuring safety."
+    ],
+    "characters": [
+      {
+        "id": "1a6aaea1-2665-5b4c-9cc4-9e9e3c1a2df5",
+        "name": "Lighthouse Keeper",
+        "appearance": "A middle-aged man with a rugged face and a kind demeanor",
+        "goal": "To save the last survivor of the ship that has run aground",
+        "voice": "default",
+        "initial_knowledge": [
+          "The ship is the only source of light for the area",
+          "The keeper has the ability to turn off the lamp"
+        ]
+      },
+      {
+        "id": "b79b90c3-0ec7-5bf3-a864-6984e3067548",
+        "name": "Last Survivor",
+        "appearance": "A young woman in distress, possibly from a shipwreck",
+        "goal": "To be rescued by the lighthouse keeper",
+        "voice": "secondary",
+        "initial_knowledge": [
+          "She is the last person on the ship",
+          "She needs the light to be saved"
+        ]
+      }
+    ],
+    "locations": [
+      {
+        "id": "f8e4cb66-68d2-5ffb-90e9-d0d3814d154d",
+        "name": "Lighthouse",
+        "description": "The only source of light in the area"
+      },
+      {
+        "id": "ca0c85d7-0c44-548a-a727-15774d3d50d5",
+        "name": "Ship",
+        "description": "The source of light for the area, but also the source of the problem"
+      }
+    ],
+    "episodes": [
+      {
+        "number": 1,
+        "title": "The Lighthouse Keeper's Dilemma",
+        "summary": "The keeper receives a message from the ship and must decide whether to turn off the lamp or not.",
+        "outcome": "The keeper decides to turn off the lamp, saving the last survivor."
+      }
+    ],
+    "props": []
+  },
+  "script": {
+    "number": 1,
+    "screenplay": "The Lighthouse Keeper's Dilemma: The Keeper Receives the Message\n\n[1, 2, 3, 4]\n\n**Shot 1:** [Lighthouse, Lighthouse Keeper, Last Survivor]\n\n**Action:** The Keeper receives a message from the ship. She must decide whether to turn off the lamp or not.\n\n**Dialogue/Narration:**\n\n**Keeper:** I have the ability to turn off the lamp. What do I do?\n\n**Last Survivor:** Please, I need the light to be saved.\n\n**Keeper:** I will turn off the lamp. I will save you.\n\n**Shot 2:** [Lighthouse, Lighthouse Keeper, Ship]\n\n**Action:** The Keeper turns off the lamp. She rescues the last survivor.\n\n**Dialogue/Narration:**\n\n**Keeper:** The lamp is crucial for guiding ships home and ensuring safety.\n\n**Last Survivor:** Thank you, I will be safe now.\n\n**Shot 3:** [Lighthouse, Lighthouse Keeper, Ship]\n\n**Action:** The Keeper turns off the lamp. She rescues the last survivor.\n\n**Dialogue/Narration:**\n\n**Keeper:** I will turn off the lamp. I will save you.\n\n**Last Survivor:** Thank you, I will be safe now.\n\n**Shot 4:** [Lighthouse, Lighthouse Keeper, Ship]\n\n**Action:** The Keeper turns off the lamp. She rescues the last survivor.\n\n**Dialogue/Narration:**\n\n**Keeper:** I will turn off the lamp. I will save you.\n\n**Last Survivor:** Thank you, I will be safe now.\n\n**Ending:** The Keeper faces the cost of her decision. The survivor safely ashore, the Keeper facing the cost of her choice.\n\n**Ending:**\n\n**Keeper:** The lamp is crucial for guiding ships home and ensuring safety.\n\n**Last Survivor:** Thank you, I will be safe now.\n\n**Keeper:** I will turn off the lamp. I will save you.\n\n**Last Survivor:** Thank\n\nThe Lighthouse Keeper's Dilemma: Sacrifice and Resolution\n\n**Shot 5:** [Lighthouse, Lighthouse Keeper, Last Survivor]\n\n**Action:** The Keeper receives a message from the ship. She must decide whether to turn off the lamp or not.\n\n**Dialogue/Narration:**\n\n**Keeper:** I have the ability to turn off the lamp. What do I do?\n\n**Last Survivor:** Please, I need the light to be saved.\n\n**Keeper:** I will turn off the lamp. I will save you.\n\n**Shot 6:** [Lighthouse, Lighthouse Keeper, Ship]\n\n**Action:** The Keeper turns off the lamp. She rescues the last survivor.\n\n**Dialogue/Narration:**\n\n**Keeper:** The lamp is crucial for guiding ships home and ensuring safety.\n\n**Last Survivor:** Thank you, I will be safe now.\n\n**Shot 7:** [Lighthouse, Lighthouse Keeper, Ship]\n\n**Action:** The Keeper turns off the lamp. She rescues the last survivor.\n\n**Dialogue/Narration:**\n\n**Keeper:** I will turn off the lamp. I will save you.\n\n**Last Survivor:** Thank you, I will be safe now.\n\n**Shot 8:** [Lighthouse, Lighthouse Keeper, Ship]\n\n**Action:** The Keeper turns off the lamp. She rescues the last survivor.\n\n**Dialogue/Narration:**\n\n**Keeper:** I will turn off the lamp. I will save you.\n\n**Last Survivor:** Thank you, I will be safe now.\n\n**Ending:** The Keeper faces the cost of her decision. The survivor safely ashore, the Keeper facing the cost of her choice.\n\n**Ending:**\n\n**Keeper:** The lamp is crucial for guiding ships home and ensuring safety.\n\n**Last Survivor:** Thank you, I will be safe now.\n\n**Keeper:** I will turn off the lamp. I will save you.\n\n**Last Survivor:** Thank",
+    "shots": [
+      {
+        "id": "c35dd7ca-d5a7-5304-9c38-feecff0dc5c2",
+        "number": 1,
+        "duration": 5.0,
+        "location_id": "f8e4cb66-68d2-5ffb-90e9-d0d3814d154d",
+        "character_ids": [
+          "1a6aaea1-2665-5b4c-9cc4-9e9e3c1a2df5",
+          "b79b90c3-0ec7-5bf3-a864-6984e3067548"
+        ],
+        "action": "The Keeper receives a message from the ship.",
+        "camera": "Close-up",
+        "narration": "The Keeper receives a message from the ship. She must decide",
+        "speaker_id": "1a6aaea1-2665-5b4c-9cc4-9e9e3c1a2df5",
+        "transition": "cut",
+        "required_props": [],
+        "required_knowledge": [],
+        "flashback_episode": null,
+        "continuity_note": ""
+      },
+      {
+        "id": "c9d2fac2-da56-5c61-9a97-07f41405dae6",
+        "number": 2,
+        "duration": 5.0,
+        "location_id": "f8e4cb66-68d2-5ffb-90e9-d0d3814d154d",
+        "character_ids": [
+          "1a6aaea1-2665-5b4c-9cc4-9e9e3c1a2df5",
+          "b79b90c3-0ec7-5bf3-a864-6984e3067548"
+        ],
+        "action": "The Keeper turns off the lamp.",
+        "camera": "Close-up",
+        "narration": "The Keeper turns off the lamp. She rescues the last survivor",
+        "speaker_id": "1a6aaea1-2665-5b4c-9cc4-9e9e3c1a2df5",
+        "transition": "cut",
+        "required_props": [],
+        "required_knowledge": [],
+        "flashback_episode": null,
+        "continuity_note": ""
+      },
+      {
+        "id": "bbda9d2b-45bd-590a-8319-b715373e80e3",
+        "number": 3,
+        "duration": 5.0,
+        "location_id": "f8e4cb66-68d2-5ffb-90e9-d0d3814d154d",
+        "character_ids": [
+          "1a6aaea1-2665-5b4c-9cc4-9e9e3c1a2df5",
+          "b79b90c3-0ec7-5bf3-a864-6984e3067548"
+        ],
+        "action": "The Keeper turns off the lamp.",
+        "camera": "Close-up",
+        "narration": "The Keeper turns off the lamp. She rescues the last survivor",
+        "speaker_id": "1a6aaea1-2665-5b4c-9cc4-9e9e3c1a2df5",
+        "transition": "cut",
+        "required_props": [],
+        "required_knowledge": [],
+        "flashback_episode": null,
+        "continuity_note": ""
+      },
+      {
+        "id": "d1ca9efb-19be-51b1-b8fa-021f4c69079f",
+        "number": 4,
+        "duration": 5.0,
+        "location_id": "f8e4cb66-68d2-5ffb-90e9-d0d3814d154d",
+        "character_ids": [
+          "1a6aaea1-2665-5b4c-9cc4-9e9e3c1a2df5",
+          "b79b90c3-0ec7-5bf3-a864-6984e3067548"
+        ],
+        "action": "The Keeper turns off the lamp.",
+        "camera": "Close-up",
+        "narration": "The Keeper turns off the lamp. She rescues the last survivor",
+        "speaker_id": "1a6aaea1-2665-5b4c-9cc4-9e9e3c1a2df5",
+        "transition": "cut",
+        "required_props": [],
+        "required_knowledge": [],
+        "flashback_episode": null,
+        "continuity_note": ""
+      },
+      {
+        "id": "ecf9e217-980e-5d21-8bf7-cee9c1c1bae1",
+        "number": 5,
+        "duration": 5.0,
+        "location_id": "f8e4cb66-68d2-5ffb-90e9-d0d3814d154d",
+        "character_ids": [
+          "1a6aaea1-2665-5b4c-9cc4-9e9e3c1a2df5",
+          "b79b90c3-0ec7-5bf3-a864-6984e3067548"
+        ],
+        "action": "The Keeper receives a message from the ship. She must decide whether to turn off the lamp or not.",
+        "camera": "Close-up",
+        "narration": "The Keeper receives a message from the ship. She must decide",
+        "speaker_id": "1a6aaea1-2665-5b4c-9cc4-9e9e3c1a2df5",
+        "transition": "cut",
+        "required_props": [],
+        "required_knowledge": [],
+        "flashback_episode": null,
+        "continuity_note": ""
+      },
+      {
+        "id": "73ff6894-40fd-50fd-8344-f68f8344bd6f",
+        "number": 6,
+        "duration": 5.0,
+        "location_id": "f8e4cb66-68d2-5ffb-90e9-d0d3814d154d",
+        "character_ids": [
+          "1a6aaea1-2665-5b4c-9cc4-9e9e3c1a2df5",
+          "b79b90c3-0ec7-5bf3-a864-6984e3067548"
+        ],
+        "action": "The Keeper turns off the lamp. She rescues the last survivor.",
+        "camera": "Close-up",
+        "narration": "The Keeper turns off the lamp. She rescues the last survivor",
+        "speaker_id": "1a6aaea1-2665-5b4c-9cc4-9e9e3c1a2df5",
+        "transition": "cut",
+        "required_props": [],
+        "required_knowledge": [],
+        "flashback_episode": null,
+        "continuity_note": ""
+      },
+      {
+        "id": "45f139ad-ce51-57c9-b645-d6e4fa00cd0d",
+        "number": 7,
+        "duration": 5.0,
+        "location_id": "f8e4cb66-68d2-5ffb-90e9-d0d3814d154d",
+        "character_ids": [
+          "1a6aaea1-2665-5b4c-9cc4-9e9e3c1a2df5",
+          "b79b90c3-0ec7-5bf3-a864-6984e3067548"
+        ],
+        "action": "The Keeper turns off the lamp. She rescues the last survivor.",
+        "camera": "Close-up",
+        "narration": "The Keeper turns off the lamp. She rescues the last survivor",
+        "speaker_id": "1a6aaea1-2665-5b4c-9cc4-9e9e3c1a2df5",
+        "transition": "cut",
+        "required_props": [],
+        "required_knowledge": [],
+        "flashback_episode": null,
+        "continuity_note": ""
+      },
+      {
+        "id": "0d2d9e46-0dcc-5505-be69-ba163f7274e5",
+        "number": 8,
+        "duration": 5.0,
+        "location_id": "f8e4cb66-68d2-5ffb-90e9-d0d3814d154d",
+        "character_ids": [
+          "1a6aaea1-2665-5b4c-9cc4-9e9e3c1a2df5",
+          "b79b90c3-0ec7-5bf3-a864-6984e3067548"
+        ],
+        "action": "The Keeper turns off the lamp. She rescues the last survivor.",
+        "camera": "Close-up",
+        "narration": "The Keeper turns off the lamp. She rescues the last survivor",
+        "speaker_id": "1a6aaea1-2665-5b4c-9cc4-9e9e3c1a2df5",
+        "transition": "cut",
+        "required_props": [],
+        "required_knowledge": [],
+        "flashback_episode": null,
+        "continuity_note": ""
+      }
+    ],
+    "proposed_changes": []
+  }
+}

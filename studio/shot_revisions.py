@@ -84,7 +84,7 @@ def enqueue_retake(store: Store, pid: str, episode: int, shot_id: str, request: 
         if request.seed == frame["metadata"]["seed"]:
             raise ValueError("Choose a different seed for another take")
         refs = [assets.get(aid) for aid in frame["metadata"]["parent_asset_ids"]]
-        if not refs or any(a is None or a["role"] != "reference" for a in refs):
+        if not refs or any(a is None or a["role"] not in {"reference", "reference-variant"} for a in refs):
             raise ValueError("Pinned character/location references are missing")
         expected = set(
             shot["character_ids"]
@@ -131,7 +131,8 @@ def enqueue_retake(store: Store, pid: str, episode: int, shot_id: str, request: 
         return {"step_id": frame_step, "reused": False}
 
 
-def discard_retake(store: Store, pid: str, episode: int):
+def discard_retake(store: Store, pid: str, episode: int, *, allowed_stages=None):
+    allowed_stages = TAKE_STAGES if allowed_stages is None else allowed_stages
     with store.connect() as db:
         db.execute("BEGIN IMMEDIATE")
         project = store.get(pid)
@@ -143,7 +144,7 @@ def discard_retake(store: Store, pid: str, episode: int):
         ):
             raise ValueError("Pause the take and wait for its current step to finish before discarding")
         pending = [s for s in job["steps"] if s["state"] not in {"SUCCEEDED", "SUPERSEDED"}]
-        if not pending or any(s["stage"] not in TAKE_STAGES for s in pending):
+        if not pending or any(s["stage"] not in allowed_stages for s in pending):
             raise ValueError("Only an unfinished visual take can be discarded")
         db.execute(
             "UPDATE steps SET state='SUPERSEDED' WHERE job_id=? AND state IN ('READY','FAILED','CANCELLED')",
@@ -151,7 +152,13 @@ def discard_retake(store: Store, pid: str, episode: int):
         )
         db.execute("UPDATE jobs SET state='SUCCEEDED',error=NULL WHERE id=?", (job["id"],))
         db.execute("UPDATE projects SET status='COMPLETED',updated=? WHERE id=?", (time.time(), pid))
-        store.event(db, pid, job["id"], "retake_discarded", {"episode": episode})
+        store.event(
+            db,
+            pid,
+            job["id"],
+            "reference_view_discarded" if allowed_stages == {"REFERENCE_VARIANT"} else "retake_discarded",
+            {"episode": episode},
+        )
 
 
 def execute_retake(worker, project: dict, step: dict, settings: dict) -> dict:
@@ -211,6 +218,9 @@ def execute_retake(worker, project: dict, step: dict, settings: dict) -> dict:
             prompt=payload["prompt"],
             parent_asset_ids=[a["id"] for a, _ in refs],
             parent_hashes=[a["sha256"] for a, _ in refs],
+            reference_versions={
+                a["metadata"]["entity_id"]: a["metadata"].get("revision", 1) for a, _ in refs
+            },
         )
         return {"artifacts": [worker.artifact(step, "keyframe-revision", path, metadata)]}
     if step["stage"] == "RETAKE_CLIP":

@@ -4,6 +4,7 @@ from typing import Annotated, Literal
 from uuid import NAMESPACE_URL, uuid5
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
+from studio.screenplay_text import validate_shot_headings
 
 
 def stable(project: str, key: str) -> str:
@@ -153,9 +154,15 @@ class CanonEvent(StrictModel):
     reason: str = Field(min_length=3)
 
 
-def validate_script(script: EpisodeScript, plan: SeasonPlan, seconds: int) -> None:
+def validate_script(
+    script: EpisodeScript, plan: SeasonPlan, seconds: int, *, screenplay_numbers=None
+) -> None:
     if len(script.screenplay.strip()) < max(80, len(script.shots) * 80):
         raise ValueError("Incomplete screenplay: provide scene action and spoken lines, not just a title")
+    validate_shot_headings(
+        script.screenplay,
+        screenplay_numbers if screenplay_numbers is not None else [s.number for s in script.shots],
+    )
     characters = {c.id for c in plan.characters}
     places = {loc.id for loc in plan.locations}
     if len({s.id for s in script.shots}) != len(script.shots):

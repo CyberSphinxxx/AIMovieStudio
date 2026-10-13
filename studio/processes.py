@@ -7,7 +7,7 @@ from ctypes import wintypes
 
 
 @contextmanager
-def owned_process(process):
+def owned_process(process, *, completed_leaf=False):
     handle = None
     if os.name == "nt":
 
@@ -57,17 +57,25 @@ def owned_process(process):
         handle = kernel.CreateJobObjectW(None, None)
         info = ExtendedLimits()
         info.basic.flags = 0x2000  # JOB_OBJECT_LIMIT_KILL_ON_JOB_CLOSE
-        if (
-            not handle
-            or not kernel.SetInformationJobObject(handle, 9, ctypes.byref(info), ctypes.sizeof(info))
-            or not kernel.AssignProcessToJobObject(handle, wintypes.HANDLE(int(process._handle)))
-        ):
+        configured = handle and kernel.SetInformationJobObject(
+            handle, 9, ctypes.byref(info), ctypes.sizeof(info)
+        )
+        assigned = configured and kernel.AssignProcessToJobObject(
+            handle, wintypes.HANDLE(int(process._handle))
+        )
+        if not assigned:
             error = ctypes.get_last_error()
-            process.terminate()
-            process.wait(timeout=5)
-            if handle:
+            # A trusted short-lived media leaf may finish before job assignment.
+            # Do not generalize this exception to arbitrary processes or live children.
+            if configured and completed_leaf and error == 5 and process.poll() is not None:
                 kernel.CloseHandle(handle)
-            raise RuntimeError(f"PROCESS_CONTAINMENT_FAILED: Windows job error {error}")
+                handle = None
+            else:
+                process.terminate()
+                process.wait(timeout=5)
+                if handle:
+                    kernel.CloseHandle(handle)
+                raise RuntimeError(f"PROCESS_CONTAINMENT_FAILED: Windows job error {error}")
     try:
         yield process
     finally:

@@ -216,6 +216,9 @@ class Store:
             for asset in project["assets"]:
                 asset["metadata"] = json.loads(asset["metadata"])
                 del asset["path"]
+            from studio.reference_variants import reference_choices
+
+            project["reference_choices"] = reference_choices(db, pid, project["assets"])
             project["canon"] = [
                 dict(r)
                 for r in db.execute("SELECT * FROM canon WHERE project_id=? ORDER BY episode,rowid", (pid,))
