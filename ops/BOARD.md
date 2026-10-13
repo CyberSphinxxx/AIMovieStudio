@@ -38,7 +38,7 @@ Do not interpret partial task evidence as full phase acceptance. See PROGRESS an
 | F6.02 | IN_PROGRESS | Original synthetic ambience, no music; managed SFX library open |
 | F6.03 | DONE_VERIFIED | Aspect-correct draft demo EDL/concat/shot fades |
 | F6.04 | DONE_VERIFIED | Atomic H264/AAC export + FFprobe/full decode/hash |
-| F6.05 | IN_PROGRESS | Durable portrait/landscape/square fit copies, original/hash/canon preservation, subtitle/audio retention, hardkill/backup/API/Edge verified; open-folder/custom HD open |
+| F6.05 | IN_PROGRESS | Durable fit copies/hash/canon/subtitle/audio/hardkill/backup verified; latest export Show in folder guard/UI/API/Windows shell success observed; external selection visual QA/custom native HD open |
 | F7.01 | DONE_VERIFIED | One-click demo through playable MP4, real failures never substitute demos |
 | F7.02 | IN_PROGRESS | Hard media/hash gates; cinematic review not performed |
 | F7.03 | IN_PROGRESS | Optional review/pre-media/future edits; immutable one-shot seed retakes, cumulative MP4 cuts, pinned references/audio/canon, originals/earlier copies, bounded attempts, pause/discard/backup/hardkill/API verified; produced-story edits/reference variants/version branches open |

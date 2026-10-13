@@ -26,6 +26,8 @@ Speech is measured before visual generation in new productions. A line that woul
 
 Export → **Make a copy for another screen** produces portrait, landscape or square MP4 copies from the completed original. It fits the whole picture with black bars and preserves audio, embedded subtitles, provider labels and demo watermarks. Copies have separate provenance, survive interruption and travel in backups. This performs no AI regeneration or HD enhancement. Finish or resolve stopped production before requesting another format; duplicate requests reuse the existing copy and retry budget. Originals and completed story canon stay intact.
 
+Export → **Show in folder** asks Windows File Explorer to select the saved latest movie cut. The studio verifies its hash first. Missing or changed exports are blocked, and launch failures leave Download MP4 available. This control does not move, rename or delete the movie.
+
 Double-click `StopStudio.cmd` to stop the server. Relaunch to resume interrupted work. Pause finishes the current atomic step; Stop production cancels that job permanently and preserves its assets. Failed steps have a finite retry budget. A changed or missing source asset blocks export with diagnostics.
 
 ## Setup from source
@@ -96,7 +98,7 @@ Installed dependency declarations and notice hashes can be inspected in [the lic
 
 - Real GPU references/video, guided model setup and measured 6 GB inference.
 - Declared prop ownership, character knowledge, location/life changes and episode-start flashbacks are checked. Fine-grained world time, costumes, relationships and semantic contradictions in prose remain incomplete.
-- Produced-story edits, native reference-view quality, version branches, custom/native HD exports, open-folder controls and advanced quality evaluation. Immutable single-shot retakes, future-only reference choices, draft aspect copies and graphical restore of missing projects are available.
+- Produced-story edits, native reference-view quality, version branches, custom/native HD exports and advanced quality evaluation. Immutable single-shot retakes, future-only reference choices, draft aspect copies, Windows export-folder launch and graphical restore of missing projects are available.
 - Clean-machine packaging, dependency/license release review, full GPU OOM testing and cinematic review.
 - A first-read recovery I/O error was reproduced as Windows SQLITE_IOERR_TRUNCATE after a hard kill. Read-only project snapshots now retry this specific error on fresh connections, with three total attempts; actual recovery checks passed. Other I/O/corruption/write faults still fail immediately. The original older failure had no recorded code, so this does not establish that every possible storage fault is resolved.
 

@@ -39,6 +39,7 @@ from studio.export_variants import ExportCopy, enqueue_copy
 from studio.shot_revisions import RetakeRequest, enqueue_retake, discard_retake
 from studio.reference_variants import ReferenceVariant, ReferenceSelection, enqueue_variant, select_reference
 from studio import backup_import
+from studio.export_folder import reveal_export
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -53,6 +54,10 @@ class SettingsInput(StrictModel):
 
 class EpisodeRequest(StrictModel):
     episode: int = Field(default=1, ge=1, le=24)
+
+
+class FolderRequest(StrictModel):
+    pass
 
 
 class CanonRevision(StrictModel):
@@ -597,6 +602,13 @@ def create_app(root: Path | None = None, run_worker=True) -> FastAPI:
         return JSONResponse(
             store.get(pid), headers={"Content-Disposition": 'attachment; filename="movie-project.json"'}
         )
+
+    @app.post("/api/assets/{aid}/show-in-folder")
+    def show_in_folder(aid: str, value: FolderRequest):
+        try:
+            return reveal_export(store, aid)
+        except RuntimeError as error:
+            raise HTTPException(503, str(error)) from error
 
     @app.get("/api/backup")
     def backup():

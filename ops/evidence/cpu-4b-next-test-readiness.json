@@ -1,0 +1,15 @@
+{
+  "checked_at": 1791919563.4534218,
+  "status": "USER_READY_REPLY_PENDING",
+  "memory": {
+    "available": true,
+    "total_gb": 15.19,
+    "free_gb": 7.33,
+    "load_percent": 51
+  },
+  "minimum_free_ram_gib": 7,
+  "model_loaded": false,
+  "quality_review": "NOT_PERFORMED",
+  "approved": true,
+  "requires_renewed_download_approval": false
+}

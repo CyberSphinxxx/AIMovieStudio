@@ -1,0 +1,14 @@
+
+> ai-movie-studio-client@0.1.0 test:e2e
+> playwright test e2e/export-folder.spec.ts
+
+
+Running 1 test using 1 worker
+
+(node:22076) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:22076) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 e2e\export-folder.spec.ts:4:1 › finished export folder action has busy, launch and failure feedback (4.5s)
+
+  1 passed (6.4s)

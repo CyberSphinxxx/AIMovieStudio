@@ -1,0 +1,48 @@
+
+> ai-movie-studio-client@0.1.0 test:e2e
+> playwright test e2e/export-folder.spec.ts
+
+
+Running 1 test using 1 worker
+
+(node:11908) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:11908) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  1 e2e\export-folder.spec.ts:3:1 › finished export folder action has busy, launch and failure feedback (2.0m)
+
+
+  1) e2e\export-folder.spec.ts:3:1 › finished export folder action has busy, launch and failure feedback 
+
+    [31mTest timeout of 120000ms exceeded.[39m
+
+    Error: locator.click: Test timeout of 120000ms exceeded.
+    Call log:
+    [2m  - waiting for getByRole('button', { name: 'Export', exact: true })[22m
+
+
+      27 |     .toBe("COMPLETED");
+      28 |   await page.goto(`/project/${project.id}`);
+    > 29 |     await page.getByRole("tab", { name: "Export", exact: true }).click();
+         |                                                                   ^
+      30 |   let release: () => void = () => {};
+      31 |   const held = new Promise<void>((resolve) => {
+      32 |     release = resolve;
+        at C:\L3mxr\Github Repositories\AIMovieStudio\client\e2e\export-folder.spec.ts:29:67
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\export-folder-finished-exp-2d92f-launch-and-failure-feedback\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\export-folder-finished-exp-2d92f-launch-and-failure-feedback\error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results\export-folder-finished-exp-2d92f-launch-and-failure-feedback\trace.zip
+    Usage:
+
+        npx playwright show-trace test-results\export-folder-finished-exp-2d92f-launch-and-failure-feedback\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    e2e\export-folder.spec.ts:3:1 › finished export folder action has busy, launch and failure feedback 

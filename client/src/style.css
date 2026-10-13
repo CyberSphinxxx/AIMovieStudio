@@ -1752,3 +1752,6 @@ select {
     height: 150px;
   }
 }
+.show-in-folder {
+  margin-top: 12px;
+}

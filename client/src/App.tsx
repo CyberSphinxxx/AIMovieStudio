@@ -23,6 +23,7 @@ import type { Project, Recent, Spec } from "./types";
 import { DraftEditor } from "./DraftEditor";
 import { BackupRestore } from "./BackupRestore";
 import { ReferenceViews } from "./ReferenceViews";
+import { ShowInFolder } from "./ShowInFolder";
 
 const EXAMPLE =
   "A lighthouse keeper receives a message from a ship that vanished thirty years ago. Tonight, the light begins to answer.";
@@ -1059,6 +1060,7 @@ function Studio({ id }: { id: string }) {
                   <a className="primary" href={assetUrl(movie, true)}>
                     <Download size={18} /> Download MP4
                   </a>
+                  <ShowInFolder key={movie.id} assetId={movie.id} />
                   <p className="muted">
                     {movie.metadata.dialogue_present
                       ? "Windows synthetic speech + original ambience."
