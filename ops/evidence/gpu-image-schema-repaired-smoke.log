@@ -1,0 +1,117 @@
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "C:\L3mxr\Github Repositories\AIMovieStudio\scripts\gpu_smoke.py", line 144, in <module>
+    main()
+  File "C:\L3mxr\Github Repositories\AIMovieStudio\scripts\gpu_smoke.py", line 71, in main
+    path, metadata = provider.image(
+                     ^^^^^^^^^^^^^^^
+  File "C:\L3mxr\Github Repositories\AIMovieStudio\studio\providers.py", line 121, in image
+    result = self.request("image", prompt, directory, check, seed, references=references)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\L3mxr\Github Repositories\AIMovieStudio\studio\providers.py", line 99, in request
+    media.run(
+  File "C:\L3mxr\Github Repositories\AIMovieStudio\studio\media.py", line 62, in run
+    check()
+  File "C:\L3mxr\Github Repositories\AIMovieStudio\scripts\gpu_smoke.py", line 34, in check
+    raise RuntimeError("RESOURCE_BUSY: GPU smoke stopped below 2 GiB free RAM")
+RuntimeError: RESOURCE_BUSY: GPU smoke stopped below 2 GiB free RAM
+{
+  "phase": "image",
+  "is_mock": false,
+  "status": "FAILED",
+  "directory": "C:\\L3mxr\\Github Repositories\\AIMovieStudio\\data\\gpu-smoke\\910ab540-ccc0-4964-84f7-481cbf2a6950",
+  "max_seconds": 600,
+  "before": {
+    "gpu": {
+      "available": true,
+      "name": "NVIDIA GeForce RTX 3060 Laptop GPU",
+      "driver": "610.88",
+      "total_mb": 6144,
+      "used_mb": 686,
+      "temperature_c": 53
+    },
+    "python": "3.12.14",
+    "memory": {
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 7.05,
+      "load_percent": 53
+    },
+    "measured_at": 1791921107.910156
+  },
+  "parent_memory_samples": [
+    {
+      "seconds": 0.344,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 7.04,
+      "load_percent": 53
+    },
+    {
+      "seconds": 2.344,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 6.5,
+      "load_percent": 57
+    },
+    {
+      "seconds": 4.344,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 6.41,
+      "load_percent": 57
+    },
+    {
+      "seconds": 6.359,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 6.23,
+      "load_percent": 58
+    },
+    {
+      "seconds": 8.359,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 6.19,
+      "load_percent": 59
+    },
+    {
+      "seconds": 10.375,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 6.12,
+      "load_percent": 59
+    },
+    {
+      "seconds": 12.375,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 6.08,
+      "load_percent": 59
+    },
+    {
+      "seconds": 14.391,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 5.87,
+      "load_percent": 61
+    },
+    {
+      "seconds": 16.391,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 5.06,
+      "load_percent": 66
+    },
+    {
+      "seconds": 18.391,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 1.92,
+      "load_percent": 87
+    }
+  ],
+  "error": "RESOURCE_BUSY: GPU smoke stopped below 2 GiB free RAM",
+  "elapsed_seconds": 18.406
+}

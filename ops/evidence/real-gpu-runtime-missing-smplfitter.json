@@ -1,0 +1,187 @@
+{
+  "phase": "runtime",
+  "is_mock": false,
+  "status": "FAILED",
+  "directory": "C:\\L3mxr\\Github Repositories\\AIMovieStudio\\data\\gpu-smoke\\f4bb89f7-94d7-4af9-bc7d-ac48f707ac7e",
+  "before": {
+    "gpu": {
+      "available": true,
+      "name": "NVIDIA GeForce RTX 3060 Laptop GPU",
+      "driver": "610.88",
+      "total_mb": 6144,
+      "used_mb": 698,
+      "temperature_c": 55
+    },
+    "python": "3.12.14",
+    "memory": {
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 7.11,
+      "load_percent": 53
+    },
+    "measured_at": 1791920651.3524468
+  },
+  "runtime_attempted": true,
+  "error": "MEDIA_FAILED: No module named 'smplfitter'\r\n",
+  "telemetry": [
+    {
+      "sample_interval_seconds": 1,
+      "elapsed_seconds": 20.343,
+      "samples": [
+        {
+          "seconds": 0.09,
+          "rss_bytes": 52957184,
+          "available_ram_bytes": 7599796224,
+          "global_vram_bytes": 889057280,
+          "temperature_c": 55
+        },
+        {
+          "seconds": 1.09,
+          "rss_bytes": 504324096,
+          "available_ram_bytes": 7106654208,
+          "global_vram_bytes": 889057280,
+          "temperature_c": 54
+        },
+        {
+          "seconds": 2.12,
+          "rss_bytes": 547835904,
+          "available_ram_bytes": 7065047040,
+          "global_vram_bytes": 889057280,
+          "temperature_c": 54
+        },
+        {
+          "seconds": 3.14,
+          "rss_bytes": 601731072,
+          "available_ram_bytes": 7000096768,
+          "global_vram_bytes": 889057280,
+          "temperature_c": 54
+        },
+        {
+          "seconds": 4.14,
+          "rss_bytes": 653225984,
+          "available_ram_bytes": 6964531200,
+          "global_vram_bytes": 889057280,
+          "temperature_c": 55
+        },
+        {
+          "seconds": 5.22,
+          "rss_bytes": 829612032,
+          "available_ram_bytes": 6788530176,
+          "global_vram_bytes": 1007206400,
+          "temperature_c": 55
+        },
+        {
+          "seconds": 6.23,
+          "rss_bytes": 857923584,
+          "available_ram_bytes": 6744629248,
+          "global_vram_bytes": 1029095424,
+          "temperature_c": 56
+        },
+        {
+          "seconds": 7.23,
+          "rss_bytes": 893050880,
+          "available_ram_bytes": 6710439936,
+          "global_vram_bytes": 1028571136,
+          "temperature_c": 56
+        },
+        {
+          "seconds": 8.23,
+          "rss_bytes": 904122368,
+          "available_ram_bytes": 6687322112,
+          "global_vram_bytes": 1026539520,
+          "temperature_c": 56
+        },
+        {
+          "seconds": 9.25,
+          "rss_bytes": 925511680,
+          "available_ram_bytes": 6686199808,
+          "global_vram_bytes": 1023590400,
+          "temperature_c": 56
+        },
+        {
+          "seconds": 10.25,
+          "rss_bytes": 966135808,
+          "available_ram_bytes": 6621126656,
+          "global_vram_bytes": 1023590400,
+          "temperature_c": 56
+        },
+        {
+          "seconds": 11.25,
+          "rss_bytes": 1041100800,
+          "available_ram_bytes": 6567743488,
+          "global_vram_bytes": 1029095424,
+          "temperature_c": 56
+        },
+        {
+          "seconds": 12.26,
+          "rss_bytes": 1065648128,
+          "available_ram_bytes": 6542303232,
+          "global_vram_bytes": 1029095424,
+          "temperature_c": 56
+        },
+        {
+          "seconds": 13.26,
+          "rss_bytes": 1089499136,
+          "available_ram_bytes": 6526877696,
+          "global_vram_bytes": 1029095424,
+          "temperature_c": 55
+        },
+        {
+          "seconds": 14.28,
+          "rss_bytes": 1100075008,
+          "available_ram_bytes": 6510850048,
+          "global_vram_bytes": 1019068416,
+          "temperature_c": 55
+        },
+        {
+          "seconds": 15.3,
+          "rss_bytes": 1101983744,
+          "available_ram_bytes": 6512984064,
+          "global_vram_bytes": 1014546432,
+          "temperature_c": 55
+        },
+        {
+          "seconds": 16.31,
+          "rss_bytes": 1109016576,
+          "available_ram_bytes": 6500995072,
+          "global_vram_bytes": 1014546432,
+          "temperature_c": 55
+        },
+        {
+          "seconds": 17.31,
+          "rss_bytes": 1117720576,
+          "available_ram_bytes": 6493777920,
+          "global_vram_bytes": 1005371392,
+          "temperature_c": 55
+        },
+        {
+          "seconds": 18.31,
+          "rss_bytes": 1121574912,
+          "available_ram_bytes": 6502875136,
+          "global_vram_bytes": 1005371392,
+          "temperature_c": 55
+        },
+        {
+          "seconds": 19.33,
+          "rss_bytes": 1131278336,
+          "available_ram_bytes": 6491553792,
+          "global_vram_bytes": 1005371392,
+          "temperature_c": 55
+        },
+        {
+          "seconds": 20.33,
+          "rss_bytes": 1135742976,
+          "available_ram_bytes": 6490406912,
+          "global_vram_bytes": 1005371392,
+          "temperature_c": 55
+        }
+      ],
+      "sampling_errors": [],
+      "peak_rss_bytes_sampled": 1135742976,
+      "peak_global_vram_bytes_sampled": 1029095424,
+      "peak_temperature_c_sampled": 56,
+      "note": "Sampled maxima, not guaranteed absolute peaks. VRAM is whole-device usage."
+    }
+  ],
+  "elapsed_seconds": 22.015
+}

@@ -1430,6 +1430,7 @@ type Provider = {
   status?: string;
   attention?: boolean;
   last_check_at?: number;
+  last_image_check_at?: number;
 };
 function Settings() {
   const [health, setHealth] = useState<Health | null>(null);
@@ -1451,6 +1452,7 @@ function Settings() {
     license_reviewed: false,
     native_resolution: "480x832",
     steps: 12,
+    memory_profile: 4,
   });
   useEffect(() => {
     Promise.allSettled([
@@ -1637,10 +1639,12 @@ function Settings() {
                     ? "Watermarked abstract fixtures for workflow development."
                     : "Installed models are discovered locally.")}
               </p>
-              {p.last_check_at && (
+              {(p.last_image_check_at || p.last_check_at) && (
                 <small>
-                  Last runtime check:{" "}
-                  {new Date(p.last_check_at * 1000).toLocaleString()}
+                  {p.last_image_check_at ? "Last image test" : "Last check"}:{" "}
+                  {new Date(
+                    (p.last_image_check_at ?? p.last_check_at ?? 0) * 1000,
+                  ).toLocaleString()}
                 </small>
               )}
             </div>
@@ -1696,7 +1700,10 @@ function Settings() {
                   : ", separate install"}
                 )
               </option>
-              <option value="cpu_4b" disabled={!providers.find((p) => p.id === "cpu-4b")?.available}>
+              <option
+                value="cpu_4b"
+                disabled={!providers.find((p) => p.id === "cpu-4b")?.available}
+              >
                 CPU story · Qwen3 4B (experiment, requires 7 GB free RAM)
               </option>
             </select>
@@ -1805,6 +1812,23 @@ function Settings() {
               />
               I reviewed WanGP and model rights for my intended use.
             </label>
+            <label>
+              Memory use
+              <select
+                value={wangp.memory_profile}
+                onChange={(e) =>
+                  setWangp({ ...wangp, memory_profile: Number(e.target.value) })
+                }
+              >
+                <option value={4}>Standard</option>
+                <option value={4.5}>Use less GPU memory (slower)</option>
+                <option value={5}>Use less RAM and GPU memory (slower)</option>
+              </select>
+            </label>
+            <p className="muted">
+              Lower memory use can mean slower generation. Changing this setting
+              does not guarantee that a model fits.
+            </p>
             <p>
               Image models must support reference conditioning for shot
               identity. Actual 6 GB compatibility and cinematic quality remain

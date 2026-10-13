@@ -1,0 +1,13 @@
+{
+  "project_id": "a88e242a-120d-4856-b338-187c4e42b5d0",
+  "model": "Qwen3-4B-Instruct-2507-Q4_K_M",
+  "structural_status": "PLAN_VALID_FIRST_SECTION_TIMED_OUT",
+  "quality_review": "NOT_PERFORMED_FULL_SCRIPT_MISSING",
+  "is_mock": false,
+  "elapsed_seconds": 269.719,
+  "findings": [
+    "Typed plan persisted; first four-shot screenplay request timed out after180s; no whole screenplay or visual/audio stage",
+    "Plan-only concerns: invented numerical physical restrictions and abrupt extinguished-lamp ending need manual narrative review; these are fictional output, not validated scientific facts"
+  ],
+  "next": "Stop approved test at first failed section. Improve request sizing/timeouts and retain this failure; no reliable writer or image/video fit claim."
+}

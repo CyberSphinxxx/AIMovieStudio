@@ -1,0 +1,42 @@
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "C:\L3mxr\Github Repositories\AIMovieStudio\scripts\gpu_smoke.py", line 117, in <module>
+    main()
+  File "C:\L3mxr\Github Repositories\AIMovieStudio\scripts\gpu_smoke.py", line 41, in main
+    result = provider.request("discover", "", directory, lambda: None)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\L3mxr\Github Repositories\AIMovieStudio\studio\providers.py", line 99, in request
+    media.run(
+  File "C:\L3mxr\Github Repositories\AIMovieStudio\studio\media.py", line 69, in run
+    raise RuntimeError(f"MEDIA_FAILED: {message}")
+RuntimeError: MEDIA_FAILED: No module named 'whisper'
+
+
+{
+  "phase": "runtime",
+  "is_mock": false,
+  "status": "FAILED",
+  "directory": "C:\\L3mxr\\Github Repositories\\AIMovieStudio\\data\\gpu-smoke\\e993bf1b-c5df-412b-aa9e-086576951137",
+  "before": {
+    "gpu": {
+      "available": true,
+      "name": "NVIDIA GeForce RTX 3060 Laptop GPU",
+      "driver": "610.88",
+      "total_mb": 6144,
+      "used_mb": 691,
+      "temperature_c": 55
+    },
+    "python": "3.12.14",
+    "memory": {
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 7.13,
+      "load_percent": 53
+    },
+    "measured_at": 1791920490.652675
+  },
+  "runtime_attempted": true,
+  "error": "MEDIA_FAILED: No module named 'whisper'\r\n",
+  "elapsed_seconds": 68.078
+}

@@ -1,0 +1,10 @@
+Using Python 3.11.14 environment at: tools\wan-gp\.venv
+Resolved 6 packages in 3ms
+Prepared 6 packages in 1.10s
+Installed 6 packages in 277ms
+ + contourpy==1.3.3 (from file:///C:/L3mxr/Github%20Repositories/AIMovieStudio/tools/gpu/wheelhouse/contourpy-1.3.3-cp311-cp311-win_amd64.whl)
+ + cycler==0.12.1 (from file:///C:/L3mxr/Github%20Repositories/AIMovieStudio/tools/gpu/wheelhouse/cycler-0.12.1-py3-none-any.whl)
+ + fonttools==4.66.1 (from file:///C:/L3mxr/Github%20Repositories/AIMovieStudio/tools/gpu/wheelhouse/fonttools-4.66.1-cp311-cp311-win_amd64.whl)
+ + kiwisolver==1.5.1 (from file:///C:/L3mxr/Github%20Repositories/AIMovieStudio/tools/gpu/wheelhouse/kiwisolver-1.5.1-cp311-cp311-win_amd64.whl)
+ + matplotlib==3.10.8 (from file:///C:/L3mxr/Github%20Repositories/AIMovieStudio/tools/gpu/wheelhouse/matplotlib-3.10.8-cp311-cp311-win_amd64.whl)
+ + pyparsing==3.3.3 (from file:///C:/L3mxr/Github%20Repositories/AIMovieStudio/tools/gpu/wheelhouse/pyparsing-3.3.3-py3-none-any.whl)

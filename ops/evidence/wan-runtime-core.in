@@ -57,3 +57,9 @@ keyring==25.7.0
 huggingface_hub[hf_xet]
 hf_xet>=1.5.2
 pillow==12.3.0
+# Required by torch.utils.cpp_extension during runtime imports; private CPU packaging support only.
+setuptools==84.0.0
+# API startup imports this pinned vendor requirement; no Whisper model weights.
+openai-whisper==20250625
+matplotlib==3.10.8
+smplfitter @ https://github.com/deepbeepmeep/smplfitter/releases/download/v0.2.10/smplfitter-0.2.10-py3-none-any.whl

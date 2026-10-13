@@ -1,0 +1,25 @@
+{
+  "requirement": "openai-whisper==20250625",
+  "filename": "openai_whisper-20250625.tar.gz",
+  "url": "https://files.pythonhosted.org/packages/35/8e/d36f8880bcf18ec026a55807d02fe4c7357da9f25aebd92f85178000c0dc/openai_whisper-20250625.tar.gz",
+  "sha256": "37a91a3921809d9f44748ffc73c0a55c9f366c85a3ef5c2ae0cc09540432eb96",
+  "bytes": 803191,
+  "license": "MIT",
+  "requires_python": ">=3.8",
+  "requires_dist": [
+    "more-itertools",
+    "numba",
+    "numpy",
+    "tiktoken",
+    "torch",
+    "tqdm",
+    "triton>=2; (platform_machine == \"x86_64\" and sys_platform == \"linux\") or sys_platform == \"linux2\"",
+    "black; extra == \"dev\"",
+    "flake8; extra == \"dev\"",
+    "isort; extra == \"dev\"",
+    "pytest; extra == \"dev\"",
+    "scipy; extra == \"dev\""
+  ],
+  "metadata_received_bytes": 10768,
+  "reason": "Pinned WanGP shared.deepy.transcription imports whisper during API startup; no speech-model weights installed"
+}

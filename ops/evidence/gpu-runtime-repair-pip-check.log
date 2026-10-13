@@ -1,0 +1,4 @@
+Using Python 3.11.14 environment at: tools\wan-gp\.venv
+Checked 162 packages in 163ms
+Found 1 incompatibility
+The package `gradio` requires `pillow>=8.0,<12.0`, but `12.3.0` is installed

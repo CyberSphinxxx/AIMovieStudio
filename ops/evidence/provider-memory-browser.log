@@ -1,0 +1,45 @@
+
+> ai-movie-studio-client@0.1.0 test:e2e
+> playwright test e2e/provider-memory.spec.ts
+
+
+Running 1 test using 1 worker
+
+(node:22504) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:22504) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  1 e2e\provider-memory.spec.ts:5:1 › memory profile persists and image RAM failure remains explicit (2.0m)
+
+
+  1) e2e\provider-memory.spec.ts:5:1 › memory profile persists and image RAM failure remains explicit 
+
+    [31mTest timeout of 120000ms exceeded.[39m
+
+    Error: apiRequestContext.patch: Target page, context or browser has been closed
+
+      71 |     });
+      72 |   } finally {
+    > 73 |     await request.patch("/api/settings", { data: defaults });
+         |                   ^
+      74 |   }
+      75 | });
+      76 |
+        at C:\L3mxr\Github Repositories\AIMovieStudio\client\e2e\provider-memory.spec.ts:73:19
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\provider-memory-memory-pro-2aef9-AM-failure-remains-explicit\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\provider-memory-memory-pro-2aef9-AM-failure-remains-explicit\error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results\provider-memory-memory-pro-2aef9-AM-failure-remains-explicit\trace.zip
+    Usage:
+
+        npx playwright show-trace test-results\provider-memory-memory-pro-2aef9-AM-failure-remains-explicit\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    e2e\provider-memory.spec.ts:5:1 › memory profile persists and image RAM failure remains explicit 

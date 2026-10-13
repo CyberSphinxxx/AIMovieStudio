@@ -1,0 +1,91 @@
+{
+  "project_id": "a88e242a-120d-4856-b338-187c4e42b5d0",
+  "is_mock": false,
+  "model": "Qwen3-4B-Instruct-2507-Q4_K_M",
+  "profile": "CPU only; four threads;8192 context; max4 shots/section;three attempts/section",
+  "max_seconds": 600,
+  "status": "FAILED",
+  "quality_review": "NOT_PERFORMED",
+  "preflight_memory": {
+    "available": true,
+    "total_gb": 15.19,
+    "free_gb": 7.3,
+    "load_percent": 51
+  },
+  "samples": 1246,
+  "sampled_peak_server_rss_bytes": 5689970688,
+  "sampled_min_available_ram_gib": 2.05,
+  "completed_steps": [
+    {
+      "id": "b4bccd34-ce5a-4597-b512-c76cb1587d21",
+      "stage": "PLAN",
+      "seconds": 84.078
+    }
+  ],
+  "stage": "SCRIPT_BATCH",
+  "error": "timed out",
+  "elapsed_seconds": 269.719,
+  "plan": {
+    "title": "The Last Light",
+    "logline": "A lighthouse keeper makes a choice that saves a shipwrecked survivor at the cost of her guiding light, confronting the weight of sacrifice in a world governed by physics and silence.",
+    "ending": "The survivor walks ashore, safe and alive. The keeper stands alone at the cliff edge, the lighthouse lamp extinguished. The sea is calm. The wind carries no sound.",
+    "world_rules": [
+      "The lighthouse operates on a single 1000-watt solar-powered lamp that emits a beam visible up to 20 nautical miles under clear skies.",
+      "The beam's intensity diminishes by 30% every 10 minutes due to atmospheric dispersion and lens degradation.",
+      "No ship can navigate safely without the beam; all vessels within 10 nautical miles of the lighthouse must rely on it for orientation.",
+      "The keeper's access to the island is limited to a single daily ferry, which departs at 06:00 and returns at 18:00.",
+      "The island has no power grid, and all operations depend on manual maintenance and solar input. The lamp cannot be replaced without a 72-hour supply chain from a mainland depot."
+    ],
+    "characters": [
+      {
+        "id": "a6886da5-6442-56b0-a293-6f2ca9dd4a50",
+        "name": "Elara",
+        "appearance": "Mid-40s, weathered hands, wears a frayed wool coat, eyes tired but sharp",
+        "goal": "To preserve the lighthouse's function and protect the ships that depend on it",
+        "voice": "default",
+        "initial_knowledge": [
+          "The lamp has been working for 18 years without failure.",
+          "No ship has ever been lost due to a failure of the light in the past decade."
+        ]
+      },
+      {
+        "id": "96e58e0b-48b0-5654-b987-29d5f0ce5144",
+        "name": "Finn",
+        "appearance": "Late 20s, pale, with a deep gash on his left arm, wearing a torn oil-stained jacket",
+        "goal": "To survive and reach land",
+        "voice": "secondary",
+        "initial_knowledge": [
+          "He has been drifting for 72 hours, with no food or water.",
+          "He knows the lighthouse is the only beacon he can see from the sea."
+        ]
+      }
+    ],
+    "locations": [
+      {
+        "id": "4e80dbfa-030d-57c2-8e89-22de2dd06b83",
+        "name": "Blackspire Lighthouse",
+        "description": "A stone tower 30 meters high, perched on a jagged cliff overlooking the North Sea. The beam rotates every 15 seconds. The interior is dim, with a single generator and a manual lens system."
+      },
+      {
+        "id": "12f5a938-f587-537d-bca1-888866f13e6f",
+        "name": "Sundered Ship Wreck",
+        "description": "A rusted vessel half-submerged in the sea, 3 nautical miles from the lighthouse. The hull is breached, and the water is cold and dark."
+      },
+      {
+        "id": "a8af077b-4b6c-5047-9afd-2581f738d016",
+        "name": "Dawn's Shore",
+        "description": "A rocky coastline at the edge of the island, where the first landfall occurs. The tide is low, and the path is narrow."
+      }
+    ],
+    "episodes": [
+      {
+        "number": 1,
+        "title": "The Signal",
+        "summary": "Elara receives a distress signal via a satellite relay from the wrecked ship. She descends to the sea, navigating through fog and wind. She finds Finn, half-dead and near hypothermia. She offers him shelter and medical aid, but refuses to let him stay. She explains the lighthouse's role and the danger of losing the beam. Finn, desperate, pleads to stay, saying he can help maintain the lamp. Elara refuses, citing the risk of shipwreck. She gives him a small flask of water and a map of the coast. As she returns to the tower, she notices the lens is fogged. She decides to extinguish the lamp for one night to save Finn.",
+        "outcome": "Finn survives the night. The lamp is off. The next morning, a passing vessel reports no signal from the lighthouse. Elara does not react immediately. She watches the sea, knowing the cost of her choice."
+      }
+    ],
+    "props": []
+  },
+  "script": null
+}

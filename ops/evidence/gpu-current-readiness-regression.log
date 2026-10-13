@@ -1,0 +1,61 @@
+.........F...............                                                [100%]
+================================== FAILURES ===================================
+_ test_attempted_native_block_updates_summary_without_exposing_paths_in_message _
+
+tmp_path = WindowsPath('C:/Users/USER-PC/AppData/Local/Temp/pytest-of-USER-PC/pytest-103/test_attempted_native_block_up0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000165191C4A70>
+
+    def test_attempted_native_block_updates_summary_without_exposing_paths_in_message(tmp_path, monkeypatch):
+        monkeypatch.setattr(gpu_smoke, "ROOT", tmp_path)
+        monkeypatch.setattr(sys, "argv", ["gpu_smoke", "runtime"])
+        monkeypatch.setattr(gpu_smoke, "require_resources", lambda: {"fixture": True})
+    
+        def blocked(*args, **kwargs):
+            raise RuntimeError("OS_POLICY_BLOCKED: fixture blocked native dependency")
+    
+        monkeypatch.setattr(gpu_smoke.WanGPProvider, "request", blocked)
+        with pytest.raises(RuntimeError, match="OS_POLICY_BLOCKED"):
+            gpu_smoke.main()
+>       summary = json.loads((tmp_path / "tools/gpu/runtime-status.json").read_text())
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_gpu_smoke_status.py:41: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\USER-PC\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\pathlib.py:1027: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('C:/Users/USER-PC/AppData/Local/Temp/pytest-of-USER-PC/pytest-103/test_attempted_native_block_up0/tools/gpu/runtime-status.json')
+mode = 'r', buffering = -1, encoding = 'locale', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\USER-PC\\AppData\\Local\\Temp\\pytest-of-USER-PC\\pytest-103\\test_attempted_native_block_up0\\tools\\gpu\\runtime-status.json'
+
+C:\Users\USER-PC\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\pathlib.py:1013: FileNotFoundError
+---------------------------- Captured stdout call -----------------------------
+{
+  "phase": "runtime",
+  "is_mock": false,
+  "status": "FAILED",
+  "directory": "C:\\Users\\USER-PC\\AppData\\Local\\Temp\\pytest-of-USER-PC\\pytest-103\\test_attempted_native_block_up0\\data\\gpu-smoke\\8453f35d-6cbb-4446-b4a6-554415c6c6df",
+  "max_seconds": 600,
+  "before": {
+    "fixture": true
+  },
+  "runtime_attempted": true,
+  "error": "OS_POLICY_BLOCKED: fixture blocked native dependency",
+  "elapsed_seconds": 0.0
+}
+=========================== short test summary info ===========================
+FAILED tests/test_gpu_smoke_status.py::test_attempted_native_block_updates_summary_without_exposing_paths_in_message
+1 failed, 24 passed in 0.50s

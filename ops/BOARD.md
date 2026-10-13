@@ -6,14 +6,14 @@ Do not interpret partial task evidence as full phase acceptance. See PROGRESS an
 |---|---|---|
 | F0.01 | DONE_VERIFIED | ops/evidence/*baseline*, actual workstation commands |
 | F0.02 | IN_PROGRESS | docs/SOURCE_REGISTER.md; private-use assumption; distribution/weight review incomplete |
-| F0.03 | BLOCKED_OS_POLICY | Approved stack/image files installed; actual API smoke blocked by Windows CUDA DLL policy before inference |
+| F0.03 | IN_PROGRESS | User disabled SAC; runtime discovery and real CUDA arithmetic PASS; installed image loads stopped at RAM guard, no generation fit proof |
 | F0.04 | DONE_VERIFIED | Architecture implemented + runnable tests; CPU Python 3.12 deviation recorded |
 | F1.01 | DONE_VERIFIED | API and frontend run; build/lint/typecheck pass |
 | F1.02 | DONE_VERIFIED | API persistence/idempotency/reopen tests, browser create |
 | F1.03 | IN_PROGRESS | Responsive screenshots + Axe passed; broader UI/screen-reader review open |
 | F1.04 | IN_PROGRESS | Live RAM/GPU/temp/driver, install versus proof statuses, resource guidance and last native block/refresh tested; CUDA runtime OS-blocked |
 | F1.05 | DONE_VERIFIED | Five Edge flows passed including blocked settings save while loading; actual demo playback/download and series prewrite |
-| F2.01 | IN_PROGRESS | 1.5B real CPU trials 461.579s total: structure passed, manual writing failed; approved 4B installed/hash-verified, awaiting 7GiB RAM; no reliable writer proof |
+| F2.01 | IN_PROGRESS | 4B realCPU PLAN persisted then first4shot section timed out180s/269.719total; qualityNOT_PERFORMED;1.5B failed manualquality; smaller request sizing next |
 | F2.02 | IN_PROGRESS | Finite ending and episode outline persisted; real quality evaluation open |
 | F2.03 | IN_PROGRESS | Durable four-shot batches,600s fixture/recovery/partial backup and whole-script continuity verified; real writing quality unproven |
 | F2.04 | IN_PROGRESS | Declared ownership/knowledge/location/life before-state checks, export-only canon, prop reference lineage and episode-start flashbacks tested; precise world time/prose semantics open |
@@ -21,7 +21,7 @@ Do not interpret partial task evidence as full phase acceptance. See PROGRESS an
 | F2.06 | DONE_VERIFIED | Ten screenplay checkpoints, interrupted receipt recovery/reuse, no future canon; 3-episode browser flow |
 | F3.01 | DONE_VERIFIED | Demo references/keyframes + sidecar receipts/hash/lineage |
 | F3.02 | DONE_VERIFIED | Serialized references/frames/clip dependencies and pinned reference IDs |
-| F3.03 | BLOCKED_OS_POLICY | Approved image weights verified; torch_cuda.dll blocked before actual inference |
+| F3.03 | BLOCKED_RAM_GUARD | Real512x512 image loads stopped below2GiBfreeRAM in profiles4/5; no image produced; Windows runtime block resolved |
 | F3.04 | IN_PROGRESS | Immutable portrait/profile/full-body/angle candidates and future-only selection; mock end-to-end/backup/recovery verified; native view quality blocked |
 | F3.05 | IN_PROGRESS | Bounded reference-view requests, original lineage/hash, optimistic selection, pending discard and future-shot pins verified; real inference unverified |
 | F4.01 | DONE_VERIFIED | Single OS-lock worker, claims/heartbeat/checkpoints |
@@ -29,8 +29,8 @@ Do not interpret partial task evidence as full phase acceptance. See PROGRESS an
 | F4.03 | IN_PROGRESS | Active atomic pause/resume/hash reuse, cancel/no-export, settings freeze and retry budget tests; broader UI smoke open |
 | F4.04 | IN_PROGRESS | Sequential scheduling, CPU unload, disk reserve; quota/resource measurements incomplete |
 | F4.05 | IN_PROGRESS | First-read IOERR_TRUNCATE reproduced/captured; bounded Windows snapshot retry, atomic read consistency,6 SQLite kills+3 media kills verified; broader interruption release gate open |
-| F5.01 | IN_PROGRESS | Official API bridge, offline guard and telemetry; real runtime failed at OS CUDA import; no inference proof |
-| F5.02 | BLOCKED_OS_POLICY | Real 6 GB image/video inference NOT TESTED; video download requires image PASS |
+| F5.01 | IN_PROGRESS | Actual API discovery PASS, nested metadata contract fixed, realCUDA arithmetic PASS; image model loading fails RAM guard, no generation proof |
+| F5.02 | BLOCKED_RAM_GUARD | Native image model load attempted/no image; video NOT_TESTED/weights remain image-PASS-gated |
 | F5.03 | TODO | Sequential real shots and inspection |
 | F5.04 | TODO | Validated model-dependent OOM downshift |
 | F5.05 | DEFERRED | FramePack >30 GB; first WanGP gate before fallback |
@@ -51,4 +51,4 @@ Do not interpret partial task evidence as full phase acceptance. See PROGRESS an
 | F8.05 | IN_PROGRESS | Main npm/Python audit0; hostile backups/download budgets tested; vendor90 advisories unresolved |
 | F8.06 | IN_PROGRESS | Screenshots/evidence/run docs; release still blocked by listed gates |
 
-Next: bounded approved 4B writing test after 7GiB free-RAM guard/readiness, then inspect narrative separately from schema. Independent: F8.03 converted VAE/encoder provenance and missing notices; produced-story revisions/export controls. Latest full core 189 backend PASS259.65s, 34 CPU-profile/setup/status checks PASS5.22s and 10 license checks PASS0.17s; lint/type/build/2Vitest and main audits0. Final 10 Edge flows PASS (see reference-4b-browser-final.log/browser-tests.json). Native GPU remains OS-blocked; no security changes. App remains unfinished.
+Next: smallerCPUwriting requests and lower-footprintimage loading, keeping priorfailedmodel evidence. Windowsblock cleared byhumanchange/actualruntime+CUDA tests; imageRAM guard and4B screenplaytimeout remain. Current215backendPASS235.37s/12EdgePASS119.022s/static/type/build/2VitestPASS; vendor90advisories unchanged. NoimagePASS/videoweights/reliablewriter proof. Remaining provenance/notice/produced-story/HD/packaging backlog open. App unfinished.

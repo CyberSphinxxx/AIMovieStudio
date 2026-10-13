@@ -1,0 +1,5 @@
+Using Python 3.11.14 environment at: tools\wan-gp\.venv
+Resolved 1 package in 6ms
+Prepared 1 package in 348ms
+Installed 1 package in 171ms
+ + setuptools==84.0.0 (from file:///C:/L3mxr/Github%20Repositories/AIMovieStudio/tools/gpu/wheelhouse/setuptools-84.0.0-py3-none-any.whl)

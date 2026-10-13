@@ -61,3 +61,47 @@ def test_demo_speech_and_feasibility_have_distinct_statuses():
         [provider("demo"), provider("windows-speech"), provider("small-cpu"), provider("ollama", False)], {}
     )
     assert [p["status"] for p in result] == ["Available", "Available", "Feasibility only", "Setup needed"]
+
+
+def test_failed_runtime_retest_does_not_keep_reporting_a_previous_windows_block():
+    providers = [{"id": "local-video", "available": True, "message": "Configured."}]
+    result = classify(
+        providers,
+        {"available": True, "free_gb": 8},
+        {"code": "FAILED", "checked_at": 456, "installation": ""},
+    )[0]
+    assert result["status"] == "Last runtime check failed" and result["attention"]
+    assert "stopped before inference" in result["message"]
+    assert "Windows Application Control blocked" not in result["message"]
+
+
+def test_image_ram_observation_is_scoped_and_never_claims_generation(tmp_path):
+    from studio.setup_status import read_image_status
+
+    installation = str(tmp_path / "wan")
+    evidence = {
+        "code": "IMAGE_RAM_GUARD_STOP",
+        "checked_at": 123,
+        "installation": installation,
+        "model": "tested-model",
+    }
+    path = tmp_path / "tools/gpu/image-status.json"
+    path.parent.mkdir(parents=True)
+    path.write_text(json.dumps(evidence))
+    assert read_image_status(tmp_path) == evidence
+    result = classify(
+        [provider("local-video")],
+        {},
+        last_image=evidence,
+        selected_installation=installation,
+        selected_image_model="tested-model",
+    )[0]
+    assert result["status"] == "Image test needs RAM" and result["verified"] is False
+    assert "No image was produced" in result["message"]
+    other = classify(
+        [provider("local-video")], {}, last_image=evidence, selected_image_model="another-model"
+    )[0]
+    assert other["status"] == "Installed" and "last_image_check_at" not in other
+    newer_block = {"code": "OS_POLICY_BLOCKED", "checked_at": 124, "installation": installation}
+    latest = classify([provider("local-video")], {}, last_runtime=newer_block, last_image=evidence)[0]
+    assert latest["status"] == "Last check blocked"

@@ -1,0 +1,7 @@
+Using Python 3.11.14 environment at: tools\wan-gp\.venv
+Resolved 1 package in 47ms
+   Building openai-whisper @ file:///C:/L3mxr/Github%20Repositories/AIMovieStudio/tools/gpu/wheelhouse/openai_whisper-20250625.tar.gz
+      Built openai-whisper @ file:///C:/L3mxr/Github%20Repositories/AIMovieStudio/tools/gpu/wheelhouse/openai_whisper-20250625.tar.gz
+Prepared 1 package in 1.42s
+Installed 1 package in 24ms
+ + openai-whisper==20250625 (from file:///C:/L3mxr/Github%20Repositories/AIMovieStudio/tools/gpu/wheelhouse/openai_whisper-20250625.tar.gz)

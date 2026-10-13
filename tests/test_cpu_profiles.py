@@ -73,3 +73,20 @@ def test_explicit_profile_is_persisted_in_job_configuration(tmp_path, spec, prof
 @pytest.mark.skipif(os.name != "nt", reason="Windows read-only process counters")
 def test_actual_own_process_memory_counter():
     assert process_rss(os.getpid()) > 0
+
+
+def test_cpu_timeout_has_actionable_error_without_automatic_retry_or_fallback():
+    import httpx
+
+    calls = []
+
+    class Client:
+        def post(self, path, json):
+            calls.append(path)
+            raise httpx.ReadTimeout("fixture stalled writing response")
+
+    with pytest.raises(RuntimeError, match="TIMEOUT.*180 seconds") as caught:
+        local_story.cpu_post(Client(), {"model": "test"}, lambda: None)
+    assert calls == ["/v1/chat/completions"]
+    assert "Earlier checkpoints are preserved" in str(caught.value)
+    assert isinstance(caught.value.__cause__, httpx.ReadTimeout)

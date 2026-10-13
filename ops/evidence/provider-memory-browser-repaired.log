@@ -1,0 +1,14 @@
+
+> ai-movie-studio-client@0.1.0 test:e2e
+> playwright test e2e/provider-memory.spec.ts
+
+
+Running 1 test using 1 worker
+
+(node:19200) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:19200) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 e2e\provider-memory.spec.ts:12:1 › memory profile persists and image RAM failure remains explicit (7.4s)
+
+  1 passed (9.2s)

@@ -42,3 +42,41 @@ def test_attempted_native_block_updates_summary_without_exposing_paths_in_messag
     assert summary["code"] == "OS_POLICY_BLOCKED"
     assert len(summary["evidence_sha256"]) == 64
     assert "error" not in summary
+
+
+def test_parent_guard_rejects_low_or_unknown_ram_and_retains_samples(monkeypatch):
+    monkeypatch.setattr(gpu_smoke.time, "monotonic", lambda: 10)
+    monkeypatch.setattr(gpu_smoke, "memory_status", lambda: {"available": True, "free_gb": 1.99})
+    report = {}
+    with pytest.raises(RuntimeError, match="below 2 GiB"):
+        gpu_smoke.smoke_guard(report, 0, 600)()
+    assert report["parent_memory_samples"][0]["free_gb"] == 1.99
+    monkeypatch.setattr(gpu_smoke, "memory_status", lambda: {"available": False})
+    with pytest.raises(RuntimeError, match="lost its RAM counters"):
+        gpu_smoke.smoke_guard({}, 0, 600)()
+
+
+def test_parent_guard_has_a_wall_time_ceiling_before_another_sample(monkeypatch):
+    monkeypatch.setattr(gpu_smoke.time, "monotonic", lambda: 601)
+    monkeypatch.setattr(gpu_smoke, "memory_status", lambda: pytest.fail("Sampled after deadline"))
+    with pytest.raises(RuntimeError, match="600-second ceiling"):
+        gpu_smoke.smoke_guard({}, 0, 600)()
+
+
+def test_image_ram_stop_is_separate_from_successful_runtime_discovery(tmp_path, monkeypatch):
+    monkeypatch.setattr(gpu_smoke, "ROOT", tmp_path)
+    monkeypatch.setattr(sys, "argv", ["gpu_smoke", "image", "--profile", "5"])
+    monkeypatch.setattr(gpu_smoke, "require_resources", lambda: {"fixture": True})
+    runtime_path = tmp_path / "tools/gpu/runtime-status.json"
+    previous = {"code": "RUNTIME_DISCOVERED_NOT_INFERENCE", "checked_at": 123, "installation": "fixture"}
+    atomic_json(runtime_path, previous)
+
+    def blocked(*args, **kwargs):
+        raise RuntimeError("RESOURCE_BUSY: GPU smoke stopped below 2 GiB free RAM")
+
+    monkeypatch.setattr(gpu_smoke.WanGPProvider, "image", blocked)
+    with pytest.raises(RuntimeError, match="RESOURCE_BUSY"):
+        gpu_smoke.main()
+    assert json.loads(runtime_path.read_text()) == previous
+    image = json.loads((tmp_path / "tools/gpu/image-status.json").read_text())
+    assert image["code"] == "IMAGE_RAM_GUARD_STOP" and image["memory_profile"] == 5

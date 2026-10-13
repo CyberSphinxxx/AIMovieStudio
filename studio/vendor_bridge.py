@@ -24,7 +24,10 @@ def build_settings(session, request):
     schema = session.get_model_schema(model)
     if not schema:
         raise RuntimeError("INCOMPATIBLE: Unknown WanGP model")
-    kinds = schema.get("main_output", [])
+    metadata = schema.get("metadata")
+    if not isinstance(metadata, dict):
+        raise RuntimeError("INCOMPATIBLE: WanGP model schema has no metadata object")
+    kinds = metadata.get("main_output", [])
     if isinstance(kinds, str):
         kinds = [kinds]
     if request["kind"] not in kinds:
@@ -42,13 +45,13 @@ def build_settings(session, request):
     if request["kind"] == "image":
         parameters["image_mode"] = 1
         if request.get("references"):
-            if not schema.get("media_inputs", {}).get("image", {}).get("reference"):
+            if not metadata.get("media_inputs", {}).get("image", {}).get("reference"):
                 raise RuntimeError(
                     "INCOMPATIBLE: This image model does not support identity reference conditioning."
                 )
             parameters["image_refs"] = request["references"]
     else:
-        if not schema.get("capabilities", {}).get("image_to_video"):
+        if not metadata.get("capabilities", {}).get("image_to_video"):
             raise RuntimeError("INCOMPATIBLE: This video model does not support image-to-video.")
         parameters.update(
             {"image_start": request["start_image"], "video_length": f"{request['seconds']}s", "force_fps": 24}
@@ -128,7 +131,13 @@ def run_session(request, root, directory, response_path):
     session = init(
         root=root,
         output_dir=directory,
-        cli_args=["--attention", "sdpa", "--profile", "4"],
+        cli_args=[
+            "--attention",
+            "sdpa",
+            "--profile",
+            str(request.get("memory_profile", 4)),
+            "--no-prevent-power-throttling",
+        ],
         console_output=False,
     )
     if request["kind"] == "discover":
@@ -153,6 +162,7 @@ def run_session(request, root, directory, response_path):
             "model": request["model"],
             "parameters": parameters,
             "is_mock": False,
+            "memory_profile": request.get("memory_profile", 4),
         }
     temporary = response_path.with_suffix(".partial")
     temporary.write_text(json.dumps(result, default=str), encoding="utf-8")

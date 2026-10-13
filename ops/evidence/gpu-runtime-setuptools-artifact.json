@@ -1,0 +1,11 @@
+{
+  "requirement": "setuptools==84.0.0",
+  "filename": "setuptools-84.0.0-py3-none-any.whl",
+  "url": "https://files.pythonhosted.org/packages/95/9c/c510029fc6ef33a6275cd2c5d3cecd6613dfd6aa401d57c54f1c18852ccf/setuptools-84.0.0-py3-none-any.whl",
+  "sha256": "51a52592b3b99e102b609654876bd65f19f999935166d1352678931132b0c670",
+  "bytes": 818216,
+  "license": "MIT",
+  "requires_python": ">=3.10",
+  "metadata_received_bytes": 8162,
+  "reason": "Installed torch/utils/cpp_extension.py imports setuptools; missing from initial isolated runtime"
+}

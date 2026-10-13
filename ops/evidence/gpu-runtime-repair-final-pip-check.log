@@ -1,0 +1,5 @@
+Using Python 3.11.14 environment at: tools\wan-gp\.venv
+Checked 170 packages in 26ms
+Found 2 incompatibilities
+The package `smplfitter` requires `chumpy`, but it's not installed
+The package `gradio` requires `pillow>=8.0,<12.0`, but `12.3.0` is installed

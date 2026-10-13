@@ -2,8 +2,9 @@ from __future__ import annotations
 
 import json
 import os
+import time
 from pathlib import Path
-from typing import Callable
+from typing import Callable, Literal
 from pydantic import Field
 
 from studio import media
@@ -40,6 +41,7 @@ class WanGPConfig(StrictModel):
     license_reviewed: bool = False
     native_resolution: str = Field(default="480x832", pattern=r"^(480x832|832x480|512x512)$")
     steps: int = Field(default=12, ge=1, le=40)
+    memory_profile: Literal[4, 4.5, 5] = 4
 
 
 class WanGPProvider:
@@ -92,13 +94,33 @@ class WanGPProvider:
             "start_image": str(start_image) if start_image else None,
             "seconds": seconds,
             "timeout": 3600,
+            "memory_profile": self.config.memory_profile,
         }
         req, res = directory / "provider-request.json", directory / "provider-result.json"
         atomic_json(req, request)
+        last_memory_check = -2.0
+
+        def guarded_check():
+            nonlocal last_memory_check
+            check()
+            if kind == "discover" or time.monotonic() - last_memory_check < 2:
+                return
+            from studio.diagnostics import memory_status
+
+            last_memory_check = time.monotonic()
+            memory = memory_status()
+            if not memory.get("available"):
+                raise RuntimeError("RESOURCE_UNKNOWN: Generation lost its RAM counters")
+            if memory["free_gb"] < 2:
+                raise RuntimeError(
+                    "RESOURCE_BUSY: Image/video generation stopped below 2 GiB free RAM. Saved checkpoints are preserved."
+                )
+
         try:
+            guarded_check()
             media.run(
                 [self.config.python, str(media.ROOT / "studio" / "vendor_bridge.py"), str(req), str(res)],
-                check,
+                guarded_check,
                 timeout=3650,
             )
         except media.Interrupted:
@@ -140,6 +162,7 @@ class WanGPProvider:
             "framing": "aspect-preserving letterbox",
             "model": result["model"],
             "parameters": result["parameters"],
+            "memory_profile": result.get("memory_profile", self.config.memory_profile),
         }
 
     def video(self, prompt, frame, directory, size, seconds, check, seed=42):
@@ -189,4 +212,5 @@ class WanGPProvider:
             "framing": "aspect-preserving letterbox; fixed timeline duration",
             "model": result["model"],
             "parameters": result["parameters"],
+            "memory_profile": result.get("memory_profile", self.config.memory_profile),
         }

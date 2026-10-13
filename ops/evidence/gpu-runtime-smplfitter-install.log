@@ -1,0 +1,5 @@
+Using Python 3.11.14 environment at: tools\wan-gp\.venv
+Resolved 1 package in 2ms
+Prepared 1 package in 42ms
+Installed 1 package in 17ms
+ + smplfitter==0.2.10 (from file:///C:/L3mxr/Github%20Repositories/AIMovieStudio/tools/gpu/wheelhouse/smplfitter-0.2.10-py3-none-any.whl)

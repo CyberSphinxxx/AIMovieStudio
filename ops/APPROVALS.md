@@ -1,5 +1,7 @@
 # Explicit approvals — 2026-10-12
 
+2026-10-14: user independently turned Smart App Control off (“done, its off now”), read-only registry state0 confirmed. Agent did not change security settings. User explicitly closed heavy apps and replied “I’ve closed them; retest now”; initial GPU headroom7.2GiB RAM/5315MiBVRAM/58C. Existing privateGPU32GB/40GB scope retained;9small required runtime packages (no model weights) added within its existing allocation. No new global Python/driver/firewall/paging/power-plan or paid/cloud changes. The previously pending resource-readiness request is resolved. Approved4B CPU test subsequently stopped at its first failed screenplay section269.719s; no further run this session.
+
 Additional human reply on 2026-10-14: **“Approve bounded 4B installation and test”** to `docs/CPU_4B_STORY_INSTALL_PROPOSAL.md`. Authorized pinned Qwen3 4B Q4_K_M weights and notices, cumulative 2.9 GB downloads (including previously fetched proposal metadata), 3.5 GB added disk, reuse existing CPU runtime, no system/security changes. Require 7 GiB free RAM before loading; stop below 2 GiB during testing, at a failed section, or after ten minutes. No default engine change. Quality and RAM fit remain unproven until observed. This approval persists; do not ask again for this scope.
 
 Human reply: **“Approve bounded installation and tests”** to the GPU proposal question in this chat.

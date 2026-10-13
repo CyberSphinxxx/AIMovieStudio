@@ -1,0 +1,48 @@
+{
+  "status": "CUDA_ARITHMETIC_PASS_NOT_GENERATION",
+  "is_mock": false,
+  "before": {
+    "gpu": {
+      "available": true,
+      "name": "NVIDIA GeForce RTX 3060 Laptop GPU",
+      "driver": "610.88",
+      "total_mb": 6144,
+      "used_mb": 686,
+      "temperature_c": 52
+    },
+    "python": "3.12.14",
+    "memory": {
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 7.31,
+      "load_percent": 51
+    },
+    "measured_at": 1791921416.4058404
+  },
+  "scope": "CUDA tensor arithmetic only, not image/video inference",
+  "parent_memory_samples": [
+    {
+      "seconds": 0.016,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 7.31,
+      "load_percent": 51
+    },
+    {
+      "seconds": 2.016,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 6.79,
+      "load_percent": 55
+    }
+  ],
+  "result": {
+    "torch": "2.10.0+cu130",
+    "cuda": "13.0",
+    "device": "NVIDIA GeForce RTX 3060 Laptop GPU",
+    "value": 256.0,
+    "allocated_bytes": 9043968,
+    "reserved_bytes": 23068672
+  },
+  "elapsed_seconds": 2.719
+}

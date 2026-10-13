@@ -33,7 +33,7 @@ from studio.storage import Store, digest
 from studio.worker import Worker
 from studio.providers import WanGPConfig, WanGPProvider
 from studio.diagnostics import hardware
-from studio.setup_status import classify, read_runtime_status, read_cpu_status
+from studio.setup_status import classify, read_runtime_status, read_cpu_status, read_image_status
 from studio.draft_editing import edit_eligibility
 from studio.export_variants import ExportCopy, enqueue_copy
 from studio.shot_revisions import RetakeRequest, enqueue_retake, discard_retake
@@ -284,6 +284,8 @@ def create_app(root: Path | None = None, run_worker=True) -> FastAPI:
             config.installation,
             read_cpu_status(ROOT),
             read_cpu_status(ROOT, "cpu_4b"),
+            last_image=read_image_status(ROOT),
+            selected_image_model=config.image_model,
         )
         return result
 

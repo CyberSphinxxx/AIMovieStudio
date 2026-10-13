@@ -39,6 +39,15 @@ CPU_PROFILES = {
 }
 
 
+def cpu_post(client, body, check):
+    try:
+        return checked_post(client, "/v1/chat/completions", body, check)
+    except httpx.TimeoutException as error:
+        raise RuntimeError(
+            "TIMEOUT: CPU writing exceeded 180 seconds for one request. Earlier checkpoints are preserved; the writing profile needs smaller requests or a faster model."
+        ) from error
+
+
 def observe_process(observer, process):
     if observer:
         observer({"pid": process.pid, "rss_bytes": process_rss(process.pid), "memory": memory_status()})
@@ -150,9 +159,8 @@ class SmallCPUStory(OllamaStory):
                 observe_process(self.observer, process)
 
             for attempt in range(3):
-                response = checked_post(
+                response = cpu_post(
                     client,
-                    "/v1/chat/completions",
                     {
                         "model": self.model,
                         "messages": messages,

@@ -1,0 +1,162 @@
+{
+  "phase": "runtime",
+  "is_mock": false,
+  "status": "RUNTIME_DISCOVERED_NOT_INFERENCE",
+  "directory": "C:\\L3mxr\\Github Repositories\\AIMovieStudio\\data\\gpu-smoke\\b041a867-47d6-4157-9e70-057a4ce6f915",
+  "max_seconds": 300,
+  "before": {
+    "gpu": {
+      "available": true,
+      "name": "NVIDIA GeForce RTX 3060 Laptop GPU",
+      "driver": "610.88",
+      "total_mb": 6144,
+      "used_mb": 690,
+      "temperature_c": 54
+    },
+    "python": "3.12.14",
+    "memory": {
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 7.34,
+      "load_percent": 51
+    },
+    "measured_at": 1791922778.447058
+  },
+  "runtime_attempted": true,
+  "parent_memory_samples": [
+    {
+      "seconds": 0.109,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 7.34,
+      "load_percent": 51
+    },
+    {
+      "seconds": 2.125,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 6.85,
+      "load_percent": 54
+    },
+    {
+      "seconds": 4.14,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 6.79,
+      "load_percent": 55
+    },
+    {
+      "seconds": 6.14,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 6.73,
+      "load_percent": 55
+    },
+    {
+      "seconds": 8.156,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 6.54,
+      "load_percent": 56
+    },
+    {
+      "seconds": 10.156,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 6.49,
+      "load_percent": 57
+    },
+    {
+      "seconds": 12.156,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 6.44,
+      "load_percent": 57
+    },
+    {
+      "seconds": 14.171,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 6.47,
+      "load_percent": 57
+    },
+    {
+      "seconds": 16.171,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 6.47,
+      "load_percent": 57
+    },
+    {
+      "seconds": 18.187,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 6.47,
+      "load_percent": 57
+    },
+    {
+      "seconds": 20.187,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 6.47,
+      "load_percent": 57
+    },
+    {
+      "seconds": 22.187,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 6.47,
+      "load_percent": 57
+    },
+    {
+      "seconds": 24.203,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 6.47,
+      "load_percent": 57
+    },
+    {
+      "seconds": 26.203,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 6.46,
+      "load_percent": 57
+    },
+    {
+      "seconds": 28.218,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 6.42,
+      "load_percent": 57
+    },
+    {
+      "seconds": 30.218,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 6.31,
+      "load_percent": 58
+    },
+    {
+      "seconds": 32.234,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 6.27,
+      "load_percent": 58
+    },
+    {
+      "seconds": 34.234,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 6.19,
+      "load_percent": 59
+    },
+    {
+      "seconds": 36.234,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 6.05,
+      "load_percent": 60
+    }
+  ],
+  "elapsed_seconds": 38.171
+}

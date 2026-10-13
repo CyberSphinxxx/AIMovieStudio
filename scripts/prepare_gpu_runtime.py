@@ -18,7 +18,7 @@ from studio.storage import atomic_json
 TAGS = list(cpython_tags((3, 11), abis=["cp311"], platforms=["win_amd64"]))
 TAGS += list(compatible_tags((3, 11), interpreter="cp311", platforms=["win_amd64"]))
 RANKS = {tag: i for i, tag in enumerate(TAGS)}
-PURE_BUILD = {"moviepy", "antlr4-python3-runtime", "docopt"}
+PURE_BUILD = {"moviepy", "antlr4-python3-runtime", "docopt", "openai-whisper"}
 
 
 def read(url):
@@ -28,6 +28,15 @@ def read(url):
 
 def choose(requirement):
     name, version = requirement.split("==")
+    if requirement == "smplfitter==0.2.10":
+        # WanGP pins this maintainer wheel; do not substitute the PyPI build.
+        return {
+            "requirement": requirement,
+            "filename": "smplfitter-0.2.10-py3-none-any.whl",
+            "url": "https://github.com/deepbeepmeep/smplfitter/releases/download/v0.2.10/smplfitter-0.2.10-py3-none-any.whl",
+            "sha256": "bd33a3f854b50770e37a66db05a4b75c66b45fdd88ec1aa40e56784df9df7b54",
+            "bytes": 61979,
+        }
     if name in {"torch", "torchvision", "torchaudio"}:
         source = read(f"https://download.pytorch.org/whl/cu130/{name}/").decode()
         candidates = []
@@ -47,9 +56,12 @@ def choose(requirement):
             url = urllib.parse.urljoin(f"https://download.pytorch.org/whl/cu130/{name}/", url)
         print(f"Inspecting official runtime artifact: {filename}", flush=True)
         with urllib.request.urlopen(
-            urllib.request.Request(url, headers={"Range": "bytes=0-0", "User-Agent": "pip/26.2.1"}), timeout=60
+            urllib.request.Request(url, headers={"Range": "bytes=0-0", "User-Agent": "pip/26.2.1"}),
+            timeout=60,
         ) as response:
-            size = int(response.headers.get("Content-Range", "").split("/")[-1] or response.headers["Content-Length"])
+            size = int(
+                response.headers.get("Content-Range", "").split("/")[-1] or response.headers["Content-Length"]
+            )
     else:
         metadata = json.loads(read(f"https://pypi.org/pypi/{name}/{version}/json"))
         options = []

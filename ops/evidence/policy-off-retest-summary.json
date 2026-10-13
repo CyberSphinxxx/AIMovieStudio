@@ -1,0 +1,26 @@
+{
+  "user_changed_smart_app_control": true,
+  "registry_state": 0,
+  "agent_changed_security_settings": false,
+  "runtime_discovery": "PASS_NOT_INFERENCE",
+  "cuda_arithmetic": "PASS_NOT_GENERATION",
+  "image": "FAILED_RAM_GUARD_PROFILE4_AND5",
+  "video": "NOT_TESTED_IMAGE_GATE_NOT_PASSED",
+  "cpu_4b": "PLAN_VALID_FIRST_SECTION_TIMEOUT_NO_FULL_SCRIPT",
+  "gpu_received_bytes": 11396297371,
+  "gpu_reservations": {
+    "portable-python": 100000000,
+    "runtime-and-resolution": 5520056174
+  },
+  "retest_downloads_received_bytes": 12402765,
+  "metadata_resolution_note": "Resolver metadata remains conservatively covered by the existing runtime reservation; exact body tracking applied to explicit artifact metadata/wheels",
+  "new_runtime_packages": 9,
+  "vendor_advisories": 90,
+  "vendor_packages_with_advisories": 6,
+  "final_runtime_seconds": 38.171,
+  "backend_tests_passed": 215,
+  "backend_test_seconds": 235.37,
+  "browser_tests_passed": 12,
+  "browser_test_seconds": 119.022191,
+  "full_movie_real_generation_verified": false
+}
