@@ -1,4 +1,4 @@
-# Active plan — 2026-10-13
+# Completed slice plan — 2026-10-13
 Task/ID: F7.03 immutable single-shot retakes and movie editions.
 Behavior: Shots offers another take with the same story/cast/location/props/camera/duration and pinned references. Regenerate only that keyframe/video, then recut existing media/audio into a separate MP4 edition. Original movie and all prior cuts remain downloadable.
 Ground truth: main a677894;134 backend/2Vitest/8Edge verified. Current2.24GiB freeRAM; no model tests (<5GiB). GPU CUDA import remains OS-blocked. Worker serial claims/receipts/assets already immutable; episode jobs unique. No new provider APIs/downloads.
@@ -9,3 +9,8 @@ Exit: two-shot retake changes only selected visual input, original/otherclip/aud
 Recovery: Existing originals/asset roles unchanged. New stages require current app when restoring. No schema migration; complete cut metadata is the immutable active-edition snapshot, published atomically with job completion.
 Progress: implemented API/worker/UI/backup/copy source and selected-episode controls.14 new tests PASS38.11s; full148 backend PASS210.76s,2Vitest/static/main audits0. First full8/9Edge failed earlier-copy link placement; repaired and final9Edge PASS86.956s. Mobile saved-frame posters/Axe/playback/old checksum downloads visually inspected. Logs retake-* in ops/evidence. LastRAM1.89GiB; no model loads.
 Result: VERIFIED_SLICE, full F7.03 still incomplete. Next F8.03 installed license inventory; produced-story/reference variants remain open.
+
+## Current selected work — F8.03 dependency/license inventory
+Plan: inspect installed main/optional/runtime metadata without GPU imports; record compact declarations and bounded confined notice hashes; preserve small pinned upstream license/card sources without weights; inspect actual FFmpeg build flags; distinguish inventory from per-file rights/hardware proof. No publishing/restrictive-term acceptance.
+Result: VERIFIED_INVENTORY_SLICE.419packages/516notices/81findings,10newtests+16storage PASS2.21s; offline inventory observed, tiny public captures197244bytes, no newmodels/OS. No app/API/UI changes since148backend/2Vitest/9Edge retake checkpointeb853b8. Sourcecapture serial developer-only512KiB/body cap/reservation, notices2MB/hash/path guards.
+Next unblocked work: resolve exact converted VAE/encoder origin and20 missing notice texts against pinned primary sources; enumerate runtime binaries and corresponding sources. App source-license decision and any redistribution remain later user/release boundaries. Do not infer a licensing violation from different file hashes. Actual CPU/GPU inference still blocked by2.43GiB availableRAM/OS policy; no quality proof.

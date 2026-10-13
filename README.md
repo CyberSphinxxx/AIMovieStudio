@@ -88,6 +88,8 @@ Pause waits for the current atomic step. Resume/retry applies to the selected ep
 
 ## Known incomplete work
 
+Installed dependency declarations and notice hashes can be inspected in [the license review](docs/INSTALLED_LICENSE_REVIEW.md). `.venv/Scripts/python.exe -m scripts.license_inventory` refreshes the offline inventory without loading AI libraries. This inventory does not clear a release or redistribution.
+
 - Real GPU references/video, guided model setup and measured 6 GB inference.
 - Declared prop ownership, character knowledge, location/life changes and episode-start flashbacks are checked. Fine-grained world time, costumes, relationships and semantic contradictions in prose remain incomplete.
 - Produced-story edits, character reference variants, version branches, custom/native HD exports, open-folder controls and advanced quality evaluation. Immutable single-shot retakes, draft aspect copies and graphical restore of missing projects are available.

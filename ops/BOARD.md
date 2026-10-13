@@ -46,9 +46,9 @@ Do not interpret partial task evidence as full phase acceptance. See PROGRESS an
 | F7.05 | IN_PROGRESS | Episode2 across reopen uses prior outcome/references; longer real movie open |
 | F8.01 | IN_PROGRESS | Actual localhost launcher stop/start observed; approved app-local GPU install; clean-account test open |
 | F8.02 | IN_PROGRESS | ZIP-to-Library UI, explicit interrupted-restore resume, paused jobs/IDs/hashes/defaults retained, conflict/security/hardkill/Edge verified; broader manual/troubleshooting review remains |
-| F8.03 | TODO | Distribution and bundled-license audit |
+| F8.03 | IN_PROGRESS | Offline419-package/516-notice hash inventory; official source captures197244bytes;10 tests+16 storage PASS;20 missing notices/2 declaration gaps, converted VAE/source mapping/binary/release rights remain open |
 | F8.04 | TODO | Clean Windows account + real GPU resource benchmarks |
 | F8.05 | IN_PROGRESS | Main npm/Python audit0; hostile backups/download budgets tested; vendor90 advisories unresolved |
 | F8.06 | IN_PROGRESS | Screenshots/evidence/run docs; release still blocked by listed gates |
 
-Next: F8.03 observed dependency/license inventory, then produced-story/reference revisions. Full148 backend PASS210.76s/2Vitest/static/main audits0, corrected final9Edge PASS86.956s. Latest freeRAM1.89GiB; model loading still requires5GiB. Approved1.5B installation complete, inference NOT RUN. GPU App Control remains blocked; no system changes.
+Next: F8.03 per-file converted model/VAE/encoder provenance and missing notices, then produced-story/reference revisions. Full148 backend PASS210.76s/2Vitest/static/main audits0, corrected final9Edge PASS86.956s; later10 inventory tests+16 storage PASS2.21s. Latest freeRAM2.43GiB; model loading still requires5GiB. Approved1.5B installed, inference NOT RUN. GPU App Control remains blocked; no system changes.

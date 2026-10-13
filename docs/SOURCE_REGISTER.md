@@ -2,6 +2,8 @@
 
 Checked 2026-10-12. Intended use: private local development; no public distribution or paid integration authorized.
 
+Update2026-10-13: actual installed metadata/notice inventory and pinned public source captures are recorded in INSTALLED_LICENSE_REVIEW.md and ops/evidence/model-license-sources.json. Upstream declarations do not establish the rights of every converted file. In particular, installed converted VAE bytes differ from current upstreamKlein4B VAE; exact origin remains unverified (hash difference alone is not evidence of a license violation). Generic converted-repository card lacks separate per-file license. FFmpeg installed flags include GPL/version3/libx264; source/binary/codec release review remains open. No native hardware proof or redistribution clearance added.
+
 | Component | Primary source | Verified scope / unresolved gate |
 |---|---|---|
 | WanGP | https://github.com/deepbeepmeep/Wan2GP/blob/main/docs/API.md and shared/api.py | `init(root, output_dir, cli_args)`, `get_model_schema`, `get_model_availability`, `submit_task`, `job.result`, `job.cancel` inspected. Out-of-process adapter contract is separate from inference proof. |

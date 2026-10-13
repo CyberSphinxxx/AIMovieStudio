@@ -1,0 +1,85 @@
+{
+  "status": "SOURCE_CAPTURE_ONLY_NOT_CLEARED",
+  "sources": [
+    {
+      "path": "tools/licenses/black-forest-labs--FLUX.2-klein-4B--README.md",
+      "url": "https://huggingface.co/black-forest-labs/FLUX.2-klein-4B/resolve/e7b7dc27f91deacad38e78976d1f2b499d76a294/README.md",
+      "revision": "e7b7dc27f91deacad38e78976d1f2b499d76a294",
+      "sha256": "bd447051cf2db4bf67b992e563d89c35ebf1123f009c063361a222ab14e1c4f7",
+      "bytes": 9991
+    },
+    {
+      "path": "tools/licenses/Qwen--Qwen3-4B--README.md",
+      "url": "https://huggingface.co/Qwen/Qwen3-4B/resolve/1cfa9a7208912126459214e8b04321603b3df60c/README.md",
+      "revision": "1cfa9a7208912126459214e8b04321603b3df60c",
+      "sha256": "71add1cd091c309b1cb1a6b943f2476eb2b004124b3bd1d32dcd0b24cc1abc47",
+      "bytes": 16857
+    },
+    {
+      "path": "tools/licenses/Qwen--Qwen3-4B--LICENSE",
+      "url": "https://huggingface.co/Qwen/Qwen3-4B/resolve/1cfa9a7208912126459214e8b04321603b3df60c/LICENSE",
+      "revision": "1cfa9a7208912126459214e8b04321603b3df60c",
+      "sha256": "832dd9e00a68dd83b3c3fb9f5588dad7dcf337a0db50f7d9483f310cd292e92e",
+      "bytes": 11343
+    },
+    {
+      "path": "tools/licenses/Qwen--Qwen2.5-0.5B-Instruct-GGUF--README.md",
+      "url": "https://huggingface.co/Qwen/Qwen2.5-0.5B-Instruct-GGUF/resolve/9217f5db79a29953eb74d5343926648285ec7e67/README.md",
+      "revision": "9217f5db79a29953eb74d5343926648285ec7e67",
+      "sha256": "fa1fede7f775a20f111cc098c00900092020572ce78976970a5b0ad9ca211999",
+      "bytes": 4856
+    },
+    {
+      "path": "tools/licenses/Qwen--Qwen2.5-0.5B-Instruct-GGUF--LICENSE",
+      "url": "https://huggingface.co/Qwen/Qwen2.5-0.5B-Instruct-GGUF/resolve/9217f5db79a29953eb74d5343926648285ec7e67/LICENSE",
+      "revision": "9217f5db79a29953eb74d5343926648285ec7e67",
+      "sha256": "832dd9e00a68dd83b3c3fb9f5588dad7dcf337a0db50f7d9483f310cd292e92e",
+      "bytes": 11343
+    },
+    {
+      "path": "tools/licenses/DeepBeepMeep--Flux2--README.md",
+      "url": "https://huggingface.co/DeepBeepMeep/Flux2/resolve/c976cb238dbf2bee48f0bd65eeb14c039cf45e03/README.md",
+      "revision": "c976cb238dbf2bee48f0bd65eeb14c039cf45e03",
+      "sha256": "7c44f16ebaeca28bb629e20d50eb957ef4c2d7c5068565de61ce7b3b32b6b7be",
+      "bytes": 1133
+    },
+    {
+      "path": "tools/licenses/llama.cpp--b11558--LICENSE",
+      "url": "https://raw.githubusercontent.com/ggml-org/llama.cpp/b11558/LICENSE",
+      "revision": "b11558",
+      "sha256": "94f29bbed6a22c35b992c5c6ebf0e7c92f13b836b90f36f461c9cf2f0f1d010d",
+      "bytes": 1078
+    }
+  ],
+  "models": [
+    {
+      "repo": "black-forest-labs/FLUX.2-klein-4B",
+      "revision": "e7b7dc27f91deacad38e78976d1f2b499d76a294",
+      "declaration": "apache-2.0",
+      "upstream_notice_found": false,
+      "upstream_vae_sha256": "ca70d2202afe6415bdbcb8793ba8cd99fd159cfe6192381504d6c4d3036e0f04",
+      "installed_vae_sha256": "868fe7b343cc8f3a19dbcfcafbc3d5f888802be3f89bd81b65b3621a066ce8f3",
+      "vae_hash_matches_upstream": false
+    },
+    {
+      "repo": "Qwen/Qwen3-4B",
+      "revision": "1cfa9a7208912126459214e8b04321603b3df60c",
+      "declaration": "apache-2.0",
+      "upstream_notice_found": true
+    },
+    {
+      "repo": "Qwen/Qwen2.5-0.5B-Instruct-GGUF",
+      "revision": "9217f5db79a29953eb74d5343926648285ec7e67",
+      "declaration": "apache-2.0",
+      "upstream_notice_found": true
+    },
+    {
+      "repo": "DeepBeepMeep/Flux2",
+      "revision": "c976cb238dbf2bee48f0bd65eeb14c039cf45e03",
+      "declaration": null,
+      "upstream_notice_found": false
+    }
+  ],
+  "limit_bytes": 524288,
+  "received_bytes": 93830
+}
