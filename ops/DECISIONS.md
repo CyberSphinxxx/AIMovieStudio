@@ -1,5 +1,9 @@
 # Decisions — 2026-10-12
 
+2026-10-15: NewCPU4B requests two shots based on observed180s timeout/normal token generation. Freeze queuedjobconfig/preservelegacy payloads; no largercontext/timeout/default/model. Startup/ongoing RAMguards withouttestobserver. Preserve remaining approvedexperiment time and nativefailure evidence.
+
+2026-10-15: Atomic/fsync rolling120recent/lifetimeextrema vendor diagnostics survive termination. Use documentedcallbacks/localbridgephases; excludeprivate status/stream. Closure and read-onlycounterproof cannot certify model success/6GBfit; no vendorfork.
+
 1. Preserve original blueprint directory untouched; copy specifications into root to make AGENTS/PLANS discoverable. Original source files remain untracked/ignored, not deleted.
 2. React/TypeScript strict with Vite; FastAPI/Pydantic2; stdlib SQLite transactional migrations instead of an ORM/broker. Single local worker owns OS lock and runs heavy stages sequentially.
 3. Existing bundled Python 3.12.14 is the tested interpreter because specified Python 3.11 is absent. Code targets >=3.11. No global Python/driver installation. Python 3.11 clean-machine verification still needed.

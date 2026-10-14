@@ -1,5 +1,7 @@
 # Hardware / inference proof — 2026-10-12
 
+2026-10-15 read-only rolling sampler(NOTinference):3s/3samples/noerrors/RSS46,792,704bytes/globalVRAM1,469,792,256bytes/temp60C/minRAM1,506,070,528bytes, actual-rolling-telemetry.json. Current0.51–1.5GiB blocksmodels. Humanchooses coding/freeRAMlater; originalnativefailuresretained. RemainingCPU4B600s experiment330.281s after269.719s firstfailedrun. Fixturechildkill/diagnosticdurability does not prove6GBfit.
+
 Actual machine evidence: ops/evidence/gpu-baseline.txt, os-baseline.json, disk-baseline.json. Windows11 Home, RTX3060 Laptop6144MiB, driver610.88, ~15.2GiB usable RAM. Driver's CUDA capability is not proof of an installed PyTorch runtime.
 
 ## Observed

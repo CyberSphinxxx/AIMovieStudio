@@ -1,5 +1,7 @@
 # Active backlog — 2026-10-14
 
+Latest2026-10-15: newCPU4B frozen-config two-shot sections inclshortfilm/prewrites/legacy preservation/recovery/backup/assembly verified56targetsPASS24.17s; initial224backendPASS295.11s. NormalCPU RAMguard and rolling telemetry verified incl actual read-only counters/fixturekill. Current0.51–1.5GiB RAMblocksmodels; humanchooses coding/freeRAMlater. Next F6.02 local SFX; native writing quality/image fit remains unproven.
+
 Do not interpret partial task evidence as full phase acceptance. See PROGRESS and HANDOFF.
 
 | ID | Status | Evidence / remaining work |

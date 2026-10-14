@@ -49,8 +49,24 @@ def cpu_post(client, body, check):
 
 
 def observe_process(observer, process):
+    memory = memory_status()
     if observer:
-        observer({"pid": process.pid, "rss_bytes": process_rss(process.pid), "memory": memory_status()})
+        observer({"pid": process.pid, "rss_bytes": process_rss(process.pid), "memory": memory})
+    if not memory.get("available") or memory.get("free_gb") is None:
+        raise RuntimeError("RESOURCE_UNKNOWN: Cannot measure free RAM safely; CPU writing stopped.")
+    if memory["free_gb"] < 2:
+        raise RuntimeError(
+            "RESOURCE_BUSY: CPU writing stopped below 2 GiB free RAM. Earlier checkpoints are preserved."
+        )
+
+
+def require_startup_memory(profile):
+    memory = memory_status()
+    minimum = 7 if profile == "cpu_4b" else 5 if profile == "cpu_1_5b" else 2
+    if not memory.get("available") or memory.get("free_gb") is None or memory["free_gb"] < minimum:
+        raise RuntimeError(
+            f"RESOURCE_BUSY: The selected CPU experiment requires at least {minimum} GiB free RAM before loading."
+        )
 
 
 @contextmanager
@@ -63,17 +79,13 @@ def cpu_server(check=lambda: None, profile="small_cpu", observer=None):
             "MISSING_MODEL: The selected CPU writing experiment is not installed. Review its setup/download approval first."
         )
     check()
-    if profile in {"cpu_1_5b", "cpu_4b"}:
-        memory = memory_status()
-        minimum = 7 if profile == "cpu_4b" else 5
-        if not memory.get("available") or memory["free_gb"] < minimum:
-            raise RuntimeError(
-                f"RESOURCE_BUSY: The selected CPU experiment requires at least {minimum} GiB free RAM before loading."
-            )
+    require_startup_memory(profile)
     if weights.stat().st_size != size or digest(weights) != sha:
         raise RuntimeError(
             "BAD_MODEL: CPU weights differ from the reviewed size/SHA256; no model was loaded."
         )
+    # File verification can take time; recheck memory immediately before launching.
+    require_startup_memory(profile)
     with socket.socket() as sock:
         sock.bind(("127.0.0.1", 0))
         port = sock.getsockname()[1]

@@ -119,15 +119,17 @@ def main():
     telemetry = Sampler(directory / "provider-telemetry.json")
     telemetry.start()
     try:
-        run_session(request, root, directory, response_path)
+        run_session(request, root, directory, response_path, telemetry)
     finally:
         telemetry.close()
 
 
-def run_session(request, root, directory, response_path):
+def run_session(request, root, directory, response_path, telemetry):
+    telemetry.mark_phase("runtime_import")
     sys.path.insert(0, str(root))
     from shared.api import init
 
+    telemetry.mark_phase("runtime_initialization")
     session = init(
         root=root,
         output_dir=directory,
@@ -139,7 +141,9 @@ def run_session(request, root, directory, response_path):
             "--no-prevent-power-throttling",
         ],
         console_output=False,
+        callbacks=telemetry,
     )
+    telemetry.mark_phase("runtime_ready")
     if request["kind"] == "discover":
         result = {
             "models": session.list_model_metadata(
@@ -147,7 +151,9 @@ def run_session(request, root, directory, response_path):
             )
         }
     else:
+        telemetry.mark_phase("validating_request")
         parameters, schema = build_settings(session, request)
+        telemetry.mark_phase("submitting_generation")
         job = session.submit_task(parameters)
         deadline = time.monotonic() + request["timeout"]
         while not job.done:
@@ -156,6 +162,7 @@ def run_session(request, root, directory, response_path):
                 raise RuntimeError("CANCELLED_OR_TIMEOUT: WanGP generation stopped.")
             time.sleep(0.2)
         generated = require_success(job.result(), directory)
+        telemetry.mark_phase("validating_output")
         result = {
             "files": [str(p) for p in generated],
             "schema": schema,
@@ -167,6 +174,7 @@ def run_session(request, root, directory, response_path):
     temporary = response_path.with_suffix(".partial")
     temporary.write_text(json.dumps(result, default=str), encoding="utf-8")
     temporary.replace(response_path)
+    telemetry.mark_phase("response_saved")
 
 
 if __name__ == "__main__":

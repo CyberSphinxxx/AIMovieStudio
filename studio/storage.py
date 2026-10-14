@@ -282,15 +282,20 @@ class Store:
         ]
 
     def add_story_steps(self, db, jid, ordinal, episode, spec, *, draft=False, reuse=False):
+        from studio.story_budget import shots_per_request
+
         stage = "DRAFT" if draft else "SCRIPT"
         total = math.ceil(spec["target_seconds"] / 5)
+        # Use the enqueued job's configuration even if Settings changed while planning.
+        config = json.loads(db.execute("SELECT config FROM jobs WHERE id=?", (jid,)).fetchone()["config"])
+        batch_size = shots_per_request(config)
         batches = []
-        if total > 4 and not reuse:
-            for start in range(0, total, 4):
+        if total > batch_size and not reuse:
+            for start in range(0, total, batch_size):
                 payload = {
                     "episode": episode,
                     "start": start,
-                    "count": min(4, total - start),
+                    "count": min(batch_size, total - start),
                     "total": total,
                     "previous_batch_ids": list(batches),
                 }

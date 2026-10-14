@@ -1,0 +1,40 @@
+{
+  "sample_interval_seconds": 1,
+  "elapsed_seconds": 3.0,
+  "samples": [
+    {
+      "seconds": 0.17,
+      "rss_bytes": 46759936,
+      "available_ram_bytes": 1547513856,
+      "global_vram_bytes": 1469792256,
+      "temperature_c": 60,
+      "phase": "read_only_counter_check"
+    },
+    {
+      "seconds": 1.19,
+      "rss_bytes": 46788608,
+      "available_ram_bytes": 1506070528,
+      "global_vram_bytes": 1469792256,
+      "temperature_c": 60,
+      "phase": "read_only_counter_check"
+    },
+    {
+      "seconds": 2.2,
+      "rss_bytes": 46792704,
+      "available_ram_bytes": 1551527936,
+      "global_vram_bytes": 1469792256,
+      "temperature_c": 60,
+      "phase": "read_only_counter_check"
+    }
+  ],
+  "sample_count": 3,
+  "recent_sample_limit": 120,
+  "phase": "read_only_counter_check",
+  "sampler_closed": true,
+  "sampling_errors": [],
+  "peak_rss_bytes_sampled": 46792704,
+  "peak_global_vram_bytes_sampled": 1469792256,
+  "peak_temperature_c_sampled": 60,
+  "min_available_ram_bytes_sampled": 1506070528,
+  "note": "Sampled lifetime extrema, not absolute peaks. Recent samples bounded; VRAM is whole-device usage. Sampler closure does not establish generation success."
+}

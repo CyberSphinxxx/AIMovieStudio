@@ -1,5 +1,13 @@
 # Handoff — 2026-10-14
 
+## Latest 2026-10-15: smaller requests and retained diagnostics
+
+Started322530c clean. RAM0.51GiB96%, later1.13–1.5GiB; user chooses “Continue coding; I’ll free memory later.” No model loaded. New CPU4B jobs use two-shot sections from frozenjobconfig inclshortfilm/prewrites; legacypayloads/IDs/receipts preserved. NormalCPU rechecks7/5/2GiB startupafterhashing and2GiB/unknown during loading/requests without testobserver. Context8192/request180s/weights/defaults unchanged. Remaining approved600s CPU4B time330.281s after prior269.719s; native quality still unproven.
+
+Vendor telemetry now atomic/fsync snapshots during execution,120recent/lifetime extrema/count/minRAM, documented init callbacks/on_progress.phase plus localbridgephase; private stream/status excluded. Closure is not generation success. Actual read-only optionalruntime counters3s/3samples/noerrors/RSS46,792,704bytes/globalVRAM1,469,792,256bytes/60C/minRAM1,506,070,528bytes(actual-rolling-telemetry.json), NOT inference. Fixturechild kill preserves lastfile/disk-full preserves priorfile. No vendor/weights/deps/system changes.
+
+Initial fullcollection224PASS295.11s; final56targetsPASS24.17s/35contractsPASS5.79s/RuffPASS. Initialcorruptweightsfixture25PASS/1FAIL depended on actuallowRAM after tinyguard; correctedexplicitcounter/failedlogretained. Final broadsource pending nextslice; prior12Edge unchanged/historical. Next independent F6.02 original local SFX/mix/stems/UI while modelswait. Full app unfinished; no background execution after session.
+
 ## Latest checkpoint: policy cleared, runtime repaired, native models still incomplete
 
 This section supersedes earlier OS-block/readiness-pending statements. Started d280a1d clean. Human independently disabledSmartAppControl (“done, its off now”), registry0 verified, then closed heavy apps and replied “I’ve closed them; retest now.” Agent made no security/driver/global Python/firewall/paging/power-plan changes. ExistingGPU32GB/40GB/private/imagePASS-before-video and CPU4B2.9GB/3.5GB bounded scopes persist; no reapproval for existing files.

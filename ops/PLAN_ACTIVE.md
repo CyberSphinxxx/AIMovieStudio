@@ -1,4 +1,6 @@
 # Active plan — 2026-10-14
+Task F2.01/F2.03: smaller requests for new CPU4B writing jobs. Read prior actual180s timeout and CPU runtime timings; model produced tokens normally, full response did not finish. Use two-shot batches from frozen jobs.config including short films/season prewrites; preserve existing payloads, IDs, receipts and completed-only canon. No timeout/context/model/download changes. Verify frozen settings, legacy payloads, whole assembly/continuity, receipt recovery and backup. Actual new native trial only after fresh7GiB startup/2GiB ongoing guards; current0.51GiB freeRAM96% blocks inference. GPU load investigation remains independent/read-only until memory safe. Native writing quality remains unproven.
+
 Task F3.04/F3.05/F7.03: immutable reference variants and explicit choice for future shots.
 Recon: main ff3c394 clean; user confirms demo works. Ruff+26 inventory/storage baseline PASS2.30s. RAM0.83GiB/94%, RTX3060Laptop1883MiBused/59°C; no model loading (5GiB guard, existing OS CUDA block). Existing approvals retained; no new dependencies/models/system changes.
 Select: move higher-priority visual-reference backlog forward while actual AI is blocked. Keep F8.03 notice/provenance tasks open; same installed provider contract only, no new native/model/licensing clearance.

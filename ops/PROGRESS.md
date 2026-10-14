@@ -1,5 +1,13 @@
 # Observed development progress — 2026-10-12 (Asia/Manila)
 
+## 2026-10-15 — two-shot writing, RAM guards and durable telemetry
+
+Started322530c clean, relevantdocs/provider+continuity+verification skillsread. RAM0.51GiB96%, later1.13–1.5GiB; humanchooses coding/freeRAMlater. No modeltrial/download/dependency/system/security/remote/user-app changes. Implemented frozenconfig two-shot new4B sections inclshortfilm/prewrites; oldpayloads/IDs/receipts preserved. NormalCPU7/5/2GiB startup recheckafterhash +2GiB/unknown duringload/requests, observerindependent. Context8192/180s unchanged.
+
+Atomic/fsync vendor snapshots120recent/lifetimeextrema/count/minRAM plus documentedcallback/localbridgephases; noprivate streams. Realread-only optionalruntime3s/3samples/noerrors/RSS46,792,704bytes/globalVRAM1,469,792,256bytes/60C/minRAM1,506,070,528bytes(actual-rolling-telemetry.json). No inference. Actual fixtureprocesskillretains lastsnapshot; diskfullfixture retainspriorfile. APIcontract pinnedlocal shared/api.py/docs/API.md inspected.
+
+Commands: initialtarget39PASS24.84s; `.venv/Scripts/python.exe -m pytest -q`224PASS295.11s(two-shot-full-backend.log); final changed56PASS24.17s(two-shot-final-targets.log);35contractsPASS5.79s(two-shot-telemetry-contract.log); RuffPASS. Firstprovidercontract25PASS/1FAIL corruptedweightsfixture depended on actuallowRAM aftertinyguard; supplyexplicit safecounter, originalfailedlog retained. Docs patchmatching failed twice withoutmutation; correctedhunkorder. Finalbroadcurrentrun pendingnextslice/prior12Edge unchanged. RemainingapprovedCPU4B330.281s; no nativequality claim. NextF6.02 original local SFX; applicationunfinished.
+
 ## Session baseline
 
 No existing app or Git commits. Blueprint supplied in a nested directory; preserved intact and copied specs to root. Windows 11 Home, RTX 3060 Laptop 6144 MiB VRAM, NVIDIA 610.88, driver-reported CUDA 13.3, ~15.2 GiB visible RAM, initially ~0.52 GiB free RAM; C: ~54.1 GiB free. Pagefile allocated ~15.2 GiB. No installed Ollama found; no FFmpeg on PATH. System Python 3.14; existing bundled Python 3.12.14 used to create isolated .venv. Node 24.19.0, npm 11.17.0. No drivers/system settings changed.

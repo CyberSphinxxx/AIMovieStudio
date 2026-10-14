@@ -46,6 +46,7 @@ def test_changed_weights_rejected_before_any_runtime_launch(tmp_path, monkeypatc
     (folder / "llama-server.exe").write_bytes(b"fixture-not-executable")
     (folder / "weights.gguf").write_bytes(b"wrong")
     monkeypatch.setattr(local_story, "ROOT", tmp_path)
+    monkeypatch.setattr(local_story, "memory_status", lambda: {"available": True, "free_gb": 8})
     monkeypatch.setitem(
         local_story.CPU_PROFILES,
         "small_cpu",
@@ -90,3 +91,46 @@ def test_cpu_timeout_has_actionable_error_without_automatic_retry_or_fallback():
     assert calls == ["/v1/chat/completions"]
     assert "Earlier checkpoints are preserved" in str(caught.value)
     assert isinstance(caught.value.__cause__, httpx.ReadTimeout)
+
+
+@pytest.mark.parametrize(
+    "memory,code",
+    [
+        ({"available": True, "free_gb": 1.99}, "RESOURCE_BUSY"),
+        ({"available": False}, "RESOURCE_UNKNOWN"),
+        ({"available": True, "free_gb": None}, "RESOURCE_UNKNOWN"),
+    ],
+)
+def test_cpu_ongoing_ram_guard_does_not_require_test_observer(monkeypatch, memory, code):
+    monkeypatch.setattr(local_story, "memory_status", lambda: memory)
+    with pytest.raises(RuntimeError, match=code):
+        local_story.observe_process(None, None)
+
+
+def test_cpu_memory_observation_preserves_measured_failure_sample(monkeypatch):
+    from types import SimpleNamespace
+
+    monkeypatch.setattr(local_story, "memory_status", lambda: {"available": True, "free_gb": 1.5})
+    monkeypatch.setattr(local_story, "process_rss", lambda pid: 123)
+    samples = []
+    with pytest.raises(RuntimeError, match="RESOURCE_BUSY"):
+        local_story.observe_process(samples.append, SimpleNamespace(pid=42))
+    assert samples == [{"pid": 42, "rss_bytes": 123, "memory": {"available": True, "free_gb": 1.5}}]
+
+
+def test_startup_guard_is_rechecked_after_hashing_before_launch(tmp_path, monkeypatch):
+    folder = tmp_path / "tools/story"
+    folder.mkdir(parents=True)
+    (folder / "llama-server.exe").write_bytes(b"fixture-not-executable")
+    (folder / "weights.gguf").write_bytes(b"fixture")
+    monkeypatch.setattr(local_story, "ROOT", tmp_path)
+    monkeypatch.setitem(local_story.CPU_PROFILES, "cpu_4b", ("fixture", "weights.gguf", 7, "fixture-sha"))
+    available = iter([8, 6.99])
+    monkeypatch.setattr(local_story, "memory_status", lambda: {"available": True, "free_gb": next(available)})
+    monkeypatch.setattr(local_story, "digest", lambda path: "fixture-sha")
+    monkeypatch.setattr(
+        local_story.subprocess, "Popen", lambda *args, **kwargs: pytest.fail("Launched after RAM dropped")
+    )
+    with pytest.raises(RuntimeError, match="requires at least 7 GiB"):
+        with local_story.cpu_server(profile="cpu_4b"):
+            pytest.fail("Passed stale memory check")

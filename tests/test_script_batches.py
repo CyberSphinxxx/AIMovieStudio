@@ -1,6 +1,7 @@
 """Deterministic development fixtures; these tests do not certify AI writing quality."""
 
 import pytest
+import json
 
 from studio.backup import create_backup, restore_backup
 from studio.domain import CanonChange, KnowledgeUse, SeasonPlan, stable, validate_script
@@ -188,3 +189,66 @@ def test_legacy_script_step_without_batch_payload_still_runs(store, spec):
     validate_script(
         EpisodeScript.model_validate(output["script"]), SeasonPlan.model_validate(project["plan"] or plan), 30
     )
+
+
+def select_writer(store, engine):
+    with store.connect() as db:
+        db.execute("INSERT OR REPLACE INTO settings VALUES('story_engine',?)", (json.dumps(engine),))
+
+
+@pytest.mark.parametrize("seconds,counts", [(15, [2, 1]), (20, [2, 2]), (40, [2, 2, 2, 2])])
+def test_cpu_4b_new_sections_use_frozen_job_config_and_complete_runtime(store, spec, seconds, counts):
+    # Demo backend explicitly exercises scheduling, never a claim of real writing quality.
+    spec.kind, spec.target_seconds = "drama", seconds
+    pid, _ = store.create(spec)
+    select_writer(store, "cpu_4b")
+    jid = store.enqueue(pid)
+    select_writer(store, "ollama")
+    result = produce_until(store, Worker(store), pid, "SCRIPT", 1)
+    batches = [s for s in result["jobs"][0]["steps"] if s["stage"] == "SCRIPT_BATCH"]
+    assert [s["payload"]["count"] for s in batches] == counts
+    script = result["episodes"][0]["script"]
+    assert [s["number"] for s in script["shots"]] == list(range(1, sum(counts) + 1))
+    assert sum(s["duration"] for s in script["shots"]) == seconds
+    assert not result["canon"] and not result["assets"]
+    assert store.enqueue(pid) == jid
+
+
+def test_new_settings_do_not_rewrite_existing_four_shot_payloads(store, spec):
+    spec.kind, spec.target_seconds = "drama", 40
+    pid, _ = store.create(spec)
+    store.enqueue(pid)
+    worker = Worker(store)
+    result = produce_until(store, worker, pid, "SCRIPT_BATCH", 1)
+    saved = result["jobs"][0]["steps"]
+    select_writer(store, "cpu_4b")
+    result = produce_until(store, worker, pid, "SCRIPT", 1)
+    batches = [s for s in result["jobs"][0]["steps"] if s["stage"] == "SCRIPT_BATCH"]
+    assert [s["payload"]["count"] for s in batches] == [4, 4]
+    assert batches[0]["output"] == saved[1]["output"]
+    assert [s["id"] for s in result["jobs"][0]["steps"][: len(saved)]] == [s["id"] for s in saved]
+
+
+def test_two_shot_drafts_recover_and_survive_backup_without_future_canon(store, spec, tmp_path):
+    spec.kind, spec.episodes, spec.target_seconds, spec.prewrite_season = "series", 3, 20, True
+    pid, _ = store.create(spec)
+    select_writer(store, "cpu_4b")
+    store.enqueue(pid)
+    worker = Worker(store)
+    produce_until(store, worker, pid, "DRAFT_BATCH", 1)
+    step = worker.claim()
+    assert step["payload"]["start"] == 2 and step["payload"]["count"] == 2
+    atomic_json(worker.directory(step) / "receipt.json", worker.execute(step))
+    recovery = Worker(Store(store.root))
+    recovery.recover()
+    saved = store.get(pid)["jobs"][0]["steps"][2]["output"]
+    assert saved is not None
+    archive = create_backup(store, tmp_path / "two-shots.zip")
+    restored = restore_backup(archive, tmp_path / "restored-two-shots")
+    select_writer(restored, "ollama")
+    restored.control(pid, "resume")
+    result = produce_until(restored, Worker(restored), pid, "SCRIPT", 1)
+    assert all(e["script"] and len(e["script"]["shots"]) == 4 for e in result["episodes"])
+    assert len([s for s in result["jobs"][0]["steps"] if s["stage"] == "DRAFT_BATCH"]) == 6
+    assert result["jobs"][0]["steps"][2]["output"] == saved
+    assert not result["canon"] and not result["assets"]

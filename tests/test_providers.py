@@ -2,7 +2,7 @@ from types import SimpleNamespace
 
 import pytest
 
-from studio.vendor_bridge import build_settings, require_success
+from studio.vendor_bridge import build_settings, require_success, run_session
 from studio.providers import WanGPConfig, WanGPProvider
 
 
@@ -21,6 +21,31 @@ class Session:
 
     def get_default_settings(self, model):
         return {"model_type": model, "guidance_scale": 4}
+
+
+def test_bridge_subscribes_to_documented_callbacks_and_saves_actual_phases(tmp_path, monkeypatch):
+    import json
+    import sys
+
+    from studio.vendor_telemetry import Sampler
+
+    # Explicit contract fixture: no vendor runtime or native generation executed.
+    sampler = Sampler(tmp_path / "telemetry.json")
+    received = []
+
+    def init(**kwargs):
+        received.append(kwargs)
+        kwargs["callbacks"].on_progress(SimpleNamespace(phase="loading_model"))
+        return SimpleNamespace(list_model_metadata=lambda **kw: [{"model_type": "fixture"}])
+
+    monkeypatch.setitem(sys.modules, "shared", SimpleNamespace())
+    monkeypatch.setitem(sys.modules, "shared.api", SimpleNamespace(init=init))
+    response = tmp_path / "result.json"
+    run_session({"kind": "discover", "memory_profile": 5}, tmp_path, tmp_path, response, sampler)
+    assert received[0]["callbacks"] is sampler and received[0]["console_output"] is False
+    assert "--no-prevent-power-throttling" in received[0]["cli_args"]
+    assert json.loads(response.read_text()) == {"models": [{"model_type": "fixture"}]}
+    assert json.loads(sampler.path.read_text())["phase"] == "response_saved"
 
 
 def test_documented_wangp_settings_preserve_defaults_and_references():

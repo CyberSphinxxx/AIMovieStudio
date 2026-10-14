@@ -1,0 +1,82 @@
+.....F....................                                               [100%]
+================================== FAILURES ===================================
+___________ test_changed_weights_rejected_before_any_runtime_launch ___________
+
+tmp_path = WindowsPath('C:/Users/USER-PC/AppData/Local/Temp/pytest-of-USER-PC/pytest-110/test_changed_weights_rejected_0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001CC5B53D6A0>
+
+    def test_changed_weights_rejected_before_any_runtime_launch(tmp_path, monkeypatch):
+        folder = tmp_path / "tools/story"
+        folder.mkdir(parents=True)
+        (folder / "llama-server.exe").write_bytes(b"fixture-not-executable")
+        (folder / "weights.gguf").write_bytes(b"wrong")
+        monkeypatch.setattr(local_story, "ROOT", tmp_path)
+        monkeypatch.setitem(
+            local_story.CPU_PROFILES,
+            "small_cpu",
+            ("fixture", "weights.gguf", 5, hashlib.sha256(b"right").hexdigest()),
+        )
+        monkeypatch.setattr(
+            local_story.subprocess, "Popen", lambda *args, **kwargs: pytest.fail("Launched corrupt model")
+        )
+        with pytest.raises(RuntimeError, match="BAD_MODEL"):
+>           with local_story.cpu_server():
+                 ^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_cpu_profiles.py:58: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\USER-PC\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\contextlib.py:137: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+studio\local_story.py:82: in cpu_server
+    require_startup_memory(profile)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+profile = 'small_cpu'
+
+    def require_startup_memory(profile):
+        memory = memory_status()
+        minimum = 7 if profile == "cpu_4b" else 5 if profile == "cpu_1_5b" else 2
+        if not memory.get("available") or memory.get("free_gb") is None or memory["free_gb"] < minimum:
+>           raise RuntimeError(
+                f"RESOURCE_BUSY: The selected CPU experiment requires at least {minimum} GiB free RAM before loading."
+            )
+E           RuntimeError: RESOURCE_BUSY: The selected CPU experiment requires at least 2 GiB free RAM before loading.
+
+studio\local_story.py:67: RuntimeError
+
+During handling of the above exception, another exception occurred:
+
+tmp_path = WindowsPath('C:/Users/USER-PC/AppData/Local/Temp/pytest-of-USER-PC/pytest-110/test_changed_weights_rejected_0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001CC5B53D6A0>
+
+    def test_changed_weights_rejected_before_any_runtime_launch(tmp_path, monkeypatch):
+        folder = tmp_path / "tools/story"
+        folder.mkdir(parents=True)
+        (folder / "llama-server.exe").write_bytes(b"fixture-not-executable")
+        (folder / "weights.gguf").write_bytes(b"wrong")
+        monkeypatch.setattr(local_story, "ROOT", tmp_path)
+        monkeypatch.setitem(
+            local_story.CPU_PROFILES,
+            "small_cpu",
+            ("fixture", "weights.gguf", 5, hashlib.sha256(b"right").hexdigest()),
+        )
+        monkeypatch.setattr(
+            local_story.subprocess, "Popen", lambda *args, **kwargs: pytest.fail("Launched corrupt model")
+        )
+>       with pytest.raises(RuntimeError, match="BAD_MODEL"):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: Regex pattern did not match.
+E         Expected regex: 'BAD_MODEL'
+E         Actual message: 'RESOURCE_BUSY: The selected CPU experiment requires at least 2 GiB free RAM before loading.'
+
+tests\test_cpu_profiles.py:57: AssertionError
+============================== warnings summary ===============================
+.venv\Lib\site-packages\fastapi\testclient.py:1
+  C:\L3mxr\Github Repositories\AIMovieStudio\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ===========================
+FAILED tests/test_cpu_profiles.py::test_changed_weights_rejected_before_any_runtime_launch
+1 failed, 25 passed, 1 warning in 5.27s

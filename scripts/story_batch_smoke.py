@@ -11,6 +11,7 @@ from studio.domain import ProjectInput
 from studio.storage import Store, atomic_json
 from studio.worker import Worker
 from studio.local_story import CPU_PROFILES
+from studio.story_budget import shots_per_request
 
 
 def main():
@@ -36,11 +37,13 @@ def main():
         db.execute("INSERT OR REPLACE INTO settings VALUES('story_engine',?)", (json.dumps(args.profile),))
         db.execute("INSERT OR REPLACE INTO settings VALUES('speech','\"none\"')")
     store.enqueue(pid)
+    batch_size = shots_per_request(store.settings())
     report = {
         "project_id": pid,
         "is_mock": False,
         "model": CPU_PROFILES[args.profile][0],
-        "profile": "CPU only; four threads;8192 context; max4 shots/section;three attempts/section",
+        "profile": f"CPU only; four threads;8192 context; max{batch_size} shots/section;three attempts/section",
+        "shots_per_request": batch_size,
         "max_seconds": args.max_seconds,
         "status": "STARTED",
         "quality_review": "NOT_PERFORMED",
@@ -84,7 +87,13 @@ def main():
             atomic_json(worker.directory(step) / "receipt.json", output)
             worker.complete(step, output)
             report["completed_steps"].append(
-                {"id": step["id"], "stage": step["stage"], "seconds": round(time.monotonic() - before, 3)}
+                {
+                    "id": step["id"],
+                    "stage": step["stage"],
+                    "seconds": round(time.monotonic() - before, 3),
+                    "start": step["payload"].get("start"),
+                    "count": step["payload"].get("count"),
+                }
             )
             if step["stage"] == "SCRIPT":
                 report["status"] = "STRUCTURED_BATCHED_SCRIPT_VALID"
