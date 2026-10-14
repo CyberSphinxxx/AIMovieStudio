@@ -1,5 +1,7 @@
 # Active backlog — 2026-10-14
 
+Latest 2026-10-15: F6.02 now has a verified original three-effect library, conservative action matching, dialogue ducking, immutable cue/rights/hash WAV stems, Settings toggle and downloads. Full240backendPASS400.20s plus final12sound tests incl added retake preservation PASS14.58s; all13EdgePASS161.626793s/static/build/2VitestPASS. F6.02 remains IN_PROGRESS: listening, score, integrated loudness and broader library open. Native tests held by lowRAM/user free-memory-later reply; actual writing/image fit still unproven. Next guarded two-shot writing trial using remaining330.281s after readiness; independent loudness/provenance tasks remain.
+
 Latest2026-10-15: newCPU4B frozen-config two-shot sections inclshortfilm/prewrites/legacy preservation/recovery/backup/assembly verified56targetsPASS24.17s; initial224backendPASS295.11s. NormalCPU RAMguard and rolling telemetry verified incl actual read-only counters/fixturekill. Current0.51–1.5GiB RAMblocksmodels; humanchooses coding/freeRAMlater. Next F6.02 local SFX; native writing quality/image fit remains unproven.
 
 Do not interpret partial task evidence as full phase acceptance. See PROGRESS and HANDOFF.
@@ -13,11 +15,11 @@ Do not interpret partial task evidence as full phase acceptance. See PROGRESS an
 | F1.01 | DONE_VERIFIED | API and frontend run; build/lint/typecheck pass |
 | F1.02 | DONE_VERIFIED | API persistence/idempotency/reopen tests, browser create |
 | F1.03 | IN_PROGRESS | Responsive screenshots + Axe passed; broader UI/screen-reader review open |
-| F1.04 | IN_PROGRESS | Live RAM/GPU/temp/driver, install versus proof statuses, resource guidance and last native block/refresh tested; CUDA runtime OS-blocked |
+| F1.04 | IN_PROGRESS | Live RAM/GPU/temp/driver and actual provider failures tested; Windows runtime block cleared, image RAM failures and writer timeout still unresolved |
 | F1.05 | DONE_VERIFIED | Five Edge flows passed including blocked settings save while loading; actual demo playback/download and series prewrite |
-| F2.01 | IN_PROGRESS | 4B realCPU PLAN persisted then first4shot section timed out180s/269.719total; qualityNOT_PERFORMED;1.5B failed manualquality; smaller request sizing next |
+| F2.01 | IN_PROGRESS | Native4B plan persisted then4shot request timed out180s/269.719total; new frozen-config two-shot requests implemented/fixture-tested; real quality still unproven |
 | F2.02 | IN_PROGRESS | Finite ending and episode outline persisted; real quality evaluation open |
-| F2.03 | IN_PROGRESS | Durable four-shot batches,600s fixture/recovery/partial backup and whole-script continuity verified; real writing quality unproven |
+| F2.03 | IN_PROGRESS | New4B two-shot/other four-shot sections, legacy preservation, frozen settings, prewrites, recovery/backup and whole-script continuity verified; native quality unproven |
 | F2.04 | IN_PROGRESS | Declared ownership/knowledge/location/life before-state checks, export-only canon, prop reference lineage and episode-start flashbacks tested; precise world time/prose semantics open |
 | F2.05 | IN_PROGRESS | 10-episode outline fixture; episode2 reference/canon reuse tested; real series not proven |
 | F2.06 | DONE_VERIFIED | Ten screenplay checkpoints, interrupted receipt recovery/reuse, no future canon; 3-episode browser flow |
@@ -37,7 +39,7 @@ Do not interpret partial task evidence as full phase acceptance. See PROGRESS an
 | F5.04 | TODO | Validated model-dependent OOM downshift |
 | F5.05 | DEFERRED | FramePack >30 GB; first WanGP gate before fallback |
 | F6.01 | IN_PROGRESS | Actual SAPI, <=1.15x correction, overflow fails before visuals, hashed WAV stems/SRT/backups tested; broad voice QA open |
-| F6.02 | IN_PROGRESS | Original synthetic ambience, no music; managed SFX library open |
+| F6.02 | IN_PROGRESS | Original three-effect library, conservative action cues, ducking, immutable rights/cue/hash WAV stems, toggle/download/backup/retake verified; listening/music/LUFS/broader library open |
 | F6.03 | DONE_VERIFIED | Aspect-correct draft demo EDL/concat/shot fades |
 | F6.04 | DONE_VERIFIED | Atomic H264/AAC export + FFprobe/full decode/hash |
 | F6.05 | IN_PROGRESS | Durable fit copies/hash/canon/subtitle/audio/hardkill/backup verified; latest export Show in folder guard/UI/API/Windows shell success observed; external selection visual QA/custom native HD open |
@@ -48,7 +50,7 @@ Do not interpret partial task evidence as full phase acceptance. See PROGRESS an
 | F7.05 | IN_PROGRESS | Episode2 across reopen uses prior outcome/references; longer real movie open |
 | F8.01 | IN_PROGRESS | Actual localhost launcher stop/start observed; approved app-local GPU install; clean-account test open |
 | F8.02 | IN_PROGRESS | ZIP-to-Library UI, explicit interrupted-restore resume, paused jobs/IDs/hashes/defaults retained, conflict/security/hardkill/Edge verified; broader manual/troubleshooting review remains |
-| F8.03 | IN_PROGRESS | Offline419-package/516-notice hash inventory; official source captures197244bytes;10 tests+16 storage PASS;20 missing notices/2 declaration gaps, converted VAE/source mapping/binary/release rights remain open |
+| F8.03 | IN_PROGRESS | Latest offline428-package/83finding inventory; converted VAE/source mapping/binary/notices/release rights remain open; no clearance from sound synthesis |
 | F8.04 | TODO | Clean Windows account + real GPU resource benchmarks |
 | F8.05 | IN_PROGRESS | Main npm/Python audit0; hostile backups/download budgets tested; vendor90 advisories unresolved |
 | F8.06 | IN_PROGRESS | Screenshots/evidence/run docs; release still blocked by listed gates |

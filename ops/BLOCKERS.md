@@ -1,5 +1,7 @@
 # Blockers —2026-10-14 (latest observations first)
 
+2026-10-15: Sound-effects media/browser/recovery checks pass. Listening NOT_PERFORMED; synthesis is stylized, with music/loudness/broader cinematic sound unfinished. Native image/writer tests remain held by human “free memory later” choice and observed0.9–2.4GiB RAM after initial0.51GiB. Installed-file approvals persist; remainingCPU4B330.281s/startup7GiB/ongoing2GiB guards. Original native failures/vendor90-advisory/release gates remain. No repeated readiness or permission question.
+
 Latest2026-10-15: RAM0.51GiB then1.13–1.5GiB blocksmodeltests. Humanchooses “Continue coding; I’ll free memory later.” Two-shot newCPU4B requests implemented/fixturetested; native quality unresolved. Remaining600s experiment time330.281s after269.719s firstfailure. No repeated readiness question/load now. Incremental sampler fixes lost diagnostics, not memory use. Advance independentF6.02; original imagefailures/video gate remain.
 
 - **LATEST: Windows block cleared for observed runtime/CUDA tests.** User independently disabledSmartAppControl, registry0 confirmed, closed apps/requested retest. Runtime discoveryPASS20.625s and CUDA256x256 matrix arithmeticPASS2.719s onRTX3060/Torch2.10+cu130. Agent made no security/driver/global-toolchain changes. Prior OS-block evidence preserved; it is historical.

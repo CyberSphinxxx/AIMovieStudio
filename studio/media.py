@@ -288,7 +288,9 @@ def speech(text: str, voice: str, path: Path, check):
         return wav.getnframes() / wav.getframerate()
 
 
-def soundtrack(script: dict, plan: dict, output: Path, directory: Path, enabled: bool, check) -> list[dict]:
+def soundtrack(
+    script: dict, plan: dict, output: Path, directory: Path, enabled: bool, check, effects: Path | None = None
+) -> list[dict]:
     timeline = []
     start = 0.0
     segments = []
@@ -369,6 +371,14 @@ def soundtrack(script: dict, plan: dict, output: Path, directory: Path, enabled:
     )
     bed = directory / "ambience.wav"
     ambience(bed, start)
+    effect_input = ["-i", str(effects)] if effects else []
+    mixing = (
+        "[0:a]volume=0.9,asplit=2[d][key];[1:a]volume=0.3[b];[2:a]volume=0.6[s];"
+        "[s][key]sidechaincompress=threshold=0.03:ratio=6:attack=10:release=250[fx];"
+        "[d][b][fx]amix=inputs=3:duration=first:normalize=0,alimiter=limit=0.95[out]"
+        if effects
+        else "[0:a]volume=0.9[d];[1:a]volume=0.3[b];[d][b]amix=inputs=2:duration=first:normalize=0,alimiter=limit=0.95[out]"
+    )
     run(
         [
             binary("ffmpeg"),
@@ -379,8 +389,9 @@ def soundtrack(script: dict, plan: dict, output: Path, directory: Path, enabled:
             str(joined),
             "-i",
             str(bed),
+            *effect_input,
             "-filter_complex",
-            "[0:a]volume=0.9[d];[1:a]volume=0.3[b];[d][b]amix=inputs=2:duration=first:normalize=0,alimiter=limit=0.95[out]",
+            mixing,
             "-map",
             "[out]",
             "-ar",

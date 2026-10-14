@@ -476,12 +476,31 @@ class Worker:
         if stage == "AUDIO":
             path = directory / "soundtrack.wav"
             enabled = settings["speech"] == "windows"
-            timeline = media.soundtrack(script, project["plan"], path, directory, enabled, check)
+            from studio.sound_effects import ProceduralSound, RIGHTS, VERSION
+
+            # Older jobs without the frozen option retain their original audio behavior.
+            cues = (
+                ProceduralSound().cues(script["shots"])
+                if json.loads(step.get("config", "{}")).get("sound_effects", False)
+                else []
+            )
+            effect_path = directory / "sound-effects.wav" if cues else None
+            if effect_path:
+                ProceduralSound().render(cues, spec["target_seconds"], effect_path, check)
+            timeline = media.soundtrack(
+                script, project["plan"], path, directory, enabled, check, effects=effect_path
+            )
             metadata = {
                 "provider": "windows-speech+synthetic-ambience" if timeline else "synthetic-ambience",
                 "is_mock": False,
                 "dialogue_present": bool(timeline),
                 "music": "none",
+                "sound_effects": [c.model_dump() for c in cues],
+                "sound_library": VERSION if cues else None,
+                "sound_effects_rights": RIGHTS if cues else None,
+                "sound_effects_method": "Conservative action matching; original procedural synthesis; no AI sound model"
+                if cues
+                else "none",
                 "license": "Installed Windows speech; original synthetic ambience. Voice redistribution rights require review before distribution.",
                 "timeline": timeline,
                 "duration": spec["target_seconds"],
@@ -522,6 +541,22 @@ class Worker:
                     ],
                 ]
             ]
+            if effect_path:
+                stems.append(
+                    self.artifact(
+                        step,
+                        "sound-effects",
+                        effect_path,
+                        {
+                            "provider": VERSION,
+                            "is_mock": False,
+                            "audio_kind": "sound-effects",
+                            "license": RIGHTS,
+                            "duration": spec["target_seconds"],
+                            "cues": [c.model_dump() for c in cues],
+                        },
+                    )
+                )
             metadata.update(
                 parent_asset_ids=[a["id"] for a in stems], parent_hashes=[a["sha256"] for a in stems]
             )
@@ -570,6 +605,7 @@ class Worker:
                 "cinematic_review": "not performed",
                 "parent_asset_ids": [a["id"] for a in clips] + [audio["id"]],
                 "dialogue_present": audio["metadata"]["dialogue_present"],
+                "sound_effects_present": bool(audio["metadata"].get("sound_effects")),
             }
             movie = self.artifact(step, "export", final, metadata)
             manifest = directory / "manifest.json"

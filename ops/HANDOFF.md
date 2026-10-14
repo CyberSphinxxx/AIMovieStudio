@@ -1,5 +1,17 @@
 # Handoff — 2026-10-14
 
+## Latest verified checkpoint — 2026-10-15: original sound effects
+
+Started 03ff832. New movies can add three synthesized effects (signal, footsteps, door) from conservative action matching. Settings freezes the option in each job. Older jobs missing it keep their audio behavior. Typed cues/provider; bounded streaming/atomic output/cancellation; separate WAV with shot IDs, times, seeds, synthesis/rights metadata and parent hashes; effects duck under dialogue. Export explains synthesis without an AI sound model and downloads the stem. No imports/downloads/dependencies/model loads/system changes.
+
+Full backend240PASS400.20s (sound-effects-full-backend.log); first audio15PASS18.37s; final sound/CPU/telemetry29PASS13.04s. Added sound-specific completed-movie retake regression afterward: final12sound testsPASS14.58s. The full240 run preceded this additional test; do not claim a241-test full run. Ruff, npm lint/build/typecheck and2Vitest PASS. Target Edge1PASS21.3s/24.6total; all13EdgePASS161.626793s, no failures/skips/flaky. Actual mobile390px/Axe/nooverflow/Settings persistence/demo20s landscape playback/WAV download observed; screenshots inspected. Full browser wrapper restored pre-run settings in finally.
+
+Actual6s original PCM sample generated0.125s, SHA008abde5a163628575aa43f74ce76a491f607bbfa4db9001e82baf3e42cac537, FFprobe pcm_s16le/16kmono (sound-effects-sample.json/.wav). Listening NOT_PERFORMED; realistic foley/music/integrated loudness/broader cinematic sound remain open. Mock visuals remain labeled. No sound-specific test failures. Initial patch hunk-order mismatches made no changes; fixture API/tab selectors corrected before first test.
+
+Human chose “Continue coding; I’ll free memory later.” RAM initially0.51GiB, later0.9–2.4GiB; no4B/image trial. Previous native timeout/image RAM failures/vendor90-advisory/licensing/packaging gates remain. CPU4B remaining approved600s time330.281s; require readiness plus fresh7GiB startup/2GiB ongoing. Next writing command only when ready: .venv/Scripts/python.exe -m scripts.story_batch_smoke --profile cpu_4b --max-seconds 320 . This reserves10.281s for shutdown/reporting within the experiment budget. Review whole screenplay/quality separately and preserve failures. Next GPU task: locate loading peak with saved phase telemetry after safe resources/an actual changed strategy; no unchanged profile4/5 retry or video before reviewed imagePASS.
+
+Run .\StartStudio.cmd; verification powershell -NoProfile -ExecutionPolicy Bypass -File scripts/verify.ps1 -Browser. Current source/built interface running localhost8765. Next independent F6.02 loudness/provenance, broader library, produced-story/packaging backlog. Full application unfinished; no background engineering after session. Save descriptive local checkpoint; no remote changes.
+
 ## Latest 2026-10-15: smaller requests and retained diagnostics
 
 Started322530c clean. RAM0.51GiB96%, later1.13–1.5GiB; user chooses “Continue coding; I’ll free memory later.” No model loaded. New CPU4B jobs use two-shot sections from frozenjobconfig inclshortfilm/prewrites; legacypayloads/IDs/receipts preserved. NormalCPU rechecks7/5/2GiB startupafterhashing and2GiB/unknown during loading/requests without testobserver. Context8192/request180s/weights/defaults unchanged. Remaining approved600s CPU4B time330.281s after prior269.719s; native quality still unproven.

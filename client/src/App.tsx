@@ -1065,6 +1065,8 @@ function Studio({ id }: { id: string }) {
                     {movie.metadata.dialogue_present
                       ? "Windows synthetic speech + original ambience."
                       : "Soundtrack only · dialogue omitted in Settings."}
+                    {movie.metadata.sound_effects_present &&
+                      " Original synthesized sound effects; no AI sound model."}
                   </p>
                   <div className="provider-config">
                     <h3>Make a copy for another screen</h3>
@@ -1204,9 +1206,12 @@ function Studio({ id }: { id: string }) {
                       .filter(
                         (a) =>
                           a.metadata.episode === episode &&
-                          (["dialogue", "ambience", "soundtrack"].includes(
-                            a.role,
-                          ) ||
+                          ([
+                            "dialogue",
+                            "ambience",
+                            "sound-effects",
+                            "soundtrack",
+                          ].includes(a.role) ||
                             a.role.startsWith("voice-")),
                       )
                       .map((a) => (
@@ -1219,6 +1224,7 @@ function Studio({ id }: { id: string }) {
                                   ? "Dialogue track"
                                   : "Scene atmosphere",
                                 ambience: "Original ambience",
+                                "sound-effects": "Original sound effects",
                                 soundtrack: "Mixed soundtrack",
                               }[a.role]}
                           {" · WAV"}
@@ -1437,6 +1443,7 @@ function Settings() {
   const [providers, setProviders] = useState<Provider[]>([]);
   const [model, setModel] = useState("");
   const [speech, setSpeech] = useState("windows");
+  const [soundEffects, setSoundEffects] = useState(true);
   const [reserve, setReserve] = useState(1024);
   const [error, setError] = useState("");
   const [saved, setSaved] = useState(false);
@@ -1463,6 +1470,7 @@ function Settings() {
         story_engine: string;
         wangp: typeof wangp;
         speech: string;
+        sound_effects: boolean;
         reserve_mb: number;
       }>("/settings"),
     ]).then(([h, p, s]) => {
@@ -1473,6 +1481,7 @@ function Settings() {
         setEngine(s.value.story_engine || "ollama");
         setWangp((w) => ({ ...w, ...s.value.wangp }));
         setSpeech(s.value.speech);
+        setSoundEffects(s.value.sound_effects);
         setReserve(s.value.reserve_mb);
         setSettingsLoaded(true);
       }
@@ -1500,6 +1509,7 @@ function Settings() {
           story_engine: engine,
           wangp,
           speech,
+          sound_effects: soundEffects,
           reserve_mb: reserve,
         }),
       });
@@ -1734,6 +1744,18 @@ function Settings() {
               </option>
             </select>
           </label>
+          <label className="check-label">
+            <input
+              type="checkbox"
+              checked={soundEffects}
+              onChange={(e) => setSoundEffects(e.target.checked)}
+            />
+            Add sound effects to new movies
+          </label>
+          <p className="muted">
+            Original synthesized signals, footsteps and door sounds, matched to
+            scene actions. No downloads or AI sound model.
+          </p>
           <label>
             Reserved disk space (MB)
             <input

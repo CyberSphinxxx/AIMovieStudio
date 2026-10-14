@@ -1,0 +1,26 @@
+
+> ai-movie-studio-client@0.1.0 test:e2e
+> playwright test
+
+
+Running 13 tests using 1 worker
+
+(node:32268) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:32268) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok  1 e2e\export-folder.spec.ts:4:1 › finished export folder action has busy, launch and failure feedback (7.3s)
+  ok  2 e2e\provider-memory.spec.ts:12:1 › memory profile persists and image RAM failure remains explicit (8.1s)
+  ok  3 e2e\references.spec.ts:5:1 › reference views retain originals and pin the chosen view only in new episode shots (11.9s)
+  ok  4 e2e\retakes.spec.ts:5:1 › another take publishes a playable cut with original downloads and pinned story (17.7s)
+  ok  5 e2e\sound-effects.spec.ts:14:1 › sound effects toggle persists and a demo movie downloads its original effects stem (19.8s)
+  ok  6 e2e\studio.spec.ts:6:1 › ZIP backup restores a playable project through Settings without replacing defaults (12.1s)
+  ok  7 e2e\studio.spec.ts:112:1 › saved movie exports another aspect without rewriting its story (8.7s)
+  ok  8 e2e\studio.spec.ts:179:1 › home is usable at target viewports and keyboard focus is visible (2.3s)
+  ok  9 e2e\studio.spec.ts:220:1 › one idea to playable demo MP4, persisted story, shots, and downloads (12.5s)
+  ok 10 e2e\studio.spec.ts:305:1 › real request fails honestly and settings are actionable (5.2s)
+  ok 11 e2e\studio.spec.ts:337:1 › season prewriting is saved and studio backup is downloadable (40.0s)
+  ok 12 e2e\studio.spec.ts:445:1 › settings cannot overwrite saved configuration while it is loading (7.2s)
+  ok 13 e2e\studio.spec.ts:490:1 › optional screenplay review edits and resumes before any footage (5.8s)
+
+  13 passed (2.7m)

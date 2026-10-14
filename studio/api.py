@@ -48,6 +48,7 @@ class SettingsInput(StrictModel):
     story_engine: str = Field(default="ollama", pattern=r"^(ollama|small_cpu|cpu_1_5b|cpu_4b)$")
     story_model: str = Field(default="", max_length=100, pattern=r"^[\w.:/-]*$")
     speech: str = Field(default="windows", pattern=r"^(windows|none)$")
+    sound_effects: bool = True
     reserve_mb: int = Field(default=1024, ge=100, le=102400)
     wangp: WanGPConfig = Field(default_factory=WanGPConfig)
 

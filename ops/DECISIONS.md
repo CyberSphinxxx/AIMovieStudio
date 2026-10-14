@@ -1,5 +1,7 @@
 # Decisions — 2026-10-12
 
+2026-10-15: Use original procedural audio while native models are resource blocked, as allowed by audio specification. Match explicit action conservatively, suppress silence/negation, cap one cue per shot/120 cues/600s; save source IDs, time, seed, rights/hash metadata. No imported recordings or AI-sound claim. Freeze new option per job; missing legacy option means old behavior. Keep completed soundtracks through retakes. Ducking/peak limiting verified; integrated loudness and subjective cinematic sound quality not established.
+
 2026-10-15: NewCPU4B requests two shots based on observed180s timeout/normal token generation. Freeze queuedjobconfig/preservelegacy payloads; no largercontext/timeout/default/model. Startup/ongoing RAMguards withouttestobserver. Preserve remaining approvedexperiment time and nativefailure evidence.
 
 2026-10-15: Atomic/fsync rolling120recent/lifetimeextrema vendor diagnostics survive termination. Use documentedcallbacks/localbridgephases; excludeprivate status/stream. Closure and read-onlycounterproof cannot certify model success/6GBfit; no vendorfork.

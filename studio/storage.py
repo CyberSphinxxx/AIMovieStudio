@@ -370,6 +370,7 @@ class Store:
             "story_model": "",
             "story_engine": "ollama",
             "speech": "windows",
+            "sound_effects": True,
             "reserve_mb": 1024,
             "wangp": {},
         }

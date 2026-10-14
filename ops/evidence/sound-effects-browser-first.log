@@ -1,0 +1,14 @@
+
+> ai-movie-studio-client@0.1.0 test:e2e
+> playwright test e2e/sound-effects.spec.ts
+
+
+Running 1 test using 1 worker
+
+(node:31564) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:31564) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 e2e\sound-effects.spec.ts:14:1 › sound effects toggle persists and a demo movie downloads its original effects stem (21.3s)
+
+  1 passed (24.6s)
