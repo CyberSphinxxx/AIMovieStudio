@@ -2,6 +2,8 @@
 
 ## Latest verified checkpoint — 2026-10-15: original sound effects
 
+Last verified code commit: 8b585a6 on main; previous writing/telemetry checkpoint03ff832. A later documentation-only checkpoint records this hash. Working tree was clean after the code commit. No additional approval pending; human readiness is deferred by the explicit free-memory-later reply.
+
 Started 03ff832. New movies can add three synthesized effects (signal, footsteps, door) from conservative action matching. Settings freezes the option in each job. Older jobs missing it keep their audio behavior. Typed cues/provider; bounded streaming/atomic output/cancellation; separate WAV with shot IDs, times, seeds, synthesis/rights metadata and parent hashes; effects duck under dialogue. Export explains synthesis without an AI sound model and downloads the stem. No imports/downloads/dependencies/model loads/system changes.
 
 Full backend240PASS400.20s (sound-effects-full-backend.log); first audio15PASS18.37s; final sound/CPU/telemetry29PASS13.04s. Added sound-specific completed-movie retake regression afterward: final12sound testsPASS14.58s. The full240 run preceded this additional test; do not claim a241-test full run. Ruff, npm lint/build/typecheck and2Vitest PASS. Target Edge1PASS21.3s/24.6total; all13EdgePASS161.626793s, no failures/skips/flaky. Actual mobile390px/Axe/nooverflow/Settings persistence/demo20s landscape playback/WAV download observed; screenshots inspected. Full browser wrapper restored pre-run settings in finally.
