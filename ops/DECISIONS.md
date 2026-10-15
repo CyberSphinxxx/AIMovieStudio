@@ -1,5 +1,7 @@
 # Decisions — 2026-10-12
 
+2026-10-15 finaldelivery: keeporiginalworkspaceasuser'sactiveapp/library; offerafreshblankprivatefolderforisolatedtestingratherthanreplacingdata. Reverifyall3014copiedhashes andexecute itsownisolated3.11/PIL/SQLiteagainstcurrentzoom-safe-v2source. A portabledevelopmentfolderdoesnotimplyincludedmodels, nativefit, freshaccountcompatibilityorpublicdistributionrights. Persistnextsteps/failedhardwareevidence; no claimedengineeringafterthesession.
+
 2026-10-15: Verify captionpresence from actualneutralgrayrenderedpixels, allowing antialiasing; fullyopaqueRGB is not guaranteed for smallM-glyphs. SavedmanualfailurePNGhas0matchingpixels/current1157, provingthepresencecheckcanreproducetheobserveddefect. PinnedCLI.md201–203 says4.5 savesVRAMwhile5 minimizesReservedRAM; no evidence that retrying4.5 wouldsolve thecurrentRAM-boundencoderload. Prefer morebaselineRAM/documentedencoderstrategy, never lowerguard or claimfit.
 
 2026-10-15: Demo text is a shortened visible preview, never the saved prompt. Measure glyph width, constrain to the smallestfieldofviewatmax1.06zoom, and reservecaptionspacebeforepaintingtheheading. If twoheadline rows crowd caption, useoneellipsisheadlinerow; do not silentlydropcaption. Pinzoom-safe-v2 onlyonnewdemoimageassets; oldreceipts/hashes/metadataremainimmutable. Real AI rendering/qualityunaffected.

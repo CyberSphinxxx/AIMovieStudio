@@ -1,5 +1,7 @@
 # Active backlog — 2026-10-14
 
+Finalprivatecopyverifiedafterfe669e4: Studio-248936f829de,3014hashes/374.87MB/blanklibrary/no models, ownisolated3.11imports+SQLite+currentpreviewPASS. Originalworkspaceapprunning/workerready/librarypreserved. RAM5.62GiB blocks4Bwriter; previouschangedGPUtestfailedatRAMguard. Nextnativewriterprep/encoderRAMstrategy; allbroadnativequality/cleanaccount/legal/securitygatesremainopen. No fullapplicationcompletionclaim.
+
 LatestF1.03caption slice VERIFIED:47currentmedia/continuitytargetsPASS117.80s,3EdgePASS44.5s,14finalpixel-layoutregressionsPASS, actual3shapes+latezoomframeinspected, neutralcaptionmaskdistinguishespreservedfailure0/new1157pixels. Oldoutputs/fullprompts/story/audio/canon unchanged; newmockimageversionrecorded. BroadF1.03 accessibilityreview/nativequalitystillopen. Next nativewriter prep: isolatedreuseofsavedreal4Bplan could conserve330.281sremainingbudget; actual teststillrequires7GiB. Do not repeatGPUprofile5offat5.6GiB.
 
 F1.03 mockcaptionpolish underway aftere9ffb3d: measuredpreviewwrapping/ellipsis/zoom-safefooter +adaptiveheadlinekeepscaptionvisible.14currentlayoutPASS/actual3shapes+late8sclipframeinspected; first43mediaPASSbeforefinalheadlinefallback; final47targets/browserpending. Oldassets/fullprompts/story/audio/canonpreserved/versionmetadataaddednewimagesonly. NativeRAMgateunchanged.

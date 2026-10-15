@@ -1,0 +1,19 @@
+{
+  "status": "PASS",
+  "folder": "C:\\L3mxr\\Github Repositories\\AIMovieStudio\\tools\\private-builds\\Studio-248936f829de",
+  "files_verified": 3014,
+  "bytes": 374869668,
+  "blank_library": true,
+  "models_included": false,
+  "native_generation_verified": false,
+  "distribution_cleared": false,
+  "runtime_validation": {
+    "python": "3.11.14",
+    "prefix": "C:\\L3mxr\\Github Repositories\\AIMovieStudio\\tools\\private-builds\\Studio-248936f829de\\tools\\app-runtime",
+    "isolated": true,
+    "media_root": "C:\\L3mxr\\Github Repositories\\AIMovieStudio\\tools\\private-builds\\Studio-248936f829de",
+    "layout": "zoom-safe-v2",
+    "sqlite": 1
+  },
+  "code_checkpoint": "fe669e444c94525564e1ee5261e6a416cd8b54ea"
+}
