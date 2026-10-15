@@ -1,0 +1,72 @@
+{
+  "scope": "read-only; no native inference or weights fetched",
+  "hardware": {
+    "gpu": {
+      "available": true,
+      "name": "NVIDIA GeForce RTX 3060 Laptop GPU",
+      "driver": "610.88",
+      "total_mb": 6144,
+      "used_mb": 1474,
+      "temperature_c": 56
+    },
+    "python": "3.11.14",
+    "memory": {
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 4.32,
+      "load_percent": 71
+    },
+    "measured_at": 1792085293.8769302
+  },
+  "inference_busy": false,
+  "disk_free_bytes": 34112110592,
+  "gpu_received_bytes": 11396297371,
+  "gpu_reserved_bytes": 5620056174,
+  "candidate_bytes": 2497280256,
+  "video_remaining_proposed_bytes": 14805043208,
+  "accounted_with_candidate_bytes": 19513633801,
+  "accounted_with_candidate_and_video_bytes": 34318677009,
+  "ceiling_bytes": 32000000000,
+  "health": {
+    "service": "ready",
+    "database": "ok",
+    "media": {
+      "ffmpeg": {
+        "available": true
+      },
+      "ffprobe": {
+        "available": true
+      }
+    },
+    "runtime": {
+      "process_id": 12256,
+      "python_version": "3.11.14",
+      "isolated": true,
+      "app_owned": true
+    },
+    "free_disk_gb": 31.8,
+    "worker_alive": true,
+    "concurrency": 1,
+    "privacy": "Localhost only; no cloud providers",
+    "real_generation_verified": false,
+    "native_export": "360×640 / 640×360 / 480×480, 24 fps",
+    "hardware": {
+      "gpu": {
+        "available": true,
+        "name": "NVIDIA GeForce RTX 3060 Laptop GPU",
+        "driver": "610.88",
+        "total_mb": 6144,
+        "used_mb": 1474,
+        "temperature_c": 56
+      },
+      "python": "3.11.14",
+      "memory": {
+        "available": true,
+        "total_gb": 15.19,
+        "free_gb": 4.33,
+        "load_percent": 71
+      },
+      "measured_at": 1792085293.7610884
+    }
+  }
+}

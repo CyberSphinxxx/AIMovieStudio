@@ -1,5 +1,7 @@
 # Active plan — 2026-10-14
 
+Checkpoint37f2d5f saved current434backend/57targets/final2Edge silent-story fix. Research-only follow-up: pinned source has public single-encoder finetune/GGUF mapping/fallback route; fresh RAM4.32GiB prevents native tests. Candidate+futurevideo+receipts/reservations exceeds32GB by2,318,677,009bytes. No model/config/profile/approval added. Next bounded task is offline profile contracts +complete image-only/rebudgeted proposal; preserve original330.281sCPU allowance and image-PASS-before-video. No tests/inference remain running after current checkpoint; normal localhost app stays available.
+
 ## Active2026-10-16 — F2.04 silent-shot participation
 
 Result: implemented and verifiedcurrent434backendPASS405.59s/57targets105.12s/final2EdgePASS16.1s/static; actual two-episode demo/hash/canon/reopen/backup, review silencing/audit, mobile screenshot inspected and Settings restored. Test locks isolated from live app. Next lower-RAM native encoder investigation/proposal per docs/LOWER_RAM_ENCODER_RESEARCH.md; candidate metadata fetched only, no weights/profile/new approval. Preserve original4B330.281s and image-PASS-before-video. Save final local checkpoint; full app remains unfinished.

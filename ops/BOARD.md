@@ -1,5 +1,7 @@
 # Active backlog — 2026-10-14
 
+Latest checkpoint37f2d5f: silent-scene/current434backend/57targets/final2Edge verified and committed; source app healthy. Follow-up pinned encoder research confirms static GGUF/name-map/fallback route only. Fresh RAM4.32GiB blocks native tests. Candidate+remaining video+existing receipts/reservations would be34,318,677,009bytes >32GB; no new weights/profile/approval/cap increase. Next task: contract-test a separately named offline profile and prepare an image-only/rebudgeted proposal before requesting approval. See docs/LOWER_RAM_ENCODER_RESEARCH.md and encoder-candidate-readiness.json. No native quality or whole-product completion claim.
+
 ## Active2026-10-16 — F2.04 silent-shot correction
 
 FINAL: currentfull434backendPASS405.59s/57targets105.12s/final2Edge16.1s (Settings restored, mobile PNG inspected)/static pass. Silent/spoken life/knowledge rules, editor cleanup/audit and prior export hashes verified. Test native locks isolated from live app. This completes the narrow silent-scene slice, not precise-world-time/prose/native quality gates. Next: verify pinned lower-RAM GGUF encoder configuration route and prepare contract-tested bounded proposal; candidate metadata only, no downloads/profile/approval assumed. See docs/LOWER_RAM_ENCODER_RESEARCH.md.
