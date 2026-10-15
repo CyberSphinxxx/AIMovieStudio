@@ -65,6 +65,7 @@ export type Asset = {
     duration?: number;
     dialogue_present?: boolean;
     sound_effects_present?: boolean;
+    loudness?: { status: string; method: string } | null;
     speaker_id?: string;
     shot_number?: number;
     tempo?: number;

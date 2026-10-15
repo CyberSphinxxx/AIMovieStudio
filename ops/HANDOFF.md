@@ -1,5 +1,14 @@
 # Handoff — 2026-10-14
 
+## Current 2026-10-15 work: balanced volume verified; lower-RAM option next
+Started aa4c1f1 clean. Latest user explicitly requests continuous work until finished and will test afterward. Do not ask repeated readiness questions; continue independent work and remeasure before any model load. Current RAM0.95–1.9GiB, GPU3172–3878MiB used/83–85C blocks native tests. Original approval/download/experiment limits persist.
+
+Balanced-audio-v1 implemented: installed FFmpeg loudnorm meter (mono for stereo playback), bounded constant gain, output remeasurement, true-peak ceiling-2dBTP, speech target-16/maxboost9, atmosphere-26/maxboost6. Targets are goals; limited/silent cases record actual results. Original mixed WAV is a separate hashed portable stem. Frozen balanced_audio setting; legacy missing-key jobs preserve old behavior. UI toggle/download/volume feedback, raw voices/timing/canon intact. No dependencies/downloads/system/vendor/model changes.
+
+Evidence: baseline12PASS19.18s; loudness/dialogue/effects30PASS49.85s; full255PASS469.13s/one existing Starlette deprecation. Ruff/lint/build/typecheck/2Vitest PASS. New browser targetPASS18s/22.3total: toggle persists across reload, generated5s demo completes, premixWAV downloads, actual normalized PCM metadata. loudness-real-export.json: original-36.78LUFS/-32.99dBTP, capped+6dB to-30.78/-26.99; encodedAAC-30.78/-26.87. Explicit gain_limited, not false-26 targetPASS. MOCK visuals; listening NOT_PERFORMED/native AI NOT_TESTED. Full14browser rerun pending next integration.
+
+Next F3.03: official pinned docs describe smart_memory_pinning transfer buffers using1–2GB reservedRAM. Prepare explicit off option via documented init(config_path=...), exact basename wgp_config.json, scoped config copy in jobdir, runtime-key allowlist excludes cloud/plugin credentials, no vendorfile mutation. Untracked studio/vendor_config.py and tests/test_vendor_config.py helper already6contractPASS0.17s but not connected yet. Preserve legacy/default behavior with optionalNone; explicit smoke flag/settings option/provenance. Memory savings UNPROVEN until actual guarded inference. Do not repeat unchanged image profile4/5 loads. Future F4.04 durable resource waiting without burning attempts, then self-contained launcher/packaging; native models remain higher priority once resources fit. Save coherent local audio checkpoint, then continue; no background engineering after session.
+
 ## Latest verified checkpoint — 2026-10-15: original sound effects
 
 Last verified code commit: 8b585a6 on main; previous writing/telemetry checkpoint03ff832. A later documentation-only checkpoint records this hash. Working tree was clean after the code commit. No additional approval pending; human readiness is deferred by the explicit free-memory-later reply.

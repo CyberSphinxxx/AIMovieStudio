@@ -49,6 +49,7 @@ class SettingsInput(StrictModel):
     story_model: str = Field(default="", max_length=100, pattern=r"^[\w.:/-]*$")
     speech: str = Field(default="windows", pattern=r"^(windows|none)$")
     sound_effects: bool = True
+    balanced_audio: bool = True
     reserve_mb: int = Field(default=1024, ge=100, le=102400)
     wangp: WanGPConfig = Field(default_factory=WanGPConfig)
 

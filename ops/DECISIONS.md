@@ -1,5 +1,9 @@
 # Decisions — 2026-10-12
 
+2026-10-15: Meter EBU R128/true peak with installed FFmpeg, apply bounded linear gain and remeasure rendered PCM. Preserve dynamics/timing and original mix; cap quiet boosts and protect peaks rather than falsely forcing every target. Record actual limited/silent status and PCM scope/AAC differences. Mono measured for stereo playback. Frozen new-job option; old jobs unchanged. Official ffmpeg.org/ffmpeg-filters.html#loudnorm plus installed CLI checked.
+
+2026-10-15: Investigate documented smart_memory_pinning=false using a scoped allowlisted job config, no vendor modification or copied credentials. Explicit optional override only; legacyNone preserves vendor default. Native resource savings remain unproven. Latest broad user request does not remove system/download/licensing/safety boundaries.
+
 2026-10-15: Use original procedural audio while native models are resource blocked, as allowed by audio specification. Match explicit action conservatively, suppress silence/negation, cap one cue per shot/120 cues/600s; save source IDs, time, seed, rights/hash metadata. No imported recordings or AI-sound claim. Freeze new option per job; missing legacy option means old behavior. Keep completed soundtracks through retakes. Ducking/peak limiting verified; integrated loudness and subjective cinematic sound quality not established.
 
 2026-10-15: NewCPU4B requests two shots based on observed180s timeout/normal token generation. Freeze queuedjobconfig/preservelegacy payloads; no largercontext/timeout/default/model. Startup/ongoing RAMguards withouttestobserver. Preserve remaining approvedexperiment time and nativefailure evidence.

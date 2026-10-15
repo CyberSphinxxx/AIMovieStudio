@@ -371,6 +371,7 @@ class Store:
             "story_engine": "ollama",
             "speech": "windows",
             "sound_effects": True,
+            "balanced_audio": True,
             "reserve_mb": 1024,
             "wangp": {},
         }

@@ -42,7 +42,13 @@ def binary(name: str) -> str:
     raise RuntimeError("MISSING_FFPROBE: Run python scripts/setup_media.py to install app-local media tools.")
 
 
-def run(args: list[str], check: Callable[[], None] = lambda: None, timeout: float = 180) -> bytes:
+def run(
+    args: list[str],
+    check: Callable[[], None] = lambda: None,
+    timeout: float = 180,
+    *,
+    capture_stderr: bool = False,
+) -> bytes:
     # File-backed stderr avoids pipe deadlocks during long inference/render jobs.
     import tempfile
 
@@ -67,6 +73,9 @@ def run(args: list[str], check: Callable[[], None] = lambda: None, timeout: floa
             if process.returncode:
                 message = errors.read().decode("utf-8", errors="replace")[-2000:]
                 raise RuntimeError(f"MEDIA_FAILED: {message}")
+            if capture_stderr:
+                errors.seek(max(0, errors.seek(0, os.SEEK_END) - 65536))
+                return errors.read()[-65536:]
             output.seek(0)
             return output.read()
         finally:

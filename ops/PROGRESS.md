@@ -1,5 +1,12 @@
 # Observed development progress — 2026-10-12 (Asia/Manila)
 
+## 2026-10-15 — measured volume balancing
+Recon aa4c1f1 clean, required relevant docs/skills read; RAM0.95GiB/GPU85C3172MiB initially, later1.9GiB/83C3878MiB. No model loading or new readiness request; latest human says continue until finished/testafter. Implemented meter/bounded constant gain/output remeasurement, original mix stem/hash lineage, frozen setting/legacy preservation, UI toggle/download/feedback. Finite measurement JSON, silence unchanged, peaks/gain capped, exact frame counts. Official FFmpeg filter docs and installed help checked, no deps/downloads/system/vendor modifications.
+
+Baseline12PASS19.18s; targeted loudness/dialogue/effects30PASS49.85s; full255PASS469.13s/one existing Starlette warning. Ruff/lint/build/typecheck/2VitestPASS. New Edge target18s(test)/22.3totalPASS, toggle/reload/actual5s demo/premixdownload. Server launch command initially returned a session before dependent browser command; health completion then confirmed, browser passed. Existing runtime was already stopped at restart; no userapps touched.
+
+Actual loudness-real-export.json records PCM-36.78LUFS/-32.99dBTP to-30.78/-26.99 via capped6dB; AAC-30.78/-26.87. Statusgain_limited, not false target achieved. MOCK visuals/listeningNOT_PERFORMED/nativeNOT_TESTED. Full14browser pending combinednextslice. Original artifact IDs/hashes persisted. Prepared separate untracked scoped vendor-config helper6PASS0.17s for documented smart-pinning-off; not integrated or nativefit proven. Next connect explicit override/metadata/UI/smoke, then resource waiting/portable launcher while hardware busy. Coherent audio checkpoint next; full app unfinished.
+
 ## 2026-10-15 — original sound effects through movie/export UI
 
 Verified local checkpoints:03ff832 (writing/telemetry),8b585a6 (sound library, media/UI tests, evidence). Branchmain; no remote mutations. Final code working tree clean, service ready at127.0.0.1:8765. Documentation-only checkpoint records these hashes. No pending permission request; hardware readiness awaits user's later reply.

@@ -487,14 +487,20 @@ class Worker:
             effect_path = directory / "sound-effects.wav" if cues else None
             if effect_path:
                 ProceduralSound().render(cues, spec["target_seconds"], effect_path, check)
+            normalize_audio = json.loads(step.get("config", "{}")).get("balanced_audio", False)
+            mix_path = directory / "unbalanced-mix.wav" if normalize_audio else path
             timeline = media.soundtrack(
-                script, project["plan"], path, directory, enabled, check, effects=effect_path
+                script, project["plan"], mix_path, directory, enabled, check, effects=effect_path
             )
+            from studio.loudness import balance
+
+            loudness = balance(mix_path, path, bool(timeline), check) if normalize_audio else None
             metadata = {
                 "provider": "windows-speech+synthetic-ambience" if timeline else "synthetic-ambience",
                 "is_mock": False,
                 "dialogue_present": bool(timeline),
                 "music": "none",
+                "loudness": loudness,
                 "sound_effects": [c.model_dump() for c in cues],
                 "sound_library": VERSION if cues else None,
                 "sound_effects_rights": RIGHTS if cues else None,
@@ -557,6 +563,23 @@ class Worker:
                         },
                     )
                 )
+            if normalize_audio:
+                stems.append(
+                    self.artifact(
+                        step,
+                        "unbalanced-mix",
+                        mix_path,
+                        {
+                            "provider": "studio-audio",
+                            "is_mock": False,
+                            "audio_kind": "unbalanced-mix",
+                            "license": metadata["license"],
+                            "duration": spec["target_seconds"],
+                            "parent_asset_ids": [a["id"] for a in stems],
+                            "parent_hashes": [a["sha256"] for a in stems],
+                        },
+                    )
+                )
             metadata.update(
                 parent_asset_ids=[a["id"] for a in stems], parent_hashes=[a["sha256"] for a in stems]
             )
@@ -606,6 +629,7 @@ class Worker:
                 "parent_asset_ids": [a["id"] for a in clips] + [audio["id"]],
                 "dialogue_present": audio["metadata"]["dialogue_present"],
                 "sound_effects_present": bool(audio["metadata"].get("sound_effects")),
+                "loudness": audio["metadata"].get("loudness"),
             }
             movie = self.artifact(step, "export", final, metadata)
             manifest = directory / "manifest.json"

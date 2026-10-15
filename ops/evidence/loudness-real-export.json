@@ -1,0 +1,51 @@
+{
+  "project_id": "0594758b-f208-42bf-a6ec-af207a299c24",
+  "visuals_is_mock": true,
+  "audio_method": "original synthesis, measured bounded gain",
+  "report": {
+    "method": "balanced-audio-v1",
+    "status": "gain_limited",
+    "scope": "PCM soundtrack; encoded AAC may differ",
+    "requested_lufs": -26.0,
+    "true_peak_ceiling_dbtp": -2.0,
+    "max_boost_db": 6.0,
+    "applied_gain_db": 6.0,
+    "input": {
+      "integrated_lufs": -36.78,
+      "true_peak_dbtp": -32.99,
+      "range_lu": 0.5,
+      "measurement": "FFmpeg loudnorm/EBU R128; mono measured for stereo playback"
+    },
+    "output": {
+      "integrated_lufs": -30.78,
+      "true_peak_dbtp": -26.99,
+      "range_lu": 0.5,
+      "measurement": "FFmpeg loudnorm/EBU R128; mono measured for stereo playback"
+    }
+  },
+  "encoded_aac_measurement": {
+    "integrated_lufs": -30.78,
+    "true_peak_dbtp": -26.87,
+    "range_lu": 0.5,
+    "measurement": "FFmpeg loudnorm/EBU R128; mono measured for stereo playback"
+  },
+  "artifacts": [
+    {
+      "id": "c0ffaeed-2676-51e1-9ed3-41f0e0f602f8",
+      "role": "soundtrack",
+      "sha256": "cd4279780fb10dbc96ba0b9d184ff9211232b99fe7403857f21a9a0fb7d433af"
+    },
+    {
+      "id": "43d39492-4598-5e19-a8d3-7b2824fe775a",
+      "role": "unbalanced-mix",
+      "sha256": "7b3d84e453c2dc7e1097611463bf151269464b8892a22dafcb673e2e5b367d36"
+    },
+    {
+      "id": "2ecc2552-3826-5143-91a4-ff40644ec947",
+      "role": "export",
+      "sha256": "0f6c46ef6ed8a42bf04bc32d56015882734aaeb0ea46419961fce2efbce7b03e"
+    }
+  ],
+  "listening_review": "NOT_PERFORMED",
+  "native_ai_generation": "NOT_TESTED"
+}

@@ -1,5 +1,7 @@
 # Blockers —2026-10-14 (latest observations first)
 
+2026-10-15: Loudness normalization is no longer a missing implementation:255backend/newbrowser pass, actual PCM/AAC sample measured. Subjective listening/music/broader sound still open. Native tests currently blocked by RAM0.95–1.9GiB/GPU83–85C/only~2.2–3GiB VRAM free. User now requests continue independently until finished; do not reask readiness. Official smart-memory-pinning-off option offers a changed test strategy, not proven fit. Existing CPU4B experiment330.281s remainder and GPU/image-PASS-before-video limits persist.
+
 2026-10-15: Sound-effects media/browser/recovery checks pass. Listening NOT_PERFORMED; synthesis is stylized, with music/loudness/broader cinematic sound unfinished. Native image/writer tests remain held by human “free memory later” choice and observed0.9–2.4GiB RAM after initial0.51GiB. Installed-file approvals persist; remainingCPU4B330.281s/startup7GiB/ongoing2GiB guards. Original native failures/vendor90-advisory/release gates remain. No repeated readiness or permission question.
 
 Latest2026-10-15: RAM0.51GiB then1.13–1.5GiB blocksmodeltests. Humanchooses “Continue coding; I’ll free memory later.” Two-shot newCPU4B requests implemented/fixturetested; native quality unresolved. Remaining600s experiment time330.281s after269.719s firstfailure. No repeated readiness question/load now. Incremental sampler fixes lost diagnostics, not memory use. Advance independentF6.02; original imagefailures/video gate remain.

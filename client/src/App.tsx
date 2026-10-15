@@ -1067,6 +1067,11 @@ function Studio({ id }: { id: string }) {
                       : "Soundtrack only · dialogue omitted in Settings."}
                     {movie.metadata.sound_effects_present &&
                       " Original synthesized sound effects; no AI sound model."}
+                    {movie.metadata.loudness &&
+                      (movie.metadata.loudness.status ===
+                      "below_measurement_gate"
+                        ? " Quiet soundtrack preserved."
+                        : " Volume balanced for playback.")}
                   </p>
                   <div className="provider-config">
                     <h3>Make a copy for another screen</h3>
@@ -1210,6 +1215,7 @@ function Studio({ id }: { id: string }) {
                             "dialogue",
                             "ambience",
                             "sound-effects",
+                            "unbalanced-mix",
                             "soundtrack",
                           ].includes(a.role) ||
                             a.role.startsWith("voice-")),
@@ -1225,6 +1231,7 @@ function Studio({ id }: { id: string }) {
                                   : "Scene atmosphere",
                                 ambience: "Original ambience",
                                 "sound-effects": "Original sound effects",
+                                "unbalanced-mix": "Mix before volume balancing",
                                 soundtrack: "Mixed soundtrack",
                               }[a.role]}
                           {" · WAV"}
@@ -1444,6 +1451,7 @@ function Settings() {
   const [model, setModel] = useState("");
   const [speech, setSpeech] = useState("windows");
   const [soundEffects, setSoundEffects] = useState(true);
+  const [balancedAudio, setBalancedAudio] = useState(true);
   const [reserve, setReserve] = useState(1024);
   const [error, setError] = useState("");
   const [saved, setSaved] = useState(false);
@@ -1471,6 +1479,7 @@ function Settings() {
         wangp: typeof wangp;
         speech: string;
         sound_effects: boolean;
+        balanced_audio: boolean;
         reserve_mb: number;
       }>("/settings"),
     ]).then(([h, p, s]) => {
@@ -1482,6 +1491,7 @@ function Settings() {
         setWangp((w) => ({ ...w, ...s.value.wangp }));
         setSpeech(s.value.speech);
         setSoundEffects(s.value.sound_effects);
+        setBalancedAudio(s.value.balanced_audio);
         setReserve(s.value.reserve_mb);
         setSettingsLoaded(true);
       }
@@ -1510,6 +1520,7 @@ function Settings() {
           wangp,
           speech,
           sound_effects: soundEffects,
+          balanced_audio: balancedAudio,
           reserve_mb: reserve,
         }),
       });
@@ -1755,6 +1766,18 @@ function Settings() {
           <p className="muted">
             Original synthesized signals, footsteps and door sounds, matched to
             scene actions. No downloads or AI sound model.
+          </p>
+          <label className="check-label">
+            <input
+              type="checkbox"
+              checked={balancedAudio}
+              onChange={(e) => setBalancedAudio(e.target.checked)}
+            />
+            Balance volume in new movies
+          </label>
+          <p className="muted">
+            Measures playback volume and protects loud peaks. Quiet atmosphere
+            stays restrained; your original mix is saved separately.
           </p>
           <label>
             Reserved disk space (MB)

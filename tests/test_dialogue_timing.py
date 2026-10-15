@@ -94,8 +94,10 @@ def test_real_voice_and_ambience_stems_survive_portable_backup(
     pid, _ = store.create(spec)
     store.enqueue(pid)
     project = produce_until(store, Worker(store), pid)
-    stems = [a for a in project["assets"] if a["role"] in {voice_role, "dialogue", "ambience"}]
-    assert {a["role"] for a in stems} == {voice_role, "dialogue", "ambience"}
+    stems = [
+        a for a in project["assets"] if a["role"] in {voice_role, "dialogue", "ambience", "unbalanced-mix"}
+    ]
+    assert {a["role"] for a in stems} == {voice_role, "dialogue", "ambience", "unbalanced-mix"}
     voice = next(a for a in stems if a["role"] == voice_role)
     assert voice["metadata"]["text"] == (
         "The light showed us a way." if skip_first else "Every journey begins with a question."
