@@ -75,7 +75,7 @@ def main():
                 )
             super().check(step)
 
-    worker = BoundedWorker(store, story_observer=observe)
+    worker = BoundedWorker(store, story_observer=observe, wait_for_resources=False)
     step = None
     try:
         while step := worker.claim():

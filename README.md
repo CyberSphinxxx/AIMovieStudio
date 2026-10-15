@@ -49,6 +49,8 @@ Developer API: `.venv/Scripts/python.exe -m uvicorn studio.api:app --host 127.0.
 
 ## Local story/provider setup
 
+Configured local generation now shows **Waiting for your computer** when memory, graphics memory, temperature, or reliable counters prevent a safe start. While Studio is running, it checks again about every 15 seconds without spending a generation attempt. Pause and Stop remain available; restarting preserves the waiting deadline. Waiting ends after 24 hours with a clear retry action and completed work preserved. Missing setup and failures during inference still need review. Development demo generation and editing/export steps do not wait for AI resources. Imported unfinished jobs stay paused until you resume them.
+
 The Ollama adapter uses its documented localhost structured-output API, bounded JSON repair, and immediate model unload. Select an installed model in Settings, then request Real local in Creative settings. Missing providers fail honestly and retain the idea/story. Real image/video setup remains a separate licensing, download and hardware gate.
 
 An optional tiny CPU feasibility model can be prepared with `.venv/Scripts/python.exe scripts/setup_story.py` (~491 MB model + ~20 MB runtime). It uses official Qwen GGUF weights (Apache-2.0) and pinned llama.cpp CPU binaries (MIT), verified by source checksums. This is a small inference experiment, not a promise of strong scripts. See `ops/HARDWARE_PROOF.md` for observed results.

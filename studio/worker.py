@@ -15,6 +15,15 @@ from studio.story import DemoStory, OllamaStory
 from studio.providers import WanGPConfig, WanGPProvider
 from studio.shot_revisions import MOVIE_ROLES, TAKE_STAGES, execute_retake
 from studio.reference_variants import REFERENCE_ROLES, execute_variant, verified_asset
+from studio.resource_wait import (
+    ResourceReason,
+    ResourceWait,
+    WAIT_STATE,
+    WAIT_SECONDS,
+    RECHECK_SECONDS,
+    load_wait,
+    probe,
+)
 
 STAGES = {
     "PLAN": "Preparing your story",
@@ -36,13 +45,16 @@ STAGES = {
 
 
 class Worker:
-    def __init__(self, store: Store, story_observer=None):
+    def __init__(self, store: Store, story_observer=None, *, wait_for_resources=True, resource_probe=None):
         self.store = store
         self.story_observer = story_observer
         self.stop = threading.Event()
         self.thread: threading.Thread | None = None
         self.lockfile = None
         self.last_heartbeat = 0.0
+        self.wait_for_resources = wait_for_resources
+        self.resource_probe = resource_probe
+        self.resource_rechecks = {}
 
     def start(self):
         self.lockfile = (self.store.root / "worker.lock").open("a+b")
@@ -117,34 +129,141 @@ class Worker:
         return directory
 
     def claim(self):
-        with self.store.connect() as db:
-            db.execute("BEGIN IMMEDIATE")
-            row = db.execute("""SELECT s.*, j.project_id, j.episode, j.config FROM steps s JOIN jobs j ON j.id=s.job_id
-                WHERE s.state='READY' AND j.state IN ('QUEUED','RUNNING') AND s.attempts<s.max_attempts
-                AND NOT EXISTS(SELECT 1 FROM steps p WHERE p.job_id=s.job_id AND p.ordinal<s.ordinal AND p.state NOT IN ('SUCCEEDED','SUPERSEDED'))
-                ORDER BY j.created,s.ordinal LIMIT 1""").fetchone()
-            if not row:
+        gpu_snapshot = None
+
+        def gpu_reader():
+            nonlocal gpu_snapshot
+            if gpu_snapshot is None:
+                from studio.diagnostics import hardware
+
+                gpu_snapshot = hardware(refresh=True)["gpu"]
+            return gpu_snapshot
+
+        for _ in range(32):
+            if self.stop.is_set():
                 return None
-            step = dict(row)
-            db.execute(
-                "UPDATE steps SET state='RUNNING',attempts=attempts+1,heartbeat=? WHERE id=?",
-                (time.time(), step["id"]),
+            now = time.time()
+            self.resource_rechecks = {jid: due for jid, due in self.resource_rechecks.items() if due > now}
+            excluded = list(self.resource_rechecks)
+            with self.store.connect() as db:
+                row = db.execute(
+                    """SELECT s.*,j.project_id,j.episode,j.config,j.state AS job_state,p.spec AS project_spec
+                    FROM steps s JOIN jobs j ON j.id=s.job_id JOIN projects p ON p.id=j.project_id
+                    WHERE s.state='READY' AND j.state IN ('QUEUED','RUNNING','WAITING_RESOURCES')
+                    AND s.attempts<s.max_attempts
+                    AND NOT (j.state='WAITING_RESOURCES' AND j.id IN (SELECT value FROM json_each(?)))
+                    AND NOT EXISTS(SELECT 1 FROM steps p WHERE p.job_id=s.job_id AND p.ordinal<s.ordinal AND p.state NOT IN ('SUCCEEDED','SUPERSEDED'))
+                    ORDER BY j.created,s.ordinal LIMIT 1""",
+                    (json.dumps(excluded),),
+                ).fetchone()
+                if not row:
+                    return None
+                step = dict(row)
+                try:
+                    previous = load_wait(db, step["job_id"]) if step["job_state"] == WAIT_STATE else None
+                    if step["job_state"] == WAIT_STATE and previous is None:
+                        previous = "invalid"
+                except ValueError:
+                    previous = "invalid"
+            expired = previous == "invalid" or (
+                previous is not None and (previous.step_id != step["id"] or now >= previous.deadline)
             )
-            db.execute("UPDATE jobs SET state='RUNNING' WHERE id=?", (step["job_id"],))
-            db.execute(
-                "UPDATE projects SET status=?,updated=? WHERE id=?",
-                (step["stage"], time.time(), step["project_id"]),
-            )
-            self.store.event(
-                db,
-                step["project_id"],
-                step["job_id"],
-                "stage_started",
-                {"stage": step["stage"], "label": STAGES[step["stage"]]},
-            )
-            step["attempts"] += 1
-            step["payload"] = json.loads(step["payload"])
-            return step
+            reason = None
+            preflight_error = None
+            if not expired and self.wait_for_resources:
+                try:
+                    settings = self.store.settings() | json.loads(step["config"])
+                    spec = json.loads(step["project_spec"])
+                    reason = (
+                        self.resource_probe(step, settings, spec)
+                        if self.resource_probe
+                        else probe(step, settings, spec, gpu_reader)
+                    )
+                    if reason is not None:
+                        reason = ResourceReason.model_validate(reason)
+                except Exception as error:
+                    # A bad saved setup must fail this job, not kill the scheduler or
+                    # silently turn a configuration error into a 24-hour wait.
+                    preflight_error = f"RESOURCE_PREFLIGHT_FAILED: Review Settings and retry. {error}"[:2400]
+            with self.store.connect() as db:
+                db.execute("BEGIN IMMEDIATE")
+                fresh = db.execute(
+                    "SELECT s.state,j.state AS job_state,j.config FROM steps s JOIN jobs j ON j.id=s.job_id WHERE s.id=?",
+                    (step["id"],),
+                ).fetchone()
+                if (
+                    not fresh
+                    or fresh["state"] != "READY"
+                    or fresh["job_state"] != step["job_state"]
+                    or fresh["config"] != step["config"]
+                    or self.stop.is_set()
+                ):
+                    return None
+                if expired or preflight_error:
+                    message = (
+                        preflight_error
+                        or "RESOURCE_WAIT_EXPIRED: Resource waiting ended. Review Settings and retry; your completed work is safe."
+                    )
+                    db.execute("UPDATE steps SET state='FAILED',error=? WHERE id=?", (message, step["id"]))
+                    db.execute("UPDATE jobs SET state='FAILED',error=? WHERE id=?", (message, step["job_id"]))
+                    db.execute(
+                        "UPDATE projects SET status='FAILED',updated=? WHERE id=?", (now, step["project_id"])
+                    )
+                    self.store.event(
+                        db,
+                        step["project_id"],
+                        step["job_id"],
+                        "resource_preflight_failed" if preflight_error else "resource_wait_expired",
+                        {"message": message},
+                    )
+                    self.resource_rechecks.pop(step["job_id"], None)
+                    continue
+                if reason is not None:
+                    wait = ResourceWait(
+                        **reason.model_dump(),
+                        step_id=step["id"],
+                        stage=step["stage"],
+                        since=previous.since if previous else now,
+                        deadline=previous.deadline if previous else now + WAIT_SECONDS,
+                    )
+                    if previous is None or previous.code != wait.code or previous.message != wait.message:
+                        self.store.event(
+                            db, step["project_id"], step["job_id"], "resource_wait", wait.model_dump()
+                        )
+                    db.execute(
+                        "UPDATE jobs SET state='WAITING_RESOURCES',error=NULL WHERE id=?", (step["job_id"],)
+                    )
+                    db.execute(
+                        "UPDATE projects SET status='WAITING_RESOURCES',updated=? WHERE id=?",
+                        (now, step["project_id"]),
+                    )
+                    self.resource_rechecks[step["job_id"]] = min(now + RECHECK_SECONDS, wait.deadline)
+                    continue
+                if previous:
+                    self.store.event(
+                        db, step["project_id"], step["job_id"], "resources_ready", {"step": step["id"]}
+                    )
+                db.execute(
+                    "UPDATE steps SET state='RUNNING',attempts=attempts+1,heartbeat=? WHERE id=?",
+                    (now, step["id"]),
+                )
+                db.execute("UPDATE jobs SET state='RUNNING',error=NULL WHERE id=?", (step["job_id"],))
+                db.execute(
+                    "UPDATE projects SET status=?,updated=? WHERE id=?",
+                    (step["stage"], now, step["project_id"]),
+                )
+                self.store.event(
+                    db,
+                    step["project_id"],
+                    step["job_id"],
+                    "stage_started",
+                    {"stage": step["stage"], "label": STAGES[step["stage"]]},
+                )
+                self.resource_rechecks.pop(step["job_id"], None)
+                step["attempts"] += 1
+                step["payload"] = json.loads(step["payload"])
+                return step
+        return None
 
     def check(self, step):
         if self.stop.is_set():

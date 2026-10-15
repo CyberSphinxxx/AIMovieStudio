@@ -203,6 +203,19 @@ class Store:
                 dict(r) for r in db.execute("SELECT * FROM jobs WHERE project_id=? ORDER BY episode", (pid,))
             ]
             for job in project["jobs"]:
+                job["resource_wait"] = None
+                if job["state"] == "WAITING_RESOURCES":
+                    from studio.resource_wait import load_wait
+
+                    try:
+                        wait = load_wait(db, job["id"])
+                        if wait is None:
+                            raise ValueError("Missing resource wait snapshot")
+                        job["resource_wait"] = wait.model_dump()
+                    except ValueError:
+                        job["error"] = (
+                            "Saved resource waiting needs review. Pause and resume after reviewing Settings."
+                        )
                 job["steps"] = [
                     dict(r)
                     for r in db.execute("SELECT * FROM steps WHERE job_id=? ORDER BY ordinal", (job["id"],))

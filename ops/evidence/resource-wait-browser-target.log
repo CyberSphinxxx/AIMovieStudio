@@ -1,0 +1,89 @@
+
+Running 1 test using 1 worker
+
+(node:20464) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:20464) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  1 e2e\resource-wait.spec.ts:4:1 › waiting screen explains automatic continuation and Pause stays authoritative (3.0s)
+
+
+  1) e2e\resource-wait.spec.ts:4:1 › waiting screen explains automatic continuation and Pause stays authoritative 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoEqual[2m([22m[32mexpected[39m[2m) // deep equality[22m
+
+    [32m- Expected  -  1[39m
+    [31m+ Received  + 45[39m
+
+    [32m- Array [][39m
+    [31m+ Array [[39m
+    [31m+   Object {[39m
+    [31m+     "description": "Ensure landmarks are unique",[39m
+    [31m+     "help": "Landmarks should have a unique role or role/label/title (i.e. accessible name) combination",[39m
+    [31m+     "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/landmark-unique?application=playwright",[39m
+    [31m+     "id": "landmark-unique",[39m
+    [31m+     "impact": "moderate",[39m
+    [31m+     "nodes": Array [[39m
+    [31m+       Object {[39m
+    [31m+         "all": Array [],[39m
+    [31m+         "any": Array [[39m
+    [31m+           Object {[39m
+    [31m+             "data": Object {[39m
+    [31m+               "accessibleText": null,[39m
+    [31m+               "role": "complementary",[39m
+    [31m+             },[39m
+    [31m+             "id": "landmark-is-unique",[39m
+    [31m+             "impact": "moderate",[39m
+    [31m+             "message": "The landmark must have a unique aria-label, aria-labelledby, or title to make landmarks distinguishable",[39m
+    [31m+             "relatedNodes": Array [[39m
+    [31m+               Object {[39m
+    [31m+                 "html": "<aside class=\"progress-panel\">",[39m
+    [31m+                 "target": Array [[39m
+    [31m+                   ".progress-panel",[39m
+    [31m+                 ],[39m
+    [31m+               },[39m
+    [31m+             ],[39m
+    [31m+           },[39m
+    [31m+         ],[39m
+    [31m+         "failureSummary": "Fix any of the following:[39m
+    [31m+   The landmark must have a unique aria-label, aria-labelledby, or title to make landmarks distinguishable",[39m
+    [31m+         "html": "<aside class=\"sidebar\">",[39m
+    [31m+         "impact": "moderate",[39m
+    [31m+         "none": Array [],[39m
+    [31m+         "target": Array [[39m
+    [31m+           ".sidebar",[39m
+    [31m+         ],[39m
+    [31m+       },[39m
+    [31m+     ],[39m
+    [31m+     "tags": Array [[39m
+    [31m+       "cat.semantics",[39m
+    [31m+       "best-practice",[39m
+    [31m+     ],[39m
+    [31m+   },[39m
+    [31m+ ][39m
+
+      66 |       ),
+      67 |     ).toBe(true);
+    > 68 |     expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([]);
+         |                                                                   ^
+      69 |     await page.screenshot({
+      70 |       path: "../ops/evidence/resource-wait-mobile.png",
+      71 |       fullPage: true,
+        at C:\L3mxr\Github Repositories\AIMovieStudio\client\e2e\resource-wait.spec.ts:68:67
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\resource-wait-waiting-scre-40d4c-d-Pause-stays-authoritative\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\resource-wait-waiting-scre-40d4c-d-Pause-stays-authoritative\error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results\resource-wait-waiting-scre-40d4c-d-Pause-stays-authoritative\trace.zip
+    Usage:
+
+        npx playwright show-trace test-results\resource-wait-waiting-scre-40d4c-d-Pause-stays-authoritative\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    e2e\resource-wait.spec.ts:4:1 › waiting screen explains automatic continuation and Pause stays authoritative 

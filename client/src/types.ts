@@ -99,6 +99,13 @@ export type Job = {
   episode: number;
   state: string;
   error: string | null;
+  resource_wait?: {
+    code: string;
+    message: string;
+    since: number;
+    deadline: number;
+    stage: string;
+  } | null;
   steps: Step[];
 };
 export type Project = {
@@ -178,6 +185,7 @@ export const stageLabel = (stage: string) =>
     REVIEW_REQUIRED: "Needs story review",
     PLANNED: "Planned",
     QUEUED: "Waiting to begin",
+    WAITING_RESOURCES: "Waiting for your computer",
     FAILED: "Needs attention",
     PAUSED: "Paused",
     CANCELLED: "Cancelled",

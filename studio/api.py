@@ -80,9 +80,9 @@ class DraftRevision(StrictModel):
     edits: list[ShotDraftEdit] = Field(min_length=1, max_length=120)
 
 
-def create_app(root: Path | None = None, run_worker=True) -> FastAPI:
+def create_app(root: Path | None = None, run_worker=True, *, resource_probe=None) -> FastAPI:
     store = Store(root or Path(os.environ.get("STUDIO_DATA", ROOT / "data")))
-    worker = Worker(store)
+    worker = Worker(store, resource_probe=resource_probe)
     active_restores: set[str] = set()
 
     async def finish_owned_restore(function, *args):
@@ -514,7 +514,8 @@ def create_app(root: Path | None = None, run_worker=True) -> FastAPI:
             if value.revision != revision:
                 raise ValueError("Story changed in another window. Reload before editing.")
             active = db.execute(
-                "SELECT 1 FROM jobs WHERE project_id=? AND state IN ('RUNNING','QUEUED','PAUSED')", (pid,)
+                "SELECT 1 FROM jobs WHERE project_id=? AND state IN ('RUNNING','QUEUED','PAUSED','WAITING_RESOURCES')",
+                (pid,),
             ).fetchone()
             if active:
                 raise ValueError("Finish or cancel the active production before revising canon")

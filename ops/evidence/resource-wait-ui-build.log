@@ -1,0 +1,13 @@
+
+> ai-movie-studio-client@0.1.0 build
+> tsc --noEmit && vite build
+
+vite v7.3.7 building client environment for production...
+transforming...
+✓ 1747 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                   0.55 kB │ gzip:  0.34 kB
+dist/assets/index-Du5mPC1z.css   22.90 kB │ gzip:  5.59 kB
+dist/assets/index-D8owYGZL.js   248.85 kB │ gzip: 77.70 kB
+✓ built in 3.76s

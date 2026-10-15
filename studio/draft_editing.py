@@ -27,7 +27,8 @@ def edit_eligibility(project, episode):
     if not target and episode["status"] not in {"DRAFTED", "REVIEW_REQUIRED"}:
         return False, "Choose an unproduced saved draft"
     if any(
-        j["state"] in {"RUNNING", "QUEUED", "PAUSED"} and not stopped_before_media(project, j)
+        j["state"] in {"RUNNING", "QUEUED", "PAUSED", "WAITING_RESOURCES"}
+        and not stopped_before_media(project, j)
         for j in project["jobs"]
     ):
         return False, "Finish writing or stop the current production before editing"

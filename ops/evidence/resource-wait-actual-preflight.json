@@ -1,0 +1,16 @@
+{
+  "observed_at": "2026-10-15T08:39:37.487411+00:00",
+  "kind": "actual_read_only_preflight",
+  "memory": {
+    "available": true,
+    "total_gb": 15.19,
+    "free_gb": 1.28,
+    "load_percent": 91
+  },
+  "reason": {
+    "code": "MEMORY_BUSY",
+    "message": "Waiting for at least 7 GB of free memory."
+  },
+  "inference_started": false,
+  "native_generation_verified": false
+}

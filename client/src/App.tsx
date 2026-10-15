@@ -52,7 +52,7 @@ export function App() {
       <a href="#main" className="skip">
         Skip to workspace
       </a>
-      <aside className="sidebar">
+      <aside className="sidebar" aria-label="Studio navigation">
         <a
           className="brand"
           href="/"
@@ -618,7 +618,9 @@ function Studio({ id }: { id: string }) {
   const currentSteps = job?.steps.filter((s) => s.state !== "SUPERSEDED") || [];
   const done = currentSteps.filter((s) => s.state === "SUCCEEDED").length;
   const count = currentSteps.length || 1;
-  const running = job?.state === "RUNNING" || job?.state === "QUEUED";
+  const waitingForResources = job?.state === "WAITING_RESOURCES";
+  const running =
+    job?.state === "RUNNING" || job?.state === "QUEUED" || waitingForResources;
   const active = job?.steps.find((s) => s.state === "RUNNING");
   const unfinishedTake = currentSteps.some(
     (s) =>
@@ -1243,29 +1245,33 @@ function Studio({ id }: { id: string }) {
             </>
           )}
         </section>
-        <aside className="progress-panel">
+        <aside className="progress-panel" aria-label="Production progress">
           <p className="eyebrow">PRODUCTION</p>
           <h2>
-            {running
-              ? "Making your movie."
-              : movie && job?.state === "SUCCEEDED"
-                ? "That’s a wrap."
-                : stageLabel(episodeState)}
+            {waitingForResources
+              ? "Waiting for your computer."
+              : running
+                ? "Making your movie."
+                : movie && job?.state === "SUCCEEDED"
+                  ? "That’s a wrap."
+                  : stageLabel(episodeState)}
           </h2>
           <p aria-live="polite" className="muted">
-            {active
-              ? stepLabel(active)
-              : movie && job?.state === "SUCCEEDED"
-                ? "Your draft passed media validation."
-                : job?.state === "PAUSED"
-                  ? ep?.can_edit_draft
-                    ? "Your screenplay is saved. Review it in Story, then resume to make footage."
-                    : "Saved progress. Resume when you’re ready."
-                  : job?.state === "FAILED"
-                    ? "Your completed work is safe."
-                    : job?.state === "CANCELLED"
-                      ? "Production stopped. Assets are preserved."
-                      : "Every completed step is saved."}
+            {waitingForResources
+              ? `${job?.resource_wait?.message || "Waiting for safe memory and graphics conditions."} Studio will continue automatically when resources are free. You can pause or stop at any time.`
+              : active
+                ? stepLabel(active)
+                : movie && job?.state === "SUCCEEDED"
+                  ? "Your draft passed media validation."
+                  : job?.state === "PAUSED"
+                    ? ep?.can_edit_draft
+                      ? "Your screenplay is saved. Review it in Story, then resume to make footage."
+                      : "Saved progress. Resume when you’re ready."
+                    : job?.state === "FAILED"
+                      ? "Your completed work is safe."
+                      : job?.state === "CANCELLED"
+                        ? "Production stopped. Assets are preserved."
+                        : "Every completed step is saved."}
           </p>
           <div
             className="progress-track"
@@ -1341,7 +1347,8 @@ function Studio({ id }: { id: string }) {
                   disabled={busy}
                   onClick={() => void action(`episodes/${episode}/pause`)}
                 >
-                  <Pause size={16} /> Pause after this step
+                  <Pause size={16} />{" "}
+                  {waitingForResources ? "Pause" : "Pause after this step"}
                 </button>
                 <button
                   className="text-button"

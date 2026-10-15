@@ -1,5 +1,9 @@
 # Blockers —2026-10-14 (latest observations first)
 
+Resource-wait verification completed293backend/15Edge; it is no longer an implementation blocker. Full product/native image/video/writing quality and packaging/legal release gates remain open. Actual1.28GiB RAM preflight prevents CPU4B; no inference/remaining-budget change. Current main .venv points to Codex cache; private relocatable runtime is next independent task and not yet ready.
+
+2026-10-15 current: RAM0.39–1.28GiB blocks actual image/writing tests; read-only installed CPU4B preflight returns MEMORY_BUSY. No new model loaded and remaining approved time/budgets unchanged. Automatic waiting now implemented/target verified; full regression running, not completion of generation gates. Next independent private runtime removes current .venv dependency on Codex cache; clean-account and full native release remain unverified. No repeated readiness question or relaxed guard.
+
 2026-10-15 update: transfer-buffer option code/contracts/UI verified; actual RAM savings not measured. GPU now71C, latest direct preflight4.43GiB RAM/4576MiB VRAM free still RAM-blocked, no model attempted. User requests autonomous continuation/testafter; no new readiness question. Keep5GiB/4GiB/<85C startup,2GiB running floor, CPU4B7GiB/remaining330.281s, original image/quality failures and approved budgets. F4.04 queued resource waiting next.
 
 2026-10-15: Loudness normalization is no longer a missing implementation:255backend/newbrowser pass, actual PCM/AAC sample measured. Subjective listening/music/broader sound still open. Native tests currently blocked by RAM0.95–1.9GiB/GPU83–85C/only~2.2–3GiB VRAM free. User now requests continue independently until finished; do not reask readiness. Official smart-memory-pinning-off option offers a changed test strategy, not proven fit. Existing CPU4B experiment330.281s remainder and GPU/image-PASS-before-video limits persist.

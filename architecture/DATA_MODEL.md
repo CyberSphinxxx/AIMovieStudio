@@ -14,6 +14,8 @@
 **Job** `(id, project_id, step, deps, state, attempt, max_attempts, lease_until, input_signature, output_manifest)`
 
 ## Time systems
+Implemented job scheduling also uses `WAITING_RESOURCES`. The first pending step remains `READY` with its attempt count unchanged. A validated `resource_wait` event stores reason, step ID, stage, wall-clock start and a deadline no more than 24 hours later. The latest event is authoritative across process restart; a 15-second in-memory cache only throttles counter sampling. Claiming after readiness increments attempts transactionally. Explicit pause/cancel prevents automatic claim, expired/corrupt waits require retry, and imported unfinished jobs always restore paused. Waiting counts as active production for canon and draft edit conflicts. No SQLite schema migration is needed because state columns are text without enumerated constraints.
+
 Do not confuse production wall-clock, scene display time, world chronological time, screen duration and episode order. Represent them with separate typed values. Flashbacks may have `narrative_time < current_scene_narrative_time` while displayed in a later episode; continuity lookups use narrative-time snapshot explicitly.
 
 ## Asset lineage
