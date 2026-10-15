@@ -1,0 +1,192 @@
+....FFFF......                                                           [100%]
+================================== FAILURES ===================================
+_ test_drawn_letters_fit_visible_zoom_area_for_long_titles_and_captions[unbroken-size0] _
+
+tmp_path = WindowsPath('C:/Users/USER-PC/AppData/Local/Temp/pytest-of-USER-PC/pytest-142/test_drawn_letters_fit_visible4')
+size = (360, 640), style = 'unbroken'
+
+    @pytest.mark.parametrize("size", [(360, 640), (640, 360), (480, 480), (512, 512)])
+    @pytest.mark.parametrize("style", ["paragraph", "unbroken", "natural"])
+    def test_drawn_letters_fit_visible_zoom_area_for_long_titles_and_captions(tmp_path, size, style):
+        title = (
+            "W" * 500
+            if style == "unbroken"
+            else "A very long camera description with a distant lighthouse and harbor " * 12
+        )
+        caption = (
+            "M" * 3000
+            if style == "unbroken"
+            else "A keeper follows the signal through a quiet harbor beside the old station. " * 40
+        )
+        if style == "natural":
+            title = "Wide establishing shot across the quiet harbor beside an old lighthouse"
+            caption = (
+                "Cinematic realism. The keeper studies a signal at the station while the distant ship turns toward the shore. Preserve the warm light and quiet harbor. "
+                * 2
+            )
+        output = tmp_path / "demo.png"
+        media.demo_image(output, size, title, caption, 42)
+        with Image.open(output) as image:
+            pixels = image.load()
+            lettering = [
+                (x, y)
+                for y in range(round(size[1] * 0.71), size[1])
+                for x in range(size[0])
+                if all(channel >= minimum for channel, minimum in zip(pixels[x, y], (200, 200, 190)))
+            ]
+            caption_pixels = [
+                (x, y) for y in range(size[1]) for x in range(size[0]) if pixels[x, y] == (218, 214, 205)
+            ]
+        assert lettering
+        # Measure rendered pixels, independent of line-wrapping implementation.
+        assert max(x for x, _ in lettering) < int(size[0] / 1.06) - 12
+        assert max(y for _, y in lettering) < int(size[1] / 1.06) - 12
+>       assert caption_pixels, "Caption was omitted"
+E       AssertionError: Caption was omitted
+E       assert []
+
+tests\test_demo_layout.py:48: AssertionError
+_ test_drawn_letters_fit_visible_zoom_area_for_long_titles_and_captions[unbroken-size1] _
+
+tmp_path = WindowsPath('C:/Users/USER-PC/AppData/Local/Temp/pytest-of-USER-PC/pytest-142/test_drawn_letters_fit_visible5')
+size = (640, 360), style = 'unbroken'
+
+    @pytest.mark.parametrize("size", [(360, 640), (640, 360), (480, 480), (512, 512)])
+    @pytest.mark.parametrize("style", ["paragraph", "unbroken", "natural"])
+    def test_drawn_letters_fit_visible_zoom_area_for_long_titles_and_captions(tmp_path, size, style):
+        title = (
+            "W" * 500
+            if style == "unbroken"
+            else "A very long camera description with a distant lighthouse and harbor " * 12
+        )
+        caption = (
+            "M" * 3000
+            if style == "unbroken"
+            else "A keeper follows the signal through a quiet harbor beside the old station. " * 40
+        )
+        if style == "natural":
+            title = "Wide establishing shot across the quiet harbor beside an old lighthouse"
+            caption = (
+                "Cinematic realism. The keeper studies a signal at the station while the distant ship turns toward the shore. Preserve the warm light and quiet harbor. "
+                * 2
+            )
+        output = tmp_path / "demo.png"
+        media.demo_image(output, size, title, caption, 42)
+        with Image.open(output) as image:
+            pixels = image.load()
+            lettering = [
+                (x, y)
+                for y in range(round(size[1] * 0.71), size[1])
+                for x in range(size[0])
+                if all(channel >= minimum for channel, minimum in zip(pixels[x, y], (200, 200, 190)))
+            ]
+            caption_pixels = [
+                (x, y) for y in range(size[1]) for x in range(size[0]) if pixels[x, y] == (218, 214, 205)
+            ]
+        assert lettering
+        # Measure rendered pixels, independent of line-wrapping implementation.
+        assert max(x for x, _ in lettering) < int(size[0] / 1.06) - 12
+        assert max(y for _, y in lettering) < int(size[1] / 1.06) - 12
+>       assert caption_pixels, "Caption was omitted"
+E       AssertionError: Caption was omitted
+E       assert []
+
+tests\test_demo_layout.py:48: AssertionError
+_ test_drawn_letters_fit_visible_zoom_area_for_long_titles_and_captions[unbroken-size2] _
+
+tmp_path = WindowsPath('C:/Users/USER-PC/AppData/Local/Temp/pytest-of-USER-PC/pytest-142/test_drawn_letters_fit_visible6')
+size = (480, 480), style = 'unbroken'
+
+    @pytest.mark.parametrize("size", [(360, 640), (640, 360), (480, 480), (512, 512)])
+    @pytest.mark.parametrize("style", ["paragraph", "unbroken", "natural"])
+    def test_drawn_letters_fit_visible_zoom_area_for_long_titles_and_captions(tmp_path, size, style):
+        title = (
+            "W" * 500
+            if style == "unbroken"
+            else "A very long camera description with a distant lighthouse and harbor " * 12
+        )
+        caption = (
+            "M" * 3000
+            if style == "unbroken"
+            else "A keeper follows the signal through a quiet harbor beside the old station. " * 40
+        )
+        if style == "natural":
+            title = "Wide establishing shot across the quiet harbor beside an old lighthouse"
+            caption = (
+                "Cinematic realism. The keeper studies a signal at the station while the distant ship turns toward the shore. Preserve the warm light and quiet harbor. "
+                * 2
+            )
+        output = tmp_path / "demo.png"
+        media.demo_image(output, size, title, caption, 42)
+        with Image.open(output) as image:
+            pixels = image.load()
+            lettering = [
+                (x, y)
+                for y in range(round(size[1] * 0.71), size[1])
+                for x in range(size[0])
+                if all(channel >= minimum for channel, minimum in zip(pixels[x, y], (200, 200, 190)))
+            ]
+            caption_pixels = [
+                (x, y) for y in range(size[1]) for x in range(size[0]) if pixels[x, y] == (218, 214, 205)
+            ]
+        assert lettering
+        # Measure rendered pixels, independent of line-wrapping implementation.
+        assert max(x for x, _ in lettering) < int(size[0] / 1.06) - 12
+        assert max(y for _, y in lettering) < int(size[1] / 1.06) - 12
+>       assert caption_pixels, "Caption was omitted"
+E       AssertionError: Caption was omitted
+E       assert []
+
+tests\test_demo_layout.py:48: AssertionError
+_ test_drawn_letters_fit_visible_zoom_area_for_long_titles_and_captions[unbroken-size3] _
+
+tmp_path = WindowsPath('C:/Users/USER-PC/AppData/Local/Temp/pytest-of-USER-PC/pytest-142/test_drawn_letters_fit_visible7')
+size = (512, 512), style = 'unbroken'
+
+    @pytest.mark.parametrize("size", [(360, 640), (640, 360), (480, 480), (512, 512)])
+    @pytest.mark.parametrize("style", ["paragraph", "unbroken", "natural"])
+    def test_drawn_letters_fit_visible_zoom_area_for_long_titles_and_captions(tmp_path, size, style):
+        title = (
+            "W" * 500
+            if style == "unbroken"
+            else "A very long camera description with a distant lighthouse and harbor " * 12
+        )
+        caption = (
+            "M" * 3000
+            if style == "unbroken"
+            else "A keeper follows the signal through a quiet harbor beside the old station. " * 40
+        )
+        if style == "natural":
+            title = "Wide establishing shot across the quiet harbor beside an old lighthouse"
+            caption = (
+                "Cinematic realism. The keeper studies a signal at the station while the distant ship turns toward the shore. Preserve the warm light and quiet harbor. "
+                * 2
+            )
+        output = tmp_path / "demo.png"
+        media.demo_image(output, size, title, caption, 42)
+        with Image.open(output) as image:
+            pixels = image.load()
+            lettering = [
+                (x, y)
+                for y in range(round(size[1] * 0.71), size[1])
+                for x in range(size[0])
+                if all(channel >= minimum for channel, minimum in zip(pixels[x, y], (200, 200, 190)))
+            ]
+            caption_pixels = [
+                (x, y) for y in range(size[1]) for x in range(size[0]) if pixels[x, y] == (218, 214, 205)
+            ]
+        assert lettering
+        # Measure rendered pixels, independent of line-wrapping implementation.
+        assert max(x for x, _ in lettering) < int(size[0] / 1.06) - 12
+        assert max(y for _, y in lettering) < int(size[1] / 1.06) - 12
+>       assert caption_pixels, "Caption was omitted"
+E       AssertionError: Caption was omitted
+E       assert []
+
+tests\test_demo_layout.py:48: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/test_demo_layout.py::test_drawn_letters_fit_visible_zoom_area_for_long_titles_and_captions[unbroken-size0]
+FAILED tests/test_demo_layout.py::test_drawn_letters_fit_visible_zoom_area_for_long_titles_and_captions[unbroken-size1]
+FAILED tests/test_demo_layout.py::test_drawn_letters_fit_visible_zoom_area_for_long_titles_and_captions[unbroken-size2]
+FAILED tests/test_demo_layout.py::test_drawn_letters_fit_visible_zoom_area_for_long_titles_and_captions[unbroken-size3]
+4 failed, 10 passed in 4.36s

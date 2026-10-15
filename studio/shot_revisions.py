@@ -209,6 +209,7 @@ def execute_retake(worker, project: dict, step: dict, settings: dict) -> dict:
         path = directory / "image.png"
         if source["metadata"]["is_mock"]:
             media.demo_image(path, size, shot["camera"], payload["prompt"], seed)
+            metadata["demo_layout_version"] = media.DEMO_LAYOUT_VERSION
         else:
             path, native = provider.image(
                 payload["prompt"], directory, size, check, references=[path for _, path in refs], seed=seed

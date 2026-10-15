@@ -10,7 +10,6 @@ import time
 import wave
 from contextlib import ExitStack
 from pathlib import Path
-from textwrap import wrap
 from typing import Callable
 
 from PIL import Image, ImageDraw, ImageFont
@@ -19,6 +18,8 @@ from studio.processes import owned_process
 ROOT = Path(__file__).resolve().parents[1]
 SIZES = {"portrait": (360, 640), "landscape": (640, 360), "square": (480, 480)}
 MAX_SPEECH_TEMPO = 1.15
+DEMO_MAX_ZOOM = 1.06
+DEMO_LAYOUT_VERSION = "zoom-safe-v2"
 
 
 class Interrupted(Exception):
@@ -181,6 +182,36 @@ def font(size: int):
     return ImageFont.load_default(size=size)
 
 
+def preview_text(draw, value: str, face, width: int, max_lines: int):
+    """A measured, explicitly shortened preview; full prompts stay in metadata."""
+    remaining = " ".join(value.split())
+    lines = []
+    while remaining and len(lines) < max_lines:
+        if draw.textlength(remaining, font=face) <= width:
+            lines.append(remaining)
+            remaining = ""
+            break
+        low, high = 0, len(remaining)
+        while low < high:
+            middle = (low + high + 1) // 2
+            if draw.textlength(remaining[:middle], font=face) <= width:
+                low = middle
+            else:
+                high = middle - 1
+        cut = max(1, low)
+        boundary = remaining.rfind(" ", 0, cut + 1)
+        if boundary > 0:
+            cut = boundary
+        lines.append(remaining[:cut].rstrip())
+        remaining = remaining[cut:].lstrip()
+    if remaining:
+        last = lines[-1]
+        while last and draw.textlength(last + "…", font=face) > width:
+            last = last[:-1].rstrip()
+        lines[-1] = last + "…"
+    return "\n".join(lines)
+
+
 def demo_image(path: Path, size: tuple[int, int], title: str, caption: str, seed: int):
     width, height = size
     image = Image.new("RGB", size)
@@ -197,26 +228,34 @@ def demo_image(path: Path, size: tuple[int, int], title: str, caption: str, seed
     )
     draw.line((width * 0.1, height * 0.7, width * 0.9, height * 0.7), fill="#d1ac74", width=2)
     draw.text((24, 24), "MOCK / DEMO FOOTAGE", font=font(18), fill="#ffe0a5")
-    draw.multiline_text(
-        (24, height * 0.74),
-        "\n".join(wrap(title, max(14, width // 15))),
-        font=font(24),
-        fill="#fff5e7",
-        spacing=5,
-    )
-    draw.multiline_text(
-        (24, height * 0.9),
-        "\n".join(wrap(caption, max(20, width // 10)))[:160],
-        font=font(12),
-        fill="#dad6cd",
-    )
+    # Keep lettering inside the smallest field of view used by the demo zoom.
+    right, bottom = int(width / DEMO_MAX_ZOOM) - 24, int(height / DEMO_MAX_ZOOM) - 24
+    title_face, caption_face = font(20 if height <= 384 else 24), font(12)
+    title_position = (24, round(height * 0.72))
+    chosen = None
+    for heading_lines in (1,) if height <= 384 else (2, 1):
+        heading = preview_text(draw, title, title_face, right - 24, heading_lines)
+        bounds = draw.multiline_textbbox(title_position, heading, font=title_face, spacing=5)
+        caption_position = (24, max(round(height * 0.82), bounds[3] + 10))
+        for count in (3, 2, 1):
+            preview = preview_text(draw, caption, caption_face, right - 24, count)
+            box = draw.multiline_textbbox(caption_position, preview, font=caption_face)
+            if box[3] <= bottom:
+                chosen = (heading, caption_position, preview)
+                break
+        if chosen:
+            break
+    if chosen:
+        heading, caption_position, preview = chosen
+        draw.multiline_text(title_position, heading, font=title_face, fill="#fff5e7", spacing=5)
+        draw.multiline_text(caption_position, preview, font=caption_face, fill="#dad6cd")
     image.save(path, format="PNG")
 
 
 def demo_clip(frame: Path, output: Path, duration: float, size: tuple[int, int], check):
     width, height = size
     frames = round(duration * 24)
-    filters = f"zoompan=z='min(zoom+0.0004,1.06)':d={frames}:s={width}x{height}:fps=24,fade=t=in:st=0:d=0.15,fade=t=out:st={max(0, duration - 0.2)}:d=0.2"
+    filters = f"zoompan=z='min(zoom+0.0004,{DEMO_MAX_ZOOM})':d={frames}:s={width}x{height}:fps=24,fade=t=in:st=0:d=0.15,fade=t=out:st={max(0, duration - 0.2)}:d=0.2"
     run(
         [
             binary("ffmpeg"),

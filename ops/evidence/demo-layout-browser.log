@@ -1,0 +1,16 @@
+
+> ai-movie-studio-client@0.1.0 test:e2e
+> playwright test e2e/references.spec.ts e2e/retakes.spec.ts e2e/studio.spec.ts -g one idea to playable demo MP4|reference views retain|another take publishes
+
+
+Running 3 tests using 1 worker
+
+(node:10784) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:10784) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 e2e\references.spec.ts:5:1 › reference views retain originals and pin the chosen view only in new episode shots (12.7s)
+  ok 2 e2e\retakes.spec.ts:5:1 › another take publishes a playable cut with original downloads and pinned story (17.7s)
+  ok 3 e2e\studio.spec.ts:220:1 › one idea to playable demo MP4, persisted story, shots, and downloads (12.1s)
+
+  3 passed (44.5s)

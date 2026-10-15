@@ -1,0 +1,35 @@
+.........F                                                               [100%]
+================================== FAILURES ===================================
+_ test_new_layout_records_provenance_without_rewriting_saved_assets_or_story __
+
+store = <studio.storage.Store object at 0x00000268ED5D9A90>
+spec = ProjectInput(idea='A lighthouse remembers a vanished ship.', kind='clip', orientation='portrait', target_seconds=5, ep...e='Cinematic realism', backend='demo', prewrite_season=False, review_story=False, idempotency_key='fixture-unique-key')
+
+    def test_new_layout_records_provenance_without_rewriting_saved_assets_or_story(store, spec):
+        pid, _ = store.create(spec)
+        set_silent(store)
+        store.enqueue(pid)
+        worker = Worker(store)
+        partial = produce_until(store, worker, pid, "REFERENCE", 1)
+        reference = next(a for a in partial["assets"] if a["role"] == "reference")
+        sha = reference["sha256"]
+        assert reference["metadata"]["demo_layout_version"] == "zoom-safe-v2"
+        # An already published legacy asset keeps its original metadata/hash.
+        legacy = dict(reference["metadata"])
+        legacy.pop("demo_layout_version")
+        with store.connect() as db:
+            db.execute("UPDATE assets SET metadata=? WHERE id=?", (json.dumps(legacy), reference["id"]))
+        final = produce_until(store, worker, pid)
+        old = next(a for a in final["assets"] if a["id"] == reference["id"])
+        assert old["sha256"] == sha == digest(store.asset_path(old["id"])[0])
+        assert "demo_layout_version" not in old["metadata"]
+        frame = next(a for a in final["assets"] if a["role"] == "keyframe")
+        assert frame["metadata"]["demo_layout_version"] == "zoom-safe-v2"
+>       assert len(frame["metadata"]["prompt"]) > 160
+E       AssertionError: assert 80 > 160
+E        +  where 80 = len('Cinematic realism. Wide establishing shot. Mara studies a signal at the station.')
+
+tests\test_demo_layout.py:70: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/test_demo_layout.py::test_new_layout_records_provenance_without_rewriting_saved_assets_or_story
+1 failed, 9 passed in 4.87s

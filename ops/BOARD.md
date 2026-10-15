@@ -1,5 +1,9 @@
 # Active backlog — 2026-10-14
 
+LatestF1.03caption slice VERIFIED:47currentmedia/continuitytargetsPASS117.80s,3EdgePASS44.5s,14finalpixel-layoutregressionsPASS, actual3shapes+latezoomframeinspected, neutralcaptionmaskdistinguishespreservedfailure0/new1157pixels. Oldoutputs/fullprompts/story/audio/canon unchanged; newmockimageversionrecorded. BroadF1.03 accessibilityreview/nativequalitystillopen. Next nativewriter prep: isolatedreuseofsavedreal4Bplan could conserve330.281sremainingbudget; actual teststillrequires7GiB. Do not repeatGPUprofile5offat5.6GiB.
+
+F1.03 mockcaptionpolish underway aftere9ffb3d: measuredpreviewwrapping/ellipsis/zoom-safefooter +adaptiveheadlinekeepscaptionvisible.14currentlayoutPASS/actual3shapes+late8sclipframeinspected; first43mediaPASSbeforefinalheadlinefallback; final47targets/browserpending. Oldassets/fullprompts/story/audio/canonpreserved/versionmetadataaddednewimagesonly. NativeRAMgateunchanged.
+
 Private F8.01 prepared-runtime/relocation slice verified332backend3.11PASS418.43s/all15Edge3.11PASS~3min/static/2Vitest/main18auditedpackages0advisories. Realimagebuffer-offFAILretained/noimage, native andcleanaccount/releasegatesremain open. Next F1.03 inspectedlandscape demofootercaptionclipping; then documentednativeRAMstrategy aftercapacity. Localcheckpointready.
 
 2026-10-15 newest: private3.11full332backendPASS418.43s/main18packageaudit0/staticPASS. Changed nativeimageprofile5/smartpinningoff attemptedafterpreflight5.64GiB/4868MiB/60C, FAILED78.532s atRAMguard/reportedencoding_text/noimage. Rolling75samplesretained; no video/CPUrun/newdownload. F3.03/F5.02 remain RAM-blocked. Full15browser3.11running, then finalizeprivate runtime checkpoint. Independent visualfollowup: landscape demo smallcaptionclips atbottom (actualextractedframe inspected).

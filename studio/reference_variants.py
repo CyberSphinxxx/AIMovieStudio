@@ -251,6 +251,7 @@ def execute_variant(worker, project, step, settings):
     }
     if project["spec"]["backend"] == "demo":
         media.demo_image(output, size, payload["entity"]["name"] + " · " + view, prompt, seed)
+        metadata["demo_layout_version"] = media.DEMO_LAYOUT_VERSION
     else:
         provider = WanGPProvider(WanGPConfig.model_validate(settings.get("wangp", {})), worker.store.root)
         output, native = provider.image(prompt, directory, size, check, references=[path], seed=seed)

@@ -529,6 +529,7 @@ class Worker:
                 }
             if spec["backend"] == "demo":
                 media.demo_image(path, size, title, prompt, metadata["seed"])
+                metadata["demo_layout_version"] = media.DEMO_LAYOUT_VERSION
             else:
                 references = [self.store.asset_path(aid)[0] for aid in metadata.get("parent_asset_ids", [])]
                 path, real_metadata = real_provider.image(
