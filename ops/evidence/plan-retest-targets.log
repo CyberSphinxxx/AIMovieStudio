@@ -1,0 +1,105 @@
+................F.........................................               [100%]
+================================== FAILURES ===================================
+___ test_bounded_runner_has_separate_report_and_never_executes_media[True] ____
+
+failed_plan = (<studio.storage.Store object at 0x00000170673191D0>, '4c78c0f9-cf72-46b7-bc7e-de4ecc508ab6', WindowsPath('C:/Users/US.../AppData/Local/Temp/pytest-of-USER-PC/pytest-146/test_bounded_runner_has_separa1/original-failed-native-fixture.json'))
+tmp_path = WindowsPath('C:/Users/USER-PC/AppData/Local/Temp/pytest-of-USER-PC/pytest-146/test_bounded_runner_has_separa1')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000017067318A50>
+timeout = True
+
+    @pytest.mark.parametrize("timeout", [False, True])
+    def test_bounded_runner_has_separate_report_and_never_executes_media(failed_plan, tmp_path, monkeypatch, timeout):
+        source, pid, report_path = failed_plan
+        run_id = str(uuid4())
+        clone, lineage = prepare_plan_retest(source.root, pid, report_path, tmp_path / "retest", run_id)
+        original_report = report_path.read_bytes()
+        monkeypatch.chdir(tmp_path)
+        monkeypatch.setattr("studio.local_story.SmallCPUStory.script_batch", lambda self, *a: DemoStory().script_batch(*a))
+        clone.control(pid, "resume")
+        started = time.monotonic() - (20 if timeout else 0)
+        if timeout:
+>           with pytest.raises(RuntimeError, match="TIMEOUT"):
+E           Failed: DID NOT RAISE <class 'RuntimeError'>
+
+C:\L3mxr\Github Repositories\AIMovieStudio\tests\test_story_plan_retest.py:221: Failed
+---------------------------- Captured stdout call -----------------------------
+{
+  "run_id": "703786f2-d4b6-47ab-a30c-39c3587bded4",
+  "project_id": "4c78c0f9-cf72-46b7-bc7e-de4ecc508ab6",
+  "is_mock": false,
+  "model": "Qwen3-4B-Instruct-2507-Q4_K_M",
+  "profile": "CPU only; four threads;8192 context; max2 shots/section;three attempts/section",
+  "shots_per_request": 2,
+  "max_seconds": 1,
+  "status": "STRUCTURED_BATCHED_SCRIPT_VALID",
+  "quality_review": "NOT_PERFORMED",
+  "preflight_memory": {
+    "available": true,
+    "total_gb": 15.19,
+    "free_gb": 2.31,
+    "load_percent": 84
+  },
+  "samples": 0,
+  "sampled_peak_server_rss_bytes": null,
+  "sampled_min_available_ram_gib": null,
+  "completed_steps": [
+    {
+      "id": "4bba5524-573d-492d-bc17-6c14cb460355",
+      "stage": "SCRIPT_BATCH",
+      "seconds": 0.032,
+      "start": 0,
+      "count": 2
+    },
+    {
+      "id": "c3487d08-8f4e-44a1-a81b-203e8d46c11f",
+      "stage": "SCRIPT_BATCH",
+      "seconds": 0.031,
+      "start": 2,
+      "count": 2
+    },
+    {
+      "id": "ad341521-2c42-42ee-bbc0-719d3cd6e0a2",
+      "stage": "SCRIPT_BATCH",
+      "seconds": 0.031,
+      "start": 4,
+      "count": 2
+    },
+    {
+      "id": "b8994828-b06e-44f6-a503-fe992957dc68",
+      "stage": "SCRIPT_BATCH",
+      "seconds": 0.032,
+      "start": 6,
+      "count": 2
+    },
+    {
+      "id": "ca5422c5-0945-415e-be48-c12d6a5732b9",
+      "stage": "SCRIPT",
+      "seconds": 0.063,
+      "start": null,
+      "count": null
+    }
+  ],
+  "lineage": {
+    "source_project_id": "4c78c0f9-cf72-46b7-bc7e-de4ecc508ab6",
+    "source_job_id": "8d5cf7d4-9e70-40bf-bc0b-ce58b6ac45ff",
+    "source_plan_step_id": "2bf0a885-c026-47f7-94f3-9c0739c8437f",
+    "source_report_sha256": "908c2bfacf9403be69fc3d043be81b95e5c58e90029d36199eb4fa5f80cc3545",
+    "source_plan_sha256": "262a52c253678c82d306be2180dc2f20f573a529638838c785abcfded0917dbc",
+    "prior_test_milliseconds": 269719,
+    "plan_reused": true,
+    "plan_generated_this_run": false,
+    "run_id": "703786f2-d4b6-47ab-a30c-39c3587bded4",
+    "source_archive_sha256": "fdef3420680cf7e5ba1d6218218b71195357635ec350be1f2546d6402b265566"
+  },
+  "stage": "SCRIPT",
+  "elapsed_seconds": 20.265
+}
+============================== warnings summary ===============================
+tools\app-runtime\Lib\site-packages\fastapi\testclient.py:1
+  C:\L3mxr\Github Repositories\AIMovieStudio\tools\app-runtime\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ===========================
+FAILED tests/test_story_plan_retest.py::test_bounded_runner_has_separate_report_and_never_executes_media[True]
+1 failed, 57 passed, 1 warning in 89.77s (0:01:29)

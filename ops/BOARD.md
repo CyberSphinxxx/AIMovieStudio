@@ -1,5 +1,11 @@
 # Active backlog — 2026-10-14
 
+## Current session — saved-plan writer retest
+
+F2.01/F2.03: isolated saved-plan reuse is implemented and verified: 58 story/backup/setup tests passed in98.19s, final17 helper checks passed in4.86s after formatting, Ruff/diff checks pass. The original failed 4B sample is read through a read-only SQLite snapshot, checked against its native report, archived, and restored into a new paused test workspace. Original IDs/plan/checkpoint/error history are preserved; only the clone receives four new two-shot sections. A new run ID keeps original reports immutable. Exclusive durable time reservation survives a real forced process kill. Native writing remains RAM-blocked and quality unproven.
+
+Actual preparation: `3d139cf5-c3cf-43c1-90e2-9085d205548d`, matching source SHA/plan, PAUSED, four 2-shot batches, no assets/canon, no inference or budget reservation. RAM 1.36–1.99 GiB prevents the required 7 GiB model start. Next after verification/checkpoint: tighten the GPU RAM sampling interval in response to the recorded 2-second overshoot, then continue native serialization/research while preserving all existing approvals.
+
 Finalprivatecopyverifiedafterfe669e4: Studio-248936f829de,3014hashes/374.87MB/blanklibrary/no models, ownisolated3.11imports+SQLite+currentpreviewPASS. Originalworkspaceapprunning/workerready/librarypreserved. RAM5.62GiB blocks4Bwriter; previouschangedGPUtestfailedatRAMguard. Nextnativewriterprep/encoderRAMstrategy; allbroadnativequality/cleanaccount/legal/securitygatesremainopen. No fullapplicationcompletionclaim.
 
 LatestF1.03caption slice VERIFIED:47currentmedia/continuitytargetsPASS117.80s,3EdgePASS44.5s,14finalpixel-layoutregressionsPASS, actual3shapes+latezoomframeinspected, neutralcaptionmaskdistinguishespreservedfailure0/new1157pixels. Oldoutputs/fullprompts/story/audio/canon unchanged; newmockimageversionrecorded. BroadF1.03 accessibilityreview/nativequalitystillopen. Next nativewriter prep: isolatedreuseofsavedreal4Bplan could conserve330.281sremainingbudget; actual teststillrequires7GiB. Do not repeatGPUprofile5offat5.6GiB.

@@ -1,0 +1,122 @@
+F.......F.....                                                           [100%]
+================================== FAILURES ===================================
+___ test_isolated_plan_reuse_preserves_source_ids_errors_and_small_batches ____
+
+failed_plan = (<studio.storage.Store object at 0x00000232C62E1E50>, '42f831dd-8816-474f-aedb-777faa78efb3', WindowsPath('C:/Users/US.../AppData/Local/Temp/pytest-of-USER-PC/pytest-144/test_isolated_plan_reuse_prese0/original-failed-native-fixture.json'))
+tmp_path = WindowsPath('C:/Users/USER-PC/AppData/Local/Temp/pytest-of-USER-PC/pytest-144/test_isolated_plan_reuse_prese0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000232C62E2D10>
+
+    def test_isolated_plan_reuse_preserves_source_ids_errors_and_small_batches(failed_plan, tmp_path, monkeypatch):
+        source, pid, report = failed_plan
+        original = source.get(pid)
+        database_sha, report_sha = digest(source.database), digest(report)
+        run_id = str(uuid4())
+        clone, lineage = prepare_plan_retest(source.root, pid, report, tmp_path / "retest", run_id)
+        copied = clone.get(pid)
+        assert source.get(pid) == original
+        assert digest(source.database) == database_sha and digest(report) == report_sha
+        assert copied["plan"] == original["plan"]
+        assert copied["episodes"] == original["episodes"]
+        old_steps, new_steps = original["jobs"][0]["steps"], copied["jobs"][0]["steps"]
+        assert new_steps[0] == old_steps[0]
+        for before, after in zip(old_steps[1:], new_steps[1:len(old_steps)], strict=True):
+            assert after == {**before, "state": "SUPERSEDED"}
+        batches = new_steps[len(old_steps):-1]
+        assert [s["payload"]["start"] for s in batches] == [0, 2, 4, 6]
+        assert [s["payload"]["count"] for s in batches] == [2, 2, 2, 2]
+        assert new_steps[-1]["payload"]["batch_ids"] == [s["id"] for s in batches]
+        assert copied["jobs"][0]["state"] == "PAUSED"
+        assert Worker(clone).claim() is None
+        assert not copied["canon"] and not copied["assets"]
+        assert lineage["plan_reused"] and not lineage["plan_generated_this_run"]
+        assert lineage["source_report_sha256"] == report_sha and lineage["run_id"] != pid
+        assert json.loads((tmp_path / "retest/preparation.json").read_text())["status"] == "PREPARED_NOT_RUN"
+    
+        # Explicit fixture executes the real scheduling/continuity code through SCRIPT,
+        # proving that no saved PLAN is regenerated and no visual stage is executed.
+        from studio.local_story import SmallCPUStory
+    
+        monkeypatch.setattr(SmallCPUStory, "plan", lambda *a: pytest.fail("Rewrote saved PLAN"))
+        monkeypatch.setattr(SmallCPUStory, "script_batch", DemoStory.script_batch)
+        clone.control(pid, "resume")
+>       result = produce_until(clone, Worker(clone, wait_for_resources=False), pid, "SCRIPT", 1)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_story_plan_retest.py:77: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_pipeline.py:18: in produce_until
+    output = worker.execute(step)
+             ^^^^^^^^^^^^^^^^^^^^
+studio\worker.py:391: in execute
+    section = story_provider().script_batch(
+studio\story.py:176: in script_batch
+    script = self.script(project, number)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+studio\story.py:277: in script
+    return self._script_section(project, number, 0, math.ceil(project["spec"]["target_seconds"] / 5), [])
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+studio\story.py:405: in _script_section
+    script = self.generate(
+studio\local_story.py:164: in generate
+    with (
+tools\app-runtime\Lib\contextlib.py:137: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+studio\local_story.py:82: in cpu_server
+    require_startup_memory(profile)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+profile = 'cpu_4b'
+
+    def require_startup_memory(profile):
+        memory = memory_status()
+        minimum = 7 if profile == "cpu_4b" else 5 if profile == "cpu_1_5b" else 2
+        if not memory.get("available") or memory.get("free_gb") is None or memory["free_gb"] < minimum:
+>           raise RuntimeError(
+                f"RESOURCE_BUSY: The selected CPU experiment requires at least {minimum} GiB free RAM before loading."
+            )
+E           RuntimeError: RESOURCE_BUSY: The selected CPU experiment requires at least 7 GiB free RAM before loading.
+
+studio\local_story.py:67: RuntimeError
+______ test_refuse_unsafe_plan_reuse_before_creating_destination[canon] _______
+
+failed_plan = (<studio.storage.Store object at 0x00000232C7696B90>, '774b3348-344a-4f0f-a618-e183a23ffba5', WindowsPath('C:/Users/US.../AppData/Local/Temp/pytest-of-USER-PC/pytest-144/test_refuse_unsafe_plan_reuse_7/original-failed-native-fixture.json'))
+tmp_path = WindowsPath('C:/Users/USER-PC/AppData/Local/Temp/pytest-of-USER-PC/pytest-144/test_refuse_unsafe_plan_reuse_7')
+fault = 'canon'
+
+    @pytest.mark.parametrize("fault", ["report_plan", "report_time", "report_mock", "script", "batch", "running", "visual", "canon", "config", "outline"])
+    def test_refuse_unsafe_plan_reuse_before_creating_destination(failed_plan, tmp_path, fault):
+        source, pid, report = failed_plan
+        if fault.startswith("report_"):
+            data = json.loads(report.read_text())
+            if fault == "report_plan":
+                data["plan"]["ending"] = "An unrelated ending"
+            elif fault == "report_time":
+                data["elapsed_seconds"] = 600
+            else:
+                data["is_mock"] = True
+            atomic_json(report, data)
+        else:
+            with source.connect() as db:
+                jid = db.execute("SELECT id FROM jobs").fetchone()[0]
+                if fault == "script":
+                    db.execute("UPDATE episodes SET script='{}'")
+                elif fault == "batch":
+                    db.execute("UPDATE steps SET state='SUCCEEDED',output='{}' WHERE ordinal=1")
+                elif fault == "running":
+                    db.execute("UPDATE steps SET state='RUNNING' WHERE ordinal=1")
+                elif fault == "visual":
+                    source.add_step(db, jid, 4, "AUDIO", {})
+                elif fault == "canon":
+                    # A valid fixture event must still be rejected, never removed.
+                    character = source.get(pid)["plan"]["characters"][0]["id"]
+>                   db.execute("INSERT INTO canon VALUES(?,?,?,?,?,?,?,?,?)", (
+                        str(uuid4()), pid, character, 1, "status", '"dead"', "Fixture", 1,
+E                       sqlite3.OperationalError: table canon has 8 columns but 9 values were supplied
+E                       SQLite connection: SQLITE_ERROR (1)
+
+tests\test_story_plan_retest.py:117: OperationalError
+=========================== short test summary info ===========================
+FAILED tests/test_story_plan_retest.py::test_isolated_plan_reuse_preserves_source_ids_errors_and_small_batches
+FAILED tests/test_story_plan_retest.py::test_refuse_unsafe_plan_reuse_before_creating_destination[canon]
+2 failed, 12 passed in 2.65s

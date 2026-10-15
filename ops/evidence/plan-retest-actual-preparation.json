@@ -1,0 +1,70 @@
+{
+  "status": "PREPARED_NOT_RUN",
+  "is_mock": false,
+  "inference_performed": false,
+  "quality_review": "NOT_PERFORMED",
+  "source_plan_equal": true,
+  "source_report_sha256_current": "6f69902d8c84cfcc17688d07435e2e0d762298a1f330b1a56f48fc600a04b1e9",
+  "lineage": {
+    "status": "PREPARED_NOT_RUN",
+    "is_mock": false,
+    "quality_review": "NOT_PERFORMED",
+    "shots_per_request": 2,
+    "source_project_id": "a88e242a-120d-4856-b338-187c4e42b5d0",
+    "source_job_id": "028243f5-23ab-49ed-89fd-78d88994299b",
+    "source_plan_step_id": "b4bccd34-ce5a-4597-b512-c76cb1587d21",
+    "source_report_sha256": "6f69902d8c84cfcc17688d07435e2e0d762298a1f330b1a56f48fc600a04b1e9",
+    "source_plan_sha256": "c2a12dafb111746d6036c6491c3c432ff3914cfbdb998b3c0a7ca0d7c189c2fb",
+    "prior_test_milliseconds": 269719,
+    "plan_reused": true,
+    "plan_generated_this_run": false,
+    "run_id": "3d139cf5-c3cf-43c1-90e2-9085d205548d",
+    "source_archive_sha256": "f807c9fbde6d023327e8e639cfeb6c150b38dcaf6dd14cc20f2027a561b36817"
+  },
+  "clone_state": "PAUSED",
+  "new_batch_counts": [
+    2,
+    2,
+    2,
+    2
+  ],
+  "old_step_states": [
+    {
+      "id": "b4bccd34-ce5a-4597-b512-c76cb1587d21",
+      "stage": "PLAN",
+      "state": "SUCCEEDED",
+      "attempts": 1,
+      "error": null
+    },
+    {
+      "id": "ea8de43f-2424-49d6-8d85-5969bba9e2ee",
+      "stage": "SCRIPT_BATCH",
+      "state": "SUPERSEDED",
+      "attempts": 1,
+      "error": "timed out"
+    },
+    {
+      "id": "55a29c7f-62b4-474a-8fce-4c8564f16331",
+      "stage": "SCRIPT_BATCH",
+      "state": "SUPERSEDED",
+      "attempts": 0,
+      "error": null
+    },
+    {
+      "id": "44ea57cb-c548-4eb6-be1a-f847164c2dfb",
+      "stage": "SCRIPT",
+      "state": "SUPERSEDED",
+      "attempts": 0,
+      "error": null
+    }
+  ],
+  "asset_count": 0,
+  "canon_count": 0,
+  "budget_reserved": false,
+  "memory": {
+    "available": true,
+    "total_gb": 15.19,
+    "free_gb": 1.99,
+    "load_percent": 86
+  }
+}

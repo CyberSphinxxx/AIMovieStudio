@@ -1,5 +1,7 @@
 # Blockers —2026-10-14 (latest observations first)
 
+Saved-plan retest implementation is verified (58 targets +final17 helper checks); actual preparation is PAUSED with source IDs/SHA/plan preserved and no inference. Current RAM 1.36–1.99 GiB blocks the 7 GiB CPU4B start. Remaining experiment allowance is still 330.281 seconds; no durable reservation has been created. GPU image/video gates and earlier failures remain unchanged. No additional human approval is required for the already-approved bounded test, but readiness cannot be inferred from elapsed time. Do not launch models, terminate user apps or lower the guards to bypass the resource block.
+
 Finalstate: mainapp/workerreadyonown3.11runtime; freshblankprivatecopyhash/import/SQLite/currentpreviewverified. LatestRAM5.62GiB stillbelowCPU4B7GiB; earlierGPUprofile5offfailed78.532s atRAMguard/noimage/video. No newmanualapprovalrequested; nextinstalled-filetestsstaywithinexistingbounds. Freshaccount/distribution/licensing/vendor90advisories/subjectivequalityremainuncleared. FullAIapplicationisnotfinished.
 
 Mockcaptionclipping/omission FIX VERIFIED47currentmedia+3Edge+14finalpixelchecks; oldmoviesretainedintentionally. Remainingcriticalblockers: real4Bwriterqualityunproven/7GiBstartup/330.281sapprovedtestremaining; nativeimageprofile5offfailed78.532s/RAM/noimage; video stillimagePASSgated; freshWindowsaccount/subjectivequality/releaseandvendorlicensingauditsremainopen. No newmanualapprovalpendingforcurrentinstalledfiles/code; newlargealternativeweights/system/publicactionsretainAGENTSapprovalboundaries.

@@ -1,5 +1,13 @@
 # Handoff — 2026-10-14
 
+## Current session — isolated saved-plan retest verification
+
+Started a9fdf84 clean. New `scripts/story_plan_retest.py`, refactored bounded `story_batch_smoke.py`, `tests/test_story_plan_retest.py`, updated CPU4B proposal and actual preparation evidence are verified, ready for local checkpoint. Source app still healthy on own 3.11 at localhost8765/library untouched. No frontend/production runtime change or model download/load. Latest RAM 1.36–1.99 GiB prevents native 7 GiB CPU4B startup.
+
+Actual prepare-only command succeeded; clone run ID `3d139cf5-c3cf-43c1-90e2-9085d205548d` is PAUSED with exact original PLAN/IDs, old failed steps retained as SUPERSEDED, four new two-shot sections, zero media/canon. Original report SHA unchanged. New actual retest creates a fresh clone/new run-ID report and durable exclusive budget reservation; at most 320 seconds plus 10 seconds cleanup alongside prior269.719s. No reservation/inference yet; remaining330.281s unchanged. Future command: `tools/app-test-env/Scripts/python.exe -s -m scripts.story_batch_smoke --profile cpu_4b --max-seconds 320 --reuse-plan`, only after 7 GiB RAM/no concurrent native workload; manual quality review still required. Prepare-only appends `--prepare-only` and never loads models.
+
+Final58 targeted story/backup/setup PASS98.19s/one existing Starlette warning; after format final17 helper PASS4.86s, Ruff/diff checks pass. Prior2 fixture failures fixed, then1 deadline regression caught/fixed; all logs retained. Actual forced process kill preserves exclusive reservation (development fixture, no model). Save local checkpoint. Next dependency-independent task: reduce GPU memory sampling interval from2s after recorded parent1.46GiB overshoot; no claim it guarantees the floor or solves model RAM fit. Then cross-process native serialization / documented encoder RAM strategy. No unchanged GPU profile5off retry at5.6GiB, no video before reviewed image PASS; full app remains unfinished.
+
 ## Ready to resume —2026-10-15 final snapshot
 Codecheckpointfe669e4 afterruntimee9ffb3d/resourcewaiting4f56b74 (earlieraudio c274ef8/buffer61cf060 retained). Currentoriginalworkspace3.11app/workerhealthyat127.0.0.1:8765, source/builtUIcurrent, userlibrarypreserved. Freshblankprivatecopy tools/private-builds/Studio-248936f829de:3014SHAverified/374,869,668bytes, no models/vendor/data/.venv; actualown3.11isolatedimports/SQLite/v2previewPASSwithinvalidPythonenv (private-build-final-verification.json), previewviewed. ExistingcopiedUnicodeproofcontainsitsownsample, notuserdata; originalsuntouched. SourceStartStudio.cmd isrecommendedforuser'sexistinglibrary; privatecopyStartStudio.cmd opensanewlibrary.
 

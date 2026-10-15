@@ -1,5 +1,14 @@
 # Additional CPU writer experiment — approved 2026-10-14
 
+## Saved-plan retest preparation — 2026-10-15
+
+The existing 269.719-second failure remains the original result. The new developer test can reuse its verified PLAN in a separate paused workspace, preserving project/entity IDs, the plan checkpoint, the failed steps, source report and checksum lineage. It appends four two-shot requests; no source script, canon or media is changed. Preparation is not inference or a writing-quality pass.
+
+Prepare without loading a model:
+`tools/app-test-env/Scripts/python.exe -s -m scripts.story_batch_smoke --profile cpu_4b --max-seconds 320 --reuse-plan --prepare-only`
+
+Once at least 7 GiB RAM is free and no other native workload is running, omit `--prepare-only` for the remaining approved writing test. It creates a new isolated copy and report ID, reserves at most 320 seconds plus 10 seconds cleanup against the 600-second cumulative allowance (599.719 seconds including the first run), stops below 2 GiB/unknown RAM or after the first failed section, and pauses before any audio/visual work. A durable exclusive reservation prevents concurrent/restarted tests from resetting the allowance; an interrupted reservation requires evidence review, never automatic refund. Ordinary fresh 4B smoke runs are refused to prevent accidentally restarting a 600-second experiment. No new downloads, default writer changes or broader approval are included.
+
 Human reply: **“Approve bounded 4B installation and test.”** Files installed/hash-verified,2,497,364,354received bytes including proposal metadata, within2.9GB cap. Existing runtime/defaults preserved. User closed heavy apps and requested retest on2026-10-14. Actual CPU-only4B test started at7.3GiB freeRAM, persisted a typed PLAN84.078s, then first SCRIPT_BATCH timed out at the existing180s HTTP request ceiling; total269.719s. Stopped after that first failed section. Sampled working-set peak5,689,970,688bytes/minavailableRAM2.05GiB,1246samples. Whole screenplay missing/qualityNOT_PERFORMED. No image/video stages or further4B run. See `real-cpu-4b-batched-story.json`, `cpu-4b-writing-quality-review.json` and immutable cpu-writing-runs/a88e242a-120d-4856-b338-187c4e42b5d0 files. Earlier install/readiness receipts remain historical.
 
 The three approved1.5B trials on2026-10-14 ran real CPU inference in172.625,151.844 and137.110 seconds (461.579total, below the ten-minute experiment ceiling). Numbered screenplay gates now reject invented/duplicate/out-of-order shot headings, but manual review still FAILED: repeated rescue/action, incomplete spoken lines and underdeclared physical continuity. No further1.5B experiment is running. Original files and all failures are preserved.
