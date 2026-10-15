@@ -1,5 +1,9 @@
 # Active backlog — 2026-10-14
 
+## Current session — faster native RAM protection
+
+F4.04/F5.01: native image/video and GPU smoke parent checks now target 0.5-second sampling (previously2s), retaining the 2 GiB floor and startup requirements. Missing/nonfinite/malformed RAM readings fail closed. Requests/smoke reports record the interval; historical evidence is untouched. 34 targets PASS2.04s; **full374backend PASS416.28s/one existing warning**, no skips/failures. App restarted successfully with current source, original library preserved (181 succeeded/32 failed/4 cancelled, no active jobs before restart). Fresh private copy Studio-138305c47ea8:3014hashes/374,870,129bytes/copied isolated3.11/current guard imports PASS; no models/userdata/distribution proof. This does not prove model fit or eliminate sampling overshoot. Final read-only RAM2.61–2.63GiB blocks native tests; next implement cross-process native ownership per docs/NATIVE_INFERENCE_SERIALIZATION_PLAN.md.
+
 ## Current session — saved-plan writer retest
 
 F2.01/F2.03: isolated saved-plan reuse is implemented and verified: 58 story/backup/setup tests passed in98.19s, final17 helper checks passed in4.86s after formatting, Ruff/diff checks pass. The original failed 4B sample is read through a read-only SQLite snapshot, checked against its native report, archived, and restored into a new paused test workspace. Original IDs/plan/checkpoint/error history are preserved; only the clone receives four new two-shot sections. A new run ID keeps original reports immutable. Exclusive durable time reservation survives a real forced process kill. Native writing remains RAM-blocked and quality unproven.

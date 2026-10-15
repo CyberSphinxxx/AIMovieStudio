@@ -10,25 +10,32 @@ from uuid import uuid4
 
 from scripts.setup_gpu import ROOT
 from studio import media
-from studio.providers import WanGPConfig, WanGPProvider, require_resources
+from studio.providers import (
+    PARENT_MEMORY_CHECK_SECONDS,
+    WanGPConfig,
+    WanGPProvider,
+    require_resources,
+    runtime_memory_known,
+)
 from studio.storage import atomic_json, digest
 from studio.diagnostics import memory_status
 
 
 def smoke_guard(report, started, max_seconds):
-    last_sample = -2.0
+    last_sample = float("-inf")
+    report["parent_memory_sample_interval_seconds"] = PARENT_MEMORY_CHECK_SECONDS
 
     def check():
         nonlocal last_sample
         elapsed = time.monotonic() - started
         if elapsed > max_seconds:
             raise RuntimeError(f"TIMEOUT: GPU smoke reached its {max_seconds}-second ceiling")
-        if elapsed - last_sample < 2:
+        if elapsed - last_sample < PARENT_MEMORY_CHECK_SECONDS:
             return
         last_sample = elapsed
         memory = memory_status()
         report.setdefault("parent_memory_samples", []).append({"seconds": round(elapsed, 3), **memory})
-        if not memory.get("available"):
+        if not runtime_memory_known(memory):
             raise RuntimeError("RESOURCE_UNKNOWN: GPU smoke lost its RAM counters")
         if memory["free_gb"] < 2:
             raise RuntimeError("RESOURCE_BUSY: GPU smoke stopped below 2 GiB free RAM")

@@ -1,0 +1,19 @@
+{
+  "status": "PASS",
+  "scope": "Private current-source copy checks and isolated imports; not native inference or clean-account release",
+  "directory": "C:\\L3mxr\\Github Repositories\\AIMovieStudio\\tools\\private-builds\\Studio-138305c47ea8",
+  "files_verified": 3014,
+  "bytes": 374870129,
+  "manifest_sha256": "c48e9e6a9cd7ca27989e65f00fdd9f56f0ccf59d6e8401c57512911d88d0b60a",
+  "runtime": {
+    "python": "3.11.14",
+    "isolated": 1,
+    "parent_memory_sample_interval_seconds": 0.5,
+    "invalid_counter_rejected": true,
+    "module": "C:\\L3mxr\\Github Repositories\\AIMovieStudio\\tools\\private-builds\\Studio-138305c47ea8\\studio\\providers.py"
+  },
+  "models_included": false,
+  "user_data_included": false,
+  "distribution_cleared": false,
+  "native_generation_verified": false
+}

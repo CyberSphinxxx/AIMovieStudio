@@ -1,5 +1,21 @@
 # Observed development progress — 2026-10-12 (Asia/Manila)
 
+## 2026-10-15 — continuation verification complete
+
+Final `tools/app-test-env/Scripts/python.exe -s -m pytest -q` with PYTHONNOUSERSITE=1/PYTHONDONTWRITEBYTECODE=1: exit0, **374 passed, one existing Starlette/httpx deprecation, no failures/skips,416.28s** (`continued-full-backend.log`). Includes final guard process-exit cleanup and saved-plan17 tests. Ruff/diff checks pass on final source. No frontend code changed; previous browser results remain accurately historical.
+
+Built `tools/private-builds/Studio-138305c47ea8` using `-m scripts.package_private`: exit0. Reverified all3014file SHA256/374,870,129bytes and absence of data/.venv/vendor/models/node_modules; its own Python3.11.14 -I imported copied providers/FastAPI/PIL, checked in-memorySQLite/current0.5s guard/NaN rejection with deliberately invalid PYTHONHOME/PYTHONPATH. PASS `private-build-guard-verification.json/.log`; private only, no clean-account/full relocated UI/native/distribution claim. Earlier portable/Unicode/native failures preserved.
+
+Full35,805-byte prior handoff archived and SHAverified (`ops/archive/HANDOFF-2026-10-15-before-refresh.md`,3bc3dad7ebe3ab25d3cb068b17d3f5fdf91e07150b6900c27e2b031ec086fab6), curated current handoff replaces repeated historical pending notes. Next cross-process native ownership plan records official Python/Microsoft references and acceptance checks; implementation NOT_STARTED.
+
+Final read-only resource checks (`continued-resource-preflight.json`): RAM2.61–2.63GiB/GPU4691MiBfree/63C; CPU4B7GiB and GPU5GiB preflights both RESOURCE_BUSY. No new model load/download/test time or reservation. Original269.719s CPU4Bfailure/330.281sremaining and image78.532s RAMfailure/video-PASS gate unchanged. Source3.11app/worker healthy and library preserved. No additional manual approval pending within existing test bounds; new large models/system/public actions still require approval. Save local checkpoint; full application remains unfinished and no engineering continues after session ends unless resumed.
+
+## 2026-10-15 — faster parent RAM monitoring
+
+After saved-plan checkpoint6fd82a0, tightened image/video provider and native GPU-smoke RAM sampling from2s to0.5s, motivated by the actual78.532s image failure whose first low parent reading was1.46GiB. Keep 2GiB runtime floor, 5GiB GPU/7GiB CPU4B startup gates, and failure/checkpoint behavior. Invalid/missing/negative/boolean/nonfinite free-RAM values now produce RESOURCE_UNKNOWN. User controls/deadline callbacks still run between throttled RAM samples. New request/smoke JSON records intended interval; old native failure reports remain immutable. Faster sampling cannot guarantee the floor is never crossed and is not a fit or quality proof.
+
+`tools/app-test-env/Scripts/python.exe -s -m pytest -q tests/test_native_memory_sampling.py tests/test_gpu_smoke_status.py tests/test_providers.py tests/test_vendor_telemetry.py`: exit0, **34 passed in2.04s**, `native-memory-fast-sampling.log`. Tests include deterministic0/.49/.5 timing, low/unknown readings, preserved requests/no fake output, and an actual harmless owned Python child killed after a simulated low-memory reading. Native runtime/model imports are excluded from that child. Final process-test portability cleanup added POSIX signal0 checking only outsideWindows and a bounded3s Windows exit wait; full backend suite now running against final source. Ruff/diff checks pass. Read-only source job inventory181SUCCEEDED/32FAILED/4CANCELLED had no active production; managed stop/start succeeded, service using current source and original library. No new model load/download/system/remote changes.
+
 ## 2026-10-15 — isolated native writing retest preparation
 
 Started clean at a9fdf84. App-owned Python 3.11 service/worker healthy; original library preserved. Free RAM 1.36–1.99 GiB, so no real model was loaded. Applied continuity, low-VRAM and pipeline-verification skills to the highest-priority saved-plan task.

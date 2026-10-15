@@ -1,0 +1,25 @@
+{
+  "scope": "Read-only readiness checks, no model loaded",
+  "hardware": {
+    "gpu": {
+      "available": true,
+      "name": "NVIDIA GeForce RTX 3060 Laptop GPU",
+      "driver": "610.88",
+      "total_mb": 6144,
+      "used_mb": 1453,
+      "temperature_c": 63
+    },
+    "python": "3.11.14",
+    "memory": {
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 2.61,
+      "load_percent": 82
+    },
+    "measured_at": 1792079120.821273
+  },
+  "cpu_4b_remaining_seconds": 330.281,
+  "inference_performed": false,
+  "cpu_4b": "RESOURCE_BUSY: The selected CPU experiment requires at least 7 GiB free RAM before loading.",
+  "gpu": "RESOURCE_BUSY: Need 5 GB free RAM and 4 GB free VRAM for the initial smoke profile. Currently 2.63 GB RAM and 4691 MB VRAM free. Close heavy applications and retry."
+}

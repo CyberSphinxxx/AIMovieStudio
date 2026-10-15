@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import math
 import os
 import time
 from pathlib import Path
@@ -10,6 +11,19 @@ from pydantic import Field
 from studio import media
 from studio.domain import StrictModel
 from studio.storage import atomic_json
+
+PARENT_MEMORY_CHECK_SECONDS = 0.5
+
+
+def runtime_memory_known(memory: dict) -> bool:
+    value = memory.get("free_gb")
+    return (
+        memory.get("available") is True
+        and isinstance(value, (int, float))
+        and not isinstance(value, bool)
+        and math.isfinite(value)
+        and value >= 0
+    )
 
 
 def require_resources():
@@ -97,21 +111,23 @@ class WanGPProvider:
             "timeout": 3600,
             "memory_profile": self.config.memory_profile,
             "smart_memory_pinning": self.config.smart_memory_pinning,
+            "parent_memory_sample_interval_seconds": PARENT_MEMORY_CHECK_SECONDS,
         }
         req, res = directory / "provider-request.json", directory / "provider-result.json"
         atomic_json(req, request)
-        last_memory_check = -2.0
+        last_memory_check = float("-inf")
 
         def guarded_check():
             nonlocal last_memory_check
             check()
-            if kind == "discover" or time.monotonic() - last_memory_check < 2:
+            now = time.monotonic()
+            if kind == "discover" or now - last_memory_check < PARENT_MEMORY_CHECK_SECONDS:
                 return
             from studio.diagnostics import memory_status
 
-            last_memory_check = time.monotonic()
+            last_memory_check = now
             memory = memory_status()
-            if not memory.get("available"):
+            if not runtime_memory_known(memory):
                 raise RuntimeError("RESOURCE_UNKNOWN: Generation lost its RAM counters")
             if memory["free_gb"] < 2:
                 raise RuntimeError(
