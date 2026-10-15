@@ -1468,6 +1468,7 @@ function Settings() {
     native_resolution: "480x832",
     steps: 12,
     memory_profile: 4,
+    smart_memory_pinning: null as boolean | null,
   });
   useEffect(() => {
     Promise.allSettled([
@@ -1873,6 +1874,24 @@ function Settings() {
             <p className="muted">
               Lower memory use can mean slower generation. Changing this setting
               does not guarantee that a model fits.
+            </p>
+            <label className="check-label">
+              <input
+                type="checkbox"
+                checked={wangp.smart_memory_pinning === false}
+                onChange={(e) =>
+                  setWangp({
+                    ...wangp,
+                    smart_memory_pinning: e.target.checked ? false : null,
+                  })
+                }
+              />
+              Use smaller RAM transfer buffers
+            </label>
+            <p className="muted">
+              Can reduce reserved system memory but may slow generation. Uses a
+              private job configuration; your engine settings stay intact. Model
+              fit still needs a real test.
             </p>
             <p>
               Image models must support reference conditioning for shot

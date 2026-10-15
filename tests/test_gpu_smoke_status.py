@@ -80,3 +80,20 @@ def test_image_ram_stop_is_separate_from_successful_runtime_discovery(tmp_path, 
     assert json.loads(runtime_path.read_text()) == previous
     image = json.loads((tmp_path / "tools/gpu/image-status.json").read_text())
     assert image["code"] == "IMAGE_RAM_GUARD_STOP" and image["memory_profile"] == 5
+
+
+def test_explicit_smoke_transfer_option_is_preserved_in_request_and_failure(tmp_path, monkeypatch):
+    monkeypatch.setattr(gpu_smoke, "ROOT", tmp_path)
+    monkeypatch.setattr(sys, "argv", ["gpu_smoke", "image", "--profile", "5", "--disable-smart-pinning"])
+    monkeypatch.setattr(gpu_smoke, "require_resources", lambda: {"fixture": True})
+    seen = []
+
+    def blocked(provider, *args, **kwargs):
+        seen.append(provider.config.smart_memory_pinning)
+        raise RuntimeError("RESOURCE_BUSY: GPU smoke stopped below 2 GiB free RAM")
+
+    monkeypatch.setattr(gpu_smoke.WanGPProvider, "image", blocked)
+    with pytest.raises(RuntimeError, match="RESOURCE_BUSY"):
+        gpu_smoke.main()
+    assert seen == [False]
+    assert json.loads((tmp_path / "tools/gpu/image-status.json").read_text())["smart_memory_pinning"] is False

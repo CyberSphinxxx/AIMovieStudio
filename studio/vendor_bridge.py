@@ -13,6 +13,11 @@ import sys
 import time
 from pathlib import Path
 
+if __package__:
+    from .vendor_config import session_config
+else:
+    from vendor_config import session_config
+
 
 def build_settings(session, request):
     model = request["model"]
@@ -125,6 +130,8 @@ def main():
 
 
 def run_session(request, root, directory, response_path, telemetry):
+    telemetry.mark_phase("preparing_runtime_config")
+    config_path, runtime_options = session_config(root, directory, request.get("smart_memory_pinning"))
     telemetry.mark_phase("runtime_import")
     sys.path.insert(0, str(root))
     from shared.api import init
@@ -132,6 +139,7 @@ def run_session(request, root, directory, response_path, telemetry):
     telemetry.mark_phase("runtime_initialization")
     session = init(
         root=root,
+        config_path=config_path,
         output_dir=directory,
         cli_args=[
             "--attention",
@@ -171,6 +179,7 @@ def run_session(request, root, directory, response_path, telemetry):
             "is_mock": False,
             "memory_profile": request.get("memory_profile", 4),
         }
+    result["runtime_options"] = runtime_options
     temporary = response_path.with_suffix(".partial")
     temporary.write_text(json.dumps(result, default=str), encoding="utf-8")
     temporary.replace(response_path)

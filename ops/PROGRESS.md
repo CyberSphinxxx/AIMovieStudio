@@ -1,5 +1,12 @@
 # Observed development progress — 2026-10-12 (Asia/Manila)
 
+## 2026-10-15 — scoped transfer buffers and combined UI verification
+After c274ef8, connected optional smart_memory_pinning setting, frozen request/provenance, advanced checkbox, explicit smoke flag. Inspected pinned CLI docs (smart buffers reserve1–2GB) and API source requiring config_path basenamewgp_config.json/--config folder. Scoped allowlisted config omits credentials, disables optional assistant/enhancer in explicit override, preserves original engine file. Actual installed-config clone SHA bd62fe00535bc6f73712b6dc310cb1869bbe123370a331b5c4d6f953d1f68bf5, source unchanged, no runtime/model started; transfer-buffer-actual-config.json. No new dependencies/downloads/vendor/system changes.
+
+Initial helper6PASS0.17s;26contractsPASS0.81s,27PASS0.75s, final28PASS1.79s; expanded39PASS3.04s. Ruff/lint/typecheck/build/2VitestPASS. Full14EdgePASS219.558760s/no skips/failures/flaky; screenshot inspected/390pxAxe/persisted/reloaded buffer selection. Memory status is explicit development UI fixture; no native image created. Volume browser case actual PCM original-mix download and demo playback remain separately labeled. Full suite wrapper restored original settings. Latest full255backendPASS469.13s precedes transfer changes; changed contracts verified afterward.
+
+Latest hardware: GPU cooled71C; direct require_resources call failed preflight at4.43GiB RAM/4576MiBVRAM (no model/no latest-native report mutation). Earlier85C/~1GiB observations retained. No readiness nag; latest human requests work until finished/testafter. Next F4.04 durable auto resource waiting with bounded deadline/zero pre-inference attempts, user pause/stop and recovery, then native changed-strategy test once safe. Existing GPU/private download/image-before-video and CPU budget limits remain; full app unfinished.
+
 ## 2026-10-15 — measured volume balancing
 Recon aa4c1f1 clean, required relevant docs/skills read; RAM0.95GiB/GPU85C3172MiB initially, later1.9GiB/83C3878MiB. No model loading or new readiness request; latest human says continue until finished/testafter. Implemented meter/bounded constant gain/output remeasurement, original mix stem/hash lineage, frozen setting/legacy preservation, UI toggle/download/feedback. Finite measurement JSON, silence unchanged, peaks/gain capped, exact frame counts. Official FFmpeg filter docs and installed help checked, no deps/downloads/system/vendor modifications.
 

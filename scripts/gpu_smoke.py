@@ -41,6 +41,11 @@ def main():
     parser.add_argument("phase", choices=["runtime", "image", "video"])
     parser.add_argument("--max-seconds", type=int, default=600)
     parser.add_argument("--profile", choices=["4", "4.5", "5"], default="4")
+    parser.add_argument(
+        "--disable-smart-pinning",
+        action="store_true",
+        help="Use a scoped engine config without extra transfer buffers; memory fit is unproven",
+    )
     args = parser.parse_args()
     if not 1 <= args.max_seconds <= 3600:
         parser.error("GPU smoke ceiling must be between 1 and 3600 seconds")
@@ -61,6 +66,7 @@ def main():
         steps=4 if args.phase == "image" else 12,
         license_reviewed=True,
         memory_profile=float(args.profile),
+        smart_memory_pinning=False if args.disable_smart_pinning else None,
     )
     provider = WanGPProvider(config, root)
     try:
@@ -151,6 +157,7 @@ def main():
                     "installation": config.installation,
                     "model": config.image_model,
                     "memory_profile": config.memory_profile,
+                    "smart_memory_pinning": config.smart_memory_pinning,
                     "evidence_sha256": digest(evidence),
                 },
             )

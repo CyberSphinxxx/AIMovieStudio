@@ -42,6 +42,7 @@ class WanGPConfig(StrictModel):
     native_resolution: str = Field(default="480x832", pattern=r"^(480x832|832x480|512x512)$")
     steps: int = Field(default=12, ge=1, le=40)
     memory_profile: Literal[4, 4.5, 5] = 4
+    smart_memory_pinning: bool | None = None
 
 
 class WanGPProvider:
@@ -95,6 +96,7 @@ class WanGPProvider:
             "seconds": seconds,
             "timeout": 3600,
             "memory_profile": self.config.memory_profile,
+            "smart_memory_pinning": self.config.smart_memory_pinning,
         }
         req, res = directory / "provider-request.json", directory / "provider-result.json"
         atomic_json(req, request)
@@ -163,6 +165,7 @@ class WanGPProvider:
             "model": result["model"],
             "parameters": result["parameters"],
             "memory_profile": result.get("memory_profile", self.config.memory_profile),
+            "runtime_options": result.get("runtime_options"),
         }
 
     def video(self, prompt, frame, directory, size, seconds, check, seed=42):
@@ -213,4 +216,5 @@ class WanGPProvider:
             "model": result["model"],
             "parameters": result["parameters"],
             "memory_profile": result.get("memory_profile", self.config.memory_profile),
+            "runtime_options": result.get("runtime_options"),
         }

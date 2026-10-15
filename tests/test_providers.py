@@ -44,8 +44,45 @@ def test_bridge_subscribes_to_documented_callbacks_and_saves_actual_phases(tmp_p
     run_session({"kind": "discover", "memory_profile": 5}, tmp_path, tmp_path, response, sampler)
     assert received[0]["callbacks"] is sampler and received[0]["console_output"] is False
     assert "--no-prevent-power-throttling" in received[0]["cli_args"]
-    assert json.loads(response.read_text()) == {"models": [{"model_type": "fixture"}]}
+    result = json.loads(response.read_text())
+    assert result["models"] == [{"model_type": "fixture"}]
+    assert result["runtime_options"]["smart_memory_pinning"] is True
     assert json.loads(sampler.path.read_text())["phase"] == "response_saved"
+
+
+def test_explicit_transfer_override_is_passed_to_documented_session_config(tmp_path, monkeypatch):
+    import json
+    import sys
+
+    from studio.vendor_telemetry import Sampler
+
+    root, output = tmp_path / "engine", tmp_path / "output"
+    root.mkdir()
+    output.mkdir()
+    source = root / "wgp_config.json"
+    source.write_text('{"text_encoder_quantization":"int8","deepy_key":"fixture-secret"}')
+    original = source.read_bytes()
+    received = []
+
+    def init(**kwargs):
+        received.append(kwargs)
+        return SimpleNamespace(list_model_metadata=lambda **kw: [])
+
+    monkeypatch.setitem(sys.modules, "shared", SimpleNamespace())
+    monkeypatch.setitem(sys.modules, "shared.api", SimpleNamespace(init=init))
+    run_session(
+        {"kind": "discover", "smart_memory_pinning": False},
+        root,
+        output,
+        output / "result.json",
+        Sampler(output / "telemetry.json"),
+    )
+    config = received[0]["config_path"]
+    assert config.name == "wgp_config.json" and config.is_relative_to(output)
+    assert json.loads(config.read_text())["smart_memory_pinning"] is False
+    assert "fixture-secret" not in config.read_text() and source.read_bytes() == original
+    record = json.loads((output / "result.json").read_text())["runtime_options"]
+    assert record["override"] and record["smart_memory_pinning"] is False
 
 
 def test_documented_wangp_settings_preserve_defaults_and_references():

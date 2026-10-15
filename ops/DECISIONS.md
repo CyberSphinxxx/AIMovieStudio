@@ -1,5 +1,7 @@
 # Decisions — 2026-10-12
 
+2026-10-15: Expose smart-memory-pinning override as optionalNone/explicitFalse. Preserve vendor defaults for legacy/current unticked requests. Scoped config exact basename via documented API; allowlist runtime keys only, no copied credentials or vendor writes. Record effective buffer setting and input-config SHA. Actual clone check is configuration proof only, not inference/fit. GPU resource recovery does not waive RAM floor; preflight failures do not overwrite native evidence.
+
 2026-10-15: Meter EBU R128/true peak with installed FFmpeg, apply bounded linear gain and remeasure rendered PCM. Preserve dynamics/timing and original mix; cap quiet boosts and protect peaks rather than falsely forcing every target. Record actual limited/silent status and PCM scope/AAC differences. Mono measured for stereo playback. Frozen new-job option; old jobs unchanged. Official ffmpeg.org/ffmpeg-filters.html#loudnorm plus installed CLI checked.
 
 2026-10-15: Investigate documented smart_memory_pinning=false using a scoped allowlisted job config, no vendor modification or copied credentials. Explicit optional override only; legacyNone preserves vendor default. Native resource savings remain unproven. Latest broad user request does not remove system/download/licensing/safety boundaries.

@@ -1,5 +1,14 @@
 # Handoff — 2026-10-14
 
+## Latest 2026-10-15: lower-reserved-RAM option connected
+Audio code checkpoint c274ef8. Added optional smart_memory_pinning override (None preserves vendor default), frozen request/provenance, explicit advanced Settings checkbox and gpu_smoke --disable-smart-pinning. Uses documented init(config_path=...) and required basename wgp_config.json in a private job subfolder. Copies only generation-related keys; strips cloud/plugin credentials and disables optional assistant/enhancement in override. Original engine file unchanged in actual installed-config clone check; SHA/input options retained (transfer-buffer-actual-config.json). No vendor/dependency/download/system change, no inference or RAM-fit claim.
+
+Helper6PASS initially; final28contractPASS1.79s; expanded provider/telemetry/setup39PASS3.04s. Ruff/lint/build/typecheck/2VitestPASS. All14EdgePASS219.558760s/no failures/skips/flaky, loudness-transfer-all-browser.log/browser-tests.json. Includes actual volume original-mix download plus explicit development UI-state memory fixture with checkbox persisted/reloaded/profile5/Axe390px; screenshot inspected. Full suite wrapper restored pre-run settings. Latest full backend255PASS469.13s precedes transfer option; changed surface separately verified39. No fake native image success.
+
+Resources improved: GPU cooled71C, direct preflight reported4.43GiB RAM/4576MiBVRAM free, still below5GiB RAM floor. This was a preflight failure only, no model loaded or previous smoke evidence overwritten. Latest human asks continue until finished/testafter; remeasure opportunistically, do not ask repeated readiness. Next changed-strategy image command only after guards: .venv/Scripts/python.exe -m scripts.gpu_smoke image --profile 5 --disable-smart-pinning --max-seconds 300 . Parent2GiB stop; image visual review before video. CPU4B remaining330.281s, use320 plus cleanup margin once7GiB free. All prior quality/timeout/image failures and budgets persist.
+
+Next implement F4.04 durable resource waiting: queued native work waits without consuming inference attempts, resumes when resources free, explicit Pause/Stop and finite24h deadline, other projects can proceed, preserved across restart/backup (imports stay paused). Keep failed in-flight inference/manual retry semantics unchanged. Then portable launch and remaining provenance/canon/quality gates. App unfinished, no background engineering after session. Save local transfer-option checkpoint before scheduling changes.
+
 ## Current 2026-10-15 work: balanced volume verified; lower-RAM option next
 Started aa4c1f1 clean. Latest user explicitly requests continuous work until finished and will test afterward. Do not ask repeated readiness questions; continue independent work and remeasure before any model load. Current RAM0.95–1.9GiB, GPU3172–3878MiB used/83–85C blocks native tests. Original approval/download/experiment limits persist.
 

@@ -1,5 +1,7 @@
 # Blockers —2026-10-14 (latest observations first)
 
+2026-10-15 update: transfer-buffer option code/contracts/UI verified; actual RAM savings not measured. GPU now71C, latest direct preflight4.43GiB RAM/4576MiB VRAM free still RAM-blocked, no model attempted. User requests autonomous continuation/testafter; no new readiness question. Keep5GiB/4GiB/<85C startup,2GiB running floor, CPU4B7GiB/remaining330.281s, original image/quality failures and approved budgets. F4.04 queued resource waiting next.
+
 2026-10-15: Loudness normalization is no longer a missing implementation:255backend/newbrowser pass, actual PCM/AAC sample measured. Subjective listening/music/broader sound still open. Native tests currently blocked by RAM0.95–1.9GiB/GPU83–85C/only~2.2–3GiB VRAM free. User now requests continue independently until finished; do not reask readiness. Official smart-memory-pinning-off option offers a changed test strategy, not proven fit. Existing CPU4B experiment330.281s remainder and GPU/image-PASS-before-video limits persist.
 
 2026-10-15: Sound-effects media/browser/recovery checks pass. Listening NOT_PERFORMED; synthesis is stylized, with music/loudness/broader cinematic sound unfinished. Native image/writer tests remain held by human “free memory later” choice and observed0.9–2.4GiB RAM after initial0.51GiB. Installed-file approvals persist; remainingCPU4B330.281s/startup7GiB/ongoing2GiB guards. Original native failures/vendor90-advisory/release gates remain. No repeated readiness or permission question.

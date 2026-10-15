@@ -63,6 +63,8 @@ The user approved the private GPU scope in `docs/GPU_INSTALL_PROPOSAL.md` and in
 
 ## Verify
 
+The advanced WanGP connection settings offer **Use smaller RAM transfer buffers**. This applies the engine's documented smart-memory-pinning override in a private per-job configuration. It can reduce reserved memory at the cost of slower transfers; actual model fit is still unverified. The original engine configuration and credentials are preserved. Leaving it off retains the engine default. Developer test after resource guards pass: .venv/Scripts/python.exe -m scripts.gpu_smoke image --profile 5 --disable-smart-pinning --max-seconds 300 . Video still requires a reviewed image PASS.
+
 ```powershell
 powershell -NoProfile -ExecutionPolicy Bypass -File scripts/verify.ps1 -Browser
 ```

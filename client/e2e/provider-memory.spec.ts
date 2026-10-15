@@ -46,12 +46,19 @@ test("memory profile persists and image RAM failure remains explicit", async ({
     .getByRole("combobox", { name: "Memory use", exact: true })
     .selectOption("5");
   await page
+    .getByRole("checkbox", { name: "Use smaller RAM transfer buffers" })
+    .check();
+  await page
     .getByRole("button", { name: "Save settings", exact: true })
     .click();
   await expect(page.getByRole("status")).toHaveText("Settings saved.");
   expect(
     (await (await request.get("/api/settings")).json()).wangp.memory_profile,
   ).toBe(5);
+  expect(
+    (await (await request.get("/api/settings")).json()).wangp
+      .smart_memory_pinning,
+  ).toBe(false);
   await page.reload();
   await page
     .getByText("Connect an existing WanGP installation", { exact: true })
@@ -59,6 +66,9 @@ test("memory profile persists and image RAM failure remains explicit", async ({
   await expect(
     page.getByRole("combobox", { name: "Memory use", exact: true }),
   ).toHaveValue("5");
+  await expect(
+    page.getByRole("checkbox", { name: "Use smaller RAM transfer buffers" }),
+  ).toBeChecked();
   await page.setViewportSize({ width: 390, height: 844 });
   expect(
     await page.evaluate(
