@@ -1,0 +1,427 @@
+FFFFFF.FFFFFFF...F                                                       [100%]
+================================== FAILURES ===================================
+__________ test_cpu_rejects_invalid_counter_as_unknown[startup-None] __________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000026E44F23F10>
+free = None, phase = 'startup'
+
+    @pytest.mark.parametrize("free", [None, True, "8", -1, float("nan"), float("inf")])
+    @pytest.mark.parametrize("phase", ["startup", "ongoing"])
+    def test_cpu_rejects_invalid_counter_as_unknown(monkeypatch, free, phase):
+        monkeypatch.setattr(local_story, "memory_status", lambda: {"available": True, "free_gb": free})
+        with pytest.raises(RuntimeError, match="RESOURCE_UNKNOWN"):
+            if phase == "startup":
+>               local_story.require_startup_memory("cpu_4b")
+
+tests\test_memory_readings.py:14: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+profile = 'cpu_4b'
+
+    def require_startup_memory(profile):
+        memory = memory_status()
+        minimum = 7 if profile == "cpu_4b" else 5 if profile == "cpu_1_5b" else 2
+        if not memory.get("available") or memory.get("free_gb") is None or memory["free_gb"] < minimum:
+>           raise RuntimeError(
+                f"RESOURCE_BUSY: The selected CPU experiment requires at least {minimum} GiB free RAM before loading."
+            )
+E           RuntimeError: RESOURCE_BUSY: The selected CPU experiment requires at least 7 GiB free RAM before loading.
+
+studio\local_story.py:68: RuntimeError
+
+During handling of the above exception, another exception occurred:
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000026E44F23F10>
+free = None, phase = 'startup'
+
+    @pytest.mark.parametrize("free", [None, True, "8", -1, float("nan"), float("inf")])
+    @pytest.mark.parametrize("phase", ["startup", "ongoing"])
+    def test_cpu_rejects_invalid_counter_as_unknown(monkeypatch, free, phase):
+        monkeypatch.setattr(local_story, "memory_status", lambda: {"available": True, "free_gb": free})
+>       with pytest.raises(RuntimeError, match="RESOURCE_UNKNOWN"):
+E       AssertionError: Regex pattern did not match.
+E         Expected regex: 'RESOURCE_UNKNOWN'
+E         Actual message: 'RESOURCE_BUSY: The selected CPU experiment requires at least 7 GiB free RAM before loading.'
+
+tests\test_memory_readings.py:12: AssertionError
+__________ test_cpu_rejects_invalid_counter_as_unknown[startup-True] __________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000026E44FD4310>
+free = True, phase = 'startup'
+
+    @pytest.mark.parametrize("free", [None, True, "8", -1, float("nan"), float("inf")])
+    @pytest.mark.parametrize("phase", ["startup", "ongoing"])
+    def test_cpu_rejects_invalid_counter_as_unknown(monkeypatch, free, phase):
+        monkeypatch.setattr(local_story, "memory_status", lambda: {"available": True, "free_gb": free})
+        with pytest.raises(RuntimeError, match="RESOURCE_UNKNOWN"):
+            if phase == "startup":
+>               local_story.require_startup_memory("cpu_4b")
+
+tests\test_memory_readings.py:14: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+profile = 'cpu_4b'
+
+    def require_startup_memory(profile):
+        memory = memory_status()
+        minimum = 7 if profile == "cpu_4b" else 5 if profile == "cpu_1_5b" else 2
+        if not memory.get("available") or memory.get("free_gb") is None or memory["free_gb"] < minimum:
+>           raise RuntimeError(
+                f"RESOURCE_BUSY: The selected CPU experiment requires at least {minimum} GiB free RAM before loading."
+            )
+E           RuntimeError: RESOURCE_BUSY: The selected CPU experiment requires at least 7 GiB free RAM before loading.
+
+studio\local_story.py:68: RuntimeError
+
+During handling of the above exception, another exception occurred:
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000026E44FD4310>
+free = True, phase = 'startup'
+
+    @pytest.mark.parametrize("free", [None, True, "8", -1, float("nan"), float("inf")])
+    @pytest.mark.parametrize("phase", ["startup", "ongoing"])
+    def test_cpu_rejects_invalid_counter_as_unknown(monkeypatch, free, phase):
+        monkeypatch.setattr(local_story, "memory_status", lambda: {"available": True, "free_gb": free})
+>       with pytest.raises(RuntimeError, match="RESOURCE_UNKNOWN"):
+E       AssertionError: Regex pattern did not match.
+E         Expected regex: 'RESOURCE_UNKNOWN'
+E         Actual message: 'RESOURCE_BUSY: The selected CPU experiment requires at least 7 GiB free RAM before loading.'
+
+tests\test_memory_readings.py:12: AssertionError
+___________ test_cpu_rejects_invalid_counter_as_unknown[startup-8] ____________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000026E44F2FFD0>
+free = '8', phase = 'startup'
+
+    @pytest.mark.parametrize("free", [None, True, "8", -1, float("nan"), float("inf")])
+    @pytest.mark.parametrize("phase", ["startup", "ongoing"])
+    def test_cpu_rejects_invalid_counter_as_unknown(monkeypatch, free, phase):
+        monkeypatch.setattr(local_story, "memory_status", lambda: {"available": True, "free_gb": free})
+        with pytest.raises(RuntimeError, match="RESOURCE_UNKNOWN"):
+            if phase == "startup":
+>               local_story.require_startup_memory("cpu_4b")
+
+tests\test_memory_readings.py:14: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+profile = 'cpu_4b'
+
+    def require_startup_memory(profile):
+        memory = memory_status()
+        minimum = 7 if profile == "cpu_4b" else 5 if profile == "cpu_1_5b" else 2
+>       if not memory.get("available") or memory.get("free_gb") is None or memory["free_gb"] < minimum:
+                                                                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       TypeError: '<' not supported between instances of 'str' and 'int'
+
+studio\local_story.py:67: TypeError
+___________ test_cpu_rejects_invalid_counter_as_unknown[startup--1] ___________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000026E44F18990>
+free = -1, phase = 'startup'
+
+    @pytest.mark.parametrize("free", [None, True, "8", -1, float("nan"), float("inf")])
+    @pytest.mark.parametrize("phase", ["startup", "ongoing"])
+    def test_cpu_rejects_invalid_counter_as_unknown(monkeypatch, free, phase):
+        monkeypatch.setattr(local_story, "memory_status", lambda: {"available": True, "free_gb": free})
+        with pytest.raises(RuntimeError, match="RESOURCE_UNKNOWN"):
+            if phase == "startup":
+>               local_story.require_startup_memory("cpu_4b")
+
+tests\test_memory_readings.py:14: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+profile = 'cpu_4b'
+
+    def require_startup_memory(profile):
+        memory = memory_status()
+        minimum = 7 if profile == "cpu_4b" else 5 if profile == "cpu_1_5b" else 2
+        if not memory.get("available") or memory.get("free_gb") is None or memory["free_gb"] < minimum:
+>           raise RuntimeError(
+                f"RESOURCE_BUSY: The selected CPU experiment requires at least {minimum} GiB free RAM before loading."
+            )
+E           RuntimeError: RESOURCE_BUSY: The selected CPU experiment requires at least 7 GiB free RAM before loading.
+
+studio\local_story.py:68: RuntimeError
+
+During handling of the above exception, another exception occurred:
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000026E44F18990>
+free = -1, phase = 'startup'
+
+    @pytest.mark.parametrize("free", [None, True, "8", -1, float("nan"), float("inf")])
+    @pytest.mark.parametrize("phase", ["startup", "ongoing"])
+    def test_cpu_rejects_invalid_counter_as_unknown(monkeypatch, free, phase):
+        monkeypatch.setattr(local_story, "memory_status", lambda: {"available": True, "free_gb": free})
+>       with pytest.raises(RuntimeError, match="RESOURCE_UNKNOWN"):
+E       AssertionError: Regex pattern did not match.
+E         Expected regex: 'RESOURCE_UNKNOWN'
+E         Actual message: 'RESOURCE_BUSY: The selected CPU experiment requires at least 7 GiB free RAM before loading.'
+
+tests\test_memory_readings.py:12: AssertionError
+__________ test_cpu_rejects_invalid_counter_as_unknown[startup-nan] ___________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000026E44F1BB90>
+free = nan, phase = 'startup'
+
+    @pytest.mark.parametrize("free", [None, True, "8", -1, float("nan"), float("inf")])
+    @pytest.mark.parametrize("phase", ["startup", "ongoing"])
+    def test_cpu_rejects_invalid_counter_as_unknown(monkeypatch, free, phase):
+        monkeypatch.setattr(local_story, "memory_status", lambda: {"available": True, "free_gb": free})
+>       with pytest.raises(RuntimeError, match="RESOURCE_UNKNOWN"):
+E       Failed: DID NOT RAISE <class 'RuntimeError'>
+
+tests\test_memory_readings.py:12: Failed
+__________ test_cpu_rejects_invalid_counter_as_unknown[startup-inf] ___________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000026E44F7A950>
+free = inf, phase = 'startup'
+
+    @pytest.mark.parametrize("free", [None, True, "8", -1, float("nan"), float("inf")])
+    @pytest.mark.parametrize("phase", ["startup", "ongoing"])
+    def test_cpu_rejects_invalid_counter_as_unknown(monkeypatch, free, phase):
+        monkeypatch.setattr(local_story, "memory_status", lambda: {"available": True, "free_gb": free})
+>       with pytest.raises(RuntimeError, match="RESOURCE_UNKNOWN"):
+E       Failed: DID NOT RAISE <class 'RuntimeError'>
+
+tests\test_memory_readings.py:12: Failed
+__________ test_cpu_rejects_invalid_counter_as_unknown[ongoing-True] __________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000026E44F23D50>
+free = True, phase = 'ongoing'
+
+    @pytest.mark.parametrize("free", [None, True, "8", -1, float("nan"), float("inf")])
+    @pytest.mark.parametrize("phase", ["startup", "ongoing"])
+    def test_cpu_rejects_invalid_counter_as_unknown(monkeypatch, free, phase):
+        monkeypatch.setattr(local_story, "memory_status", lambda: {"available": True, "free_gb": free})
+        with pytest.raises(RuntimeError, match="RESOURCE_UNKNOWN"):
+            if phase == "startup":
+                local_story.require_startup_memory("cpu_4b")
+            else:
+>               local_story.observe_process(None, None)
+
+tests\test_memory_readings.py:16: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+observer = None, process = None
+
+    def observe_process(observer, process):
+        memory = memory_status()
+        if observer:
+            observer({"pid": process.pid, "rss_bytes": process_rss(process.pid), "memory": memory})
+        if not memory.get("available") or memory.get("free_gb") is None:
+            raise RuntimeError("RESOURCE_UNKNOWN: Cannot measure free RAM safely; CPU writing stopped.")
+        if memory["free_gb"] < 2:
+>           raise RuntimeError(
+                "RESOURCE_BUSY: CPU writing stopped below 2 GiB free RAM. Earlier checkpoints are preserved."
+            )
+E           RuntimeError: RESOURCE_BUSY: CPU writing stopped below 2 GiB free RAM. Earlier checkpoints are preserved.
+
+studio\local_story.py:59: RuntimeError
+
+During handling of the above exception, another exception occurred:
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000026E44F23D50>
+free = True, phase = 'ongoing'
+
+    @pytest.mark.parametrize("free", [None, True, "8", -1, float("nan"), float("inf")])
+    @pytest.mark.parametrize("phase", ["startup", "ongoing"])
+    def test_cpu_rejects_invalid_counter_as_unknown(monkeypatch, free, phase):
+        monkeypatch.setattr(local_story, "memory_status", lambda: {"available": True, "free_gb": free})
+>       with pytest.raises(RuntimeError, match="RESOURCE_UNKNOWN"):
+E       AssertionError: Regex pattern did not match.
+E         Expected regex: 'RESOURCE_UNKNOWN'
+E         Actual message: 'RESOURCE_BUSY: CPU writing stopped below 2 GiB free RAM. Earlier checkpoints are preserved.'
+
+tests\test_memory_readings.py:12: AssertionError
+___________ test_cpu_rejects_invalid_counter_as_unknown[ongoing-8] ____________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000026E44FE8390>
+free = '8', phase = 'ongoing'
+
+    @pytest.mark.parametrize("free", [None, True, "8", -1, float("nan"), float("inf")])
+    @pytest.mark.parametrize("phase", ["startup", "ongoing"])
+    def test_cpu_rejects_invalid_counter_as_unknown(monkeypatch, free, phase):
+        monkeypatch.setattr(local_story, "memory_status", lambda: {"available": True, "free_gb": free})
+        with pytest.raises(RuntimeError, match="RESOURCE_UNKNOWN"):
+            if phase == "startup":
+                local_story.require_startup_memory("cpu_4b")
+            else:
+>               local_story.observe_process(None, None)
+
+tests\test_memory_readings.py:16: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+observer = None, process = None
+
+    def observe_process(observer, process):
+        memory = memory_status()
+        if observer:
+            observer({"pid": process.pid, "rss_bytes": process_rss(process.pid), "memory": memory})
+        if not memory.get("available") or memory.get("free_gb") is None:
+            raise RuntimeError("RESOURCE_UNKNOWN: Cannot measure free RAM safely; CPU writing stopped.")
+>       if memory["free_gb"] < 2:
+           ^^^^^^^^^^^^^^^^^^^^^
+E       TypeError: '<' not supported between instances of 'str' and 'int'
+
+studio\local_story.py:58: TypeError
+___________ test_cpu_rejects_invalid_counter_as_unknown[ongoing--1] ___________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000026E44FB2750>
+free = -1, phase = 'ongoing'
+
+    @pytest.mark.parametrize("free", [None, True, "8", -1, float("nan"), float("inf")])
+    @pytest.mark.parametrize("phase", ["startup", "ongoing"])
+    def test_cpu_rejects_invalid_counter_as_unknown(monkeypatch, free, phase):
+        monkeypatch.setattr(local_story, "memory_status", lambda: {"available": True, "free_gb": free})
+        with pytest.raises(RuntimeError, match="RESOURCE_UNKNOWN"):
+            if phase == "startup":
+                local_story.require_startup_memory("cpu_4b")
+            else:
+>               local_story.observe_process(None, None)
+
+tests\test_memory_readings.py:16: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+observer = None, process = None
+
+    def observe_process(observer, process):
+        memory = memory_status()
+        if observer:
+            observer({"pid": process.pid, "rss_bytes": process_rss(process.pid), "memory": memory})
+        if not memory.get("available") or memory.get("free_gb") is None:
+            raise RuntimeError("RESOURCE_UNKNOWN: Cannot measure free RAM safely; CPU writing stopped.")
+        if memory["free_gb"] < 2:
+>           raise RuntimeError(
+                "RESOURCE_BUSY: CPU writing stopped below 2 GiB free RAM. Earlier checkpoints are preserved."
+            )
+E           RuntimeError: RESOURCE_BUSY: CPU writing stopped below 2 GiB free RAM. Earlier checkpoints are preserved.
+
+studio\local_story.py:59: RuntimeError
+
+During handling of the above exception, another exception occurred:
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000026E44FB2750>
+free = -1, phase = 'ongoing'
+
+    @pytest.mark.parametrize("free", [None, True, "8", -1, float("nan"), float("inf")])
+    @pytest.mark.parametrize("phase", ["startup", "ongoing"])
+    def test_cpu_rejects_invalid_counter_as_unknown(monkeypatch, free, phase):
+        monkeypatch.setattr(local_story, "memory_status", lambda: {"available": True, "free_gb": free})
+>       with pytest.raises(RuntimeError, match="RESOURCE_UNKNOWN"):
+E       AssertionError: Regex pattern did not match.
+E         Expected regex: 'RESOURCE_UNKNOWN'
+E         Actual message: 'RESOURCE_BUSY: CPU writing stopped below 2 GiB free RAM. Earlier checkpoints are preserved.'
+
+tests\test_memory_readings.py:12: AssertionError
+__________ test_cpu_rejects_invalid_counter_as_unknown[ongoing-nan] ___________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000026E44F1A450>
+free = nan, phase = 'ongoing'
+
+    @pytest.mark.parametrize("free", [None, True, "8", -1, float("nan"), float("inf")])
+    @pytest.mark.parametrize("phase", ["startup", "ongoing"])
+    def test_cpu_rejects_invalid_counter_as_unknown(monkeypatch, free, phase):
+        monkeypatch.setattr(local_story, "memory_status", lambda: {"available": True, "free_gb": free})
+>       with pytest.raises(RuntimeError, match="RESOURCE_UNKNOWN"):
+E       Failed: DID NOT RAISE <class 'RuntimeError'>
+
+tests\test_memory_readings.py:12: Failed
+__________ test_cpu_rejects_invalid_counter_as_unknown[ongoing-inf] ___________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000026E44F2CA10>
+free = inf, phase = 'ongoing'
+
+    @pytest.mark.parametrize("free", [None, True, "8", -1, float("nan"), float("inf")])
+    @pytest.mark.parametrize("phase", ["startup", "ongoing"])
+    def test_cpu_rejects_invalid_counter_as_unknown(monkeypatch, free, phase):
+        monkeypatch.setattr(local_story, "memory_status", lambda: {"available": True, "free_gb": free})
+>       with pytest.raises(RuntimeError, match="RESOURCE_UNKNOWN"):
+E       Failed: DID NOT RAISE <class 'RuntimeError'>
+
+tests\test_memory_readings.py:12: Failed
+___ test_cpu_counter_io_error_fails_closed_with_actionable_reason[startup] ____
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000026E44F83610>
+phase = 'startup'
+
+    @pytest.mark.parametrize("phase", ["startup", "ongoing"])
+    def test_cpu_counter_io_error_fails_closed_with_actionable_reason(monkeypatch, phase):
+        def unavailable():
+            raise OSError("Development fixture counter unavailable")
+    
+        monkeypatch.setattr(local_story, "memory_status", unavailable)
+        with pytest.raises(RuntimeError, match="RESOURCE_UNKNOWN"):
+            if phase == "startup":
+>               local_story.require_startup_memory("cpu_4b")
+
+tests\test_memory_readings.py:27: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+studio\local_story.py:65: in require_startup_memory
+    memory = memory_status()
+             ^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    def unavailable():
+>       raise OSError("Development fixture counter unavailable")
+E       OSError: Development fixture counter unavailable
+
+tests\test_memory_readings.py:22: OSError
+___ test_cpu_counter_io_error_fails_closed_with_actionable_reason[ongoing] ____
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000026E44F79BD0>
+phase = 'ongoing'
+
+    @pytest.mark.parametrize("phase", ["startup", "ongoing"])
+    def test_cpu_counter_io_error_fails_closed_with_actionable_reason(monkeypatch, phase):
+        def unavailable():
+            raise OSError("Development fixture counter unavailable")
+    
+        monkeypatch.setattr(local_story, "memory_status", unavailable)
+        with pytest.raises(RuntimeError, match="RESOURCE_UNKNOWN"):
+            if phase == "startup":
+                local_story.require_startup_memory("cpu_4b")
+            else:
+>               local_story.observe_process(None, None)
+
+tests\test_memory_readings.py:29: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+studio\local_story.py:53: in observe_process
+    memory = memory_status()
+             ^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    def unavailable():
+>       raise OSError("Development fixture counter unavailable")
+E       OSError: Development fixture counter unavailable
+
+tests\test_memory_readings.py:22: OSError
+_____ test_valid_low_ram_is_retained_but_bad_readings_cannot_pollute_json _____
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000026E44FEA850>
+
+    def test_valid_low_ram_is_retained_but_bad_readings_cannot_pollute_json(monkeypatch):
+        from types import SimpleNamespace
+    
+        monkeypatch.setattr(local_story, "process_rss", lambda _: 123)
+        monkeypatch.setattr(local_story, "memory_status", lambda: {"available": True, "free_gb": float("nan")})
+        observations = []
+>       with pytest.raises(RuntimeError, match="RESOURCE_UNKNOWN"):
+E       Failed: DID NOT RAISE <class 'RuntimeError'>
+
+tests\test_memory_readings.py:48: Failed
+=========================== short test summary info ===========================
+FAILED tests/test_memory_readings.py::test_cpu_rejects_invalid_counter_as_unknown[startup-None]
+FAILED tests/test_memory_readings.py::test_cpu_rejects_invalid_counter_as_unknown[startup-True]
+FAILED tests/test_memory_readings.py::test_cpu_rejects_invalid_counter_as_unknown[startup-8]
+FAILED tests/test_memory_readings.py::test_cpu_rejects_invalid_counter_as_unknown[startup--1]
+FAILED tests/test_memory_readings.py::test_cpu_rejects_invalid_counter_as_unknown[startup-nan]
+FAILED tests/test_memory_readings.py::test_cpu_rejects_invalid_counter_as_unknown[startup-inf]
+FAILED tests/test_memory_readings.py::test_cpu_rejects_invalid_counter_as_unknown[ongoing-True]
+FAILED tests/test_memory_readings.py::test_cpu_rejects_invalid_counter_as_unknown[ongoing-8]
+FAILED tests/test_memory_readings.py::test_cpu_rejects_invalid_counter_as_unknown[ongoing--1]
+FAILED tests/test_memory_readings.py::test_cpu_rejects_invalid_counter_as_unknown[ongoing-nan]
+FAILED tests/test_memory_readings.py::test_cpu_rejects_invalid_counter_as_unknown[ongoing-inf]
+FAILED tests/test_memory_readings.py::test_cpu_counter_io_error_fails_closed_with_actionable_reason[startup]
+FAILED tests/test_memory_readings.py::test_cpu_counter_io_error_fails_closed_with_actionable_reason[ongoing]
+FAILED tests/test_memory_readings.py::test_valid_low_ram_is_retained_but_bad_readings_cannot_pollute_json
+14 failed, 4 passed in 0.66s

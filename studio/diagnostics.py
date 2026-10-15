@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import ctypes
+import math
 import os
 import shutil
 import sys
@@ -10,6 +11,28 @@ from ctypes import wintypes
 from studio.media import run
 
 _cached: tuple[float, dict] = (0, {})
+
+
+def runtime_memory_known(memory: dict) -> bool:
+    value = memory.get("free_gb")
+    return (
+        memory.get("available") is True
+        and isinstance(value, (int, float))
+        and not isinstance(value, bool)
+        and math.isfinite(value)
+        and value >= 0
+    )
+
+
+def gpu_reading_known(gpu: dict) -> bool:
+    values = [gpu.get(key) for key in ("total_mb", "used_mb", "temperature_c")]
+    return (
+        gpu.get("available") is True
+        and all(isinstance(v, (int, float)) and not isinstance(v, bool) and math.isfinite(v) for v in values)
+        and gpu["total_mb"] > 0
+        and 0 <= gpu["used_mb"] <= gpu["total_mb"]
+        and gpu["temperature_c"] >= 0
+    )
 
 
 def process_rss(pid: int) -> int | None:

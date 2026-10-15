@@ -1,5 +1,7 @@
 # Blockers —2026-10-14 (latest observations first)
 
+Ownership full394/16Edge passed; independent CPU/GPU counter faults fixed/140targets passed. Native hardware/quality/video gates remain open. Newly confirmed provenance blocker: Git newline conversion changes original4B report SHA on roundtrip (working6f69902d..., stored62654b4e...). Narrow byte-preserving attributes/index repair and checkout regression are next; preserve original physical files. No new manual approval pending for this code/data-durability work.
+
 Ownership UI now verified16EdgePASS4.2min, Settings restored; backend20/94 targeted proof passes, full regression pending. Next independent CPU counter defect reproduced with synthetic values: NaN/infinity can bypass comparisons, strings cause TypeError and unavailable counters report misleading busy. No native process was loaded in reproduction. Fix is authorized application code, no additional permission/model download needed.
 
 2026-10-16: shared native ownership is implemented/20targeted+94related checks pass; full backend/16Edge running. This closes the per-Store-only coordination gap for updated cooperating Studio processes, not arbitrary external AI apps/older builds. No native inference performed: actual RAM2.4GiB remains below CPU4B7/GPU5GiB startup. CPU4B330.281s allowance, failed image evidence/image-PASS-before-video and vendor licensing/security/clean-account/quality gates unchanged. No new approval needed for existing installed bounded tests/code; no new downloads/system/remote action.

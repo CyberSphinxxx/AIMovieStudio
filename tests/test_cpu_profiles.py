@@ -35,7 +35,7 @@ def test_cpu_ram_guard_runs_before_launch(tmp_path, monkeypatch, profile, free, 
     monkeypatch.setattr(
         local_story.subprocess, "Popen", lambda *args, **kwargs: pytest.fail("Launched despite busy RAM")
     )
-    with pytest.raises(RuntimeError, match="RESOURCE_BUSY"):
+    with pytest.raises(RuntimeError, match="RESOURCE_BUSY" if available else "RESOURCE_UNKNOWN"):
         with local_story.cpu_server(profile=profile):
             pytest.fail("Loaded despite busy RAM")
 

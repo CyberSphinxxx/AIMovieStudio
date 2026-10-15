@@ -1,5 +1,9 @@
 # Active backlog — 2026-10-14
 
+## 2026-10-16 — latest verification and next durability fix
+
+Ownership3ccf876: full394backendPASS529.46s/all16Edge4.2min/static/2Vitest. Subsequent CPU/GPU malformed-counter hardening:140currenttargetsPASS37.91s, thresholds unchanged/unknown samples validJSON. Native generation remains unverified/RAM blocked. Next: preserve byte-exact Git storage/checkout of hashed reports; actual original4Bworking-vs-Git SHA mismatch confirmed. No historical working files deleted/rewritten. Full baseline predates counter slice; do not claim a full423test run.
+
 ## 2026-10-16 — shared native inference ownership
 
 UI completed:16EdgePASS4.2min/Settings restored/mobile shared-engine screenshot inspected.20 ownership/94related backend targets and lint/type/2Vitest pass. Full backend still running; local ownership checkpoint may be saved, broad acceptance stays incomplete. CPU malformed-counter failure reproduced14fail/4pass in separate uncommitted next-task tests, no model loaded.

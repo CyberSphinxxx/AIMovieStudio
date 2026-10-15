@@ -12,7 +12,7 @@ import httpx
 from pydantic import ValidationError
 
 from studio.media import ROOT
-from studio.diagnostics import memory_status, process_rss
+from studio.diagnostics import memory_status, process_rss, runtime_memory_known
 from studio.storage import digest
 from studio.story import OllamaStory, T, checked_post
 from studio.processes import owned_process
@@ -50,10 +50,10 @@ def cpu_post(client, body, check):
 
 
 def observe_process(observer, process):
-    memory = memory_status()
+    memory = cpu_memory()
     if observer:
         observer({"pid": process.pid, "rss_bytes": process_rss(process.pid), "memory": memory})
-    if not memory.get("available") or memory.get("free_gb") is None:
+    if not runtime_memory_known(memory):
         raise RuntimeError("RESOURCE_UNKNOWN: Cannot measure free RAM safely; CPU writing stopped.")
     if memory["free_gb"] < 2:
         raise RuntimeError(
@@ -61,10 +61,23 @@ def observe_process(observer, process):
         )
 
 
+def cpu_memory():
+    try:
+        memory = memory_status()
+    except OSError:
+        memory = {}
+    if runtime_memory_known(memory):
+        return memory
+    # Keep observers/logs valid JSON; a malformed counter is not measured RAM.
+    return {"available": False, "reason": "Free memory could not be measured reliably"}
+
+
 def require_startup_memory(profile):
-    memory = memory_status()
+    memory = cpu_memory()
     minimum = 7 if profile == "cpu_4b" else 5 if profile == "cpu_1_5b" else 2
-    if not memory.get("available") or memory.get("free_gb") is None or memory["free_gb"] < minimum:
+    if not runtime_memory_known(memory):
+        raise RuntimeError("RESOURCE_UNKNOWN: Cannot measure free RAM safely; no CPU model was loaded.")
+    if memory["free_gb"] < minimum:
         raise RuntimeError(
             f"RESOURCE_BUSY: The selected CPU experiment requires at least {minimum} GiB free RAM before loading."
         )

@@ -2,12 +2,11 @@
 
 from __future__ import annotations
 
-import math
 from typing import Literal
 
 from pydantic import Field, model_validator
 from studio.domain import StrictModel
-from studio.diagnostics import memory_status
+from studio.diagnostics import memory_status, runtime_memory_known, gpu_reading_known
 from studio.inference_lock import inference_busy
 
 RECHECK_SECONDS = 15
@@ -40,10 +39,6 @@ def load_wait(db, jid):
         "SELECT data FROM events WHERE job_id=? AND kind='resource_wait' ORDER BY seq DESC LIMIT 1", (jid,)
     ).fetchone()
     return ResourceWait.model_validate_json(row["data"]) if row else None
-
-
-def number(value):
-    return isinstance(value, (int, float)) and not isinstance(value, bool) and math.isfinite(value)
 
 
 def probe(step: dict, settings: dict, spec: dict, gpu_reader) -> ResourceReason | None:
@@ -83,7 +78,7 @@ def probe(step: dict, settings: dict, spec: dict, gpu_reader) -> ResourceReason 
         memory = memory_status()
     except OSError:
         memory = {}
-    if not memory.get("available") or not number(memory.get("free_gb")):
+    if not runtime_memory_known(memory):
         return ResourceReason(
             code="COUNTERS_UNKNOWN",
             message="Waiting for reliable memory readings. Review Settings if this continues.",
@@ -97,13 +92,7 @@ def probe(step: dict, settings: dict, spec: dict, gpu_reader) -> ResourceReason 
             gpu = gpu_reader()
         except (OSError, RuntimeError):
             gpu = {}
-        if (
-            not gpu.get("available")
-            or not all(number(gpu.get(key)) for key in ("total_mb", "used_mb", "temperature_c"))
-            or not 0 <= gpu["used_mb"] <= gpu["total_mb"]
-            or gpu["total_mb"] <= 0
-            or gpu["temperature_c"] < 0
-        ):
+        if not gpu_reading_known(gpu):
             return ResourceReason(
                 code="COUNTERS_UNKNOWN",
                 message="Waiting for reliable graphics readings. Review Settings if this continues.",

@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import json
-import math
 import os
 import time
 from pathlib import Path
@@ -12,19 +11,9 @@ from studio import media
 from studio.domain import StrictModel
 from studio.storage import atomic_json
 from studio.inference_lock import serialized_inference
+from studio.diagnostics import runtime_memory_known, gpu_reading_known
 
 PARENT_MEMORY_CHECK_SECONDS = 0.5
-
-
-def runtime_memory_known(memory: dict) -> bool:
-    value = memory.get("free_gb")
-    return (
-        memory.get("available") is True
-        and isinstance(value, (int, float))
-        and not isinstance(value, bool)
-        and math.isfinite(value)
-        and value >= 0
-    )
 
 
 def require_resources():
@@ -32,7 +21,7 @@ def require_resources():
 
     report = hardware(refresh=True)
     memory, gpu = report["memory"], report["gpu"]
-    if not memory.get("available") or not gpu.get("available"):
+    if not runtime_memory_known(memory) or not gpu_reading_known(gpu):
         raise RuntimeError(
             "RESOURCE_UNKNOWN: Local RAM/GPU counters are unavailable; inspect diagnostics before inference."
         )
