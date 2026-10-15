@@ -1,0 +1,9 @@
+# Preserve captured evidence bytes
+
+Generation reports and archived handoffs carry recorded SHA256 hashes. Their line endings are part of those hashes. On2026-10-16 the preserved original CPU4B report had SHA256 `6f69902d8c84cfcc17688d07435e2e0d762298a1f330b1a56f48fc600a04b1e9`, while Git's normalized version had `62654b4ef8d8114e5c5c551bd5cc66a2eeed664b913df63a1479d3e042482139`. A checkout could therefore invalidate the source receipt despite identical displayed JSON.
+
+The narrow `.gitattributes` rules disable line-ending conversion for `ops/evidence/**` and `ops/archive/**`. Other source files retain ordinary text handling. CRLF is recognized as a line ending for proof files. Captured `.log` files also preserve original failure-trace spacing rather than being changed to satisfy source whitespace checks. [Git's official attribute reference](https://git-scm.com/docs/gitattributes) documents text conversion and per-path whitespace rules.
+
+The index was repaired from the available working originals:334 tracked evidence/archive files were SHAverified unchanged,279 index entries changed only in line endings, and the original report's stored bytes now match its recorded6f69902d... hash. No physical historical file was rewritten/deleted, no global Git setting or remote changed, and no lost earlier byte format was claimed recovered. `ops/evidence/evidence-byte-preservation.json` records the paths/hashes. The archived handoff remains3bc3dad7ebe3ab25d3cb068b17d3f5fdf91e07150b6900c27e2b031ec086fab6.
+
+`tests/test_evidence_bytes.py` uses isolated local Git repositories and explicit `core.autocrlf=true` to check CRLF JSON, LF archived Markdown and spaced console traces through both index storage and checkout. Initial2failures reproduced conversion; final3roundtrips plus17saved-plan regressions passed. Do not format or edit original evidence to make a check pass. New experiments get new IDs/reports; corrections belong in separate review records.

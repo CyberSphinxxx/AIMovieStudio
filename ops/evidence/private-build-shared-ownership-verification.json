@@ -1,0 +1,21 @@
+{
+  "status": "PASS",
+  "scope": "Private copy checks and actual cross-process ownership; no model inference or fresh-account release",
+  "directory": "C:\\L3mxr\\Github Repositories\\AIMovieStudio\\tools\\private-builds\\Studio-5e684814662c",
+  "files_verified": 3015,
+  "bytes": 374878477,
+  "manifest_sha256": "a3f2faf4c467185462d012a72c43aa3561877982a18ac523179d075deaed1b07",
+  "runtime": {
+    "python": "3.11.14",
+    "isolated": 1,
+    "shared_lock_path": "C:\\Users\\USER-PC\\AppData\\Local\\AIMovieStudio\\runtime\\native-inference.lock",
+    "original_process_ownership_seen": true,
+    "invalid_cpu_counter_rejected": true,
+    "parent_memory_sample_interval_seconds": 0.5
+  },
+  "source_code_checkpoint": "904af34",
+  "models_included": false,
+  "user_data_included": false,
+  "native_generation_verified": false,
+  "distribution_cleared": false
+}

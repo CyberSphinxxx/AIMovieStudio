@@ -1,5 +1,12 @@
 # Active backlog — 2026-10-14
 
+## Current — 2026-10-16 verified checkpoint
+
+- Shared native ownership3ccf876:394backendPASS529.46s/16EdgePASS4.2min/20specific+94related/static/2Vitest; updated Studio copies queue rather than load together, retain cleanup/request ownership, preserve controls/deadlines/attempts. Independent third-party programs/older builds outside cooperation.
+- Counter guards904af34:140currenttargetsPASS37.91s; finite/plausible CPU/GPU admission, unknown samples validJSON, unchanged thresholds. Subsequent Git proof:20targetsPASS4.68s;334historical files unchanged/279index EOL repairs, exact hash/checkout preservation. No current426full claim.
+- Fresh private Studio-5e684814662c:3015hashes/374,878,477bytes/own3.11/cross-copy actual process lock and counter checks PASS, no models/userdata/distribution clearance. Source app current/healthy/library preserved.
+- FinalRAM4.74GiB/GPU4680MiBfree/58C blocks CPU7/GPU5; no model test/reservation,330.281sCPU4B remains. Next: bounded saved-plan writer when7GiB free, documented image RAM strategy/more baseline capacity; otherwise F2.04 precise world-time/continuity/revision acceptance. Whole product remains unfinished.
+
 ## 2026-10-16 — latest verification and next durability fix
 
 Ownership3ccf876: full394backendPASS529.46s/all16Edge4.2min/static/2Vitest. Subsequent CPU/GPU malformed-counter hardening:140currenttargetsPASS37.91s, thresholds unchanged/unknown samples validJSON. Native generation remains unverified/RAM blocked. Next: preserve byte-exact Git storage/checkout of hashed reports; actual original4Bworking-vs-Git SHA mismatch confirmed. No historical working files deleted/rewritten. Full baseline predates counter slice; do not claim a full423test run.

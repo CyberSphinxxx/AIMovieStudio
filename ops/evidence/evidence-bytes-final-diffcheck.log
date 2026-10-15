@@ -1,0 +1,128 @@
+ops/evidence/app-runtime-launcher-isolated.log:12: trailing whitespace.
++E       AssertionError: Get-FileHash : The term 'Get-FileHash' is not recognized as the name of a cmdlet, function, script file, or operable 
+ops/evidence/app-runtime-launcher-isolated.log:19: trailing whitespace.
++E          
+ops/evidence/app-runtime-launcher-isolated.log:20: trailing whitespace.
++E         
+ops/evidence/app-runtime-launcher-tests.log:12: trailing whitespace.
++E       AssertionError: Get-FileHash : The term 'Get-FileHash' is not recognized as the name of a cmdlet, function, script file, or operable 
+ops/evidence/app-runtime-launcher-tests.log:19: trailing whitespace.
++E          
+ops/evidence/app-runtime-launcher-tests.log:20: trailing whitespace.
++E         
+ops/evidence/app-runtime-relocation-3ec80aa2f1.log:23: trailing whitespace.
++    + FullyQualifiedErrorId : Port 8765 belongs to another app or Studio folder. It has been left running; close that  
+ops/evidence/app-runtime-relocation-3ec80aa2f1.log:25: trailing whitespace.
++ 
+ops/evidence/app-runtime-relocation-3ec80aa2f1.log:36: trailing whitespace.
++ 
+ops/evidence/app-runtime-relocation-8d5792d96b.log:23: trailing whitespace.
++    + FullyQualifiedErrorId : Port 8765 belongs to another app or Studio folder. It has been left running; close that  
+ops/evidence/app-runtime-relocation-8d5792d96b.log:25: trailing whitespace.
++ 
+ops/evidence/app-runtime-relocation-8d5792d96b.log:36: trailing whitespace.
++ 
+ops/evidence/cpu-invalid-memory-before.log:16: trailing whitespace.
++tests\test_memory_readings.py:14: 
+ops/evidence/cpu-invalid-memory-before.log:60: trailing whitespace.
++tests\test_memory_readings.py:14: 
+ops/evidence/cpu-invalid-memory-before.log:104: trailing whitespace.
++tests\test_memory_readings.py:14: 
+ops/evidence/cpu-invalid-memory-before.log:130: trailing whitespace.
++tests\test_memory_readings.py:14: 
+ops/evidence/cpu-invalid-memory-before.log:202: trailing whitespace.
++tests\test_memory_readings.py:16: 
+ops/evidence/cpu-invalid-memory-before.log:251: trailing whitespace.
++tests\test_memory_readings.py:16: 
+ops/evidence/cpu-invalid-memory-before.log:282: trailing whitespace.
++tests\test_memory_readings.py:16: 
+ops/evidence/cpu-invalid-memory-before.log:351: trailing whitespace.
++    
+ops/evidence/cpu-invalid-memory-before.log:357: trailing whitespace.
++tests\test_memory_readings.py:27: 
+ops/evidence/cpu-invalid-memory-before.log:378: trailing whitespace.
++    
+ops/evidence/cpu-invalid-memory-before.log:386: trailing whitespace.
++tests\test_memory_readings.py:29: 
+ops/evidence/cpu-invalid-memory-before.log:404: trailing whitespace.
++    
+ops/evidence/draft-editing-verification.log:106: trailing whitespace.
++ 
+ops/evidence/export-folder-browser.log:15: trailing whitespace.
++  1) e2e\export-folder.spec.ts:3:1 › finished export folder action has busy, launch and failure feedback 
+ops/evidence/export-folder-browser.log:48: trailing whitespace.
++    e2e\export-folder.spec.ts:3:1 › finished export folder action has busy, launch and failure feedback 
+ops/evidence/gpu-current-readiness-regression.log:12: trailing whitespace.
++    
+ops/evidence/gpu-current-readiness-regression.log:15: trailing whitespace.
++    
+ops/evidence/gpu-current-readiness-regression.log:22: trailing whitespace.
++tests\test_gpu_smoke_status.py:41: 
+ops/evidence/inference-lock-copy-api.log:24: trailing whitespace.
++tests\test_inference_lock.py:384: 
+ops/evidence/inference-lock-copy-api.log:88: trailing whitespace.
++E                     
+ops/evidence/plan-retest-first.log:34: trailing whitespace.
++    
+ops/evidence/plan-retest-first.log:38: trailing whitespace.
++    
+ops/evidence/plan-retest-first.log:45: trailing whitespace.
++tests\test_story_plan_retest.py:77: 
+ops/evidence/provider-memory-browser.log:15: trailing whitespace.
++  1) e2e\provider-memory.spec.ts:5:1 › memory profile persists and image RAM failure remains explicit 
+ops/evidence/provider-memory-browser.log:45: trailing whitespace.
++    e2e\provider-memory.spec.ts:5:1 › memory profile persists and image RAM failure remains explicit 
+ops/evidence/reference-and-writing-final-verification.log:20: trailing whitespace.
++tests\test_backup_import.py:29: 
+ops/evidence/reference-and-writing-final-verification.log:50: trailing whitespace.
++    
+ops/evidence/reference-and-writing-final-verification.log:63: trailing whitespace.
++    
+ops/evidence/reference-and-writing-final-verification.log:69: trailing whitespace.
++    
+ops/evidence/reference-and-writing-final-verification.log:79: trailing whitespace.
++    
+ops/evidence/reference-and-writing-final-verification.log:125: trailing whitespace.
++tests\test_draft_editing.py:21: 
+ops/evidence/reference-and-writing-final-verification.log:143: trailing whitespace.
++    
+ops/evidence/reference-and-writing-final-verification.log:183: trailing whitespace.
++tests\test_script_batches.py:69: 
+ops/evidence/reference-and-writing-final-verification.log:213: trailing whitespace.
++    
+ops/evidence/reference-and-writing-final-verification.log:226: trailing whitespace.
++    
+ops/evidence/reference-and-writing-final-verification.log:232: trailing whitespace.
++    
+ops/evidence/reference-and-writing-final-verification.log:242: trailing whitespace.
++    
+ops/evidence/reference-and-writing-final-verification.log:291: trailing whitespace.
++ 
+ops/evidence/reference-corrupt-input-regression.log:24: trailing whitespace.
++tests\test_continuity.py:236: 
+ops/evidence/reference-corrupt-input-regression.log:36: trailing whitespace.
++    
+ops/evidence/reference-full-verification.log:27: trailing whitespace.
++tests\test_continuity.py:236: 
+ops/evidence/reference-full-verification.log:39: trailing whitespace.
++    
+ops/evidence/reference-full-verification.log:90: trailing whitespace.
++ 
+ops/evidence/resource-wait-browser-target.log:11: trailing whitespace.
++  1) e2e\resource-wait.spec.ts:4:1 › waiting screen explains automatic continuation and Pause stays authoritative 
+ops/evidence/resource-wait-browser-target.log:89: trailing whitespace.
++    e2e\resource-wait.spec.ts:4:1 › waiting screen explains automatic continuation and Pause stays authoritative 
+ops/evidence/retake-full-verification.log:70: trailing whitespace.
++  1) e2e\retakes.spec.ts:5:1 › another take publishes a playable cut with original downloads and pinned story 
+ops/evidence/retake-full-verification.log:108: trailing whitespace.
++    e2e\retakes.spec.ts:5:1 › another take publishes a playable cut with original downloads and pinned story 
+ops/evidence/retake-full-verification.log:116: trailing whitespace.
++ 
+ops/evidence/screenplay-gate-tests.log:63: trailing whitespace.
++    
+ops/evidence/screenplay-gate-tests.log:68: trailing whitespace.
++    
+ops/evidence/screenplay-gate-tests.log:73: trailing whitespace.
++tests\test_screenplay_text.py:56: 
+ops/evidence/two-shot-provider-contract.log:26: trailing whitespace.
++tests\test_cpu_profiles.py:58: 

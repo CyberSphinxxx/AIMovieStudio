@@ -1,0 +1,75 @@
+FF                                                                       [100%]
+================================== FAILURES ===================================
+_ test_proof_bytes_survive_index_and_windows_style_checkout[ops/evidence/nested/model receipt.json-{\r\n  "status": "FAILED"\r\n}\r\n] _
+
+tmp_path = WindowsPath('C:/Users/USER-PC/AppData/Local/Temp/pytest-of-USER-PC/pytest-159/test_proof_bytes_survive_index0')
+name = 'ops/evidence/nested/model receipt.json'
+content = b'{\r\n  "status": "FAILED"\r\n}\r\n'
+
+    @pytest.mark.parametrize("name,content", [
+        ("ops/evidence/nested/model receipt.json", b'{\r\n  "status": "FAILED"\r\n}\r\n'),
+        ("ops/archive/handoff.md", b'# Saved history\n\nExact LF bytes must survive checkout.\n'),
+    ])
+    def test_proof_bytes_survive_index_and_windows_style_checkout(tmp_path, name, content):
+        repository, export = tmp_path / "repository", tmp_path / "checkout"
+        repository.mkdir()
+    
+        def git(*args):
+            return subprocess.check_output(["git", "-c", "core.autocrlf=true", *args], cwd=repository, stderr=subprocess.PIPE)
+    
+        git("init", "-q")
+        attributes = ROOT / ".gitattributes"
+        if attributes.exists():
+            (repository / ".gitattributes").write_bytes(attributes.read_bytes())
+        sample = repository / name
+        sample.parent.mkdir(parents=True)
+        sample.write_bytes(content)
+        git("add", ".")
+>       assert git("show", ":" + name) == content, "Git normalization changed checksum-bearing proof bytes"
+E       AssertionError: Git normalization changed checksum-bearing proof bytes
+E       assert b'{\n  "statu..."FAILED"\n}\n' == b'{\r\n  "sta...LED"\r\n}\r\n'
+E         
+E         At index 1 diff: b'\n' != b'\r'
+E         Use -v to get more diff
+
+tests\test_evidence_bytes.py:30: AssertionError
+_ test_proof_bytes_survive_index_and_windows_style_checkout[ops/archive/handoff.md-# Saved history\n\nExact LF bytes must survive checkout.\n] _
+
+tmp_path = WindowsPath('C:/Users/USER-PC/AppData/Local/Temp/pytest-of-USER-PC/pytest-159/test_proof_bytes_survive_index1')
+name = 'ops/archive/handoff.md'
+content = b'# Saved history\n\nExact LF bytes must survive checkout.\n'
+
+    @pytest.mark.parametrize("name,content", [
+        ("ops/evidence/nested/model receipt.json", b'{\r\n  "status": "FAILED"\r\n}\r\n'),
+        ("ops/archive/handoff.md", b'# Saved history\n\nExact LF bytes must survive checkout.\n'),
+    ])
+    def test_proof_bytes_survive_index_and_windows_style_checkout(tmp_path, name, content):
+        repository, export = tmp_path / "repository", tmp_path / "checkout"
+        repository.mkdir()
+    
+        def git(*args):
+            return subprocess.check_output(["git", "-c", "core.autocrlf=true", *args], cwd=repository, stderr=subprocess.PIPE)
+    
+        git("init", "-q")
+        attributes = ROOT / ".gitattributes"
+        if attributes.exists():
+            (repository / ".gitattributes").write_bytes(attributes.read_bytes())
+        sample = repository / name
+        sample.parent.mkdir(parents=True)
+        sample.write_bytes(content)
+        git("add", ".")
+        assert git("show", ":" + name) == content, "Git normalization changed checksum-bearing proof bytes"
+        export.mkdir()
+        git("checkout-index", "--all", "--prefix=" + export.as_posix() + "/")
+>       assert (export / name).read_bytes() == content, "Checkout changed archived proof bytes"
+E       AssertionError: Checkout changed archived proof bytes
+E       assert b'# Saved his...checkout.\r\n' == b'# Saved his...e checkout.\n'
+E         
+E         At index 15 diff: b'\r' != b'\n'
+E         Use -v to get more diff
+
+tests\test_evidence_bytes.py:33: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/test_evidence_bytes.py::test_proof_bytes_survive_index_and_windows_style_checkout[ops/evidence/nested/model receipt.json-{\r\n  "status": "FAILED"\r\n}\r\n]
+FAILED tests/test_evidence_bytes.py::test_proof_bytes_survive_index_and_windows_style_checkout[ops/archive/handoff.md-# Saved history\n\nExact LF bytes must survive checkout.\n]
+2 failed in 0.48s

@@ -1,5 +1,9 @@
 # Active plan — 2026-10-14
 
+## Final2026-10-16 checkpoint
+
+Completed within session: ownership3ccf876 (394full/16Edge); counter904af34 (140targets); Git proof bytes (334working originals unchanged/279index-only EOL repairs/20targets), fresh3015fileprivatecopy own3.11/actual cross-process ownership proof. All failures retained; no current426full/native quality/distribution claim. FinalRAM4.74GiB blocks models;330.281sCPU4B/no reservation and image-PASS-before-video preserved. Next conditionalnativewriter7GiB/saferimagecapacity; independent F2.04 continuity/time/revision acceptance while hardware blocked. Save local checkpoint, no remote/background engineering.
+
 ## 2026-10-16 — F4.04 shared native inference ownership
 
 Current result: ownership3ccf876 full394PASS529.46s/16EdgePASS4.2min. Counter hardening reproduced14red/4green, fixed/shared across CPU/GPU/queue,140targetsPASS37.91s. No full423claim. Next thin durability task: narrow Git -text attributes for hashed ops evidence/archive; reproduce normalized blob mismatch, preserve working originals, compare index bytes and checkout roundtrip (temporary repo, core.autocrlf=true), repair index only, update memory and local checkpoint. No model/download/global configuration/remote action.

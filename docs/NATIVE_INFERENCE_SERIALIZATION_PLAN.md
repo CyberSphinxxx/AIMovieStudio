@@ -1,6 +1,6 @@
 # Next reliability slice: native inference ownership
 
-Status: **implemented;20ownership/94related backend checks and16Edge passed; full backend regression running** (2026-10-16).
+Status: **implemented and verified for cooperating updated Studio processes** (2026-10-16).
 
 The per-data-directory worker lock is now complemented by `studio/inference_lock.py`: cooperating updated Studio copies, CPU model servers, Ollama requests and WanGP bridge calls share one per-user ownership file. Older copies and independently launched third-party programs do not participate; ordinary hardware guards still apply. No new native model generation was performed to verify this coordination.
 
@@ -8,7 +8,7 @@ Windows default: `%LOCALAPPDATA%/AIMovieStudio/runtime/native-inference.lock` (u
 
 The scheduler records `INFERENCE_BUSY` in durable resource waits without spending attempts. A probe/acquire race refunds only the unstarted claim, once, preserving prior deadlines and explicit Pause/Stop. In-flight inference failures and crashed attempts still count. Demo/audio/render paths remain independent.
 
-Current proof:20 targeted ownership tests PASS17.85s, including two independently copied modules choosing the same default simulated user-profile file, distinct Store roots/threads/processes, real owner+child and worker kills/recovery, request-thread cancellation, cleanup, deadlines/controls/backup and API automatic wait->demoMP4. Earlier94 provider/resource/story checks PASS23.32s; no native inference/quality claim. A copied-module fixture initially omitted `studio.processes`, failed1/passed18, then was corrected; failure log retained. Full backend and16Edge tests are running; results go in ops/PROGRESS.md.
+Proof:20ownership tests PASS17.85s, including independently copied modules/default profile path, distinct Stores/threads/processes, real owner+child/worker kills, request-thread cancellation, cleanup, deadlines/controls/backup and API automatic wait->demoMP4. Full ownership checkpoint394backendPASS529.46s/all16EdgePASS4.2min/Settings restored/mobile screenshot inspected. Subsequent counter hardening140targetsPASS37.91s; no claim of a current426-test full run. A copied-module fixture initially omitted `studio.processes`, failed1/passed18, then was corrected; failure log retained. A fresh3015file private build's own isolated3.11 process also observed the original process's actual shared ownership, with invalid Python environment ignored; no models loaded. Results are in ops/PROGRESS.md.
 
 Use a common app-owned user-profile lock file across copies. Keep it present: deleting/replacing a lock file can let two processes lock different file objects. Use Windows nonblocking byte locking and POSIX nonblocking `flock` with immediate, typed `INFERENCE_BUSY`; other lock I/O errors fail closed. No stale-PID deletion or system/security changes. File location must not be supplied by an HTTP request. Tests inject an isolated path internally.
 
