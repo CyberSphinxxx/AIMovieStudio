@@ -1,0 +1,8 @@
+{
+  "code": "IMAGE_RAM_GUARD_STOP",
+  "checked_at": 1791921227.844853,
+  "installation": "C:\\L3mxr\\Github Repositories\\AIMovieStudio\\tools\\wan-gp",
+  "model": "flux2_klein_4b",
+  "memory_profile": 5,
+  "evidence_sha256": "dca86e1a4bb4c1170a12b0c4a44d4a5420c06c96929990f0747e5f69b4d465a1"
+}

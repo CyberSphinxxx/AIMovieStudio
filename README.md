@@ -36,7 +36,7 @@ Double-click `StopStudio.cmd` to stop the server. Relaunch to resume interrupted
 
 ## Setup from source
 
-Python 3.11+ and Node 22.12+ are prerequisites. Main-app verification here uses Python **3.12.14** in an isolated `.venv`. The optional GPU installation has a separate app-owned Python **3.11.14**. No drivers or global toolchains were installed.
+Source development needs Python 3.11+ and Node 22.12+. The prepared application now runs on its own **Python 3.11.14**; the development `.venv` uses **3.12.14**, and the optional GPU engine stays in a separate environment. A prepared private folder includes its runtime and built interface. No drivers or global toolchains were installed.
 
 ```powershell
 powershell -NoProfile -ExecutionPolicy Bypass -File scripts/setup.ps1 -Development
@@ -45,7 +45,13 @@ powershell -NoProfile -ExecutionPolicy Bypass -File scripts/run.ps1
 
 Setup downloads pinned Python/npm dependencies and an app-local FFmpeg/FFprobe bundle (~115 MB). It does not install AI weights. Runtime works offline after dependencies are prepared.
 
-Developer API: `.venv/Scripts/python.exe -m uvicorn studio.api:app --host 127.0.0.1 --port 8765`. Frontend: `cd client; npm run dev`. OpenAPI is at `/docs`.
+Developer API: `.venv/Scripts/python.exe -m uvicorn studio.api:app --host 127.0.0.1 --port 8765` (stop a manually started server with Ctrl+C). Frontend: `cd client; npm run dev`. OpenAPI is at `/docs`. Use `StartStudio.cmd` for managed startup and ownership-aware stop/reuse.
+
+The prepared workstation now also has an app-owned **Python 3.11.14 runtime** under `tools/app-runtime`. The launcher prefers this validated runtime, runs Python in isolation, and checks ownership before reusing or stopping a server. The development `.venv` remains a fallback when no private runtime is installed. Startup does not download dependencies or models.
+
+For developers with the reviewed standalone Python already installed, prepare a private runtime with `.venv/Scripts/python.exe scripts/prepare_app_runtime.py --download`. It copies the existing base, fetches about 42 MB of pinned main dependency wheels with SHA256 checks, and enforces a conservative cumulative 100 MB allocation including failed attempts. Rerunning without `--download` uses verified cached wheels. Existing runtimes are never overwritten; interrupted staging stays available for inspection. No global Python, registry, PATH or security changes are made.
+
+A private development folder can be copied with `.venv/Scripts/python.exe -m scripts.package_private`. It includes the prepared CPU runtime, built interface and local media tools, with separate `data` created on first use. It excludes models, the optional vendor engine, user projects and settings. Keep its notices intact. This is private test packaging; clean-account, native generation, licensing and release acceptance remain open.
 
 ## Local story/provider setup
 

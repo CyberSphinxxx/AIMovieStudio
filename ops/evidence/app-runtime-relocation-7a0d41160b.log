@@ -1,0 +1,5 @@
+
+stop.ps1: exit 0
+Studio stopped. Completed steps are saved and resume at next launch.
+
+

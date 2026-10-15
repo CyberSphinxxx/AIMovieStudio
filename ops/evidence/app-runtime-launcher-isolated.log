@@ -1,0 +1,27 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+________ test_private_runtime_selection_and_changed_executable_refusal ________
+
+tmp_path = WindowsPath('C:/Users/USER-PC/AppData/Local/Temp/pytest-of-USER-PC/pytest-132/test_private_runtime_selection0')
+
+    def test_private_runtime_selection_and_changed_executable_refusal(tmp_path):
+        root = tmp_path / "Studio folder"
+        runtime = private_fixture(root)
+        result = invoke(tmp_path, root, "Get-StudioPython $Root")
+>       assert result.returncode == 0, result.stderr
+E       AssertionError: Get-FileHash : The term 'Get-FileHash' is not recognized as the name of a cmdlet, function, script file, or operable 
+E         program. Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+E         At C:\L3mxr\Github Repositories\AIMovieStudio\scripts\runtime.ps1:13 char:138
+E         + ...  -ne '3.11.14' -or $receipt.manifest_sha256 -ne (Get-FileHash -Litera ...
+E         +                                                      ~~~~~~~~~~~~
+E             + CategoryInfo          : ObjectNotFound: (Get-FileHash:String) [], ParentContainsErrorRecordException
+E             + FullyQualifiedErrorId : CommandNotFoundException
+E          
+E         
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['powershell.exe', '-NoProfile', '-File', 'C:\\Users\\USER-PC\\AppData\\Local\\Temp\\pytest-of-U...-FileHash:String) [], ParentContainsErrorRecordException\n    + FullyQualifiedErrorId : CommandNotFoundException\n \n").returncode
+
+tests\test_windows_launcher.py:55: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/test_windows_launcher.py::test_private_runtime_selection_and_changed_executable_refusal
+1 failed in 2.23s

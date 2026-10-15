@@ -1,0 +1,10 @@
+{
+  "observed_at": "2026-10-15T09:05:34.833836+00:00",
+  "status": "FAILED",
+  "folder": "C:\\L3mxr\\Github Repositories\\AIMovieStudio\\tools\\private-builds\\Studio caf\u00e9 \u706f\u53f0 afd62acdb0",
+  "is_mock": true,
+  "native_generation_verified": false,
+  "fresh_account_tested": false,
+  "python_environment_poisoned": true,
+  "error": "Verification helper blocked waiting for inherited capture-pipe EOF after the detached server launched. Owned helper terminated and relocated server stopped; no movie stage tested in this attempt."
+}

@@ -1,0 +1,57 @@
+{
+  "observed_at": "2026-10-15T09:10:11.766977+00:00",
+  "status": "FAILED",
+  "folder": "C:\\L3mxr\\Github Repositories\\AIMovieStudio\\tools\\private-builds\\Studio caf\u00e9 \u706f\u53f0 afd62acdb0",
+  "is_mock": true,
+  "native_generation_verified": false,
+  "fresh_account_tested": false,
+  "python_environment_poisoned": true,
+  "health": {
+    "service": "ready",
+    "database": "ok",
+    "media": {
+      "ffmpeg": {
+        "available": true
+      },
+      "ffprobe": {
+        "available": true
+      }
+    },
+    "runtime": {
+      "process_id": 17520,
+      "python_version": "3.11.14",
+      "isolated": true,
+      "app_owned": true
+    },
+    "free_disk_gb": 34.3,
+    "worker_alive": true,
+    "concurrency": 1,
+    "privacy": "Localhost only; no cloud providers",
+    "real_generation_verified": false,
+    "native_export": "360\u00d7640 / 640\u00d7360 / 480\u00d7480, 24 fps",
+    "hardware": {
+      "gpu": {
+        "available": true,
+        "name": "NVIDIA GeForce RTX 3060 Laptop GPU",
+        "driver": "610.88",
+        "total_mb": 6144,
+        "used_mb": 2598,
+        "temperature_c": 82
+      },
+      "python": "3.11.14",
+      "memory": {
+        "available": true,
+        "total_gb": 15.19,
+        "free_gb": 2.77,
+        "load_percent": 81
+      },
+      "measured_at": 1792055420.2731507
+    }
+  },
+  "repeat_start_same_process": true,
+  "other_folder_start_stop_refused": true,
+  "error": "Traceback (most recent call last):\n  File \"C:\\L3mxr\\Github Repositories\\AIMovieStudio\\scripts\\runtime_relocation_smoke.py\", line 166, in main\n    media = json.loads(probe.stdout)\n            ^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\USER-PC\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\Lib\\json\\__init__.py\", line 339, in loads\n    raise TypeError(f'the JSON object must be str, bytes or bytearray, '\nTypeError: the JSON object must be str, bytes or bytearray, not NoneType\n",
+  "relocated_stop_exit": 0,
+  "original_restart_exit": 0,
+  "elapsed_seconds": 31.484
+}

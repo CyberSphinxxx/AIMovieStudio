@@ -1,0 +1,42 @@
+Preparing annotated-doc 0.0.5
+Preparing annotated-types 0.8.0
+Preparing anyio 4.15.1
+Preparing certifi 2026.7.22
+Preparing click 8.5.0
+Preparing fastapi 0.135.1
+Preparing h11 0.16.0
+Preparing httpcore 1.0.9
+Preparing httpx 0.28.1
+Preparing idna 3.20
+Preparing imageio-ffmpeg 0.6.0
+Preparing pillow 12.3.0
+Preparing pydantic 2.12.5
+Preparing pydantic-core 2.41.5
+Preparing starlette 1.7.0
+Preparing typing-extensions 4.16.0
+Preparing typing-inspection 0.4.4
+Preparing uvicorn 0.41.0
+Looking in links: c:\L3mxr\Github Repositories\AIMovieStudio\tools\app-runtime-cache\wheels
+Processing .\tools\app-runtime-cache\wheels\annotated_doc-0.0.5-py3-none-any.whl (from -r C:\L3mxr\Github Repositories\AIMovieStudio\tools\app-runtime-cache\requirements-locked.txt (line 1))
+Processing .\tools\app-runtime-cache\wheels\annotated_types-0.8.0-py3-none-any.whl (from -r C:\L3mxr\Github Repositories\AIMovieStudio\tools\app-runtime-cache\requirements-locked.txt (line 2))
+Processing .\tools\app-runtime-cache\wheels\anyio-4.15.1-py3-none-any.whl (from -r C:\L3mxr\Github Repositories\AIMovieStudio\tools\app-runtime-cache\requirements-locked.txt (line 3))
+Processing .\tools\app-runtime-cache\wheels\certifi-2026.7.22-py3-none-any.whl (from -r C:\L3mxr\Github Repositories\AIMovieStudio\tools\app-runtime-cache\requirements-locked.txt (line 4))
+Processing .\tools\app-runtime-cache\wheels\click-8.5.0-py3-none-any.whl (from -r C:\L3mxr\Github Repositories\AIMovieStudio\tools\app-runtime-cache\requirements-locked.txt (line 5))
+Processing .\tools\app-runtime-cache\wheels\fastapi-0.135.1-py3-none-any.whl (from -r C:\L3mxr\Github Repositories\AIMovieStudio\tools\app-runtime-cache\requirements-locked.txt (line 6))
+Processing .\tools\app-runtime-cache\wheels\h11-0.16.0-py3-none-any.whl (from -r C:\L3mxr\Github Repositories\AIMovieStudio\tools\app-runtime-cache\requirements-locked.txt (line 7))
+Processing .\tools\app-runtime-cache\wheels\httpcore-1.0.9-py3-none-any.whl (from -r C:\L3mxr\Github Repositories\AIMovieStudio\tools\app-runtime-cache\requirements-locked.txt (line 8))
+Processing .\tools\app-runtime-cache\wheels\httpx-0.28.1-py3-none-any.whl (from -r C:\L3mxr\Github Repositories\AIMovieStudio\tools\app-runtime-cache\requirements-locked.txt (line 9))
+Processing .\tools\app-runtime-cache\wheels\idna-3.20-py3-none-any.whl (from -r C:\L3mxr\Github Repositories\AIMovieStudio\tools\app-runtime-cache\requirements-locked.txt (line 10))
+Processing .\tools\app-runtime-cache\wheels\imageio_ffmpeg-0.6.0-py3-none-win_amd64.whl (from -r C:\L3mxr\Github Repositories\AIMovieStudio\tools\app-runtime-cache\requirements-locked.txt (line 11))
+Processing .\tools\app-runtime-cache\wheels\pillow-12.3.0-cp311-cp311-win_amd64.whl (from -r C:\L3mxr\Github Repositories\AIMovieStudio\tools\app-runtime-cache\requirements-locked.txt (line 12))
+Processing .\tools\app-runtime-cache\wheels\pydantic-2.12.5-py3-none-any.whl (from -r C:\L3mxr\Github Repositories\AIMovieStudio\tools\app-runtime-cache\requirements-locked.txt (line 13))
+Processing .\tools\app-runtime-cache\wheels\pydantic_core-2.41.5-cp311-cp311-win_amd64.whl (from -r C:\L3mxr\Github Repositories\AIMovieStudio\tools\app-runtime-cache\requirements-locked.txt (line 14))
+Processing .\tools\app-runtime-cache\wheels\starlette-1.7.0-py3-none-any.whl (from -r C:\L3mxr\Github Repositories\AIMovieStudio\tools\app-runtime-cache\requirements-locked.txt (line 15))
+Processing .\tools\app-runtime-cache\wheels\typing_extensions-4.16.0-py3-none-any.whl (from -r C:\L3mxr\Github Repositories\AIMovieStudio\tools\app-runtime-cache\requirements-locked.txt (line 16))
+Processing .\tools\app-runtime-cache\wheels\typing_inspection-0.4.4-py3-none-any.whl (from -r C:\L3mxr\Github Repositories\AIMovieStudio\tools\app-runtime-cache\requirements-locked.txt (line 17))
+Processing .\tools\app-runtime-cache\wheels\uvicorn-0.41.0-py3-none-any.whl (from -r C:\L3mxr\Github Repositories\AIMovieStudio\tools\app-runtime-cache\requirements-locked.txt (line 18))
+Installing collected packages: typing-extensions, pillow, imageio-ffmpeg, idna, h11, click, certifi, annotated-types, annotated-doc, uvicorn, typing-inspection, pydantic-core, httpcore, anyio, starlette, pydantic, httpx, fastapi
+
+Successfully installed annotated-doc-0.0.5 annotated-types-0.8.0 anyio-4.15.1 certifi-2026.7.22 click-8.5.0 fastapi-0.135.1 h11-0.16.0 httpcore-1.0.9 httpx-0.28.1 idna-3.20 imageio-ffmpeg-0.6.0 pillow-12.3.0 pydantic-2.12.5 pydantic-core-2.41.5 starlette-1.7.0 typing-extensions-4.16.0 typing-inspection-0.4.4 uvicorn-0.41.0
+No broken requirements found.
+Private application runtime ready: C:\L3mxr\Github Repositories\AIMovieStudio\tools\app-runtime

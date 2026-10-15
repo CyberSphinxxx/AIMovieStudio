@@ -1,0 +1,284 @@
+{
+  "observed_at": "2026-10-15T09:14:47.031162+00:00",
+  "status": "PASS",
+  "folder": "C:\\L3mxr\\Github Repositories\\AIMovieStudio\\tools\\private-builds\\Studio caf\u00e9 \u706f\u53f0 afd62acdb0",
+  "is_mock": true,
+  "native_generation_verified": false,
+  "fresh_account_tested": false,
+  "python_environment_poisoned": true,
+  "health": {
+    "service": "ready",
+    "database": "ok",
+    "media": {
+      "ffmpeg": {
+        "available": true
+      },
+      "ffprobe": {
+        "available": true
+      }
+    },
+    "runtime": {
+      "process_id": 9268,
+      "python_version": "3.11.14",
+      "isolated": true,
+      "app_owned": true
+    },
+    "free_disk_gb": 34.3,
+    "worker_alive": true,
+    "concurrency": 1,
+    "privacy": "Localhost only; no cloud providers",
+    "real_generation_verified": false,
+    "native_export": "360\u00d7640 / 640\u00d7360 / 480\u00d7480, 24 fps",
+    "hardware": {
+      "gpu": {
+        "available": true,
+        "name": "NVIDIA GeForce RTX 3060 Laptop GPU",
+        "driver": "610.88",
+        "total_mb": 6144,
+        "used_mb": 1279,
+        "temperature_c": 62
+      },
+      "python": "3.11.14",
+      "memory": {
+        "available": true,
+        "total_gb": 15.19,
+        "free_gb": 6.0,
+        "load_percent": 60
+      },
+      "measured_at": 1792055693.697472
+    }
+  },
+  "repeat_start_same_process": true,
+  "other_folder_start_stop_refused": true,
+  "resumed_existing_completed_sample": true,
+  "project_id": "5940eb9b-3302-45c5-ab39-0ecc70d1ef17",
+  "states": [
+    "COMPLETED"
+  ],
+  "movie_sha256": "baeafbdbb014b3b240f3abeda37f380bcdefd2d5f978250418c397959a415dbb",
+  "movie_metadata": {
+    "episode": 1,
+    "schema_version": 1,
+    "provider": "demo",
+    "model": "deterministic-fixture-v1",
+    "is_mock": true,
+    "license": "Original app-owned development fixture",
+    "prompt_template_version": 2,
+    "width": 640,
+    "height": 360,
+    "duration": 5.0,
+    "fps": 24,
+    "quality": "Draft demo; abstract motion storyboard, not AI generated",
+    "cinematic_review": "not performed",
+    "parent_asset_ids": [
+      "702f2eab-80ba-50ed-8bf2-d134c703b943",
+      "29c4e642-7bff-5c55-ba83-53545031a575"
+    ],
+    "dialogue_present": true,
+    "sound_effects_present": false,
+    "loudness": {
+      "method": "balanced-audio-v1",
+      "status": "peak_limited",
+      "scope": "PCM soundtrack; encoded AAC may differ",
+      "requested_lufs": -16.0,
+      "true_peak_ceiling_dbtp": -2.0,
+      "max_boost_db": 9.0,
+      "applied_gain_db": -0.9,
+      "input": {
+        "integrated_lufs": -18.0,
+        "true_peak_dbtp": -1.2,
+        "range_lu": 4.4,
+        "measurement": "FFmpeg loudnorm/EBU R128; mono measured for stereo playback"
+      },
+      "output": {
+        "integrated_lufs": -18.9,
+        "true_peak_dbtp": -2.1,
+        "range_lu": 4.4,
+        "measurement": "FFmpeg loudnorm/EBU R128; mono measured for stereo playback"
+      }
+    }
+  },
+  "ffprobe": {
+    "streams": [
+      {
+        "index": 0,
+        "codec_name": "h264",
+        "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+        "profile": "Constrained Baseline",
+        "codec_type": "video",
+        "codec_tag_string": "avc1",
+        "codec_tag": "0x31637661",
+        "mime_codec_string": "avc1.42c01e",
+        "width": 640,
+        "height": 360,
+        "coded_width": 640,
+        "coded_height": 360,
+        "has_b_frames": 0,
+        "pix_fmt": "yuv420p",
+        "level": 30,
+        "chroma_location": "left",
+        "field_order": "progressive",
+        "is_avc": "true",
+        "nal_length_size": "4",
+        "id": "0x1",
+        "r_frame_rate": "24/1",
+        "avg_frame_rate": "24/1",
+        "time_base": "1/12288",
+        "start_pts": 0,
+        "start_time": "0.000000",
+        "duration_ts": 61440,
+        "duration": "5.000000",
+        "bit_rate": "589648",
+        "bits_per_raw_sample": "8",
+        "nb_frames": "120",
+        "extradata_size": 39,
+        "disposition": {
+          "default": 1,
+          "dub": 0,
+          "original": 0,
+          "comment": 0,
+          "lyrics": 0,
+          "karaoke": 0,
+          "forced": 0,
+          "hearing_impaired": 0,
+          "visual_impaired": 0,
+          "clean_effects": 0,
+          "attached_pic": 0,
+          "timed_thumbnails": 0,
+          "non_diegetic": 0,
+          "captions": 0,
+          "descriptions": 0,
+          "metadata": 0,
+          "dependent": 0,
+          "still_image": 0,
+          "multilayer": 0
+        },
+        "tags": {
+          "language": "und",
+          "handler_name": "VideoHandler",
+          "encoder": "Lavc63.1.102 libx264"
+        }
+      },
+      {
+        "index": 1,
+        "codec_name": "aac",
+        "codec_long_name": "AAC (Advanced Audio Coding)",
+        "profile": "LC",
+        "codec_type": "audio",
+        "codec_tag_string": "mp4a",
+        "codec_tag": "0x6134706d",
+        "mime_codec_string": "mp4a.40.2",
+        "sample_fmt": "fltp",
+        "sample_rate": "48000",
+        "channels": 1,
+        "channel_layout": "mono",
+        "bits_per_sample": 0,
+        "initial_padding": 1024,
+        "id": "0x2",
+        "r_frame_rate": "0/0",
+        "avg_frame_rate": "0/0",
+        "time_base": "1/48000",
+        "start_pts": 0,
+        "start_time": "0.000000",
+        "duration_ts": 240000,
+        "duration": "5.000000",
+        "bit_rate": "129369",
+        "nb_frames": "236",
+        "extradata_size": 5,
+        "disposition": {
+          "default": 1,
+          "dub": 0,
+          "original": 0,
+          "comment": 0,
+          "lyrics": 0,
+          "karaoke": 0,
+          "forced": 0,
+          "hearing_impaired": 0,
+          "visual_impaired": 0,
+          "clean_effects": 0,
+          "attached_pic": 0,
+          "timed_thumbnails": 0,
+          "non_diegetic": 0,
+          "captions": 0,
+          "descriptions": 0,
+          "metadata": 0,
+          "dependent": 0,
+          "still_image": 0,
+          "multilayer": 0
+        },
+        "tags": {
+          "language": "und",
+          "handler_name": "SoundHandler"
+        }
+      },
+      {
+        "index": 2,
+        "codec_name": "mov_text",
+        "codec_long_name": "MOV text",
+        "codec_type": "subtitle",
+        "codec_tag_string": "tx3g",
+        "codec_tag": "0x67337874",
+        "id": "0x3",
+        "r_frame_rate": "0/0",
+        "avg_frame_rate": "0/0",
+        "time_base": "1/1000000",
+        "start_pts": 0,
+        "start_time": "0.000000",
+        "duration_ts": 2784000,
+        "duration": "2.784000",
+        "bit_rate": "117",
+        "nb_frames": "2",
+        "extradata_size": 68,
+        "disposition": {
+          "default": 1,
+          "dub": 0,
+          "original": 0,
+          "comment": 0,
+          "lyrics": 0,
+          "karaoke": 0,
+          "forced": 0,
+          "hearing_impaired": 0,
+          "visual_impaired": 0,
+          "clean_effects": 0,
+          "attached_pic": 0,
+          "timed_thumbnails": 0,
+          "non_diegetic": 0,
+          "captions": 0,
+          "descriptions": 0,
+          "metadata": 0,
+          "dependent": 0,
+          "still_image": 0,
+          "multilayer": 0
+        },
+        "tags": {
+          "language": "eng",
+          "handler_name": "SubtitleHandler"
+        }
+      }
+    ],
+    "format": {
+      "filename": "C:\\L3mxr\\Github Repositories\\AIMovieStudio\\tools\\private-builds\\Studio caf\u00e9 \u706f\u53f0 afd62acdb0\\data\\relocation-download-3ec80aa2f1.mp4",
+      "nb_streams": 3,
+      "nb_programs": 0,
+      "nb_stream_groups": 0,
+      "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+      "format_long_name": "QuickTime / MOV",
+      "start_time": "0.000000",
+      "duration": "5.000000",
+      "size": "454192",
+      "bit_rate": "726707",
+      "probe_score": 100,
+      "tags": {
+        "major_brand": "isom",
+        "minor_version": "512",
+        "compatible_brands": "isomiso2avc1mp41",
+        "encoder": "Lavf63.1.102"
+      }
+    }
+  },
+  "windows_speech_downloaded": true,
+  "backup_verified": true,
+  "relocated_stop_exit": 0,
+  "original_restart_exit": 0,
+  "elapsed_seconds": 21.219
+}

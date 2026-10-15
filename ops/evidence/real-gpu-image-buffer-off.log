@@ -1,0 +1,330 @@
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "C:\L3mxr\Github Repositories\AIMovieStudio\scripts\gpu_smoke.py", line 173, in <module>
+    main()
+  File "C:\L3mxr\Github Repositories\AIMovieStudio\scripts\gpu_smoke.py", line 80, in main
+    path, metadata = provider.image(
+                     ^^^^^^^^^^^^^^^
+  File "C:\L3mxr\Github Repositories\AIMovieStudio\studio\providers.py", line 145, in image
+    result = self.request("image", prompt, directory, check, seed, references=references)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\L3mxr\Github Repositories\AIMovieStudio\studio\providers.py", line 123, in request
+    media.run(
+  File "C:\L3mxr\Github Repositories\AIMovieStudio\studio\media.py", line 68, in run
+    check()
+  File "C:\L3mxr\Github Repositories\AIMovieStudio\studio\providers.py", line 107, in guarded_check
+    check()
+  File "C:\L3mxr\Github Repositories\AIMovieStudio\scripts\gpu_smoke.py", line 34, in check
+    raise RuntimeError("RESOURCE_BUSY: GPU smoke stopped below 2 GiB free RAM")
+RuntimeError: RESOURCE_BUSY: GPU smoke stopped below 2 GiB free RAM
+{
+  "phase": "image",
+  "is_mock": false,
+  "status": "FAILED",
+  "directory": "C:\\L3mxr\\Github Repositories\\AIMovieStudio\\data\\gpu-smoke\\7c4aec5a-11ab-4d81-b982-bcc88c14ab7d",
+  "max_seconds": 300,
+  "before": {
+    "gpu": {
+      "available": true,
+      "name": "NVIDIA GeForce RTX 3060 Laptop GPU",
+      "driver": "610.88",
+      "total_mb": 6144,
+      "used_mb": 1276,
+      "temperature_c": 60
+    },
+    "python": "3.12.14",
+    "memory": {
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 5.59,
+      "load_percent": 63
+    },
+    "measured_at": 1792056302.8959455
+  },
+  "image_attempted": true,
+  "parent_memory_samples": [
+    {
+      "seconds": 0.235,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 5.58,
+      "load_percent": 63
+    },
+    {
+      "seconds": 2.266,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 5.38,
+      "load_percent": 64
+    },
+    {
+      "seconds": 4.266,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 5.08,
+      "load_percent": 66
+    },
+    {
+      "seconds": 6.282,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 5.02,
+      "load_percent": 66
+    },
+    {
+      "seconds": 8.282,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 4.97,
+      "load_percent": 67
+    },
+    {
+      "seconds": 10.297,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 4.97,
+      "load_percent": 67
+    },
+    {
+      "seconds": 12.297,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 4.98,
+      "load_percent": 67
+    },
+    {
+      "seconds": 14.297,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 4.91,
+      "load_percent": 67
+    },
+    {
+      "seconds": 16.313,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 4.89,
+      "load_percent": 67
+    },
+    {
+      "seconds": 18.313,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 4.87,
+      "load_percent": 67
+    },
+    {
+      "seconds": 20.329,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 4.83,
+      "load_percent": 68
+    },
+    {
+      "seconds": 22.329,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 4.56,
+      "load_percent": 70
+    },
+    {
+      "seconds": 24.329,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 4.79,
+      "load_percent": 68
+    },
+    {
+      "seconds": 26.344,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 4.78,
+      "load_percent": 68
+    },
+    {
+      "seconds": 28.344,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 4.73,
+      "load_percent": 68
+    },
+    {
+      "seconds": 30.36,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 4.74,
+      "load_percent": 68
+    },
+    {
+      "seconds": 32.36,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 4.72,
+      "load_percent": 68
+    },
+    {
+      "seconds": 34.36,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 4.72,
+      "load_percent": 68
+    },
+    {
+      "seconds": 36.375,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 4.73,
+      "load_percent": 68
+    },
+    {
+      "seconds": 38.375,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 4.7,
+      "load_percent": 69
+    },
+    {
+      "seconds": 40.391,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 4.67,
+      "load_percent": 69
+    },
+    {
+      "seconds": 42.391,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 4.65,
+      "load_percent": 69
+    },
+    {
+      "seconds": 44.391,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 4.64,
+      "load_percent": 69
+    },
+    {
+      "seconds": 46.407,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 4.62,
+      "load_percent": 69
+    },
+    {
+      "seconds": 48.407,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 4.62,
+      "load_percent": 69
+    },
+    {
+      "seconds": 50.422,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 4.62,
+      "load_percent": 69
+    },
+    {
+      "seconds": 52.422,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 4.6,
+      "load_percent": 69
+    },
+    {
+      "seconds": 54.438,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 4.58,
+      "load_percent": 69
+    },
+    {
+      "seconds": 56.438,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 4.57,
+      "load_percent": 69
+    },
+    {
+      "seconds": 58.438,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 4.5,
+      "load_percent": 70
+    },
+    {
+      "seconds": 60.454,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 4.48,
+      "load_percent": 70
+    },
+    {
+      "seconds": 62.454,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 4.44,
+      "load_percent": 70
+    },
+    {
+      "seconds": 64.469,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 4.41,
+      "load_percent": 70
+    },
+    {
+      "seconds": 66.469,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 4.42,
+      "load_percent": 70
+    },
+    {
+      "seconds": 68.485,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 4.32,
+      "load_percent": 71
+    },
+    {
+      "seconds": 70.485,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 4.35,
+      "load_percent": 71
+    },
+    {
+      "seconds": 72.5,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 4.2,
+      "load_percent": 72
+    },
+    {
+      "seconds": 74.5,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 3.66,
+      "load_percent": 75
+    },
+    {
+      "seconds": 76.5,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 2.52,
+      "load_percent": 83
+    },
+    {
+      "seconds": 78.516,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 1.46,
+      "load_percent": 90
+    }
+  ],
+  "error": "RESOURCE_BUSY: GPU smoke stopped below 2 GiB free RAM",
+  "elapsed_seconds": 78.532
+}

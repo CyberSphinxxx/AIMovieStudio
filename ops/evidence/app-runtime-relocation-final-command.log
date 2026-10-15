@@ -1,0 +1,25 @@
+Exception in thread Thread-1 (_readerthread):
+Traceback (most recent call last):
+  File "C:\Users\USER-PC\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\threading.py", line 1075, in _bootstrap_inner
+    self.run()
+  File "C:\Users\USER-PC\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\threading.py", line 1012, in run
+    self._target(*self._args, **self._kwargs)
+  File "C:\Users\USER-PC\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\subprocess.py", line 1599, in _readerthread
+    buffer.append(fh.read())
+                  ^^^^^^^^^
+  File "C:\Users\USER-PC\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\encodings\cp1252.py", line 23, in decode
+    return codecs.charmap_decode(input,self.errors,decoding_table)[0]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeDecodeError: 'charmap' codec can't decode byte 0x81 in position 5356: character maps to <undefined>
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "C:\L3mxr\Github Repositories\AIMovieStudio\scripts\runtime_relocation_smoke.py", line 224, in <module>
+    main()
+  File "C:\L3mxr\Github Repositories\AIMovieStudio\scripts\runtime_relocation_smoke.py", line 166, in main
+    media = json.loads(probe.stdout)
+            ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\USER-PC\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\json\__init__.py", line 339, in loads
+    raise TypeError(f'the JSON object must be str, bytes or bytearray, '
+TypeError: the JSON object must be str, bytes or bytearray, not NoneType
+C:\L3mxr\Github Repositories\AIMovieStudio\ops\evidence\app-runtime-relocation-8d5792d96b.json

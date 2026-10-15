@@ -1,0 +1,12 @@
+Looking in links: c:\L3mxr\Github Repositories\AIMovieStudio\tools\app-runtime-cache\wheels
+Processing .\tools\app-runtime-cache\wheels\colorama-0.4.6-py2.py3-none-any.whl (from -r C:\L3mxr\Github Repositories\AIMovieStudio\tools\app-runtime-cache\test-requirements-locked.txt (line 1))
+Processing .\tools\app-runtime-cache\wheels\iniconfig-2.3.1-py3-none-any.whl (from -r C:\L3mxr\Github Repositories\AIMovieStudio\tools\app-runtime-cache\test-requirements-locked.txt (line 2))
+Processing .\tools\app-runtime-cache\wheels\packaging-26.3-py3-none-any.whl (from -r C:\L3mxr\Github Repositories\AIMovieStudio\tools\app-runtime-cache\test-requirements-locked.txt (line 3))
+Processing .\tools\app-runtime-cache\wheels\pluggy-1.6.0-py3-none-any.whl (from -r C:\L3mxr\Github Repositories\AIMovieStudio\tools\app-runtime-cache\test-requirements-locked.txt (line 4))
+Processing .\tools\app-runtime-cache\wheels\pygments-2.21.0-py3-none-any.whl (from -r C:\L3mxr\Github Repositories\AIMovieStudio\tools\app-runtime-cache\test-requirements-locked.txt (line 5))
+Processing .\tools\app-runtime-cache\wheels\pytest-9.0.3-py3-none-any.whl (from -r C:\L3mxr\Github Repositories\AIMovieStudio\tools\app-runtime-cache\test-requirements-locked.txt (line 6))
+Installing collected packages: pygments, pluggy, packaging, iniconfig, colorama, pytest
+
+Successfully installed colorama-0.4.6 iniconfig-2.3.1 packaging-26.3 pluggy-1.6.0 pygments-2.21.0 pytest-9.0.3
+No broken requirements found.
+{"version": "Python 3.11.14", "ledger": {"received_bytes": 46383103, "allocated_bytes": 50995316}, "packages": {"pytest": "9.0.3", "pygments": "2.21.0", "pluggy": "1.6.0", "packaging": "26.3", "iniconfig": "2.3.1", "colorama": "0.4.6"}}

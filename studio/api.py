@@ -5,6 +5,7 @@ import json
 import os
 import shutil
 import sqlite3
+import sys
 import zipfile
 from contextlib import asynccontextmanager
 from pathlib import Path
@@ -193,6 +194,13 @@ def create_app(root: Path | None = None, run_worker=True, *, resource_probe=None
             "service": "ready",
             "database": integrity,
             "media": tools,
+            "runtime": {
+                "process_id": os.getpid(),
+                "python_version": sys.version.split()[0],
+                "isolated": bool(sys.flags.isolated),
+                "app_owned": Path(sys.executable).resolve()
+                == (ROOT / "tools/app-runtime/python.exe").resolve(),
+            },
             "free_disk_gb": round(disk.free / 1024**3, 1),
             "worker_alive": bool(worker.thread and worker.thread.is_alive()),
             "concurrency": 1,

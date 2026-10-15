@@ -1,0 +1,107 @@
+{
+  "phase": "image",
+  "is_mock": false,
+  "status": "FAILED",
+  "directory": "C:\\L3mxr\\Github Repositories\\AIMovieStudio\\data\\gpu-smoke\\117c4f0d-2620-4721-8250-63892452781b",
+  "max_seconds": 600,
+  "before": {
+    "gpu": {
+      "available": true,
+      "name": "NVIDIA GeForce RTX 3060 Laptop GPU",
+      "driver": "610.88",
+      "total_mb": 6144,
+      "used_mb": 686,
+      "temperature_c": 53
+    },
+    "python": "3.12.14",
+    "memory": {
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 7.14,
+      "load_percent": 53
+    },
+    "measured_at": 1791921207.532853
+  },
+  "parent_memory_samples": [
+    {
+      "seconds": 0.25,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 7.14,
+      "load_percent": 53
+    },
+    {
+      "seconds": 2.25,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 6.6,
+      "load_percent": 56
+    },
+    {
+      "seconds": 4.265,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 6.51,
+      "load_percent": 57
+    },
+    {
+      "seconds": 6.265,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 6.32,
+      "load_percent": 58
+    },
+    {
+      "seconds": 8.265,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 6.26,
+      "load_percent": 58
+    },
+    {
+      "seconds": 10.281,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 6.21,
+      "load_percent": 59
+    },
+    {
+      "seconds": 12.281,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 6.13,
+      "load_percent": 59
+    },
+    {
+      "seconds": 14.297,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 5.89,
+      "load_percent": 61
+    },
+    {
+      "seconds": 16.297,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 4.7,
+      "load_percent": 69
+    },
+    {
+      "seconds": 18.297,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 3.2,
+      "load_percent": 78
+    },
+    {
+      "seconds": 20.312,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 1.91,
+      "load_percent": 87
+    }
+  ],
+  "error": "RESOURCE_BUSY: GPU smoke stopped below 2 GiB free RAM",
+  "telemetry": [],
+  "elapsed_seconds": 20.312
+}

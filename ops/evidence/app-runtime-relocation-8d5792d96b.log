@@ -1,0 +1,48 @@
+
+stop.ps1: starting
+Studio stopped. Completed steps are saved and resume at next launch.
+
+stop.ps1: exit 0
+
+run.ps1: starting
+AI Movie Studio is ready at http://127.0.0.1:8765
+
+run.ps1: exit 0
+
+run.ps1: starting
+AI Movie Studio is ready at http://127.0.0.1:8765
+
+run.ps1: exit 0
+
+run.ps1: starting
+Port 8765 belongs to another app or Studio folder. It has been left running; close that copy first.
+At C:\L3mxr\Github Repositories\AIMovieStudio\scripts\run.ps1:11 char:5
++     throw 'Port 8765 belongs to another app or Studio folder. It has  ...
++     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : OperationStopped: (Port 8765 belon...hat copy first.:String) [], RuntimeException
+    + FullyQualifiedErrorId : Port 8765 belongs to another app or Studio folder. It has been left running; close that  
+   copy first.
+ 
+
+run.ps1: exit 1
+
+stop.ps1: starting
+Port 8765 belongs to a different process. It has been left running.
+At C:\L3mxr\Github Repositories\AIMovieStudio\scripts\stop.ps1:10 char:9
++   }else{throw 'Port 8765 belongs to a different process. It has been  ...
++         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : OperationStopped: (Port 8765 belon...n left running.:String) [], RuntimeException
+    + FullyQualifiedErrorId : Port 8765 belongs to a different process. It has been left running.
+ 
+
+stop.ps1: exit 1
+
+stop.ps1: starting
+Studio stopped. Completed steps are saved and resume at next launch.
+
+stop.ps1: exit 0
+
+run.ps1: starting
+AI Movie Studio is ready at http://127.0.0.1:8765
+
+run.ps1: exit 0
