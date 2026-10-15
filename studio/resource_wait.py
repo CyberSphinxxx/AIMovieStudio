@@ -8,6 +8,7 @@ from typing import Literal
 from pydantic import Field, model_validator
 from studio.domain import StrictModel
 from studio.diagnostics import memory_status
+from studio.inference_lock import inference_busy
 
 RECHECK_SECONDS = 15
 WAIT_SECONDS = 24 * 60 * 60
@@ -17,7 +18,7 @@ GPU_STAGES = {"REFERENCE", "FRAME", "CLIP", "REFERENCE_VARIANT", "RETAKE_FRAME",
 
 
 class ResourceReason(StrictModel):
-    code: Literal["MEMORY_BUSY", "GRAPHICS_BUSY", "GPU_HOT", "COUNTERS_UNKNOWN"]
+    code: Literal["MEMORY_BUSY", "GRAPHICS_BUSY", "GPU_HOT", "COUNTERS_UNKNOWN", "INFERENCE_BUSY"]
     message: str = Field(min_length=1, max_length=400)
 
 
@@ -62,6 +63,10 @@ def probe(step: dict, settings: dict, spec: dict, gpu_reader) -> ResourceReason 
         if not installed:
             return None  # The provider reports missing/changed setup instead of waiting for RAM.
         minimum = 7 if profile == "cpu_4b" else 5 if profile == "cpu_1_5b" else 2
+    elif step["stage"] in STORY_STAGES and settings.get("story_model"):
+        if inference_busy():
+            return busy_reason()
+        return None  # External Ollama's memory configuration is not inferred here.
     elif step["stage"] in GPU_STAGES:
         from studio.providers import WanGPConfig, WanGPProvider
         from studio.media import ROOT
@@ -72,6 +77,8 @@ def probe(step: dict, settings: dict, spec: dict, gpu_reader) -> ResourceReason 
         minimum, needs_gpu = 5, True
     if minimum is None:
         return None
+    if inference_busy():
+        return busy_reason()
     try:
         memory = memory_status()
     except OSError:
@@ -108,3 +115,10 @@ def probe(step: dict, settings: dict, spec: dict, gpu_reader) -> ResourceReason 
                 code="GRAPHICS_BUSY", message="Waiting for at least 4 GB of free graphics memory."
             )
     return None
+
+
+def busy_reason() -> ResourceReason:
+    return ResourceReason(
+        code="INFERENCE_BUSY",
+        message="Waiting for another Studio process to finish using the local AI engine.",
+    )

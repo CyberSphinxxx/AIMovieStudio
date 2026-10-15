@@ -7,6 +7,7 @@ import threading
 import time
 
 from studio import media
+from studio.inference_lock import InferenceBusy
 from studio.domain import EpisodeScript, SeasonPlan, continuity_errors, stable, validate_script
 from studio.script_batches import merge_sections, validate_section
 from studio.continuity import draft_events
@@ -23,6 +24,7 @@ from studio.resource_wait import (
     RECHECK_SECONDS,
     load_wait,
     probe,
+    busy_reason,
 )
 
 STAGES = {
@@ -262,6 +264,7 @@ class Worker:
                 self.resource_rechecks.pop(step["job_id"], None)
                 step["attempts"] += 1
                 step["payload"] = json.loads(step["payload"])
+                step["resource_wait_before_claim"] = previous.model_dump() if previous else None
                 return step
         return None
 
@@ -276,6 +279,51 @@ class Worker:
                 db.execute("UPDATE steps SET heartbeat=? WHERE id=?", (time.time(), step["id"]))
             self.last_heartbeat = time.monotonic()
 
+    def defer_inference(self, step):
+        """Refund only a claim that lost ownership before any inference started."""
+        now = time.time()
+        with self.store.connect() as db:
+            db.execute("BEGIN IMMEDIATE")
+            row = db.execute(
+                "SELECT s.state,s.attempts,s.output,j.state AS job_state FROM steps s "
+                "JOIN jobs j ON j.id=s.job_id WHERE s.id=? AND s.job_id=?",
+                (step["id"], step["job_id"]),
+            ).fetchone()
+            if not row or row["state"] != "RUNNING" or row["attempts"] != step["attempts"] or row["output"]:
+                return
+            state = "CANCELLED" if row["job_state"] == "CANCELLED" else "READY"
+            db.execute(
+                "UPDATE steps SET state=?,attempts=attempts-1,heartbeat=NULL,error=NULL WHERE id=?",
+                (state, step["id"]),
+            )
+            if row["job_state"] not in {"RUNNING", "WAITING_RESOURCES"}:
+                return  # Explicit Pause/Stop is authoritative.
+            old = step.get("resource_wait_before_claim")
+            previous = ResourceWait.model_validate(old) if old else None
+            if previous and now >= previous.deadline:
+                message = "RESOURCE_WAIT_EXPIRED: Review Settings and retry; your completed work is safe."
+                db.execute("UPDATE jobs SET state='FAILED',error=? WHERE id=?", (message, step["job_id"]))
+                db.execute("UPDATE projects SET status='FAILED' WHERE id=?", (step["project_id"],))
+                db.execute("UPDATE steps SET state='FAILED',error=? WHERE id=?", (message, step["id"]))
+                self.store.event(
+                    db, step["project_id"], step["job_id"], "resource_wait_expired", {"message": message}
+                )
+                return
+            wait = ResourceWait(
+                **busy_reason().model_dump(),
+                step_id=step["id"],
+                stage=step["stage"],
+                since=previous.since if previous else now,
+                deadline=previous.deadline if previous else now + WAIT_SECONDS,
+            )
+            self.store.event(db, step["project_id"], step["job_id"], "resource_wait", wait.model_dump())
+            db.execute("UPDATE jobs SET state='WAITING_RESOURCES',error=NULL WHERE id=?", (step["job_id"],))
+            db.execute(
+                "UPDATE projects SET status='WAITING_RESOURCES',updated=? WHERE id=?",
+                (now, step["project_id"]),
+            )
+            self.resource_rechecks[step["job_id"]] = min(now + RECHECK_SECONDS, wait.deadline)
+
     def loop(self):
         while not self.stop.is_set():
             step = self.claim()
@@ -289,6 +337,8 @@ class Worker:
                 self.verify(output)
                 atomic_json(self.directory(step) / "receipt.json", output)
                 self.complete(step, output)
+            except InferenceBusy:
+                self.defer_inference(step)
             except media.Interrupted:
                 with self.store.connect() as db:
                     job = db.execute("SELECT state FROM jobs WHERE id=?", (step["job_id"],)).fetchone()

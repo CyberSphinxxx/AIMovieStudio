@@ -1,0 +1,102 @@
+.................F.                                                      [100%]
+================================== FAILURES ===================================
+__________ test_two_copied_modules_choose_the_same_default_user_lock __________
+
+tmp_path = WindowsPath('C:/Users/USER-PC/AppData/Local/Temp/pytest-of-USER-PC/pytest-154/test_two_copied_modules_choose0')
+
+    def test_two_copied_modules_choose_the_same_default_user_lock(tmp_path):
+        copies = []
+        for number in range(2):
+            copy = tmp_path / f"private-copy-{number}"
+            package = copy / "studio"
+            package.mkdir(parents=True)
+            (package / "__init__.py").write_bytes(b"")
+            shutil.copyfile(ROOT / "studio/inference_lock.py", package / "inference_lock.py")
+            copies.append(copy)
+        profile = tmp_path / "simulated-profile"
+        environment = os.environ | {
+            "LOCALAPPDATA": str(profile),
+            "HOME": str(profile),
+            "USERPROFILE": str(profile),
+        }
+>       with owner_process(tmp_path, None, app_root=copies[0], env=environment, default_path=True):
+
+tests\test_inference_lock.py:384: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tools\app-runtime\Lib\contextlib.py:137: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+tmp_path = WindowsPath('C:/Users/USER-PC/AppData/Local/Temp/pytest-of-USER-PC/pytest-154/test_two_copied_modules_choose0')
+path = None
+
+    @contextmanager
+    def owner_process(
+        tmp_path, path, *, extra_child=False, cwd=None, app_root=ROOT, env=None, default_path=False
+    ):
+        ready, stop, log_path = tmp_path / "owner-ready.json", tmp_path / "owner-stop", tmp_path / "owner.log"
+        # Use the base executable directly so a Windows venv launcher is not mistaken
+        # for the actual owner. -I and explicit app path allow an unrelated cwd.
+        executable = Path(sys.base_prefix) / ("python.exe" if os.name == "nt" else "bin/python3")
+        code = """
+    import sys,json,time,subprocess,os
+    from pathlib import Path
+    from contextlib import ExitStack
+    sys.path.insert(0,sys.argv[1])
+    from studio.inference_lock import native_inference
+    from studio.processes import owned_process
+    with native_inference(Path(sys.argv[2]) if sys.argv[2] else None), ExitStack() as cleanup:
+        child=None
+        if sys.argv[5]=='True':
+            child=subprocess.Popen([sys.executable,'-I','-c','import time; time.sleep(30)'])
+            cleanup.enter_context(owned_process(child))
+        Path(sys.argv[3]).write_text(json.dumps({'pid':os.getpid(),'child':child.pid if child else None}))
+        until=time.monotonic()+20
+        while not Path(sys.argv[4]).exists() and time.monotonic()<until:
+            time.sleep(.02)
+        if child:
+            child.terminate()
+            child.wait(timeout=5)
+    """
+        with log_path.open("wb") as log:
+            process = subprocess.Popen(
+                [
+                    str(executable),
+                    "-I",
+                    "-c",
+                    code,
+                    str(app_root),
+                    "" if default_path else str(path),
+                    str(ready),
+                    str(stop),
+                    str(extra_child),
+                ],
+                cwd=cwd or tmp_path,
+                env=env,
+                stdin=subprocess.DEVNULL,
+                stdout=log,
+                stderr=log,
+            )
+            try:
+                with owned_process(process):
+                    await_condition(lambda: ready.exists() or process.poll() is not None, timeout=8)
+>                   assert ready.exists(), log_path.read_text(errors="replace")
+E                   AssertionError: Traceback (most recent call last):
+E                       File "<string>", line 7, in <module>
+E                     ModuleNotFoundError: No module named 'studio.processes'
+E                     
+E                   assert False
+E                    +  where False = exists()
+E                    +    where exists = WindowsPath('C:/Users/USER-PC/AppData/Local/Temp/pytest-of-USER-PC/pytest-154/test_two_copied_modules_choose0/owner-ready.json').exists
+
+tests\test_inference_lock.py:85: AssertionError
+============================== warnings summary ===============================
+tests/test_inference_lock.py::test_api_automatically_continues_to_mp4_after_shared_ownership_releases
+  C:\L3mxr\Github Repositories\AIMovieStudio\tools\app-runtime\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ===========================
+FAILED tests/test_inference_lock.py::test_two_copied_modules_choose_the_same_default_user_lock
+1 failed, 18 passed, 1 warning in 13.26s

@@ -1,0 +1,36 @@
+============================= test session starts =============================
+platform win32 -- Python 3.11.14, pytest-9.0.3, pluggy-1.6.0 -- C:\L3mxr\Github Repositories\AIMovieStudio\tools\app-test-env\Scripts\python.exe
+cachedir: .pytest_cache
+rootdir: C:\L3mxr\Github Repositories\AIMovieStudio
+configfile: pyproject.toml
+plugins: anyio-4.15.1
+collecting ... collected 20 items
+
+tests/test_inference_lock.py::test_nested_and_thread_contention_release_without_replacing_file PASSED [  5%]
+tests/test_inference_lock.py::test_different_process_and_folder_share_ownership_then_release PASSED [ 10%]
+tests/test_inference_lock.py::test_actual_killed_owner_and_owned_child_release_lock PASSED [ 15%]
+tests/test_inference_lock.py::test_exception_cleanup_and_broken_storage_fail_closed PASSED [ 20%]
+tests/test_inference_lock.py::test_cpu_ollama_and_gpu_do_not_enter_when_owned PASSED [ 25%]
+tests/test_inference_lock.py::test_probe_waits_for_common_owner_without_hardware_and_skips_demo PASSED [ 30%]
+tests/test_inference_lock.py::test_ownership_wait_is_durable_and_does_not_spend_attempts PASSED [ 35%]
+tests/test_inference_lock.py::test_claim_race_refunds_once_and_preserves_user_control[None] PASSED [ 40%]
+tests/test_inference_lock.py::test_claim_race_refunds_once_and_preserves_user_control[pause] PASSED [ 45%]
+tests/test_inference_lock.py::test_claim_race_refunds_once_and_preserves_user_control[cancel] PASSED [ 50%]
+tests/test_inference_lock.py::test_repeated_race_retains_deadline_then_expires_without_attempt PASSED [ 55%]
+tests/test_inference_lock.py::test_busy_loop_defers_but_other_inference_failure_consumes_attempt PASSED [ 60%]
+tests/test_inference_lock.py::test_demo_can_export_while_native_ownership_is_busy PASSED [ 65%]
+tests/test_inference_lock.py::test_cancelled_http_callback_keeps_ownership_until_actual_request_exits PASSED [ 70%]
+tests/test_inference_lock.py::test_cpu_shutdown_still_holds_ownership_until_child_context_exits PASSED [ 75%]
+tests/test_inference_lock.py::test_two_store_roots_wait_while_third_process_owns_models PASSED [ 80%]
+tests/test_inference_lock.py::test_race_wait_can_resume_to_valid_demo_mp4 PASSED [ 85%]
+tests/test_inference_lock.py::test_two_copied_modules_choose_the_same_default_user_lock PASSED [ 90%]
+tests/test_inference_lock.py::test_api_automatically_continues_to_mp4_after_shared_ownership_releases PASSED [ 95%]
+tests/test_inference_lock.py::test_real_worker_kill_releases_model_ownership_and_recovers_same_step PASSED [100%]
+
+============================== warnings summary ===============================
+tests/test_inference_lock.py::test_api_automatically_continues_to_mp4_after_shared_ownership_releases
+  C:\L3mxr\Github Repositories\AIMovieStudio\tools\app-runtime\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+======================= 20 passed, 1 warning in 17.85s ========================

@@ -60,6 +60,132 @@
   },
   "suites": [
     {
+      "title": "export-folder.spec.ts",
+      "file": "export-folder.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "finished export folder action has busy, launch and failure feedback",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 9225,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-15T16:30:07.162Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "0da2781318f1f0d0523a-1bd45ccdea28de7c848c",
+          "file": "export-folder.spec.ts",
+          "line": 4,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "loudness.spec.ts",
+      "file": "loudness.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "balanced volume persists and preserves the downloadable original mix",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 15963,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-15T16:30:17.687Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "82b0c35eba1778a94ed5-7e8916fa7bb5447107dc",
+          "file": "loudness.spec.ts",
+          "line": 13,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "provider-memory.spec.ts",
+      "file": "provider-memory.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "memory profile persists and image RAM failure remains explicit",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 8623,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-15T16:30:33.712Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "2f7cf73c0dce996b5ccc-de4b1bf1a83f971a8c9b",
+          "file": "provider-memory.spec.ts",
+          "line": 12,
+          "column": 1
+        }
+      ]
+    },
+    {
       "title": "references.spec.ts",
       "file": "references.spec.ts",
       "column": 0,
@@ -81,12 +207,12 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 12744,
+                  "duration": 15548,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-15T09:47:33.324Z",
+                  "startTime": "2026-10-15T16:30:42.391Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -98,6 +224,82 @@
           "file": "references.spec.ts",
           "line": 5,
           "column": 1
+        }
+      ]
+    },
+    {
+      "title": "resource-wait.spec.ts",
+      "file": "resource-wait.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "waiting for memory explains automatic continuation and Pause stays authoritative",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2381,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-15T16:30:58.023Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f42f4d4d66785cd64af8-0401428f3baa8e0f5a51",
+          "file": "resource-wait.spec.ts",
+          "line": 17,
+          "column": 3
+        },
+        {
+          "title": "waiting for shared AI engine explains automatic continuation and Pause stays authoritative",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 8072,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-15T16:31:00.422Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f42f4d4d66785cd64af8-abd59e78f82b796f057e",
+          "file": "resource-wait.spec.ts",
+          "line": 17,
+          "column": 3
         }
       ]
     },
@@ -123,12 +325,12 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 17664,
+                  "duration": 20998,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-15T09:47:46.374Z",
+                  "startTime": "2026-10-15T16:31:08.559Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -144,11 +346,155 @@
       ]
     },
     {
+      "title": "sound-effects.spec.ts",
+      "file": "sound-effects.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "sound effects toggle persists and a demo movie downloads its original effects stem",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 22972,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-15T16:31:29.612Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f6a0665e5d26deda3d19-5946db03ca6fa773eb6c",
+          "file": "sound-effects.spec.ts",
+          "line": 14,
+          "column": 1
+        }
+      ]
+    },
+    {
       "title": "studio.spec.ts",
       "file": "studio.spec.ts",
       "column": 0,
       "line": 0,
       "specs": [
+        {
+          "title": "ZIP backup restores a playable project through Settings without replacing defaults",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 19307,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-15T16:31:52.683Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "64bdea7002f9c9cea9f4-22fd07a1d99ef58b81c9",
+          "file": "studio.spec.ts",
+          "line": 6,
+          "column": 1
+        },
+        {
+          "title": "saved movie exports another aspect without rewriting its story",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 8458,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-15T16:32:12.010Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "64bdea7002f9c9cea9f4-eda3730b3d825dbee8a2",
+          "file": "studio.spec.ts",
+          "line": 112,
+          "column": 1
+        },
+        {
+          "title": "home is usable at target viewports and keyboard focus is visible",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3382,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-15T16:32:20.491Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "64bdea7002f9c9cea9f4-1cd497525be4ad3ef819",
+          "file": "studio.spec.ts",
+          "line": 179,
+          "column": 1
+        },
         {
           "title": "one idea to playable demo MP4, persisted story, shots, and downloads",
           "ok": true,
@@ -165,12 +511,12 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 12105,
+                  "duration": 17704,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-15T09:48:04.094Z",
+                  "startTime": "2026-10-15T16:32:23.899Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -182,15 +528,151 @@
           "file": "studio.spec.ts",
           "line": 220,
           "column": 1
+        },
+        {
+          "title": "real request fails honestly and settings are actionable",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 5409,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-15T16:32:41.630Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "64bdea7002f9c9cea9f4-f2e9c05fddf36411a872",
+          "file": "studio.spec.ts",
+          "line": 305,
+          "column": 1
+        },
+        {
+          "title": "season prewriting is saved and studio backup is downloadable",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 71988,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-15T16:32:47.063Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "64bdea7002f9c9cea9f4-7ee6c9b09a37f9ad911b",
+          "file": "studio.spec.ts",
+          "line": 337,
+          "column": 1
+        },
+        {
+          "title": "settings cannot overwrite saved configuration while it is loading",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 7531,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-15T16:33:59.073Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "64bdea7002f9c9cea9f4-77ced7aad2faef778f5e",
+          "file": "studio.spec.ts",
+          "line": 445,
+          "column": 1
+        },
+        {
+          "title": "optional screenplay review edits and resumes before any footage",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 7110,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-15T16:34:06.655Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "64bdea7002f9c9cea9f4-7b8a4047694316aeb709",
+          "file": "studio.spec.ts",
+          "line": 490,
+          "column": 1
         }
       ]
     }
   ],
   "errors": [],
   "stats": {
-    "startTime": "2026-10-15T09:47:32.035Z",
-    "duration": 44536.718,
-    "expected": 3,
+    "startTime": "2026-10-15T16:30:04.049Z",
+    "duration": 250667.827,
+    "expected": 16,
     "skipped": 0,
     "unexpected": 0,
     "flaky": 0

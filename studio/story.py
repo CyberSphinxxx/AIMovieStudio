@@ -8,6 +8,7 @@ from typing import Literal, Protocol, TypeVar, Union
 import httpx
 from pydantic import BaseModel, Field, ValidationError, create_model, field_validator
 from studio.screenplay_text import validate_shot_headings
+from studio.inference_lock import serialized_inference, retain_current_inference
 
 from studio.domain import (
     CanonChange,
@@ -28,6 +29,7 @@ T = TypeVar("T", bound=BaseModel)
 def checked_post(client, path, body, check):
     finished = threading.Event()
     result = {}
+    lease = retain_current_inference()
 
     def request():
         try:
@@ -35,10 +37,19 @@ def checked_post(client, path, body, check):
         except Exception as e:
             result["error"] = e
         finally:
-            finished.set()
+            try:
+                if lease is not None:
+                    lease.release()
+            finally:
+                finished.set()
 
-    thread = threading.Thread(target=request, name="local-story-request", daemon=True)
-    thread.start()
+    try:
+        thread = threading.Thread(target=request, name="local-story-request", daemon=True)
+        thread.start()
+    except BaseException:
+        if lease is not None:
+            lease.release()
+        raise
     while not finished.wait(0.2):
         check()
     check()
@@ -199,6 +210,7 @@ class OllamaStory:
         self.model, self.transport = model, transport
         self.check = check
 
+    @serialized_inference
     def generate(self, schema: type[T], prompt: str) -> T:
         messages = [
             {

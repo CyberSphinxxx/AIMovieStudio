@@ -1,5 +1,11 @@
 # Active backlog — 2026-10-14
 
+## 2026-10-16 — shared native inference ownership
+
+UI completed:16EdgePASS4.2min/Settings restored/mobile shared-engine screenshot inspected.20 ownership/94related backend targets and lint/type/2Vitest pass. Full backend still running; local ownership checkpoint may be saved, broad acceptance stays incomplete. CPU malformed-counter failure reproduced14fail/4pass in separate uncommitted next-task tests, no model loaded.
+
+F4.04: implemented one per-user nonblocking OS lock across updated Studio copies/CPU/Ollama/WanGP calls, retained through child cleanup and background HTTP request completion. Durable INFERENCE_BUSY waits spend no attempts; claim-race refund is single/pre-inference-only, preserves deadlines and Pause/Stop. Crash/in-flight failures retain attempts. Demo exports proceed while native ownership is busy.20 targeted ownership tests PASS17.85s/94 related targets PASS23.32s, real owner+child/worker kill and independent-copy default-path proof included. Full backend/16Edge verification running; do not mark broad phase complete. Source own3.11 app restarted; original library preserved. Actual RAM2.4GiB blocks native generation. Next after checkpoint: harden CPU malformed/nonfinite counter handling, then continue unblocked acceptance work; CPU4B330.281s/image/video gates unchanged.
+
 ## Current session — faster native RAM protection
 
 F4.04/F5.01: native image/video and GPU smoke parent checks now target 0.5-second sampling (previously2s), retaining the 2 GiB floor and startup requirements. Missing/nonfinite/malformed RAM readings fail closed. Requests/smoke reports record the interval; historical evidence is untouched. 34 targets PASS2.04s; **full374backend PASS416.28s/one existing warning**, no skips/failures. App restarted successfully with current source, original library preserved (181 succeeded/32 failed/4 cancelled, no active jobs before restart). Fresh private copy Studio-138305c47ea8:3014hashes/374,870,129bytes/copied isolated3.11/current guard imports PASS; no models/userdata/distribution proof. This does not prove model fit or eliminate sampling overshoot. Final read-only RAM2.61–2.63GiB blocks native tests; next implement cross-process native ownership per docs/NATIVE_INFERENCE_SERIALIZATION_PLAN.md.

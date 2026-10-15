@@ -16,6 +16,7 @@ from studio.diagnostics import memory_status, process_rss
 from studio.storage import digest
 from studio.story import OllamaStory, T, checked_post
 from studio.processes import owned_process
+from studio.inference_lock import native_inference
 
 CPU_PROFILES = {
     "cpu_4b": (
@@ -71,6 +72,14 @@ def require_startup_memory(profile):
 
 @contextmanager
 def cpu_server(check=lambda: None, profile="small_cpu", observer=None):
+    check()
+    with native_inference():
+        with _cpu_server(check, profile, observer) as result:
+            yield result
+
+
+@contextmanager
+def _cpu_server(check=lambda: None, profile="small_cpu", observer=None):
     folder = ROOT / "tools" / "story"
     _, filename, size, sha = CPU_PROFILES[profile]
     executable, weights = folder / "llama-server.exe", folder / filename

@@ -1,5 +1,13 @@
 # Handoff — current state, 2026-10-15
 
+## Latest continuation — 2026-10-16
+
+Update: all16EdgePASS4.2min/Settings restored; shared-engine mobile screenshot viewed/readable/no overflow/Axe/Pause.20specific/94related backend checks/static pass. Full backend29486 still pending. Save ownership local checkpoint excluding new `tests/test_memory_readings.py`/`cpu-invalid-memory-before.log` (next-task red reproduction14fail/4pass0.66s, no models). Then harden CPU counters; keep full ownership baseline distinct if code changes while that run is in progress.
+
+Started872be76 clean. Current uncommitted native ownership slice: new inference_lock.py, CPUserver/WanGP/Ollama wrappers, request-thread retention, ResourceReason INFERENCE_BUSY, passive probe and single pre-inference claim-race refund with durable wait/deadline/Pause/Stop. Default shared user-profile lock works across updated copies; older builds/independent AI apps do not participate. No lock-file deletion/replacement/public bypass. Actual owner+child/worker kill recovery/default-copy paths tested, no native model loaded. Native external-server residency after transport failure is not guaranteed by this cooperative call lock.
+
+Verification20 ownership PASS17.85s/94relatedPASS23.32s/Ruff/lint/TypeScript/2VitestPASS. One copied-fixture missing processes.py failure fixed/preserved; initial lint-only unused import also fixed. Full backend session29486 (`inference-lock-full-backend.log`) and all16Edge session14955 (`inference-lock-all-browser.log`) running. Collect before dependent edits/final completion; browser wrapper restores full Settings. Source own3.11 app restarted/currentcode/library preserved; no active jobs before restart. Actual RAM2.4GiB blocks models; CPU4B330.281s/imagePASSbeforevideo unchanged. Once verified, update all5ops/checkpoint. Next independent task: CPU startup/runtime malformed/NaN/bool memory-counter guards; user requests continued building. Earlier sections below describe the starting state and should be updated after this checkpoint.
+
 ## Read this first
 
 The application is **unfinished**. Its end-to-end development demo works; real local image/video generation and writing quality are not proven. Do not turn typed JSON, CUDA arithmetic, a model phase, mock MP4s or preparation into a native-quality success claim.

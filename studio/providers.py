@@ -11,6 +11,7 @@ from pydantic import Field
 from studio import media
 from studio.domain import StrictModel
 from studio.storage import atomic_json
+from studio.inference_lock import serialized_inference
 
 PARENT_MEMORY_CHECK_SECONDS = 0.5
 
@@ -71,6 +72,7 @@ class WanGPProvider:
             and (Path(self.config.installation) / "shared" / "api.py").is_file()
         )
 
+    @serialized_inference
     def request(
         self,
         kind: str,
