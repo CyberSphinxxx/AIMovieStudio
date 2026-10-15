@@ -1,0 +1,230 @@
+FFFF.F                                                                   [100%]
+================================== FAILURES ===================================
+__ test_silent_offscreen_placeholder_does_not_make_dead_character_present[] ___
+
+store = <studio.storage.Store object at 0x000002C70A3F3E90>
+spec = ProjectInput(idea='A lighthouse remembers a vanished ship.', kind='series', orientation='portrait', target_seconds=10,...e='Cinematic realism', backend='demo', prewrite_season=False, review_story=False, idempotency_key='fixture-unique-key')
+narration = ''
+
+    @pytest.mark.parametrize("narration", ["", " \t\n "])
+    def test_silent_offscreen_placeholder_does_not_make_dead_character_present(store, spec, narration):
+        _, plan, script = fixture_story(store, spec)
+        hero, guide = [c.id for c in plan.characters]
+        script.number = 2
+        for shot in script.shots:
+            shot.character_ids, shot.speaker_id, shot.narration = [guide], hero, narration
+        death = [{"episode": 1, "entity_id": hero, "field": "alive", "value": "false"}]
+        validate_script(script, plan, 10)
+>       assert not continuity_errors(script, death, plan)
+E       AssertionError: assert not ['Shot 1: 1b9c1cee-56a4-57eb-879d-a5dba3d1a983 is dead; add an explicit revision/flashback before production.', 'Shot 2: 1b9c1cee-56a4-57eb-879d-a5dba3d1a983 is dead; add an explicit revision/flashback before production.']
+E        +  where ['Shot 1: 1b9c1cee-56a4-57eb-879d-a5dba3d1a983 is dead; add an explicit revision/flashback before production.', 'Shot 2: 1b9c1cee-56a4-57eb-879d-a5dba3d1a983 is dead; add an explicit revision/flashback before production.'] = continuity_errors(EpisodeScript(number=2, screenplay='DEMO SCREENPLAY � template writing, not AI generated.\nIdea: A lighthouse remember...on='fade', required_props=[], required_knowledge=[], flashback_episode=None, continuity_note='')], proposed_changes=[]), [{'entity_id': '1b9c1cee-56a4-57eb-879d-a5dba3d1a983', 'episode': 1, 'field': 'alive', 'value': 'false'}], SeasonPlan(title='A lighthouse remembers a vanished ship', logline='A lighthouse remembers a vanished ship.', ending='... compass', description='A silver compass with a cracked glass face', owner_id='1b9c1cee-56a4-57eb-879d-a5dba3d1a983')]))
+
+tests\test_silent_continuity.py:23: AssertionError
+_ test_silent_offscreen_placeholder_does_not_make_dead_character_present[ \t\n ] _
+
+store = <studio.storage.Store object at 0x000002C70A3F2C10>
+spec = ProjectInput(idea='A lighthouse remembers a vanished ship.', kind='series', orientation='portrait', target_seconds=10,...e='Cinematic realism', backend='demo', prewrite_season=False, review_story=False, idempotency_key='fixture-unique-key')
+narration = ' \t\n '
+
+    @pytest.mark.parametrize("narration", ["", " \t\n "])
+    def test_silent_offscreen_placeholder_does_not_make_dead_character_present(store, spec, narration):
+        _, plan, script = fixture_story(store, spec)
+        hero, guide = [c.id for c in plan.characters]
+        script.number = 2
+        for shot in script.shots:
+            shot.character_ids, shot.speaker_id, shot.narration = [guide], hero, narration
+        death = [{"episode": 1, "entity_id": hero, "field": "alive", "value": "false"}]
+        validate_script(script, plan, 10)
+>       assert not continuity_errors(script, death, plan)
+E       AssertionError: assert not ['Shot 1: abf38bff-5e35-52fc-a1f1-bcf179be96a0 is dead; add an explicit revision/flashback before production.', 'Shot 2: abf38bff-5e35-52fc-a1f1-bcf179be96a0 is dead; add an explicit revision/flashback before production.']
+E        +  where ['Shot 1: abf38bff-5e35-52fc-a1f1-bcf179be96a0 is dead; add an explicit revision/flashback before production.', 'Shot 2: abf38bff-5e35-52fc-a1f1-bcf179be96a0 is dead; add an explicit revision/flashback before production.'] = continuity_errors(EpisodeScript(number=2, screenplay='DEMO SCREENPLAY � template writing, not AI generated.\nIdea: A lighthouse remember...on='fade', required_props=[], required_knowledge=[], flashback_episode=None, continuity_note='')], proposed_changes=[]), [{'entity_id': 'abf38bff-5e35-52fc-a1f1-bcf179be96a0', 'episode': 1, 'field': 'alive', 'value': 'false'}], SeasonPlan(title='A lighthouse remembers a vanished ship', logline='A lighthouse remembers a vanished ship.', ending='... compass', description='A silver compass with a cracked glass face', owner_id='abf38bff-5e35-52fc-a1f1-bcf179be96a0')]))
+
+tests\test_silent_continuity.py:23: AssertionError
+__ test_silent_absent_placeholder_cannot_be_used_for_knowledge_assertions[] ___
+
+store = <studio.storage.Store object at 0x000002C70A483D10>
+spec = ProjectInput(idea='A lighthouse remembers a vanished ship.', kind='series', orientation='portrait', target_seconds=10,...e='Cinematic realism', backend='demo', prewrite_season=False, review_story=False, idempotency_key='fixture-unique-key')
+narration = ''
+
+    @pytest.mark.parametrize("narration", ["", " \t "])
+    def test_silent_absent_placeholder_cannot_be_used_for_knowledge_assertions(store, spec, narration):
+        _, plan, script = fixture_story(store, spec)
+        hero, guide = [c.id for c in plan.characters]
+        shot = script.shots[0]
+        shot.character_ids, shot.speaker_id, shot.narration = [guide], hero, narration
+        shot.required_knowledge = [KnowledgeUse(character_id=hero, fact=FACT)]
+>       with pytest.raises(ValueError, match="outside the shot"):
+E       Failed: DID NOT RAISE <class 'ValueError'>
+
+tests\test_silent_continuity.py:33: Failed
+_ test_silent_absent_placeholder_cannot_be_used_for_knowledge_assertions[ \t ] _
+
+store = <studio.storage.Store object at 0x000002C70A403610>
+spec = ProjectInput(idea='A lighthouse remembers a vanished ship.', kind='series', orientation='portrait', target_seconds=10,...e='Cinematic realism', backend='demo', prewrite_season=False, review_story=False, idempotency_key='fixture-unique-key')
+narration = ' \t '
+
+    @pytest.mark.parametrize("narration", ["", " \t "])
+    def test_silent_absent_placeholder_cannot_be_used_for_knowledge_assertions(store, spec, narration):
+        _, plan, script = fixture_story(store, spec)
+        hero, guide = [c.id for c in plan.characters]
+        shot = script.shots[0]
+        shot.character_ids, shot.speaker_id, shot.narration = [guide], hero, narration
+        shot.required_knowledge = [KnowledgeUse(character_id=hero, fact=FACT)]
+>       with pytest.raises(ValueError, match="outside the shot"):
+E       Failed: DID NOT RAISE <class 'ValueError'>
+
+tests\test_silent_continuity.py:33: Failed
+_ test_two_episode_silent_scene_survives_reopen_and_backup_without_reviving_actor _
+
+store = <studio.storage.Store object at 0x000002C70A468BD0>
+spec = ProjectInput(idea='A lighthouse remembers a vanished ship.', kind='series', orientation='portrait', target_seconds=10,...e='Cinematic realism', backend='demo', prewrite_season=False, review_story=False, idempotency_key='fixture-unique-key')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000002C70A46BE90>
+tmp_path = WindowsPath('C:/Users/USER-PC/AppData/Local/Temp/pytest-of-USER-PC/pytest-162/test_two_episode_silent_scene_0')
+
+    def test_two_episode_silent_scene_survives_reopen_and_backup_without_reviving_actor(store, spec, monkeypatch, tmp_path):
+        spec.kind, spec.episodes, spec.target_seconds = "series", 2, 10
+        original = DemoStory.script
+    
+        def causal_script(self, project, number):
+            script = original(self, project, number)
+            hero, guide = [c["id"] for c in project["plan"]["characters"]]
+            if number == 1:
+                script.proposed_changes = [CanonChange(
+                    after_shot=2, entity_id=hero, field="alive", before_value="true", value="false",
+                    reason="The keeper dies after the rescue is completed.",
+                )]
+            else:
+                for shot in script.shots:
+                    shot.character_ids, shot.speaker_id, shot.narration = [guide], hero, ""
+                script.screenplay = (
+                    "DEMO SILENT SCREENPLAY. Development continuity fixture only.\n"
+                    "SCENE 1 � Eli watches the empty harbor. The keeper's chair remains empty. No one speaks; the light moves across the abandoned room.\n"
+                    "SCENE 2 � Eli closes the lighthouse door and walks toward the shore. Only wind and footsteps accompany the image. No narration is heard."
+                )
+            return script
+    
+        monkeypatch.setattr(DemoStory, "script", causal_script)
+        pid, _ = store.create(spec)
+        set_silent(store)
+        store.enqueue(pid)
+        first = produce_until(store, Worker(store), pid)
+        first_export = next(a for a in first["assets"] if a["role"] == "export")
+        original_script = first["episodes"][0]["script"]
+        store.enqueue(pid, 2)
+>       second = produce_until(store, Worker(store), pid)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_silent_continuity.py:81: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_pipeline.py:18: in produce_until
+    output = worker.execute(step)
+             ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <studio.worker.Worker object at 0x000002C70A3A3F10>
+step = {'attempts': 1, 'config': '{"story_model": "", "story_engine": "ollama", "speech": "none", "sound_effects": true, "balanced_audio": true, "reserve_mb": 1024, "wangp": {}}', 'episode': 2, 'error': None, ...}
+
+    def execute(self, step):
+        project = self.store.get(step["project_id"])
+        spec, stage = project["spec"], step["stage"]
+        settings = self.store.settings() | json.loads(step.get("config", "{}"))
+        reserve = settings["reserve_mb"] * 1024 * 1024
+        if shutil.disk_usage(self.store.root).free < reserve:
+            raise RuntimeError(
+                "DISK_FULL: Free disk space is below the configured reserve. Free space and resume."
+            )
+        directory = self.directory(step)
+    
+        def check():
+            self.check(step)
+    
+        def story_provider():
+            if spec["backend"] == "demo":
+                return DemoStory()
+            if settings["story_engine"] in {"small_cpu", "cpu_1_5b", "cpu_4b"}:
+                from studio.local_story import SmallCPUStory
+    
+                return SmallCPUStory(
+                    check=check, profile=settings["story_engine"], observer=self.story_observer
+                )
+            return OllamaStory(settings["story_model"], check=check)
+    
+        base = {
+            "provider": "demo" if spec["backend"] == "demo" else "WanGP",
+            "model": "deterministic-fixture-v1"
+            if spec["backend"] == "demo"
+            else "see-parent-inference-assets",
+            "is_mock": spec["backend"] == "demo",
+            "license": "Original app-owned development fixture"
+            if spec["backend"] == "demo"
+            else "WanGP Community License 2.0; individual model rights reviewed by user. Credit WanGP where required.",
+            "prompt_template_version": 2,
+        }
+        if stage == "PLAN":
+            plan = story_provider().plan(project)
+            if len(plan.episodes) != spec["episodes"]:
+                raise RuntimeError("BAD_STORY: Model did not plan the requested number of episodes.")
+            return {"plan": plan.model_dump(), "artifacts": []}
+        if stage in {"SCRIPT", "DRAFT", "SCRIPT_BATCH", "DRAFT_BATCH"}:
+            number = step["payload"]["episode"] if stage.startswith("DRAFT") else step["episode"]
+            episode = next(e for e in project["episodes"] if e["number"] == number)
+            payload = step["payload"]
+            sections = []
+            for sid in payload.get("previous_batch_ids", payload.get("batch_ids", [])):
+                with self.store.connect() as db:
+                    row = db.execute(
+                        "SELECT * FROM steps WHERE id=? AND job_id=?", (sid, step["job_id"])
+                    ).fetchone()
+                if not row or row["state"] != "SUCCEEDED" or not row["output"]:
+                    raise RuntimeError("BAD_STORY: A required screenplay section checkpoint is missing.")
+                sections.append(EpisodeScript.model_validate(json.loads(row["output"])["script"]))
+            if stage == "SCRIPT" and episode["status"] == "DRAFTED" and episode["script"]:
+                script = EpisodeScript.model_validate(episode["script"])
+            elif stage.endswith("_BATCH"):
+                section = story_provider().script_batch(
+                    project, number, payload["start"], payload["count"], sections
+                )
+                if section.number != number:
+                    raise RuntimeError("BAD_STORY: Screenplay section belongs to another episode.")
+                validate_section(
+                    section,
+                    SeasonPlan.model_validate(project["plan"]),
+                    payload["start"],
+                    payload["count"],
+                    spec["target_seconds"] / payload["total"],
+                )
+                script = merge_sections(sections + [section], number)
+            elif sections:
+                script = merge_sections(sections, number)
+            else:
+                script = story_provider().script(project, number)
+            if script.number != number:
+                raise RuntimeError("BAD_STORY: Script belongs to a different episode.")
+            plan = SeasonPlan.model_validate(project["plan"])
+            validate_script(
+                script,
+                plan,
+                sum(s.duration for s in script.shots) if stage.endswith("_BATCH") else spec["target_seconds"],
+            )
+            events = project["canon"]
+            if stage.startswith("DRAFT"):
+                events = draft_events(project, number)
+            conflicts = continuity_errors(script, events, plan)
+            if conflicts:
+>               raise RuntimeError("CANON_CONFLICT: " + "; ".join(conflicts))
+E               RuntimeError: CANON_CONFLICT: Shot 1: 7018d6b2-2895-5ec6-9db8-afe21bac14e2 is dead; add an explicit revision/flashback before production.; Shot 2: 7018d6b2-2895-5ec6-9db8-afe21bac14e2 is dead; add an explicit revision/flashback before production.
+
+studio\worker.py:471: RuntimeError
+============================== warnings summary ===============================
+tools\app-runtime\Lib\site-packages\fastapi\testclient.py:1
+  C:\L3mxr\Github Repositories\AIMovieStudio\tools\app-runtime\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ===========================
+FAILED tests/test_silent_continuity.py::test_silent_offscreen_placeholder_does_not_make_dead_character_present[]
+FAILED tests/test_silent_continuity.py::test_silent_offscreen_placeholder_does_not_make_dead_character_present[ \t\n ]
+FAILED tests/test_silent_continuity.py::test_silent_absent_placeholder_cannot_be_used_for_knowledge_assertions[]
+FAILED tests/test_silent_continuity.py::test_silent_absent_placeholder_cannot_be_used_for_knowledge_assertions[ \t ]
+FAILED tests/test_silent_continuity.py::test_two_episode_silent_scene_survives_reopen_and_backup_without_reviving_actor
+5 failed, 1 passed, 1 warning in 3.95s

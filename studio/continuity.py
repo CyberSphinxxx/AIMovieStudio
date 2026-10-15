@@ -1,5 +1,7 @@
 """Declared causal checks. Free-form screenplay prose is not a semantic proof."""
 
+from studio.domain import shot_participants
+
 
 def draft_events(project, number):
     """Earlier planned changes are simulation inputs, never completed canon."""
@@ -56,7 +58,7 @@ def check_continuity(script, events, plan):
     apply(0)
     for shot in script.shots:
         current = snapshot(events, shot.flashback_episode, plan) if shot.flashback_episode else state
-        for character in set(shot.character_ids) | {shot.speaker_id}:
+        for character in shot_participants(shot):
             if current["alive"].get(character) == "false":
                 errors.append(
                     f"Shot {shot.number}: {character} is dead; add an explicit revision/flashback before production."

@@ -1,5 +1,11 @@
 # Active backlog — 2026-10-14
 
+## Active2026-10-16 — F2.04 silent-shot correction
+
+FINAL: currentfull434backendPASS405.59s/57targets105.12s/final2Edge16.1s (Settings restored, mobile PNG inspected)/static pass. Silent/spoken life/knowledge rules, editor cleanup/audit and prior export hashes verified. Test native locks isolated from live app. This completes the narrow silent-scene slice, not precise-world-time/prose/native quality gates. Next: verify pinned lower-RAM GGUF encoder configuration route and prepare contract-tested bounded proposal; candidate metadata only, no downloads/profile/approval assumed. See docs/LOWER_RAM_ENCODER_RESEARCH.md.
+
+False dead-speaker conflict fixed for blank narration; actual visible/spoken actor and knowledge assertions share active participation. User silencing cleans only unused offscreen knowledge-use dependencies, keeps facts/visible requirements/original draft with audit.57targetsPASS105.12s; initial5red/1green retained. Two-episode demo export/hash/canon/reopen/backup and review API verified. Target2Edge review cases running/current server restarted; no native inference/precise-world-time/prose-semantic claim. Earlier394/140/20/16Edge apply to their own checkpoints.
+
 ## Current — 2026-10-16 verified checkpoint
 
 - Shared native ownership3ccf876:394backendPASS529.46s/16EdgePASS4.2min/20specific+94related/static/2Vitest; updated Studio copies queue rather than load together, retain cleanup/request ownership, preserve controls/deadlines/attempts. Independent third-party programs/older builds outside cooperation.

@@ -421,6 +421,7 @@ def create_app(root: Path | None = None, run_worker=True, *, resource_probe=None
             original = episode["script"]
             script = EpisodeScript.model_validate(original)
             shots = {s.id: s for s in script.shots}
+            continuity_cleanup = []
             if len({e.shot_id for e in value.edits}) != len(value.edits):
                 raise ValueError("A shot may appear only once in a draft edit")
             for edit in value.edits:
@@ -429,13 +430,34 @@ def create_app(root: Path | None = None, run_worker=True, *, resource_probe=None
                 fields = edit.model_dump(exclude_none=True, exclude={"shot_id"})
                 if not fields:
                     raise ValueError("Provide scene action, camera, spoken text or a speaker to edit")
+                shot = shots[edit.shot_id]
+                old_offscreen = (
+                    shot.speaker_id
+                    if shot.narration.strip() and shot.speaker_id not in shot.character_ids
+                    else None
+                )
                 for field, content in fields.items():
-                    setattr(shots[edit.shot_id], field, content)
+                    setattr(shot, field, content)
+                if old_offscreen and not shot.narration.strip():
+                    removed = [k for k in shot.required_knowledge if k.character_id == old_offscreen]
+                    if removed:
+                        shot.required_knowledge = [k for k in shot.required_knowledge if k not in removed]
+                        continuity_cleanup.append(
+                            {
+                                "shot_id": shot.id,
+                                "unused_knowledge_removed": [k.model_dump() for k in removed],
+                            }
+                        )
             cast = {c["id"]: c["name"] for c in project["plan"]["characters"]}
             script.screenplay = (
                 f"USER-EDITED SAVED DRAFT — Episode {number}. Scene timing and identities retained.\n\n"
                 + "\n\n".join(
-                    f"SCENE {s.number} — {s.camera}\n{s.action}\n{cast.get(s.speaker_id, 'Unknown speaker')} (offscreen): {s.narration}"
+                    f"SCENE {s.number} — {s.camera}\n{s.action}\n"
+                    + (
+                        f"{cast.get(s.speaker_id, 'Unknown speaker')} (offscreen): {s.narration}"
+                        if s.narration.strip()
+                        else "No spoken line."
+                    )
                     for s in script.shots
                 )
             )
@@ -467,6 +489,7 @@ def create_app(root: Path | None = None, run_worker=True, *, resource_probe=None
                     "revision": revision,
                     "original_script": original,
                     "edits": [e.model_dump(exclude_none=True) for e in value.edits],
+                    "continuity_cleanup": continuity_cleanup,
                 },
             )
             target = next((j for j in project["jobs"] if j["episode"] == number), None)

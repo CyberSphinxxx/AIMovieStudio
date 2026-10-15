@@ -1,10 +1,14 @@
 # Handoff — current state, 2026-10-16
 
+## Active update — silent-shot continuity verified
+
+After55689a5: domain.py/continuity.py/api.py and tests/test_silent_continuity.py fix blank narration activating an unused offscreen speaker. Explicit user silencing removes only that absent speaker's unused knowledge-use assertions, records cleanup, and retains learned facts, visible requirements and the original draft. Initial5FAIL/1PASS retained; final57targetsPASS105.12s; current full434backendPASS405.59s (one existing Starlette warning/no skips). Final2Edge reviewPASS16.1s, Settings restored and mobile screenshot inspected. Earlier16Edge JSON retained byte-for-byte as browser-tests-ownership-16.json; rolling browser-tests.json now records final2, not a new full16 run. Test native locks are isolated from the live app; explicit cross-process ownership tests still share test paths. Two-episode demo/prior export SHA/canon/reopen/backup verified, no models. Source current restarted. Save local checkpoint, then investigate pinned lower-RAM encoder route per docs/LOWER_RAM_ENCODER_RESEARCH.md. Metadata only fetched; no weights/profile/new approval. Private copy5e684814662c predates this story slice (code904af34), no latest private story QA claim. Last actual RAM4.31GiB; CPU330.281s/no reservation unchanged. No test or inference process remains.
+
 ## Current outcome
 
 The application remains unfinished. Development demo idea->story/canon/references/shots/audio/MP4 works; real writing quality and actual image/video generation have not passed. Never promote mock media, typed JSON, CUDA arithmetic, a loading phase or OS-lock tests to native-quality proof.
 
-Verified code checkpoints: `3ccf876` shared native ownership, `904af34` strict CPU/GPU counters, followed by exact evidence-byte preservation/current memory in the next local commit (see git log). Earlier runtime/resource waiting/audio/caption work retained. Main original app/library are healthy at127.0.0.1:8765 on app-owned isolatedPython3.11.14. Run `./StartStudio.cmd`. Last managed restart followed no-active-job inventory194SUCCEEDED/33FAILED/6CANCELLED. No known coding/test/model process remains; normal app service stays running.
+Verified code checkpoints: `3ccf876` shared native ownership, `904af34` strict CPU/GPU counters, `55689a5` exact evidence-byte preservation, followed by the silent-story checkpoint (see git log). Earlier runtime/resource waiting/audio/caption work retained. Main original app/library are healthy at127.0.0.1:8765 on app-owned isolatedPython3.11.14. Run `./StartStudio.cmd`. Last managed restart followed no-active-job inventory194SUCCEEDED/33FAILED/6CANCELLED. Normal app service stays running.
 
 ## New behavior and verification
 
@@ -30,7 +34,7 @@ GPU startup>=5GiB RAM/4096MiBfreeVRAM/<85C; runtime>=2GiB/unknown stops. **Video
 
 ## Next task
 
-1. Resume with git status/BOARD/this handoff; verify final byte-preservation checkpoint committed cleanly. Tests/build/proofs collected; preserve failures.
+1. Resume with git status/BOARD/this handoff; verify silent-story checkpoint committed cleanly. Current434 backend and final2Edge passed; preserve failures and exact historical evidence. Read docs/LOWER_RAM_ENCODER_RESEARCH.md; verify pinned public configuration/loader route without loading/downloading weights, contract-test any new profile and prepare a bounded proposal before requesting a new multi-GB model approval.
 2. Recheck counters opportunistically. If7GiB free, run the bounded saved-plan writer above, log actual resources/results and manually review writing. Keep CPU/GPU ownership/resource guards and total experiment limit.
 3. When native resources remain blocked, continue dependency-independent F2.04 continuity/time/revision acceptance: apply validate-series-continuity skill, inspect existing as-of episode/flashback/prop/knowledge tests and typed state before selecting a narrow reproducible defect. Precise world-time/prose semantics and produced-story revision branches remain unfinished. Do not create a fake quality pass or broaden model approvals.
 4. Investigate documented lower-footprint encoder options or more baseline capacity before another actual image; actual reviewed image then approved video. Remaining release gates include longer real series/identity/motion, voice/listening/score, clean Windows account, vendor90advisories/83license findings and distribution rights.

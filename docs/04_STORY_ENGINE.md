@@ -18,6 +18,8 @@ Do not rely on LLM chat context as permanent memory. Maintain a **canonical vers
 Every fact has `project_id`, `entity_id`, `effective_story_time`, `effective_episode`, `source_event_id`, `status = proposed|approved|superseded`, and optional revision reason. New LLM output is a proposal, not canon until validated. Maintain `visual_ref_version` and `voice_id` pinned at scene generation time.
 
 ## Invariants
+
+Implemented silent-shot rule: `speaker_id` remains a registered stable ID for schema/receipt compatibility, but an empty/whitespace spoken line does not make an offscreen character participate. Visible actors and speakers with nonempty lines still require valid life/knowledge state. Required knowledge may refer only to those active participants. When a user explicitly silences an offscreen line in the draft editor, remove only that unused speaker's knowledge-use assertions, retain visible-actor assertions and learned facts, and audit the cleanup beside the immutable original draft. Nonempty dialogue edits do not silently discard dependencies. Edited screenplay text labels the scene as having no spoken line. Precise world-time/prose semantics remain separate unfinished work.
 - Stable IDs for same character despite nickname/spelling; aliases may not create duplicate identities.
 - No changing eye/hair color, signature injury, relationship, voice or costume without an explicit story event.
 - Character cannot use a prop before receiving it, be in simultaneous locations or know future secrets without explanation.

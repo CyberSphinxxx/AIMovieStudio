@@ -1,0 +1,24 @@
+{
+  "scope": "Metadata research only; no weights downloaded or inference",
+  "url": "https://huggingface.co/api/models/Qwen/Qwen3-4B-GGUF?blobs=true",
+  "metadata_sha256": "3dc146e1e654b659bb1b3abce946435eb97f4ad8850071889893d328b87249ac",
+  "metadata_bytes": 7402,
+  "repo": "Qwen/Qwen3-4B-GGUF",
+  "revision": "bc640142c66e1fdd12af0bd68f40445458f3869b",
+  "card": {
+    "license": "apache-2.0",
+    "license_link": "https://huggingface.co/Qwen/Qwen3-4B-GGUF/blob/main/LICENSE",
+    "pipeline_tag": "text-generation",
+    "base_model": "Qwen/Qwen3-4B"
+  },
+  "file": {
+    "rfilename": "Qwen3-4B-Q4_K_M.gguf",
+    "blobId": "1206cf64b64392ba533af8e1e6d793ac290c8111",
+    "size": 2497280256,
+    "lfs": {
+      "sha256": "7485fe6f11af29433bc51cab58009521f205840f5b4ae3a32fa7f92e8534fdf5",
+      "size": 2497280256,
+      "pointerSize": 135
+    }
+  }
+}

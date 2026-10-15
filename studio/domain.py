@@ -139,6 +139,11 @@ class Shot(StrictModel):
         return list(dict.fromkeys(value))
 
 
+def shot_participants(shot: Shot) -> set[str]:
+    """A silent shot's mandatory speaker slot is an ID, not an actor presence."""
+    return set(shot.character_ids) | ({shot.speaker_id} if shot.narration.strip() else set())
+
+
 class EpisodeScript(StrictModel):
     number: int = Field(ge=1, le=24)
     screenplay: str = Field(min_length=20, max_length=50000)
@@ -180,9 +185,7 @@ def validate_script(
             raise ValueError("Unknown required prop")
         if any(p.character_id not in shot.character_ids for p in shot.required_props):
             raise ValueError("Prop user must be present in the shot")
-        if any(
-            k.character_id not in set(shot.character_ids) | {shot.speaker_id} for k in shot.required_knowledge
-        ):
+        if any(k.character_id not in shot_participants(shot) for k in shot.required_knowledge):
             raise ValueError("Knowledge assertion references a character outside the shot")
         if shot.flashback_episode is not None:
             if shot.flashback_episode >= script.number or len(shot.continuity_note.strip()) < 8:
