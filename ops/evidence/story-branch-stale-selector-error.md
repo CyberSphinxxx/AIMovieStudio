@@ -1,0 +1,121 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e3]:
+  - link "Skip to workspace" [ref=e4] [cursor=pointer]:
+    - /url: "#main"
+  - complementary "Studio navigation" [ref=e5]:
+    - link "AI Movie Studio home" [ref=e6] [cursor=pointer]:
+      - /url: /
+      - img [ref=e7]
+      - generic [ref=e12]:
+        - text: Movie
+        - generic [ref=e13]: STUDIO
+    - navigation "Main navigation" [ref=e14]:
+      - link "Create" [ref=e15] [cursor=pointer]:
+        - /url: /
+        - img [ref=e16]
+      - link "Projects" [ref=e19] [cursor=pointer]:
+        - /url: /projects
+        - img [ref=e20]
+      - link "Settings" [ref=e22] [cursor=pointer]:
+        - /url: /settings
+        - img [ref=e23]
+  - generic [ref=e26]:
+    - banner [ref=e27]:
+      - generic [ref=e28]: THE CUTTING ROOM
+      - generic [ref=e29]: Local workspace
+    - main [ref=e31]:
+      - button "Your projects" [ref=e32] [cursor=pointer]:
+        - img [ref=e33]
+        - text: Your projects
+      - generic [ref=e35]:
+        - generic [ref=e36]:
+          - paragraph [ref=e37]: SERIES · PORTRAIT · 5 SECONDS / EPISODE 1
+          - heading "Development movie review fixture" [level=1] [ref=e38]
+        - generic [ref=e39]: Ready to watch
+      - generic [ref=e40]:
+        - img [ref=e41]
+        - generic [ref=e43]:
+          - strong [ref=e44]: Development demo
+          - text: · Story templates and abstract footage. Not AI generated.
+      - tablist "Project workspace" [ref=e45]:
+        - tab "Overview" [ref=e46] [cursor=pointer]
+        - tab "Story" [selected] [ref=e47] [cursor=pointer]
+        - tab "Cast & World" [ref=e48] [cursor=pointer]
+        - tab "Shots" [ref=e49] [cursor=pointer]
+        - tab "Episodes" [ref=e50] [cursor=pointer]
+        - tab "Export" [ref=e51] [cursor=pointer]
+      - generic [ref=e52]:
+        - tabpanel "Story" [ref=e53]:
+          - generic [ref=e54]:
+            - heading "The story bible" [level=2] [ref=e55]
+            - paragraph [ref=e56]: "DEVELOPMENT REVIEW: A keeper answers an old signal and returns home."
+            - group [ref=e57]:
+              - generic "Planned ending · contains spoilers" [ref=e58] [cursor=pointer]
+            - heading "World rules" [level=3] [ref=e59]
+            - list [ref=e60]:
+              - listitem [ref=e61]: The compass reveals clues but cannot reverse time.
+              - listitem [ref=e62]: Characters only know clues discovered in completed episodes.
+            - heading "Episode 1 screenplay" [level=3] [ref=e63]
+            - generic [ref=e64]: "DEMO SCREENPLAY — template writing, not AI generated. Idea: DEVELOPMENT REVIEW: A keeper answers an old signal and returns home. Episode 1 Prior canon: The journey has not begun. SCENE 1 — Wide establishing shot Mara studies a signal at the station. Mara (offscreen): Every journey begins with a question."
+            - region "Edit episode 1 draft" [ref=e65]:
+              - heading "Your scene, your words." [level=3] [ref=e66]
+              - paragraph [ref=e67]: Revise a saved episode before production. Shot lengths stay fixed; later drafts will be reviewed against your changes.
+              - button "Edit saved draft" [disabled] [ref=e68]
+              - paragraph [ref=e69]: Editing requires a stopped screenplay with no committed media; produced/cancelled episodes remain unchanged
+              - group [ref=e70]:
+                - generic "Previous draft text" [ref=e71] [cursor=pointer]
+            - heading "Saved continuity" [level=3] [ref=e72]
+            - region "Saved continuity" [ref=e73]:
+              - paragraph [ref=e74]: Episode 1 · Mara and Eli discover clue 1 and carry it into the next chapter.
+              - paragraph [ref=e75]: Episode 1 · The distant signal was answered.
+              - paragraph [ref=e76]: Episode 1 · The keeper answers a second distant signal.
+              - paragraph [ref=e77]: Episode 2 · Mara and Eli discover clue 2 and carry it into the next chapter.
+            - group [ref=e78]:
+              - generic "Make an alternative story" [active] [ref=e79]
+              - paragraph [ref=e80]: Open a separate draft to change a story that already has footage. Your original project and movies stay here.
+              - paragraph [ref=e81]: Copies the plan and saved screenplays. Existing footage, completed facts and manual continuity corrections are not copied. Review the new drafts; making footage starts again from episode 1. Nothing renders until you choose to produce it.
+              - button "Create alternative draft" [ref=e82] [cursor=pointer]
+        - complementary "Production progress" [ref=e83]:
+          - paragraph [ref=e84]: PRODUCTION
+          - heading "That’s a wrap." [level=2] [ref=e85]
+          - paragraph [ref=e86]: Your draft passed media validation.
+          - progressbar "Production steps" [ref=e87]
+          - generic [ref=e89]: 13 / 13 steps
+          - list [ref=e90]:
+            - listitem [ref=e91]:
+              - img [ref=e93]
+              - text: Preparing your story
+            - listitem [ref=e95]:
+              - img [ref=e97]
+              - text: Writing the screenplay
+            - listitem [ref=e99]:
+              - img [ref=e101]
+              - text: Creating references
+            - listitem [ref=e103]:
+              - img [ref=e105]
+              - text: Composing keyframes
+            - listitem [ref=e107]:
+              - img [ref=e109]
+              - text: Animating shots
+            - listitem [ref=e111]:
+              - img [ref=e113]
+              - text: Building soundtrack
+            - listitem [ref=e115]:
+              - img [ref=e117]
+              - text: Finishing movie
+          - button "Get your movie" [ref=e120] [cursor=pointer]:
+            - img [ref=e121]
+            - text: Get your movie
+          - generic [ref=e124]:
+            - img [ref=e125]
+            - paragraph [ref=e128]:
+              - text: Demo visual provider
+              - generic [ref=e129]:
+                - text: 1 job at a time · no cloud uploads
+                - text: No cinematic quality review performed.
+    - contentinfo [ref=e130]:
+      - generic [ref=e131]: AI Movie Studio
+      - generic [ref=e132]: A little imagination. A world of possibility.
+```

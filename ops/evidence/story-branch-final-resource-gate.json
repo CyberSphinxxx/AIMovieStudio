@@ -1,0 +1,24 @@
+{
+  "scope": "Final read-only resource gate; no model loaded",
+  "hardware": {
+    "gpu": {
+      "available": true,
+      "name": "NVIDIA GeForce RTX 3060 Laptop GPU",
+      "driver": "610.88",
+      "total_mb": 6144,
+      "used_mb": 986,
+      "temperature_c": 61
+    },
+    "python": "3.11.14",
+    "memory": {
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 2.46,
+      "load_percent": 83
+    },
+    "measured_at": 1792160145.784694
+  },
+  "inference_busy": false,
+  "new_reservation_exists": false,
+  "original_reservation_sha256": "8710dae8509cef27d15fa08a24a2ddbb7ef9b32221998674af8fec5c48d09024"
+}

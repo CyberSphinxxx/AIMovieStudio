@@ -36,6 +36,7 @@ from studio.providers import WanGPConfig, WanGPProvider
 from studio.diagnostics import hardware
 from studio.setup_status import classify, read_runtime_status, read_cpu_status, read_image_status
 from studio.draft_editing import edit_eligibility
+from studio.story_branches import StoryBranchRequest, create_story_branch
 from studio.export_variants import ExportCopy, enqueue_copy
 from studio.shot_revisions import RetakeRequest, enqueue_retake, discard_retake
 from studio.reference_variants import ReferenceVariant, ReferenceSelection, enqueue_variant, select_reference
@@ -363,6 +364,11 @@ def create_app(root: Path | None = None, run_worker=True, *, resource_probe=None
     @app.post("/api/projects/{pid}/episodes/{number}/review-movie")
     def keep_reviewed_movie(pid: str, number: int, value: MovieStoryReview):
         return review_movie(store, pid, number, value)
+
+    @app.post("/api/projects/{pid}/story-branch")
+    def alternative_story(pid: str, value: StoryBranchRequest):
+        identity, created = create_story_branch(store, pid, value)
+        return JSONResponse({"project_id": identity, "created": created}, status_code=201 if created else 200)
 
     @app.post("/api/projects/{pid}/episodes/{number}/export-copy", status_code=202)
     def export_copy(pid: str, number: int, value: ExportCopy):

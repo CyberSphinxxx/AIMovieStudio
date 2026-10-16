@@ -39,6 +39,8 @@ Provider returns JSON conforming to versioned Pydantic model/JSON schema; valida
 Retrieve recent 2 episodes, scene participants, their state as of story time, world constraints and future arc goals, with token budgeting. Summarize long past arcs but keep structured truth source intact; do not let a generated summary override canonical data.
 
 ## Revisions and forks
+
+Story-only alternative projects use `POST /api/projects/{pid}/story-branch` with a strict expected revision and UUID idempotency key. They copy the finite plan and validated saved screenplays transactionally, remap character/location/prop/shot identities and record source revision, content hashes and identity mappings. Completed canon, manual canon corrections, media, jobs and provider settings are excluded; no rendering begins automatically. Original project rows and media stay unchanged. Duplicate requests return the same branch even after the source changes; a reused key for another source/revision is rejected. New copies start as editable drafts and require production in episode order. This supports changing a produced story in a separate project; selective media reuse or replacement inside the original produced edition remains unfinished.
 Edits can modify a draft before approval; published episode gets new revision/branch, preserving original. Detect invalidated shots/images/voices. Prompt user before bulk re-render; clearly show projected workload. Offer 'lock character appearance', 'lock storyline', 'lock voice' toggles in advanced UI.
 
 ## Story quality tests

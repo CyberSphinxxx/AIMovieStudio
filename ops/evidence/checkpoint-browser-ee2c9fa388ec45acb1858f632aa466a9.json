@@ -1,0 +1,402 @@
+{
+  "scope": "Isolated explicit demo UI fixture, no model inference",
+  "url": "http://127.0.0.1:51477",
+  "fixture": "C:\\L3mxr\\Github Repositories\\AIMovieStudio\\data\\checkpoint-browser\\ee2c9fa388ec45acb1858f632aa466a9\\fixture.json",
+  "baseline_memory": {
+    "available": true,
+    "total_gb": 15.19,
+    "free_gb": 2.46,
+    "load_percent": 83
+  },
+  "minimum_free_gib": 1.25,
+  "samples": [
+    {
+      "seconds": 1.92,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 2.43,
+      "load_percent": 83
+    },
+    {
+      "seconds": 2.44,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 2.41,
+      "load_percent": 84
+    },
+    {
+      "seconds": 2.94,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 2.39,
+      "load_percent": 84
+    },
+    {
+      "seconds": 3.44,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 2.31,
+      "load_percent": 84
+    },
+    {
+      "seconds": 3.94,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 2.32,
+      "load_percent": 84
+    },
+    {
+      "seconds": 4.44,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 2.26,
+      "load_percent": 85
+    },
+    {
+      "seconds": 4.94,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 2.33,
+      "load_percent": 84
+    },
+    {
+      "seconds": 5.44,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 2.31,
+      "load_percent": 84
+    },
+    {
+      "seconds": 5.94,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 2.29,
+      "load_percent": 84
+    },
+    {
+      "seconds": 6.44,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 2.29,
+      "load_percent": 84
+    },
+    {
+      "seconds": 6.94,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 2.37,
+      "load_percent": 84
+    },
+    {
+      "seconds": 7.44,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 2.37,
+      "load_percent": 84
+    },
+    {
+      "seconds": 7.94,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 2.37,
+      "load_percent": 84
+    },
+    {
+      "seconds": 8.44,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 2.37,
+      "load_percent": 84
+    },
+    {
+      "seconds": 8.94,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 2.37,
+      "load_percent": 84
+    },
+    {
+      "seconds": 9.44,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 2.35,
+      "load_percent": 84
+    },
+    {
+      "seconds": 9.94,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 2.37,
+      "load_percent": 84
+    },
+    {
+      "seconds": 10.44,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 2.36,
+      "load_percent": 84
+    },
+    {
+      "seconds": 10.94,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 2.36,
+      "load_percent": 84
+    },
+    {
+      "seconds": 11.44,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 2.37,
+      "load_percent": 84
+    },
+    {
+      "seconds": 11.94,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 2.36,
+      "load_percent": 84
+    },
+    {
+      "seconds": 12.44,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 2.37,
+      "load_percent": 84
+    },
+    {
+      "seconds": 12.94,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 2.37,
+      "load_percent": 84
+    },
+    {
+      "seconds": 13.44,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 2.35,
+      "load_percent": 84
+    },
+    {
+      "seconds": 13.94,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 2.35,
+      "load_percent": 84
+    },
+    {
+      "seconds": 14.44,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 2.35,
+      "load_percent": 84
+    },
+    {
+      "seconds": 14.94,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 2.34,
+      "load_percent": 84
+    },
+    {
+      "seconds": 15.44,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 2.33,
+      "load_percent": 84
+    },
+    {
+      "seconds": 15.94,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 2.33,
+      "load_percent": 84
+    },
+    {
+      "seconds": 16.44,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 2.33,
+      "load_percent": 84
+    },
+    {
+      "seconds": 16.94,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 2.31,
+      "load_percent": 84
+    },
+    {
+      "seconds": 17.44,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 2.25,
+      "load_percent": 85
+    },
+    {
+      "seconds": 17.94,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 2.21,
+      "load_percent": 85
+    },
+    {
+      "seconds": 18.44,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 2.17,
+      "load_percent": 85
+    },
+    {
+      "seconds": 18.94,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 2.0,
+      "load_percent": 86
+    },
+    {
+      "seconds": 19.44,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 1.87,
+      "load_percent": 87
+    },
+    {
+      "seconds": 19.94,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 1.68,
+      "load_percent": 88
+    },
+    {
+      "seconds": 20.44,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 1.83,
+      "load_percent": 87
+    },
+    {
+      "seconds": 20.95,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 1.73,
+      "load_percent": 88
+    },
+    {
+      "seconds": 21.45,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 1.58,
+      "load_percent": 89
+    },
+    {
+      "seconds": 21.95,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 1.54,
+      "load_percent": 89
+    },
+    {
+      "seconds": 22.45,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 1.49,
+      "load_percent": 90
+    },
+    {
+      "seconds": 22.95,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 1.37,
+      "load_percent": 90
+    },
+    {
+      "seconds": 23.45,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 1.32,
+      "load_percent": 91
+    },
+    {
+      "seconds": 23.95,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 1.44,
+      "load_percent": 90
+    },
+    {
+      "seconds": 24.45,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 1.44,
+      "load_percent": 90
+    },
+    {
+      "seconds": 24.95,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 1.42,
+      "load_percent": 90
+    },
+    {
+      "seconds": 25.45,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 1.54,
+      "load_percent": 89
+    },
+    {
+      "seconds": 25.95,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 1.53,
+      "load_percent": 89
+    },
+    {
+      "seconds": 26.45,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 1.53,
+      "load_percent": 89
+    },
+    {
+      "seconds": 26.95,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 1.54,
+      "load_percent": 89
+    },
+    {
+      "seconds": 27.45,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 1.57,
+      "load_percent": 89
+    },
+    {
+      "seconds": 27.95,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 1.57,
+      "load_percent": 89
+    },
+    {
+      "seconds": 28.45,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 1.97,
+      "load_percent": 87
+    }
+  ],
+  "status": "PASS_DEMO_UI_NOT_INFERENCE",
+  "suite": "story-branch",
+  "previous_browser_report": {
+    "path": "C:\\L3mxr\\Github Repositories\\AIMovieStudio\\ops\\evidence\\browser-tests-before-checkpoint-ee2c9fa388ec45acb1858f632aa466a9.json",
+    "sha256": "b9f4ab0a32432a8b35f4639674e417c6a497801641d133af7a322d3e07febd10"
+  },
+  "wall_seconds_limit": 160,
+  "test_exit_code": 0,
+  "elapsed_seconds": 28.954,
+  "logs_directory": "C:\\L3mxr\\Github Repositories\\AIMovieStudio\\data\\checkpoint-browser\\ee2c9fa388ec45acb1858f632aa466a9"
+}

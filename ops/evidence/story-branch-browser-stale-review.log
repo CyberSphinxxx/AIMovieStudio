@@ -1,0 +1,9 @@
+{"scope": "Isolated explicit demo UI fixture, no model inference", "url": "http://127.0.0.1:65512", "fixture": "C:\\L3mxr\\Github Repositories\\AIMovieStudio\\data\\checkpoint-browser\\5d8de237d1664d828c3e7b72e02ef76d\\fixture.json", "minimum_free_gib": 1.25, "status": "FAILED", "suite": "story-branch", "previous_browser_report": {"path": "C:\\L3mxr\\Github Repositories\\AIMovieStudio\\ops\\evidence\\browser-tests-before-checkpoint-5d8de237d1664d828c3e7b72e02ef76d.json", "sha256": "e2445b2b06bb97200649206301317abbf31f31b0d96571b4610301112f928242"}, "wall_seconds_limit": 160, "error": "Browser assertions failed; inspect isolated browser.log and Playwright report", "elapsed_seconds": 11.829, "logs_directory": "C:\\L3mxr\\Github Repositories\\AIMovieStudio\\data\\checkpoint-browser\\5d8de237d1664d828c3e7b72e02ef76d"}
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "C:\L3mxr\Github Repositories\AIMovieStudio\scripts\checkpoint_browser_smoke.py", line 348, in <module>
+    main()
+  File "C:\L3mxr\Github Repositories\AIMovieStudio\scripts\checkpoint_browser_smoke.py", line 329, in main
+    raise RuntimeError(
+RuntimeError: Browser assertions failed; inspect isolated browser.log and Playwright report

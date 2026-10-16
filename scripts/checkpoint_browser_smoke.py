@@ -189,9 +189,12 @@ def main():
     )
     modes.add_argument("--all", action="store_true", help="Run the full demo UI suite in an isolated library")
     modes.add_argument("--movie-review", action="store_true", help="Verify keeping a reviewed sample movie")
+    modes.add_argument(
+        "--story-branch", action="store_true", help="Verify an alternative story preserves its original movie"
+    )
     args = parser.parse_args()
     baseline = memory_status()
-    minimum = 3 if args.all else 1.25 if args.movie_review else 0.75
+    minimum = 3 if args.all else 1.25 if args.movie_review or args.story_branch else 0.75
     if not runtime_memory_known(baseline) or baseline["free_gb"] < minimum:
         raise RuntimeError(
             f"UI_TEST_RESOURCE_BUSY: Need {minimum} GiB free RAM for this isolated browser check; native model guards remain unchanged."
@@ -201,7 +204,7 @@ def main():
     directory.mkdir(parents=True)
     sample = (
         movie_review_fixture(directory / "library")
-        if args.movie_review
+        if args.movie_review or args.story_branch
         else fixture(directory / "library", legacy_timing=args.canon_timing)
     )
     sample_path = directory / "fixture.json"
@@ -231,6 +234,8 @@ def main():
         "status": "STARTED",
         "suite": "all"
         if args.all
+        else "story-branch"
+        if args.story_branch
         else "movie-review"
         if args.movie_review
         else "canon-timing"
@@ -293,7 +298,9 @@ def main():
                         []
                         if args.all
                         else [
-                            "e2e/movie-story-review.spec.ts"
+                            "e2e/story-branch.spec.ts"
+                            if args.story_branch
+                            else "e2e/movie-story-review.spec.ts"
                             if args.movie_review
                             else "e2e/canon-timing.spec.ts"
                             if args.canon_timing

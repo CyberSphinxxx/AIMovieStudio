@@ -27,6 +27,7 @@ import { ShowInFolder } from "./ShowInFolder";
 import { StoryMoment } from "./StoryMoment";
 import { CanonTimeline } from "./CanonTimeline";
 import { RetainedMovieReview } from "./RetainedMovieReview";
+import { AlternativeStory } from "./AlternativeStory";
 
 const EXAMPLE =
   "A lighthouse keeper receives a message from a ship that vanished thirty years ago. Tonight, the light begins to answer.";
@@ -639,6 +640,7 @@ function Studio({ id }: { id: string }) {
       : job?.state || ep?.status || project.status;
   const needsMovieReview =
     ep?.status === "REVIEW_REQUIRED" && !!movie && job?.state === "SUCCEEDED";
+  const savedDraftReady = !job && !!ep?.script && ep.status === "DRAFTED";
   return (
     <>
       <button
@@ -811,6 +813,11 @@ function Studio({ id }: { id: string }) {
                 )}
                 <h3>Saved continuity</h3>
                 <CanonTimeline project={project} onSaved={reload} />
+                <AlternativeStory
+                  key={`alternative:${id}`}
+                  project={project}
+                  onCreated={(identity) => navigate(`/project/${identity}`)}
+                />
               </>
             ) : (
               <p className="empty">Preparing the story plan…</p>
@@ -1253,96 +1260,128 @@ function Studio({ id }: { id: string }) {
         <aside className="progress-panel" aria-label="Production progress">
           <p className="eyebrow">PRODUCTION</p>
           <h2>
-            {needsMovieReview
-              ? "Needs story review."
-              : waitingForResources
-                ? "Waiting for your computer."
-                : running
-                  ? "Making your movie."
-                  : movie && job?.state === "SUCCEEDED"
-                    ? "That’s a wrap."
-                    : stageLabel(episodeState)}
+            {savedDraftReady
+              ? "Draft ready."
+              : needsMovieReview
+                ? "Needs story review."
+                : waitingForResources
+                  ? "Waiting for your computer."
+                  : running
+                    ? "Making your movie."
+                    : movie && job?.state === "SUCCEEDED"
+                      ? "That’s a wrap."
+                      : stageLabel(episodeState)}
           </h2>
           <p aria-live="polite" className="muted">
-            {needsMovieReview
-              ? "Earlier story details changed. Review this movie and its screenplay in Story before continuing."
-              : waitingForResources
-                ? `${job?.resource_wait?.message || "Waiting for safe memory and graphics conditions."} Studio will continue automatically when resources are free. You can pause or stop at any time.`
-                : active
-                  ? stepLabel(active)
-                  : movie && job?.state === "SUCCEEDED"
-                    ? "Your draft passed media validation."
-                    : job?.state === "PAUSED"
-                      ? ep?.can_edit_draft
-                        ? "Your screenplay is saved. Review it in Story, then resume to make footage."
-                        : "Saved progress. Resume when you’re ready."
-                      : job?.state === "FAILED"
-                        ? "Your completed work is safe."
-                        : job?.state === "CANCELLED"
-                          ? "Production stopped. Assets are preserved."
-                          : "Every completed step is saved."}
+            {savedDraftReady
+              ? "Review your saved screenplay, then choose to make new footage. Production has not started."
+              : needsMovieReview
+                ? "Earlier story details changed. Review this movie and its screenplay in Story before continuing."
+                : waitingForResources
+                  ? `${job?.resource_wait?.message || "Waiting for safe memory and graphics conditions."} Studio will continue automatically when resources are free. You can pause or stop at any time.`
+                  : active
+                    ? stepLabel(active)
+                    : movie && job?.state === "SUCCEEDED"
+                      ? "Your draft passed media validation."
+                      : job?.state === "PAUSED"
+                        ? ep?.can_edit_draft
+                          ? "Your screenplay is saved. Review it in Story, then resume to make footage."
+                          : "Saved progress. Resume when you’re ready."
+                        : job?.state === "FAILED"
+                          ? "Your completed work is safe."
+                          : job?.state === "CANCELLED"
+                            ? "Production stopped. Assets are preserved."
+                            : "Every completed step is saved."}
           </p>
-          <div
-            className="progress-track"
-            role="progressbar"
-            aria-label="Production steps"
-            aria-valuemin={0}
-            aria-valuemax={count}
-            aria-valuenow={done}
-          >
-            <div style={{ width: `${(done / count) * 100}%` }} />
-          </div>
-          <small>
-            {done} / {count} steps{" "}
-            {project.plan ? "" : "· more added after planning"}
-          </small>
-          <ol className="stage-list">
-            {[
-              "PLAN",
-              "SCRIPT",
-              "REFERENCE",
-              "FRAME",
-              "CLIP",
-              "AUDIO",
-              "EXPORT",
-            ].map((stage) => {
-              const steps =
-                currentSteps.filter(
-                  (s) =>
-                    s.stage === stage ||
-                    (stage === "REFERENCE" &&
-                      s.stage === "REFERENCE_VARIANT") ||
-                    (stage === "FRAME" && s.stage === "RETAKE_FRAME") ||
-                    (stage === "CLIP" && s.stage === "RETAKE_CLIP") ||
-                    (stage === "EXPORT" && s.stage === "RECUT") ||
-                    (stage === "SCRIPT" &&
-                      ["SCRIPT_BATCH", "DRAFT_BATCH", "DRAFT"].includes(
-                        s.stage,
-                      )),
-                ) || [];
-              const finished =
-                steps.length > 0 && steps.every((s) => s.state === "SUCCEEDED");
-              const working = steps.some((s) => s.state === "RUNNING");
-              return (
-                <li
-                  key={stage}
-                  className={finished ? "finished" : working ? "working" : ""}
-                >
-                  <span>
-                    {finished ? (
-                      <Check size={14} />
-                    ) : working ? (
-                      <LoaderCircle className="spin" size={14} />
-                    ) : (
-                      <i />
-                    )}
-                  </span>
-                  {stageLabel(stage)}
-                </li>
-              );
-            })}
-          </ol>
+          {job && (
+            <>
+              <div
+                className="progress-track"
+                role="progressbar"
+                aria-label="Production steps"
+                aria-valuemin={0}
+                aria-valuemax={count}
+                aria-valuenow={done}
+              >
+                <div style={{ width: `${(done / count) * 100}%` }} />
+              </div>
+              <small>
+                {done} / {count} steps{" "}
+                {project.plan ? "" : "· more added after planning"}
+              </small>
+              <ol className="stage-list">
+                {[
+                  "PLAN",
+                  "SCRIPT",
+                  "REFERENCE",
+                  "FRAME",
+                  "CLIP",
+                  "AUDIO",
+                  "EXPORT",
+                ].map((stage) => {
+                  const steps =
+                    currentSteps.filter(
+                      (s) =>
+                        s.stage === stage ||
+                        (stage === "REFERENCE" &&
+                          s.stage === "REFERENCE_VARIANT") ||
+                        (stage === "FRAME" && s.stage === "RETAKE_FRAME") ||
+                        (stage === "CLIP" && s.stage === "RETAKE_CLIP") ||
+                        (stage === "EXPORT" && s.stage === "RECUT") ||
+                        (stage === "SCRIPT" &&
+                          ["SCRIPT_BATCH", "DRAFT_BATCH", "DRAFT"].includes(
+                            s.stage,
+                          )),
+                    ) || [];
+                  const finished =
+                    steps.length > 0 &&
+                    steps.every((s) => s.state === "SUCCEEDED");
+                  const working = steps.some((s) => s.state === "RUNNING");
+                  return (
+                    <li
+                      key={stage}
+                      className={
+                        finished ? "finished" : working ? "working" : ""
+                      }
+                    >
+                      <span>
+                        {finished ? (
+                          <Check size={14} />
+                        ) : working ? (
+                          <LoaderCircle className="spin" size={14} />
+                        ) : (
+                          <i />
+                        )}
+                      </span>
+                      {stageLabel(stage)}
+                    </li>
+                  );
+                })}
+              </ol>
+            </>
+          )}
           <div className="production-actions">
+            {savedDraftReady && (
+              <>
+                <button className="secondary" onClick={() => setTab("Story")}>
+                  Review saved draft
+                </button>
+                <button
+                  className="primary"
+                  disabled={
+                    busy ||
+                    project.jobs.some((item) => item.state !== "SUCCEEDED") ||
+                    (episode > 1 &&
+                      project.episodes.find(
+                        (item) => item.number === episode - 1,
+                      )?.status !== "COMPLETED")
+                  }
+                  onClick={() => void action("produce", { episode })}
+                >
+                  <Play size={16} /> Produce episode {episode}
+                </button>
+              </>
+            )}
             {ep?.can_edit_draft &&
               ["PAUSED", "FAILED"].includes(job?.state || "") && (
                 <button className="secondary" onClick={() => setTab("Story")}>

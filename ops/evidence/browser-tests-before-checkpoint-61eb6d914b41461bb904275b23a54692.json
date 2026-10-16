@@ -1,0 +1,154 @@
+{
+  "config": {
+    "configFile": "C:\\L3mxr\\Github Repositories\\AIMovieStudio\\client\\playwright.config.ts",
+    "rootDir": "C:/L3mxr/Github Repositories/AIMovieStudio/client/e2e",
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "C:/L3mxr/Github Repositories/AIMovieStudio/client/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "",
+        "name": "",
+        "testDir": "C:/L3mxr/Github Repositories/AIMovieStudio/client/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 120000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "../ops/evidence/browser-tests.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "runAgents": "none",
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.58.2",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "story-branch.spec.ts",
+      "file": "story-branch.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "an alternative story edits and renders separately while the original cut stays intact",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 6511,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByText('The keeper answers a second distant signal.', { exact: true })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByText('The keeper answers a second distant signal.', { exact: true })\u001b[22m\n",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByText('The keeper answers a second distant signal.', { exact: true })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByText('The keeper answers a second distant signal.', { exact: true })\u001b[22m\n\n    at C:\\L3mxr\\Github Repositories\\AIMovieStudio\\client\\e2e\\story-branch.spec.ts:57:5",
+                    "location": {
+                      "file": "C:\\L3mxr\\Github Repositories\\AIMovieStudio\\client\\e2e\\story-branch.spec.ts",
+                      "column": 5,
+                      "line": 57
+                    },
+                    "snippet": "  55 |       exact: true,\n  56 |     }),\n> 57 |   ).toBeVisible();\n     |     ^\n  58 |   await page\n  59 |     .getByRole(\"button\", { name: \"Create alternative draft\", exact: true })\n  60 |     .click();"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "C:\\L3mxr\\Github Repositories\\AIMovieStudio\\client\\e2e\\story-branch.spec.ts",
+                        "column": 5,
+                        "line": 57
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByText('The keeper answers a second distant signal.', { exact: true })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByText('The keeper answers a second distant signal.', { exact: true })\u001b[22m\n\n\n  55 |       exact: true,\n  56 |     }),\n> 57 |   ).toBeVisible();\n     |     ^\n  58 |   await page\n  59 |     .getByRole(\"button\", { name: \"Create alternative draft\", exact: true })\n  60 |     .click();\n    at C:\\L3mxr\\Github Repositories\\AIMovieStudio\\client\\e2e\\story-branch.spec.ts:57:5"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-16T14:13:14.097Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\L3mxr\\Github Repositories\\AIMovieStudio\\client\\test-results\\story-branch-an-alternativ-905c9-e-original-cut-stays-intact\\test-failed-1.png"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "C:\\L3mxr\\Github Repositories\\AIMovieStudio\\client\\test-results\\story-branch-an-alternativ-905c9-e-original-cut-stays-intact\\error-context.md"
+                    },
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "C:\\L3mxr\\Github Repositories\\AIMovieStudio\\client\\test-results\\story-branch-an-alternativ-905c9-e-original-cut-stays-intact\\trace.zip"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "C:\\L3mxr\\Github Repositories\\AIMovieStudio\\client\\e2e\\story-branch.spec.ts",
+                    "column": 5,
+                    "line": 57
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "0819f9bca6b15c8b8d0b-854c2b2230c4b01e44a5",
+          "file": "story-branch.spec.ts",
+          "line": 8,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-10-16T14:13:12.537Z",
+    "duration": 8940.487,
+    "expected": 0,
+    "skipped": 0,
+    "unexpected": 1,
+    "flaky": 0
+  }
+}
