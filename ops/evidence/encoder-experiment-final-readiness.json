@@ -1,0 +1,36 @@
+{
+  "scope": "Read-only readiness and untouched original evidence; no installation/inference",
+  "hardware": {
+    "gpu": {
+      "available": true,
+      "name": "NVIDIA GeForce RTX 3060 Laptop GPU",
+      "driver": "610.88",
+      "total_mb": 6144,
+      "used_mb": 2519,
+      "temperature_c": 73
+    },
+    "python": "3.11.14",
+    "memory": {
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 1.62,
+      "load_percent": 89
+    },
+    "measured_at": 1792137854.6762567
+  },
+  "inference_busy": false,
+  "experiment_weight_exists": false,
+  "experiment_profile_exists": false,
+  "experiment_receipt_exists": false,
+  "experiment_reservation_exists": false,
+  "cpu_retest_reservation_exists": false,
+  "original_hashes": {
+    "ops/evidence/real-gpu-image.json": "187b419af264ed10cee550310fbb2eaeed7a075145a29b1f1b57cc89627bcb85",
+    "tools/gpu/image-status.json": "27efd978652e9c60603ecf6f8e2e8c414bbe9046c1ee4a7a9be65691c4ef5d55"
+  },
+  "gpu_received_bytes": 11396323893,
+  "gpu_reserved_bytes": 5620056174,
+  "health": {
+    "error": "<urlopen error [WinError 10061] No connection could be made because the target machine actively refused it>"
+  }
+}

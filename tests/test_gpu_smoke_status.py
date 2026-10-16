@@ -9,6 +9,50 @@ from scripts import gpu_smoke
 from studio.storage import atomic_json
 
 
+def test_encoder_experiment_preserves_original_reports_and_uses_verified_separate_profile(
+    tmp_path, monkeypatch
+):
+    monkeypatch.setattr(gpu_smoke, "ROOT", tmp_path)
+    monkeypatch.setattr(sys, "argv", ["gpu_smoke", "image", "--encoder-experiment", "--max-seconds", "300"])
+    monkeypatch.setattr(gpu_smoke, "require_resources", lambda: {"fixture": True})
+    original_report = tmp_path / "ops/evidence/real-gpu-image.json"
+    original_status = tmp_path / "tools/gpu/image-status.json"
+    atomic_json(original_report, {"status": "FAILED", "preserve": "original real failure"})
+    atomic_json(original_status, {"code": "IMAGE_RAM_GUARD_STOP"})
+    before = (original_report.read_bytes(), original_status.read_bytes())
+    verified = []
+    monkeypatch.setattr(
+        gpu_smoke, "verify_installed", lambda root: verified.append(root) or {"fixture": True}
+    )
+    seen = []
+
+    def blocked(provider, *args, **kwargs):
+        seen.append(provider.config)
+        raise RuntimeError("RESOURCE_BUSY: GPU smoke stopped below 2 GiB free RAM")
+
+    monkeypatch.setattr(gpu_smoke.WanGPProvider, "image", blocked)
+    with pytest.raises(RuntimeError, match="RESOURCE_BUSY"):
+        gpu_smoke.main()
+    assert verified == [tmp_path]
+    assert seen[0].image_model == gpu_smoke.ENCODER_PROFILE
+    assert seen[0].memory_profile == 5 and seen[0].smart_memory_pinning is False
+    assert before == (original_report.read_bytes(), original_status.read_bytes())
+    reports = list((tmp_path / "ops/evidence").glob("encoder-experiment-image-*.json"))
+    assert len(reports) == 1 and json.loads(reports[0].read_text())["status"] == "FAILED"
+    summary = json.loads((tmp_path / "tools/gpu/encoder-image-status.json").read_text())
+    assert summary["model"] == gpu_smoke.ENCODER_PROFILE and summary["code"] == "IMAGE_RAM_GUARD_STOP"
+
+
+@pytest.mark.parametrize("phase,ceiling", [("video", "300"), ("runtime", "300"), ("image", "301")])
+def test_encoder_experiment_rejects_video_or_unbounded_testing(tmp_path, monkeypatch, phase, ceiling):
+    monkeypatch.setattr(gpu_smoke, "ROOT", tmp_path)
+    monkeypatch.setattr(sys, "argv", ["gpu_smoke", phase, "--encoder-experiment", "--max-seconds", ceiling])
+    monkeypatch.setattr(gpu_smoke, "require_resources", lambda: pytest.fail("Invalid phase reached hardware"))
+    with pytest.raises(SystemExit):
+        gpu_smoke.main()
+    assert not (tmp_path / "data").exists()
+
+
 def test_resource_failure_does_not_erase_last_actual_runtime_observation(tmp_path, monkeypatch):
     monkeypatch.setattr(gpu_smoke, "ROOT", tmp_path)
     monkeypatch.setattr(sys, "argv", ["gpu_smoke", "runtime"])

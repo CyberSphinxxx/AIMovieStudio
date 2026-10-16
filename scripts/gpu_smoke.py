@@ -9,6 +9,7 @@ from pathlib import Path
 from uuid import uuid4
 
 from scripts.setup_gpu import ROOT
+from scripts.encoder_experiment import PROFILE as ENCODER_PROFILE, verify_installed
 from studio import media
 from studio.providers import (
     PARENT_MEMORY_CHECK_SECONDS,
@@ -49,6 +50,11 @@ def main():
     parser.add_argument("--max-seconds", type=int, default=600)
     parser.add_argument("--profile", choices=["4", "4.5", "5"], default="4")
     parser.add_argument(
+        "--encoder-experiment",
+        action="store_true",
+        help="Image-only approved experimental Q4 encoder, profile 5/buffers off; preserves original evidence",
+    )
+    parser.add_argument(
         "--disable-smart-pinning",
         action="store_true",
         help="Use a scoped engine config without extra transfer buffers; memory fit is unproven",
@@ -56,28 +62,36 @@ def main():
     args = parser.parse_args()
     if not 1 <= args.max_seconds <= 3600:
         parser.error("GPU smoke ceiling must be between 1 and 3600 seconds")
-    root = ROOT / "data/gpu-smoke"
+    if args.encoder_experiment and (args.phase != "image" or args.max_seconds > 300):
+        parser.error("Encoder experiment supports only image with an explicit ceiling of at most 300 seconds")
+    root = ROOT / ("data/gpu-encoder-smoke" if args.encoder_experiment else "data/gpu-smoke")
     directory = root / str(uuid4())
     directory.mkdir(parents=True)
     report = {"phase": args.phase, "is_mock": False, "status": "STARTED", "directory": str(directory)}
-    evidence = ROOT / f"ops/evidence/real-gpu-{args.phase}.json"
+    evidence = ROOT / (
+        f"ops/evidence/encoder-experiment-image-{directory.name}.json"
+        if args.encoder_experiment
+        else f"ops/evidence/real-gpu-{args.phase}.json"
+    )
     started = time.monotonic()
     report["max_seconds"] = args.max_seconds
     check = smoke_guard(report, started, args.max_seconds)
     config = WanGPConfig(
         installation=str(ROOT / "tools/wan-gp"),
         python=str(ROOT / "tools/wan-gp/.venv/Scripts/python.exe"),
-        image_model="flux2_klein_4b",
+        image_model=ENCODER_PROFILE if args.encoder_experiment else "flux2_klein_4b",
         video_model="ti2v_2_2",
         native_resolution="512x512",
         steps=4 if args.phase == "image" else 12,
         license_reviewed=True,
-        memory_profile=float(args.profile),
-        smart_memory_pinning=False if args.disable_smart_pinning else None,
+        memory_profile=5 if args.encoder_experiment else float(args.profile),
+        smart_memory_pinning=False if args.disable_smart_pinning or args.encoder_experiment else None,
     )
     provider = WanGPProvider(config, root)
     try:
         report["before"] = require_resources()
+        if args.encoder_experiment:
+            report["encoder_setup"] = verify_installed(ROOT)
         if args.phase == "runtime":
             report["runtime_attempted"] = True
             result = provider.request("discover", "", directory, check)
@@ -157,7 +171,12 @@ def main():
                 else "FAILED"
             )
             atomic_json(
-                ROOT / "tools/gpu/image-status.json",
+                ROOT
+                / (
+                    "tools/gpu/encoder-image-status.json"
+                    if args.encoder_experiment
+                    else "tools/gpu/image-status.json"
+                ),
                 {
                     "code": code,
                     "checked_at": time.time(),

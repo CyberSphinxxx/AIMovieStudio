@@ -112,3 +112,38 @@ def test_finished_partial_publishes_without_network_or_extra_budget(downloads, m
     installer.fetch("https://fixture.invalid/model", path, len(payload), hashlib.sha256(payload).hexdigest())
     assert path.read_bytes() == payload and not requests
     assert installer.ledger()["received_bytes"] == 100
+
+
+def test_payload_reads_never_spend_beyond_pinned_size_or_reservation(downloads, monkeypatch):
+    path = downloads / "bounded.bin"
+    payload = b"safe"
+    requests = response(monkeypatch, payload + b"extra unwanted response bytes")
+    installer.reserve("experiment", 4)
+    installer.fetch(
+        "https://fixture.invalid/model",
+        path,
+        4,
+        hashlib.sha256(payload).hexdigest(),
+        reservation="experiment",
+    )
+    assert path.read_bytes() == payload and len(requests) == 1
+    assert installer.ledger()["received_bytes"] == 4
+    assert installer.ledger()["reservations"]["experiment"] == 0
+
+
+def test_unexpected_content_length_is_rejected_without_spending_or_clobbering_partial(downloads, monkeypatch):
+    path = downloads / "bounded.bin"
+    partial = path.with_suffix(".bin.partial")
+    partial.write_bytes(b"sa")
+
+    def oversized_response(*args, **kwargs):
+        stream = io.BytesIO(b"fe plus extra bytes")
+        stream.status = 206
+        stream.headers = {"Content-Range": "bytes 2-3/4", "Content-Length": "19"}
+        return stream
+
+    monkeypatch.setattr(installer.urllib.request, "urlopen", oversized_response)
+    before = installer.ledger()
+    with pytest.raises(RuntimeError, match="payload length"):
+        installer.fetch("https://fixture.invalid/model", path, 4, hashlib.sha256(b"safe").hexdigest())
+    assert partial.read_bytes() == b"sa" and not path.exists() and before == installer.ledger()

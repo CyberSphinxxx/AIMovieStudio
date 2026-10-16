@@ -1,5 +1,7 @@
 # Active backlog — 2026-10-14
 
+F3.03 encoder preparation VERIFIED_SOFTWARE_ONLY: offline inspector/approval-gated installer/hash lock+immutable receipt/separate image-only smoke implemented;124relatedPASS23.90s/Ruff/diff; actual11 reused+8 source hashes and pinned source selection contract PASS without model import. Candidate NOT_INSTALLED/nativeNOT_TESTED; docs/ENCODER_EXPERIMENT_PROPOSAL.md is concrete new-file approval request (2.6GB cumulative/3GB added installation disk; overall32GB/40GB unchanged; video deferred). Fresh RAM1.62GiB blocks native tests. Next independent task: model-install phase preflight before any partial download if another required file lacks a checksum or the full phase exceeds budget. Preserve original CPU330.281s/old image failures.
+
 Latest checkpoint37f2d5f: silent-scene/current434backend/57targets/final2Edge verified and committed; source app healthy. Follow-up pinned encoder research confirms static GGUF/name-map/fallback route only. Fresh RAM4.32GiB blocks native tests. Candidate+remaining video+existing receipts/reservations would be34,318,677,009bytes >32GB; no new weights/profile/approval/cap increase. Next task: contract-test a separately named offline profile and prepare an image-only/rebudgeted proposal before requesting approval. See docs/LOWER_RAM_ENCODER_RESEARCH.md and encoder-candidate-readiness.json. No native quality or whole-product completion claim.
 
 ## Active2026-10-16 — F2.04 silent-shot correction

@@ -1,0 +1,17 @@
+{
+  "scope": "License/card capture only; no model download or execution of document instructions",
+  "files": [
+    {
+      "file": "LICENSE",
+      "bytes": 11544,
+      "sha256": "5de36594c10839788a8c589443a8ef9d8b8d17c65a1b5807206ae037fc36c6bd",
+      "url": "https://huggingface.co/Qwen/Qwen3-4B-GGUF/resolve/bc640142c66e1fdd12af0bd68f40445458f3869b/LICENSE"
+    },
+    {
+      "file": "README.md",
+      "bytes": 7576,
+      "sha256": "f7b7cbdbeab2a25b55e92cf160c035287374253b13af7ea2d5178847f6f8537e",
+      "url": "https://huggingface.co/Qwen/Qwen3-4B-GGUF/resolve/bc640142c66e1fdd12af0bd68f40445458f3869b/README.md"
+    }
+  ]
+}

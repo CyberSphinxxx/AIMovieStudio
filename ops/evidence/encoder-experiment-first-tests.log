@@ -1,0 +1,450 @@
+F.....FF.F.F.......F.F.....                                              [100%]
+================================== FAILURES ===================================
+___ test_offline_inspection_and_install_approval_have_no_setup_side_effects ___
+
+prepared = (WindowsPath('C:/Users/USER-PC/AppData/Local/Temp/pytest-of-USER-PC/pytest-167/test_offline_inspection_and_in0'), WindowsPath('C:/Users/USER-PC/AppData/Local/Temp/pytest-of-USER-PC/pytest-167/test_offline_inspection_and_in0/tools/wan-gp'))
+
+    def test_offline_inspection_and_install_approval_have_no_setup_side_effects(prepared):
+        root, engine = prepared
+        state = gpu.ledger()
+>       report = experiment.inspect(root)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_encoder_experiment.py:93: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('C:/Users/USER-PC/AppData/Local/Temp/pytest-of-USER-PC/pytest-167/test_offline_inspection_and_in0')
+
+    def inspect(root: Path) -> dict:
+        engine, lock = locked_inputs(root)
+        candidate = scoped(engine, f"ckpts/Qwen3/{FILENAME}")
+        present = candidate.exists()
+        if present:
+            verify(candidate, SIZE, SHA)
+        partial = scoped(engine, f"ckpts/Qwen3/{FILENAME}.partial")
+        if partial.exists() and (not partial.is_file() or partial.stat().st_size > SIZE):
+            raise RuntimeError("BAD_PARTIAL: Existing encoder partial exceeds the approved artifact.")
+        profile = scoped(engine, f"finetunes/{PROFILE}.json")
+        profile_bytes = encoded(definition(engine))
+        check_existing(profile, profile_bytes)
+        for item in lock["notices"]:
+            source = scoped(root / "ops/evidence/encoder-candidate-notices", item["file"])
+            check_existing(scoped(engine, f"ckpts/Qwen3/studio-q4-notices/{item['file']}"), source.read_bytes())
+        state = gpu.ledger()
+        counts = [state.get("received_bytes")] + list(state.get("reservations", {}).values())
+        if not all(isinstance(n, int) and not isinstance(n, bool) and n >= 0 for n in counts):
+            raise RuntimeError("INVALID_LEDGER: Preserve the download ledger; counts must be nonnegative integers.")
+        allocation = ALLOWANCE - RESEARCH_BYTES
+        held = state.get("reservations", {}).get(RESERVATION)
+        if held is not None and held > allocation:
+            raise RuntimeError("INVALID_LEDGER: Experiment reservation exceeds its bounded allowance.")
+        research = state.get("license_source_captures", {}).get("encoder-candidate-research", {})
+        if research.get("received_bytes") != RESEARCH_BYTES:
+            raise RuntimeError("INVALID_LEDGER: Record the already received research bytes before installation.")
+        missing_allocation = allocation if held is None and not present else 0
+        accounted = sum(counts) + missing_allocation
+        remaining_bytes = 0 if present else SIZE - (partial.stat().st_size if partial.exists() else 0)
+        if held is not None and remaining_bytes > held:
+            raise RuntimeError("BUDGET_EXHAUSTED: Remaining experiment allowance cannot complete this artifact.")
+        if accounted > gpu.LIMIT:
+            raise RuntimeError("BUDGET_EXCEEDED: Image experiment would exceed the existing 32 GB ceiling.")
+        if shutil.disk_usage(root).free < remaining_bytes + max(gpu.RESERVE, gpu.MIN_FREE) + 1_000_000:
+>           raise RuntimeError("DISK_RESERVE: Insufficient disk for encoder and preserved installation reserve.")
+E           RuntimeError: DISK_RESERVE: Insufficient disk for encoder and preserved installation reserve.
+
+scripts\encoder_experiment.py:150: RuntimeError
+__________ test_missing_or_invalid_candidate_never_publishes_profile __________
+
+prepared = (WindowsPath('C:/Users/USER-PC/AppData/Local/Temp/pytest-of-USER-PC/pytest-167/test_missing_or_invalid_candid0'), WindowsPath('C:/Users/USER-PC/AppData/Local/Temp/pytest-of-USER-PC/pytest-167/test_missing_or_invalid_candid0/tools/wan-gp'))
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001EF5651FD90>
+
+    def test_missing_or_invalid_candidate_never_publishes_profile(prepared, monkeypatch):
+        root, engine = prepared
+        calls = fake_fetch(monkeypatch, lambda path: path.write_bytes(b"corruption"))
+        with pytest.raises(RuntimeError, match="CHECKSUM_REQUIRED"):
+>           experiment.install(root, approved=True)
+
+tests\test_encoder_experiment.py:125: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\encoder_experiment.py:188: in install
+    report = inspect(root)
+             ^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('C:/Users/USER-PC/AppData/Local/Temp/pytest-of-USER-PC/pytest-167/test_missing_or_invalid_candid0')
+
+    def inspect(root: Path) -> dict:
+        engine, lock = locked_inputs(root)
+        candidate = scoped(engine, f"ckpts/Qwen3/{FILENAME}")
+        present = candidate.exists()
+        if present:
+            verify(candidate, SIZE, SHA)
+        partial = scoped(engine, f"ckpts/Qwen3/{FILENAME}.partial")
+        if partial.exists() and (not partial.is_file() or partial.stat().st_size > SIZE):
+            raise RuntimeError("BAD_PARTIAL: Existing encoder partial exceeds the approved artifact.")
+        profile = scoped(engine, f"finetunes/{PROFILE}.json")
+        profile_bytes = encoded(definition(engine))
+        check_existing(profile, profile_bytes)
+        for item in lock["notices"]:
+            source = scoped(root / "ops/evidence/encoder-candidate-notices", item["file"])
+            check_existing(scoped(engine, f"ckpts/Qwen3/studio-q4-notices/{item['file']}"), source.read_bytes())
+        state = gpu.ledger()
+        counts = [state.get("received_bytes")] + list(state.get("reservations", {}).values())
+        if not all(isinstance(n, int) and not isinstance(n, bool) and n >= 0 for n in counts):
+            raise RuntimeError("INVALID_LEDGER: Preserve the download ledger; counts must be nonnegative integers.")
+        allocation = ALLOWANCE - RESEARCH_BYTES
+        held = state.get("reservations", {}).get(RESERVATION)
+        if held is not None and held > allocation:
+            raise RuntimeError("INVALID_LEDGER: Experiment reservation exceeds its bounded allowance.")
+        research = state.get("license_source_captures", {}).get("encoder-candidate-research", {})
+        if research.get("received_bytes") != RESEARCH_BYTES:
+            raise RuntimeError("INVALID_LEDGER: Record the already received research bytes before installation.")
+        missing_allocation = allocation if held is None and not present else 0
+        accounted = sum(counts) + missing_allocation
+        remaining_bytes = 0 if present else SIZE - (partial.stat().st_size if partial.exists() else 0)
+        if held is not None and remaining_bytes > held:
+            raise RuntimeError("BUDGET_EXHAUSTED: Remaining experiment allowance cannot complete this artifact.")
+        if accounted > gpu.LIMIT:
+            raise RuntimeError("BUDGET_EXCEEDED: Image experiment would exceed the existing 32 GB ceiling.")
+        if shutil.disk_usage(root).free < remaining_bytes + max(gpu.RESERVE, gpu.MIN_FREE) + 1_000_000:
+>           raise RuntimeError("DISK_RESERVE: Insufficient disk for encoder and preserved installation reserve.")
+E           RuntimeError: DISK_RESERVE: Insufficient disk for encoder and preserved installation reserve.
+
+scripts\encoder_experiment.py:150: RuntimeError
+
+During handling of the above exception, another exception occurred:
+
+prepared = (WindowsPath('C:/Users/USER-PC/AppData/Local/Temp/pytest-of-USER-PC/pytest-167/test_missing_or_invalid_candid0'), WindowsPath('C:/Users/USER-PC/AppData/Local/Temp/pytest-of-USER-PC/pytest-167/test_missing_or_invalid_candid0/tools/wan-gp'))
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001EF5651FD90>
+
+    def test_missing_or_invalid_candidate_never_publishes_profile(prepared, monkeypatch):
+        root, engine = prepared
+        calls = fake_fetch(monkeypatch, lambda path: path.write_bytes(b"corruption"))
+>       with pytest.raises(RuntimeError, match="CHECKSUM_REQUIRED"):
+E       AssertionError: Regex pattern did not match.
+E         Expected regex: 'CHECKSUM_REQUIRED'
+E         Actual message: 'DISK_RESERVE: Insufficient disk for encoder and preserved installation reserve.'
+
+tests\test_encoder_experiment.py:124: AssertionError
+___________ test_complete_setup_is_immutable_idempotent_and_offline ___________
+
+prepared = (WindowsPath('C:/Users/USER-PC/AppData/Local/Temp/pytest-of-USER-PC/pytest-167/test_complete_setup_is_immutab0'), WindowsPath('C:/Users/USER-PC/AppData/Local/Temp/pytest-of-USER-PC/pytest-167/test_complete_setup_is_immutab0/tools/wan-gp'))
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001EF5660A5D0>
+
+    def test_complete_setup_is_immutable_idempotent_and_offline(prepared, monkeypatch):
+        root, engine = prepared
+        config = engine / "wgp_config.json"
+        config.write_bytes(b'{"existing-setting":"keep"}')
+        calls = fake_fetch(monkeypatch)
+>       result = experiment.install(root, approved=True)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_encoder_experiment.py:138: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\encoder_experiment.py:188: in install
+    report = inspect(root)
+             ^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('C:/Users/USER-PC/AppData/Local/Temp/pytest-of-USER-PC/pytest-167/test_complete_setup_is_immutab0')
+
+    def inspect(root: Path) -> dict:
+        engine, lock = locked_inputs(root)
+        candidate = scoped(engine, f"ckpts/Qwen3/{FILENAME}")
+        present = candidate.exists()
+        if present:
+            verify(candidate, SIZE, SHA)
+        partial = scoped(engine, f"ckpts/Qwen3/{FILENAME}.partial")
+        if partial.exists() and (not partial.is_file() or partial.stat().st_size > SIZE):
+            raise RuntimeError("BAD_PARTIAL: Existing encoder partial exceeds the approved artifact.")
+        profile = scoped(engine, f"finetunes/{PROFILE}.json")
+        profile_bytes = encoded(definition(engine))
+        check_existing(profile, profile_bytes)
+        for item in lock["notices"]:
+            source = scoped(root / "ops/evidence/encoder-candidate-notices", item["file"])
+            check_existing(scoped(engine, f"ckpts/Qwen3/studio-q4-notices/{item['file']}"), source.read_bytes())
+        state = gpu.ledger()
+        counts = [state.get("received_bytes")] + list(state.get("reservations", {}).values())
+        if not all(isinstance(n, int) and not isinstance(n, bool) and n >= 0 for n in counts):
+            raise RuntimeError("INVALID_LEDGER: Preserve the download ledger; counts must be nonnegative integers.")
+        allocation = ALLOWANCE - RESEARCH_BYTES
+        held = state.get("reservations", {}).get(RESERVATION)
+        if held is not None and held > allocation:
+            raise RuntimeError("INVALID_LEDGER: Experiment reservation exceeds its bounded allowance.")
+        research = state.get("license_source_captures", {}).get("encoder-candidate-research", {})
+        if research.get("received_bytes") != RESEARCH_BYTES:
+            raise RuntimeError("INVALID_LEDGER: Record the already received research bytes before installation.")
+        missing_allocation = allocation if held is None and not present else 0
+        accounted = sum(counts) + missing_allocation
+        remaining_bytes = 0 if present else SIZE - (partial.stat().st_size if partial.exists() else 0)
+        if held is not None and remaining_bytes > held:
+            raise RuntimeError("BUDGET_EXHAUSTED: Remaining experiment allowance cannot complete this artifact.")
+        if accounted > gpu.LIMIT:
+            raise RuntimeError("BUDGET_EXCEEDED: Image experiment would exceed the existing 32 GB ceiling.")
+        if shutil.disk_usage(root).free < remaining_bytes + max(gpu.RESERVE, gpu.MIN_FREE) + 1_000_000:
+>           raise RuntimeError("DISK_RESERVE: Insufficient disk for encoder and preserved installation reserve.")
+E           RuntimeError: DISK_RESERVE: Insufficient disk for encoder and preserved installation reserve.
+
+scripts\encoder_experiment.py:150: RuntimeError
+_____ test_conflicting_published_file_is_preserved_before_fetch[receipt] ______
+
+prepared = (WindowsPath('C:/Users/USER-PC/AppData/Local/Temp/pytest-of-USER-PC/pytest-167/test_conflicting_published_fil1'), WindowsPath('C:/Users/USER-PC/AppData/Local/Temp/pytest-of-USER-PC/pytest-167/test_conflicting_published_fil1/tools/wan-gp'))
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001EF56464410>
+which = 'receipt'
+
+    @pytest.mark.parametrize("which", ["profile", "receipt", "notice"])
+    def test_conflicting_published_file_is_preserved_before_fetch(prepared, monkeypatch, which):
+        root, engine = prepared
+        paths = {
+            "profile": profile(engine),
+            "receipt": root / "tools/gpu/encoder-experiment-receipt.json",
+            "notice": engine / "ckpts/Qwen3/studio-q4-notices/LICENSE",
+        }
+        path = paths[which]
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_bytes(b"Preserve this original")
+        calls = fake_fetch(monkeypatch)
+        before = gpu.ledger()
+        with pytest.raises(RuntimeError, match="EXISTING_FILE"):
+>           experiment.install(root, approved=True)
+
+tests\test_encoder_experiment.py:167: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\encoder_experiment.py:188: in install
+    report = inspect(root)
+             ^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('C:/Users/USER-PC/AppData/Local/Temp/pytest-of-USER-PC/pytest-167/test_conflicting_published_fil1')
+
+    def inspect(root: Path) -> dict:
+        engine, lock = locked_inputs(root)
+        candidate = scoped(engine, f"ckpts/Qwen3/{FILENAME}")
+        present = candidate.exists()
+        if present:
+            verify(candidate, SIZE, SHA)
+        partial = scoped(engine, f"ckpts/Qwen3/{FILENAME}.partial")
+        if partial.exists() and (not partial.is_file() or partial.stat().st_size > SIZE):
+            raise RuntimeError("BAD_PARTIAL: Existing encoder partial exceeds the approved artifact.")
+        profile = scoped(engine, f"finetunes/{PROFILE}.json")
+        profile_bytes = encoded(definition(engine))
+        check_existing(profile, profile_bytes)
+        for item in lock["notices"]:
+            source = scoped(root / "ops/evidence/encoder-candidate-notices", item["file"])
+            check_existing(scoped(engine, f"ckpts/Qwen3/studio-q4-notices/{item['file']}"), source.read_bytes())
+        state = gpu.ledger()
+        counts = [state.get("received_bytes")] + list(state.get("reservations", {}).values())
+        if not all(isinstance(n, int) and not isinstance(n, bool) and n >= 0 for n in counts):
+            raise RuntimeError("INVALID_LEDGER: Preserve the download ledger; counts must be nonnegative integers.")
+        allocation = ALLOWANCE - RESEARCH_BYTES
+        held = state.get("reservations", {}).get(RESERVATION)
+        if held is not None and held > allocation:
+            raise RuntimeError("INVALID_LEDGER: Experiment reservation exceeds its bounded allowance.")
+        research = state.get("license_source_captures", {}).get("encoder-candidate-research", {})
+        if research.get("received_bytes") != RESEARCH_BYTES:
+            raise RuntimeError("INVALID_LEDGER: Record the already received research bytes before installation.")
+        missing_allocation = allocation if held is None and not present else 0
+        accounted = sum(counts) + missing_allocation
+        remaining_bytes = 0 if present else SIZE - (partial.stat().st_size if partial.exists() else 0)
+        if held is not None and remaining_bytes > held:
+            raise RuntimeError("BUDGET_EXHAUSTED: Remaining experiment allowance cannot complete this artifact.")
+        if accounted > gpu.LIMIT:
+            raise RuntimeError("BUDGET_EXCEEDED: Image experiment would exceed the existing 32 GB ceiling.")
+        if shutil.disk_usage(root).free < remaining_bytes + max(gpu.RESERVE, gpu.MIN_FREE) + 1_000_000:
+>           raise RuntimeError("DISK_RESERVE: Insufficient disk for encoder and preserved installation reserve.")
+E           RuntimeError: DISK_RESERVE: Insufficient disk for encoder and preserved installation reserve.
+
+scripts\encoder_experiment.py:150: RuntimeError
+
+During handling of the above exception, another exception occurred:
+
+prepared = (WindowsPath('C:/Users/USER-PC/AppData/Local/Temp/pytest-of-USER-PC/pytest-167/test_conflicting_published_fil1'), WindowsPath('C:/Users/USER-PC/AppData/Local/Temp/pytest-of-USER-PC/pytest-167/test_conflicting_published_fil1/tools/wan-gp'))
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001EF56464410>
+which = 'receipt'
+
+    @pytest.mark.parametrize("which", ["profile", "receipt", "notice"])
+    def test_conflicting_published_file_is_preserved_before_fetch(prepared, monkeypatch, which):
+        root, engine = prepared
+        paths = {
+            "profile": profile(engine),
+            "receipt": root / "tools/gpu/encoder-experiment-receipt.json",
+            "notice": engine / "ckpts/Qwen3/studio-q4-notices/LICENSE",
+        }
+        path = paths[which]
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_bytes(b"Preserve this original")
+        calls = fake_fetch(monkeypatch)
+        before = gpu.ledger()
+>       with pytest.raises(RuntimeError, match="EXISTING_FILE"):
+E       AssertionError: Regex pattern did not match.
+E         Expected regex: 'EXISTING_FILE'
+E         Actual message: 'DISK_RESERVE: Insufficient disk for encoder and preserved installation reserve.'
+
+tests\test_encoder_experiment.py:166: AssertionError
+_ test_interrupted_publication_resumes_verified_download_without_new_allowance _
+
+prepared = (WindowsPath('C:/Users/USER-PC/AppData/Local/Temp/pytest-of-USER-PC/pytest-167/test_interrupted_publication_r0'), WindowsPath('C:/Users/USER-PC/AppData/Local/Temp/pytest-of-USER-PC/pytest-167/test_interrupted_publication_r0/tools/wan-gp'))
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001EF564684D0>
+
+    def test_interrupted_publication_resumes_verified_download_without_new_allowance(prepared, monkeypatch):
+        root, engine = prepared
+        calls = fake_fetch(monkeypatch)
+        publish = experiment.publish
+    
+        def interrupted(path, content):
+            if path == profile(engine):
+                raise OSError("Explicit interruption fixture")
+            publish(path, content)
+    
+        monkeypatch.setattr(experiment, "publish", interrupted)
+        with pytest.raises(OSError, match="interruption"):
+>           experiment.install(root, approved=True)
+
+tests\test_encoder_experiment.py:183: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\encoder_experiment.py:188: in install
+    report = inspect(root)
+             ^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('C:/Users/USER-PC/AppData/Local/Temp/pytest-of-USER-PC/pytest-167/test_interrupted_publication_r0')
+
+    def inspect(root: Path) -> dict:
+        engine, lock = locked_inputs(root)
+        candidate = scoped(engine, f"ckpts/Qwen3/{FILENAME}")
+        present = candidate.exists()
+        if present:
+            verify(candidate, SIZE, SHA)
+        partial = scoped(engine, f"ckpts/Qwen3/{FILENAME}.partial")
+        if partial.exists() and (not partial.is_file() or partial.stat().st_size > SIZE):
+            raise RuntimeError("BAD_PARTIAL: Existing encoder partial exceeds the approved artifact.")
+        profile = scoped(engine, f"finetunes/{PROFILE}.json")
+        profile_bytes = encoded(definition(engine))
+        check_existing(profile, profile_bytes)
+        for item in lock["notices"]:
+            source = scoped(root / "ops/evidence/encoder-candidate-notices", item["file"])
+            check_existing(scoped(engine, f"ckpts/Qwen3/studio-q4-notices/{item['file']}"), source.read_bytes())
+        state = gpu.ledger()
+        counts = [state.get("received_bytes")] + list(state.get("reservations", {}).values())
+        if not all(isinstance(n, int) and not isinstance(n, bool) and n >= 0 for n in counts):
+            raise RuntimeError("INVALID_LEDGER: Preserve the download ledger; counts must be nonnegative integers.")
+        allocation = ALLOWANCE - RESEARCH_BYTES
+        held = state.get("reservations", {}).get(RESERVATION)
+        if held is not None and held > allocation:
+            raise RuntimeError("INVALID_LEDGER: Experiment reservation exceeds its bounded allowance.")
+        research = state.get("license_source_captures", {}).get("encoder-candidate-research", {})
+        if research.get("received_bytes") != RESEARCH_BYTES:
+            raise RuntimeError("INVALID_LEDGER: Record the already received research bytes before installation.")
+        missing_allocation = allocation if held is None and not present else 0
+        accounted = sum(counts) + missing_allocation
+        remaining_bytes = 0 if present else SIZE - (partial.stat().st_size if partial.exists() else 0)
+        if held is not None and remaining_bytes > held:
+            raise RuntimeError("BUDGET_EXHAUSTED: Remaining experiment allowance cannot complete this artifact.")
+        if accounted > gpu.LIMIT:
+            raise RuntimeError("BUDGET_EXCEEDED: Image experiment would exceed the existing 32 GB ceiling.")
+        if shutil.disk_usage(root).free < remaining_bytes + max(gpu.RESERVE, gpu.MIN_FREE) + 1_000_000:
+>           raise RuntimeError("DISK_RESERVE: Insufficient disk for encoder and preserved installation reserve.")
+E           RuntimeError: DISK_RESERVE: Insufficient disk for encoder and preserved installation reserve.
+
+scripts\encoder_experiment.py:150: RuntimeError
+____________ test_unfinished_receipt_and_escaped_path_are_rejected ____________
+
+prepared = (WindowsPath('C:/Users/USER-PC/AppData/Local/Temp/pytest-of-USER-PC/pytest-167/test_unfinished_receipt_and_es0'), WindowsPath('C:/Users/USER-PC/AppData/Local/Temp/pytest-of-USER-PC/pytest-167/test_unfinished_receipt_and_es0/tools/wan-gp'))
+
+    def test_unfinished_receipt_and_escaped_path_are_rejected(prepared):
+        root, engine = prepared
+        with pytest.raises(RuntimeError, match="MISSING_MODEL"):
+>           experiment.verify_installed(root)
+
+tests\test_encoder_experiment.py:228: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\encoder_experiment.py:207: in verify_installed
+    report = inspect(root)
+             ^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('C:/Users/USER-PC/AppData/Local/Temp/pytest-of-USER-PC/pytest-167/test_unfinished_receipt_and_es0')
+
+    def inspect(root: Path) -> dict:
+        engine, lock = locked_inputs(root)
+        candidate = scoped(engine, f"ckpts/Qwen3/{FILENAME}")
+        present = candidate.exists()
+        if present:
+            verify(candidate, SIZE, SHA)
+        partial = scoped(engine, f"ckpts/Qwen3/{FILENAME}.partial")
+        if partial.exists() and (not partial.is_file() or partial.stat().st_size > SIZE):
+            raise RuntimeError("BAD_PARTIAL: Existing encoder partial exceeds the approved artifact.")
+        profile = scoped(engine, f"finetunes/{PROFILE}.json")
+        profile_bytes = encoded(definition(engine))
+        check_existing(profile, profile_bytes)
+        for item in lock["notices"]:
+            source = scoped(root / "ops/evidence/encoder-candidate-notices", item["file"])
+            check_existing(scoped(engine, f"ckpts/Qwen3/studio-q4-notices/{item['file']}"), source.read_bytes())
+        state = gpu.ledger()
+        counts = [state.get("received_bytes")] + list(state.get("reservations", {}).values())
+        if not all(isinstance(n, int) and not isinstance(n, bool) and n >= 0 for n in counts):
+            raise RuntimeError("INVALID_LEDGER: Preserve the download ledger; counts must be nonnegative integers.")
+        allocation = ALLOWANCE - RESEARCH_BYTES
+        held = state.get("reservations", {}).get(RESERVATION)
+        if held is not None and held > allocation:
+            raise RuntimeError("INVALID_LEDGER: Experiment reservation exceeds its bounded allowance.")
+        research = state.get("license_source_captures", {}).get("encoder-candidate-research", {})
+        if research.get("received_bytes") != RESEARCH_BYTES:
+            raise RuntimeError("INVALID_LEDGER: Record the already received research bytes before installation.")
+        missing_allocation = allocation if held is None and not present else 0
+        accounted = sum(counts) + missing_allocation
+        remaining_bytes = 0 if present else SIZE - (partial.stat().st_size if partial.exists() else 0)
+        if held is not None and remaining_bytes > held:
+            raise RuntimeError("BUDGET_EXHAUSTED: Remaining experiment allowance cannot complete this artifact.")
+        if accounted > gpu.LIMIT:
+            raise RuntimeError("BUDGET_EXCEEDED: Image experiment would exceed the existing 32 GB ceiling.")
+        if shutil.disk_usage(root).free < remaining_bytes + max(gpu.RESERVE, gpu.MIN_FREE) + 1_000_000:
+>           raise RuntimeError("DISK_RESERVE: Insufficient disk for encoder and preserved installation reserve.")
+E           RuntimeError: DISK_RESERVE: Insufficient disk for encoder and preserved installation reserve.
+
+scripts\encoder_experiment.py:150: RuntimeError
+
+During handling of the above exception, another exception occurred:
+
+prepared = (WindowsPath('C:/Users/USER-PC/AppData/Local/Temp/pytest-of-USER-PC/pytest-167/test_unfinished_receipt_and_es0'), WindowsPath('C:/Users/USER-PC/AppData/Local/Temp/pytest-of-USER-PC/pytest-167/test_unfinished_receipt_and_es0/tools/wan-gp'))
+
+    def test_unfinished_receipt_and_escaped_path_are_rejected(prepared):
+        root, engine = prepared
+>       with pytest.raises(RuntimeError, match="MISSING_MODEL"):
+E       AssertionError: Regex pattern did not match.
+E         Expected regex: 'MISSING_MODEL'
+E         Actual message: 'DISK_RESERVE: Insufficient disk for encoder and preserved installation reserve.'
+
+tests\test_encoder_experiment.py:227: AssertionError
+_ test_actual_pinned_selection_functions_reuse_base_and_select_single_local_encoder _
+
+tmp_path = WindowsPath('C:/Users/USER-PC/AppData/Local/Temp/pytest-of-USER-PC/pytest-167/test_actual_pinned_selection_f0')
+
+    def test_actual_pinned_selection_functions_reuse_base_and_select_single_local_encoder(tmp_path):
+        # An archived tiny AST extract is a real pinned function, without importing CUDA.
+        extract = REAL_ROOT / "ops/evidence/encoder-pinned-selection.py.txt"
+        source = extract.read_text()
+        module = ast.parse(source)
+        names = {n.name for n in module.body if isinstance(n, ast.FunctionDef)}
+        assert names == {"get_model_recursive_prop", "get_model_filename"}
+        namespace = {
+            "os": __import__("os"),
+            "get_transformer_dtype": lambda *a: "bf16",
+            "models_def": {"flux2_klein_4b": {"URLs": ["local-original-int8.safetensors"]}},
+            "model_types": ["flux2_klein_4b"],
+        }
+        exec(compile(module, str(extract), "exec"), namespace)
+>       definition = experiment.definition(tmp_path)["model"]
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       TypeError: 'NoneType' object is not subscriptable
+
+tests\test_encoder_experiment.py:257: TypeError
+=========================== short test summary info ===========================
+FAILED tests/test_encoder_experiment.py::test_offline_inspection_and_install_approval_have_no_setup_side_effects
+FAILED tests/test_encoder_experiment.py::test_missing_or_invalid_candidate_never_publishes_profile
+FAILED tests/test_encoder_experiment.py::test_complete_setup_is_immutable_idempotent_and_offline
+FAILED tests/test_encoder_experiment.py::test_conflicting_published_file_is_preserved_before_fetch[receipt]
+FAILED tests/test_encoder_experiment.py::test_interrupted_publication_resumes_verified_download_without_new_allowance
+FAILED tests/test_encoder_experiment.py::test_unfinished_receipt_and_escaped_path_are_rejected
+FAILED tests/test_encoder_experiment.py::test_actual_pinned_selection_functions_reuse_base_and_select_single_local_encoder
+7 failed, 20 passed in 1.57s

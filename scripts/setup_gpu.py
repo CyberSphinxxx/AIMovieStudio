@@ -10,9 +10,12 @@ import subprocess
 import time
 import urllib.request
 import zipfile
+from contextlib import contextmanager
+from functools import wraps
 from pathlib import Path
 
 from studio.storage import atomic_json, digest
+from studio.inference_lock import InferenceBusy, native_inference
 
 ROOT = Path(__file__).resolve().parents[1]
 TARGET = ROOT / "tools" / "gpu"
@@ -41,6 +44,25 @@ def save(data):
     atomic_json(TARGET / "download-ledger.json", data)
 
 
+@contextmanager
+def download_ownership():
+    try:
+        with native_inference(TARGET / "download.lock"):
+            yield
+    except InferenceBusy as error:
+        raise RuntimeError("SETUP_BUSY: Another installer is using the GPU download ledger.") from error
+
+
+def serialized_download(function):
+    @wraps(function)
+    def protected(*args, **kwargs):
+        with download_ownership():
+            return function(*args, **kwargs)
+
+    return protected
+
+
+@serialized_download
 def reserve(label, amount):
     data = ledger()
     if label not in data["reservations"]:
@@ -50,8 +72,16 @@ def reserve(label, amount):
         save(data)
 
 
+@serialized_download
 def fetch(url, destination, size, sha, reservation=None):
-    if len(sha) != 64 or any(c not in "0123456789abcdef" for c in sha) or size <= 0:
+    if (
+        not isinstance(sha, str)
+        or len(sha) != 64
+        or any(c not in "0123456789abcdef" for c in sha)
+        or not isinstance(size, int)
+        or isinstance(size, bool)
+        or size <= 0
+    ):
         raise ValueError("Every GPU artifact requires an exact size and SHA256")
     destination.parent.mkdir(parents=True, exist_ok=True)
     if destination.exists() and destination.stat().st_size == size and digest(destination) == sha:
@@ -82,6 +112,10 @@ def fetch(url, destination, size, sha, reservation=None):
         append = offset > 0 and response.status == 206
         if append and not response.headers.get("Content-Range", "").startswith(f"bytes {offset}-"):
             raise RuntimeError("Server returned a different resume offset")
+        length = response.headers.get("Content-Length")
+        expected_length = size - offset if append else size
+        if length is not None and (not length.isdigit() or int(length) != expected_length):
+            raise RuntimeError("Server payload length differs from the pinned artifact size")
         if (
             offset
             and not append
@@ -92,7 +126,11 @@ def fetch(url, destination, size, sha, reservation=None):
         started = time.monotonic()
         last_report = started
         with temporary.open("ab" if append else "wb") as output:
-            while chunk := response.read(4 * 1024**2):
+            # Never consume beyond the pinned payload, even if a server sends more.
+            while total < size:
+                chunk = response.read(min(4 * 1024**2, size - total))
+                if not chunk:
+                    break
                 total += len(chunk)
                 data["received_bytes"] += len(chunk)
                 if reservation:
