@@ -1,0 +1,27 @@
+{
+  "scope": "Read-only post-checkpoint preflight; no inference",
+  "hardware": {
+    "gpu": {
+      "available": true,
+      "name": "NVIDIA GeForce RTX 3060 Laptop GPU",
+      "driver": "610.88",
+      "total_mb": 6144,
+      "used_mb": 1234,
+      "temperature_c": 62
+    },
+    "python": "3.11.14",
+    "memory": {
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 4.2,
+      "load_percent": 72
+    },
+    "measured_at": 1792149470.967772
+  },
+  "inference_busy": false,
+  "image_attempt_reserved": false,
+  "image_preflight": {
+    "status": "NOT_STARTED_RESOURCE_GATE",
+    "reason": "RESOURCE_BUSY: Need 5 GB free RAM and 4 GB free VRAM for the initial smoke profile. Currently 4.2 GB RAM and 4910 MB VRAM free. Close heavy applications and retry."
+  }
+}

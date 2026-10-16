@@ -1,0 +1,429 @@
+FFFFFF........................................                           [100%]
+================================== FAILURES ===================================
+______ test_canon_revision_blocks_continuation_without_changing_old_jobs ______
+
+store = <studio.storage.Store object at 0x000002890B18B690>
+spec = ProjectInput(idea='A lighthouse remembers a vanished ship.', kind='series', orientation='portrait', target_seconds=5, ...e='Cinematic realism', backend='demo', prewrite_season=False, review_story=False, idempotency_key='fixture-unique-key')
+
+    def test_canon_revision_blocks_continuation_without_changing_old_jobs(store, spec):
+        pid = completed_pair(store, spec)
+        before = store.get(pid)
+        with TestClient(create_app(store.root, run_worker=False)) as client:
+            result = client.post(
+                f"/api/projects/{pid}/canon",
+                json={
+                    "revision": before["revision"],
+                    "event": {
+                        "episode": 1,
+                        "entity_id": pid,
+                        "field": "outcome",
+                        "value": "The signal was answered.",
+                        "reason": "Correct the declared first episode outcome.",
+                    },
+                },
+            )
+            assert result.status_code == 200, result.text
+            invalidated = store.get(pid)
+            assert invalidated["episodes"][1]["status"] == "REVIEW_REQUIRED"
+            assert invalidated["jobs"] == before["jobs"]
+            result = client.post(f"/api/projects/{pid}/produce", json={"episode": 3})
+            assert result.status_code == 409, result.text
+>           assert "review" in result.json()["detail"].lower()
+                               ^^^^^^^^^^^^^^^^^^^^^^^
+E           KeyError: 'detail'
+
+tests\test_continuation_review.py:63: KeyError
+__ test_successful_job_alone_never_authorizes_continuation[REVIEW_REQUIRED] ___
+
+store = <studio.storage.Store object at 0x000002890C7AD7D0>
+spec = ProjectInput(idea='A lighthouse remembers a vanished ship.', kind='series', orientation='portrait', target_seconds=5, ...e='Cinematic realism', backend='demo', prewrite_season=False, review_story=False, idempotency_key='fixture-unique-key')
+status = 'REVIEW_REQUIRED'
+
+    @pytest.mark.parametrize("status", ["REVIEW_REQUIRED", "SCRIPTED", "DRAFTED", "PLANNED", None])
+    def test_successful_job_alone_never_authorizes_continuation(store, spec, status):
+        pid = completed_pair(store, spec)
+        with store.connect() as db:
+            if status is None:
+                db.execute("DELETE FROM episodes WHERE project_id=? AND number=2", (pid,))
+            else:
+                db.execute("UPDATE episodes SET status=? WHERE project_id=? AND number=2", (status, pid))
+        before = store.get(pid)
+        with pytest.raises(ValueError, match="review"):
+>           store.enqueue(pid, 3)
+
+tests\test_continuation_review.py:77: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <studio.storage.Store object at 0x000002890C7AD7D0>
+pid = '7ee26730-3db2-4be4-b457-6ccfdc2104ec', episode = 3
+
+    def enqueue(self, pid: str, episode: int = 1) -> str:
+        project = self.get(pid)
+        config = self.settings()
+        if not 1 <= episode <= project["spec"]["episodes"]:
+            raise ValueError("Episode is outside the season plan")
+        with self.connect() as db:
+            db.execute("BEGIN IMMEDIATE")
+            previous = db.execute(
+                "SELECT * FROM jobs WHERE project_id=? AND episode=?", (pid, episode)
+            ).fetchone()
+            if previous:
+                return previous["id"]
+            if db.execute(
+                "SELECT 1 FROM jobs WHERE project_id=? AND state!='SUCCEEDED' LIMIT 1", (pid,)
+            ).fetchone():
+                raise ValueError("Finish or resolve unfinished work before producing another episode")
+            if episode > 1:
+                prior = db.execute(
+                    "SELECT state FROM jobs WHERE project_id=? AND episode=?", (pid, episode - 1)
+                ).fetchone()
+                if not prior or prior["state"] != "SUCCEEDED":
+                    raise ValueError("Finish the previous episode so its canon is available")
+                reviewed = db.execute(
+                    "SELECT status FROM episodes WHERE project_id=? AND number=?", (pid, episode - 1)
+                ).fetchone()
+                if not reviewed or reviewed["status"] != "COMPLETED":
+>                   raise ValueError("Review the previous episode against current canon before continuing")
+E                   ValueError: Review the previous episode against current canon before continuing
+
+studio\storage.py:278: ValueError
+
+During handling of the above exception, another exception occurred:
+
+store = <studio.storage.Store object at 0x000002890C7AD7D0>
+spec = ProjectInput(idea='A lighthouse remembers a vanished ship.', kind='series', orientation='portrait', target_seconds=5, ...e='Cinematic realism', backend='demo', prewrite_season=False, review_story=False, idempotency_key='fixture-unique-key')
+status = 'REVIEW_REQUIRED'
+
+    @pytest.mark.parametrize("status", ["REVIEW_REQUIRED", "SCRIPTED", "DRAFTED", "PLANNED", None])
+    def test_successful_job_alone_never_authorizes_continuation(store, spec, status):
+        pid = completed_pair(store, spec)
+        with store.connect() as db:
+            if status is None:
+                db.execute("DELETE FROM episodes WHERE project_id=? AND number=2", (pid,))
+            else:
+                db.execute("UPDATE episodes SET status=? WHERE project_id=? AND number=2", (status, pid))
+        before = store.get(pid)
+>       with pytest.raises(ValueError, match="review"):
+E       AssertionError: Regex pattern did not match.
+E         Expected regex: 'review'
+E         Actual message: 'Review the previous episode against current canon before continuing'
+
+tests\test_continuation_review.py:76: AssertionError
+______ test_successful_job_alone_never_authorizes_continuation[SCRIPTED] ______
+
+store = <studio.storage.Store object at 0x000002890B191F90>
+spec = ProjectInput(idea='A lighthouse remembers a vanished ship.', kind='series', orientation='portrait', target_seconds=5, ...e='Cinematic realism', backend='demo', prewrite_season=False, review_story=False, idempotency_key='fixture-unique-key')
+status = 'SCRIPTED'
+
+    @pytest.mark.parametrize("status", ["REVIEW_REQUIRED", "SCRIPTED", "DRAFTED", "PLANNED", None])
+    def test_successful_job_alone_never_authorizes_continuation(store, spec, status):
+        pid = completed_pair(store, spec)
+        with store.connect() as db:
+            if status is None:
+                db.execute("DELETE FROM episodes WHERE project_id=? AND number=2", (pid,))
+            else:
+                db.execute("UPDATE episodes SET status=? WHERE project_id=? AND number=2", (status, pid))
+        before = store.get(pid)
+        with pytest.raises(ValueError, match="review"):
+>           store.enqueue(pid, 3)
+
+tests\test_continuation_review.py:77: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <studio.storage.Store object at 0x000002890B191F90>
+pid = '2f451b56-60e2-43d2-bda3-1598fa236123', episode = 3
+
+    def enqueue(self, pid: str, episode: int = 1) -> str:
+        project = self.get(pid)
+        config = self.settings()
+        if not 1 <= episode <= project["spec"]["episodes"]:
+            raise ValueError("Episode is outside the season plan")
+        with self.connect() as db:
+            db.execute("BEGIN IMMEDIATE")
+            previous = db.execute(
+                "SELECT * FROM jobs WHERE project_id=? AND episode=?", (pid, episode)
+            ).fetchone()
+            if previous:
+                return previous["id"]
+            if db.execute(
+                "SELECT 1 FROM jobs WHERE project_id=? AND state!='SUCCEEDED' LIMIT 1", (pid,)
+            ).fetchone():
+                raise ValueError("Finish or resolve unfinished work before producing another episode")
+            if episode > 1:
+                prior = db.execute(
+                    "SELECT state FROM jobs WHERE project_id=? AND episode=?", (pid, episode - 1)
+                ).fetchone()
+                if not prior or prior["state"] != "SUCCEEDED":
+                    raise ValueError("Finish the previous episode so its canon is available")
+                reviewed = db.execute(
+                    "SELECT status FROM episodes WHERE project_id=? AND number=?", (pid, episode - 1)
+                ).fetchone()
+                if not reviewed or reviewed["status"] != "COMPLETED":
+>                   raise ValueError("Review the previous episode against current canon before continuing")
+E                   ValueError: Review the previous episode against current canon before continuing
+
+studio\storage.py:278: ValueError
+
+During handling of the above exception, another exception occurred:
+
+store = <studio.storage.Store object at 0x000002890B191F90>
+spec = ProjectInput(idea='A lighthouse remembers a vanished ship.', kind='series', orientation='portrait', target_seconds=5, ...e='Cinematic realism', backend='demo', prewrite_season=False, review_story=False, idempotency_key='fixture-unique-key')
+status = 'SCRIPTED'
+
+    @pytest.mark.parametrize("status", ["REVIEW_REQUIRED", "SCRIPTED", "DRAFTED", "PLANNED", None])
+    def test_successful_job_alone_never_authorizes_continuation(store, spec, status):
+        pid = completed_pair(store, spec)
+        with store.connect() as db:
+            if status is None:
+                db.execute("DELETE FROM episodes WHERE project_id=? AND number=2", (pid,))
+            else:
+                db.execute("UPDATE episodes SET status=? WHERE project_id=? AND number=2", (status, pid))
+        before = store.get(pid)
+>       with pytest.raises(ValueError, match="review"):
+E       AssertionError: Regex pattern did not match.
+E         Expected regex: 'review'
+E         Actual message: 'Review the previous episode against current canon before continuing'
+
+tests\test_continuation_review.py:76: AssertionError
+______ test_successful_job_alone_never_authorizes_continuation[DRAFTED] _______
+
+store = <studio.storage.Store object at 0x000002890C9604D0>
+spec = ProjectInput(idea='A lighthouse remembers a vanished ship.', kind='series', orientation='portrait', target_seconds=5, ...e='Cinematic realism', backend='demo', prewrite_season=False, review_story=False, idempotency_key='fixture-unique-key')
+status = 'DRAFTED'
+
+    @pytest.mark.parametrize("status", ["REVIEW_REQUIRED", "SCRIPTED", "DRAFTED", "PLANNED", None])
+    def test_successful_job_alone_never_authorizes_continuation(store, spec, status):
+        pid = completed_pair(store, spec)
+        with store.connect() as db:
+            if status is None:
+                db.execute("DELETE FROM episodes WHERE project_id=? AND number=2", (pid,))
+            else:
+                db.execute("UPDATE episodes SET status=? WHERE project_id=? AND number=2", (status, pid))
+        before = store.get(pid)
+        with pytest.raises(ValueError, match="review"):
+>           store.enqueue(pid, 3)
+
+tests\test_continuation_review.py:77: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <studio.storage.Store object at 0x000002890C9604D0>
+pid = '77c0497e-611e-4a4e-9b38-02898b14f7ab', episode = 3
+
+    def enqueue(self, pid: str, episode: int = 1) -> str:
+        project = self.get(pid)
+        config = self.settings()
+        if not 1 <= episode <= project["spec"]["episodes"]:
+            raise ValueError("Episode is outside the season plan")
+        with self.connect() as db:
+            db.execute("BEGIN IMMEDIATE")
+            previous = db.execute(
+                "SELECT * FROM jobs WHERE project_id=? AND episode=?", (pid, episode)
+            ).fetchone()
+            if previous:
+                return previous["id"]
+            if db.execute(
+                "SELECT 1 FROM jobs WHERE project_id=? AND state!='SUCCEEDED' LIMIT 1", (pid,)
+            ).fetchone():
+                raise ValueError("Finish or resolve unfinished work before producing another episode")
+            if episode > 1:
+                prior = db.execute(
+                    "SELECT state FROM jobs WHERE project_id=? AND episode=?", (pid, episode - 1)
+                ).fetchone()
+                if not prior or prior["state"] != "SUCCEEDED":
+                    raise ValueError("Finish the previous episode so its canon is available")
+                reviewed = db.execute(
+                    "SELECT status FROM episodes WHERE project_id=? AND number=?", (pid, episode - 1)
+                ).fetchone()
+                if not reviewed or reviewed["status"] != "COMPLETED":
+>                   raise ValueError("Review the previous episode against current canon before continuing")
+E                   ValueError: Review the previous episode against current canon before continuing
+
+studio\storage.py:278: ValueError
+
+During handling of the above exception, another exception occurred:
+
+store = <studio.storage.Store object at 0x000002890C9604D0>
+spec = ProjectInput(idea='A lighthouse remembers a vanished ship.', kind='series', orientation='portrait', target_seconds=5, ...e='Cinematic realism', backend='demo', prewrite_season=False, review_story=False, idempotency_key='fixture-unique-key')
+status = 'DRAFTED'
+
+    @pytest.mark.parametrize("status", ["REVIEW_REQUIRED", "SCRIPTED", "DRAFTED", "PLANNED", None])
+    def test_successful_job_alone_never_authorizes_continuation(store, spec, status):
+        pid = completed_pair(store, spec)
+        with store.connect() as db:
+            if status is None:
+                db.execute("DELETE FROM episodes WHERE project_id=? AND number=2", (pid,))
+            else:
+                db.execute("UPDATE episodes SET status=? WHERE project_id=? AND number=2", (status, pid))
+        before = store.get(pid)
+>       with pytest.raises(ValueError, match="review"):
+E       AssertionError: Regex pattern did not match.
+E         Expected regex: 'review'
+E         Actual message: 'Review the previous episode against current canon before continuing'
+
+tests\test_continuation_review.py:76: AssertionError
+______ test_successful_job_alone_never_authorizes_continuation[PLANNED] _______
+
+store = <studio.storage.Store object at 0x000002890CB12A50>
+spec = ProjectInput(idea='A lighthouse remembers a vanished ship.', kind='series', orientation='portrait', target_seconds=5, ...e='Cinematic realism', backend='demo', prewrite_season=False, review_story=False, idempotency_key='fixture-unique-key')
+status = 'PLANNED'
+
+    @pytest.mark.parametrize("status", ["REVIEW_REQUIRED", "SCRIPTED", "DRAFTED", "PLANNED", None])
+    def test_successful_job_alone_never_authorizes_continuation(store, spec, status):
+        pid = completed_pair(store, spec)
+        with store.connect() as db:
+            if status is None:
+                db.execute("DELETE FROM episodes WHERE project_id=? AND number=2", (pid,))
+            else:
+                db.execute("UPDATE episodes SET status=? WHERE project_id=? AND number=2", (status, pid))
+        before = store.get(pid)
+        with pytest.raises(ValueError, match="review"):
+>           store.enqueue(pid, 3)
+
+tests\test_continuation_review.py:77: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <studio.storage.Store object at 0x000002890CB12A50>
+pid = 'f70e6fa8-c03b-4229-baba-9ab006f884d6', episode = 3
+
+    def enqueue(self, pid: str, episode: int = 1) -> str:
+        project = self.get(pid)
+        config = self.settings()
+        if not 1 <= episode <= project["spec"]["episodes"]:
+            raise ValueError("Episode is outside the season plan")
+        with self.connect() as db:
+            db.execute("BEGIN IMMEDIATE")
+            previous = db.execute(
+                "SELECT * FROM jobs WHERE project_id=? AND episode=?", (pid, episode)
+            ).fetchone()
+            if previous:
+                return previous["id"]
+            if db.execute(
+                "SELECT 1 FROM jobs WHERE project_id=? AND state!='SUCCEEDED' LIMIT 1", (pid,)
+            ).fetchone():
+                raise ValueError("Finish or resolve unfinished work before producing another episode")
+            if episode > 1:
+                prior = db.execute(
+                    "SELECT state FROM jobs WHERE project_id=? AND episode=?", (pid, episode - 1)
+                ).fetchone()
+                if not prior or prior["state"] != "SUCCEEDED":
+                    raise ValueError("Finish the previous episode so its canon is available")
+                reviewed = db.execute(
+                    "SELECT status FROM episodes WHERE project_id=? AND number=?", (pid, episode - 1)
+                ).fetchone()
+                if not reviewed or reviewed["status"] != "COMPLETED":
+>                   raise ValueError("Review the previous episode against current canon before continuing")
+E                   ValueError: Review the previous episode against current canon before continuing
+
+studio\storage.py:278: ValueError
+
+During handling of the above exception, another exception occurred:
+
+store = <studio.storage.Store object at 0x000002890CB12A50>
+spec = ProjectInput(idea='A lighthouse remembers a vanished ship.', kind='series', orientation='portrait', target_seconds=5, ...e='Cinematic realism', backend='demo', prewrite_season=False, review_story=False, idempotency_key='fixture-unique-key')
+status = 'PLANNED'
+
+    @pytest.mark.parametrize("status", ["REVIEW_REQUIRED", "SCRIPTED", "DRAFTED", "PLANNED", None])
+    def test_successful_job_alone_never_authorizes_continuation(store, spec, status):
+        pid = completed_pair(store, spec)
+        with store.connect() as db:
+            if status is None:
+                db.execute("DELETE FROM episodes WHERE project_id=? AND number=2", (pid,))
+            else:
+                db.execute("UPDATE episodes SET status=? WHERE project_id=? AND number=2", (status, pid))
+        before = store.get(pid)
+>       with pytest.raises(ValueError, match="review"):
+E       AssertionError: Regex pattern did not match.
+E         Expected regex: 'review'
+E         Actual message: 'Review the previous episode against current canon before continuing'
+
+tests\test_continuation_review.py:76: AssertionError
+________ test_successful_job_alone_never_authorizes_continuation[None] ________
+
+store = <studio.storage.Store object at 0x000002890CADC090>
+spec = ProjectInput(idea='A lighthouse remembers a vanished ship.', kind='series', orientation='portrait', target_seconds=5, ...e='Cinematic realism', backend='demo', prewrite_season=False, review_story=False, idempotency_key='fixture-unique-key')
+status = None
+
+    @pytest.mark.parametrize("status", ["REVIEW_REQUIRED", "SCRIPTED", "DRAFTED", "PLANNED", None])
+    def test_successful_job_alone_never_authorizes_continuation(store, spec, status):
+        pid = completed_pair(store, spec)
+        with store.connect() as db:
+            if status is None:
+                db.execute("DELETE FROM episodes WHERE project_id=? AND number=2", (pid,))
+            else:
+                db.execute("UPDATE episodes SET status=? WHERE project_id=? AND number=2", (status, pid))
+        before = store.get(pid)
+        with pytest.raises(ValueError, match="review"):
+>           store.enqueue(pid, 3)
+
+tests\test_continuation_review.py:77: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <studio.storage.Store object at 0x000002890CADC090>
+pid = 'c8ff1ace-d38c-49e0-973d-22069e03878f', episode = 3
+
+    def enqueue(self, pid: str, episode: int = 1) -> str:
+        project = self.get(pid)
+        config = self.settings()
+        if not 1 <= episode <= project["spec"]["episodes"]:
+            raise ValueError("Episode is outside the season plan")
+        with self.connect() as db:
+            db.execute("BEGIN IMMEDIATE")
+            previous = db.execute(
+                "SELECT * FROM jobs WHERE project_id=? AND episode=?", (pid, episode)
+            ).fetchone()
+            if previous:
+                return previous["id"]
+            if db.execute(
+                "SELECT 1 FROM jobs WHERE project_id=? AND state!='SUCCEEDED' LIMIT 1", (pid,)
+            ).fetchone():
+                raise ValueError("Finish or resolve unfinished work before producing another episode")
+            if episode > 1:
+                prior = db.execute(
+                    "SELECT state FROM jobs WHERE project_id=? AND episode=?", (pid, episode - 1)
+                ).fetchone()
+                if not prior or prior["state"] != "SUCCEEDED":
+                    raise ValueError("Finish the previous episode so its canon is available")
+                reviewed = db.execute(
+                    "SELECT status FROM episodes WHERE project_id=? AND number=?", (pid, episode - 1)
+                ).fetchone()
+                if not reviewed or reviewed["status"] != "COMPLETED":
+>                   raise ValueError("Review the previous episode against current canon before continuing")
+E                   ValueError: Review the previous episode against current canon before continuing
+
+studio\storage.py:278: ValueError
+
+During handling of the above exception, another exception occurred:
+
+store = <studio.storage.Store object at 0x000002890CADC090>
+spec = ProjectInput(idea='A lighthouse remembers a vanished ship.', kind='series', orientation='portrait', target_seconds=5, ...e='Cinematic realism', backend='demo', prewrite_season=False, review_story=False, idempotency_key='fixture-unique-key')
+status = None
+
+    @pytest.mark.parametrize("status", ["REVIEW_REQUIRED", "SCRIPTED", "DRAFTED", "PLANNED", None])
+    def test_successful_job_alone_never_authorizes_continuation(store, spec, status):
+        pid = completed_pair(store, spec)
+        with store.connect() as db:
+            if status is None:
+                db.execute("DELETE FROM episodes WHERE project_id=? AND number=2", (pid,))
+            else:
+                db.execute("UPDATE episodes SET status=? WHERE project_id=? AND number=2", (status, pid))
+        before = store.get(pid)
+>       with pytest.raises(ValueError, match="review"):
+E       AssertionError: Regex pattern did not match.
+E         Expected regex: 'review'
+E         Actual message: 'Review the previous episode against current canon before continuing'
+
+tests\test_continuation_review.py:76: AssertionError
+============================== warnings summary ===============================
+tools\app-runtime\Lib\site-packages\fastapi\testclient.py:1
+  C:\L3mxr\Github Repositories\AIMovieStudio\tools\app-runtime\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ===========================
+FAILED tests/test_continuation_review.py::test_canon_revision_blocks_continuation_without_changing_old_jobs
+FAILED tests/test_continuation_review.py::test_successful_job_alone_never_authorizes_continuation[REVIEW_REQUIRED]
+FAILED tests/test_continuation_review.py::test_successful_job_alone_never_authorizes_continuation[SCRIPTED]
+FAILED tests/test_continuation_review.py::test_successful_job_alone_never_authorizes_continuation[DRAFTED]
+FAILED tests/test_continuation_review.py::test_successful_job_alone_never_authorizes_continuation[PLANNED]
+FAILED tests/test_continuation_review.py::test_successful_job_alone_never_authorizes_continuation[None]
+6 failed, 40 passed, 1 warning in 39.89s

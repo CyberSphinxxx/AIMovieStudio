@@ -271,6 +271,11 @@ class Store:
                 ).fetchone()
                 if not prior or prior["state"] != "SUCCEEDED":
                     raise ValueError("Finish the previous episode so its canon is available")
+                reviewed = db.execute(
+                    "SELECT status FROM episodes WHERE project_id=? AND number=?", (pid, episode - 1)
+                ).fetchone()
+                if not reviewed or reviewed["status"] != "COMPLETED":
+                    raise ValueError("Review the previous episode against current canon before continuing")
             jid = str(uuid4())
             db.execute(
                 "INSERT INTO jobs(id,project_id,episode,created,config) VALUES(?,?,?,?,?)",

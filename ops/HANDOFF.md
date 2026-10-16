@@ -1,5 +1,10 @@
 # AI Movie Studio handoff — 2026-10-16 (Asia/Manila)
 
+## Latest continuation guard checkpoint
+
+After d2ed4da, transactional admission guard verified46 related tests PASS52.56s (continuation-review-final.log). Original6red2green reproduction and intermediate6test-assertion failures preserved. No new fullsuite/native/browser claim for this5line change. Next active uncommitted red tests test_draft_story_time.py6FAIL/10PASS; implement API/UI from PLAN_ACTIVE/PLAN_NEXT after saving guard separately. Fresh post-checkpoint-resource-gate.json4.2GiB RAM/4910MiBfreeVRAM/62C/ownerFREE, image attempt unspent.
+
+
 ## Current verified checkpoint — 2026-10-16
 
 Full backend completed: 513 PASS/485.76s, one existing Starlette deprecation; evidence/story-checkpoint-full-backend.log. Mobile Edge 1 PASS/5.2s; screenshots inspected, Axe/overflow/prior-script preservation checked. Frontend lint/type/build/four Vitest tests pass. Optional flashback_after_shot and derived timing provenance are verified code, not native-quality proof. All earlier failure artifacts retained. No test/model process remains from these checks; original library untouched by isolated browser. Save local checkpoint, then follow PLAN_NEXT.md: stale continuation guard first, draft story-time edits second, legacy timing assignment third. Native image unspent/CPU330.281s remain under existing guards; no new approval pending. Older pending paragraphs below are historical.

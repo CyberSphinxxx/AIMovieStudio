@@ -1,5 +1,7 @@
 # Blockers —2026-10-14 (latest observations first)
 
+Stale continuation admission fixed/46 related tests PASS52.56s. This deliberately refuses later production after earlier canon invalidation; produced-story revision/review resolution is still unfinished, old exports remain retained. Native startup fails at4.2GiB RAM (5/7GiB required); no attempt or download spent.
+
 Current checkpoint verification finished: 513 backend tests PASS/485.76s plus mobile checkpoint flow/static checks. Full application remains unfinished: native writing/image/video quality, produced-story revision branches, missing legacy timing repair and release/license gates remain open. No native attempt or additional download spent. Next independent fix is stale continuation after canon invalidation.
 
 F2.04 exact saved-shot checkpoint implementation and mobile flow now pass targeted checks; full backend pending (session96686). Legacy episode-only canon without linked timing cannot support exact flashbacks until a separate append-only timing-assignment feature exists; fail-closed is intentional, no calendar/prose/branch completion claim. Initial UI own-origin issue fixed with15API/security checks; skip-selector fixture typo fixed, both failures preserved. Native continuation0.88GiB RAM (later0.59duringbuild) still below5/7GiB; no image attempt/reservation or CPUbudget consumption. Approved installedQ4 file scope unchanged/video deferred; no new approval pending.

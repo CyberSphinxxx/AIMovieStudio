@@ -1,5 +1,10 @@
 # Observed development progress — 2026-10-12 (Asia/Manila)
 
+## Verified 2026-10-16 — stale continuation admission
+
+Reproduced with `python -s -m pytest -q tests/test_continuation_review.py`:6FAIL/2PASS1.53s, continuation-review-before.log. Added five lines to Store.enqueue under existing BEGIN IMMEDIATE: require previous episode COMPLETED after checking previous job SUCCEEDED. Failed first verification6FAIL/40PASS39.89s only due incorrect standard error-field/case assertions, preserved continuation-review-verified.log. Corrected tests; `pytest -q tests/test_continuation_review.py tests/test_continuity.py tests/test_draft_editing.py tests/test_story_checkpoints.py` **46PASS52.56s**, one existing Starlette warning, continuation-review-final.log. Tests exercise actual canon revision invalidation/API409/no new queue mutation, missing/unreviewed status and successful idempotent admission plus existing real demo MP4/reopen/backup tests. No UI/model/provider change; previous513 full applies to d2ed4da. Ruff/diff checked at checkpoint. An attempted wildcard rg/nonexistent test_storage read failed without mutations and was corrected via actual file inventory. Fresh4.2GiB RAM preflight blocked image safely/no reservation, ledger unchanged. Draft story-time contracts separately red6FAIL/10PASS2.57s; not part of this guard checkpoint.
+
+
 ## Verified 2026-10-16 — precise shot checkpoints
 
 Collected own3.11 `python -s -m pytest -q -o faulthandler_timeout=90`: **513 passed, one existing Starlette deprecation warning in 485.76s**; no skips/failures. Raw log story-checkpoint-full-backend.log. This supersedes the pending full-suite statements below. Current source also has the mobile checkpoint workflow PASS5.2s, inspected screenshots, zero Axe/overflow failures, lint/type/build/four Vitest tests. Model tests did not run and original library/settings/media were preserved. Next dependency-independent task: require both prior episode COMPLETED and its job SUCCEEDED before admitting a later episode, followed by editable draft story time. All raw failed runs retained.
