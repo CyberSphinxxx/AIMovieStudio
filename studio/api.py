@@ -74,6 +74,17 @@ class ShotDraftEdit(StrictModel):
     camera: str | None = Field(default=None, min_length=3, max_length=400)
     narration: str | None = Field(default=None, max_length=600)
     speaker_id: str | None = Field(default=None, min_length=1, max_length=100)
+    flashback_episode: int | None = Field(default=None, ge=1, le=24, strict=True)
+    flashback_after_shot: int | None = Field(default=None, ge=0, le=120, strict=True)
+    continuity_note: str | None = Field(default=None, max_length=500)
+
+    def changes(self):
+        # Null explicitly clears story time; omitted properties leave it intact.
+        return {
+            key: content
+            for key, content in self.model_dump(exclude_unset=True, exclude={"shot_id"}).items()
+            if content is not None or key in {"flashback_episode", "flashback_after_shot"}
+        }
 
 
 class DraftRevision(StrictModel):
@@ -436,9 +447,11 @@ def create_app(root: Path | None = None, run_worker=True, *, resource_probe=None
             for edit in value.edits:
                 if edit.shot_id not in shots:
                     raise ValueError("Draft edit references an unknown shot")
-                fields = edit.model_dump(exclude_none=True, exclude={"shot_id"})
+                fields = edit.changes()
                 if not fields:
-                    raise ValueError("Provide scene action, camera, spoken text or a speaker to edit")
+                    raise ValueError(
+                        "Provide scene action, camera, spoken text, a speaker or story time to edit"
+                    )
                 shot = shots[edit.shot_id]
                 old_offscreen = (
                     shot.speaker_id
@@ -461,7 +474,7 @@ def create_app(root: Path | None = None, run_worker=True, *, resource_probe=None
             from studio.canon_timing import flashback_label
 
             script.screenplay = (
-                f"USER-EDITED SAVED DRAFT — Episode {number}. Scene timing and identities retained.\n\n"
+                f"USER-EDITED SAVED DRAFT — Episode {number}. Shot lengths and identities retained.\n\n"
                 + "\n\n".join(
                     f"SCENE {s.number} — {s.camera}\n"
                     + (f"{flashback_label(s)}\n" if s.flashback_episode is not None else "")
@@ -505,7 +518,7 @@ def create_app(root: Path | None = None, run_worker=True, *, resource_probe=None
                     "episode": number,
                     "revision": revision,
                     "original_script": original,
-                    "edits": [e.model_dump(exclude_none=True) for e in value.edits],
+                    "edits": [{"shot_id": e.shot_id, **e.changes()} for e in value.edits],
                     "continuity_cleanup": continuity_cleanup,
                 },
             )

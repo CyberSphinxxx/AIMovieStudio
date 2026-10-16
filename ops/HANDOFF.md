@@ -1,5 +1,10 @@
 # AI Movie Studio handoff — 2026-10-16 (Asia/Manila)
 
+## Latest verified draft story-time slice
+
+Stale continuation checkpoint d06b61a saved. Story-time API/UI now83 related backend PASS90.05s, focused16PASS2.68s, lint/type/build/8Vitest PASS (production1750modules/7.98s). Final isolated mobile Edge1PASS4.9s (case2.9/wrapper7.797), detail screenshot viewed; no model calls. Delta/history includes explicit null; omit preserves. Earlier script/IDs/lengths preserved; backup restore tested. First fullpage capture had offscreen skip-link capture artifact; preserved originals and reset scroll before final capture, no productCSS change. Fresh story-time-resource-gate.json4.35GiB RAM/4904MiBfreeVRAM/62C blocks image, unspent. Next PLAN_NEXT append-only legacy timing route/projection/editor; no current full537 claim, d2ed4da513 remains prior full scope.
+
+
 ## Latest continuation guard checkpoint
 
 After d2ed4da, transactional admission guard verified46 related tests PASS52.56s (continuation-review-final.log). Original6red2green reproduction and intermediate6test-assertion failures preserved. No new fullsuite/native/browser claim for this5line change. Next active uncommitted red tests test_draft_story_time.py6FAIL/10PASS; implement API/UI from PLAN_ACTIVE/PLAN_NEXT after saving guard separately. Fresh post-checkpoint-resource-gate.json4.2GiB RAM/4910MiBfreeVRAM/62C/ownerFREE, image attempt unspent.

@@ -1,5 +1,7 @@
 # Blockers —2026-10-14 (latest observations first)
 
+Draft story-time repair is implemented and verified; older canon facts without linked timing still cannot authorize exact flashbacks. Next add explicit versioned timing assignment while keeping original facts/exports immutable. Latest native preflight4.35GiB RAM/4904MiB freeVRAM/62C fails5GiB; no model attempt/download/reservation.
+
 Stale continuation admission fixed/46 related tests PASS52.56s. This deliberately refuses later production after earlier canon invalidation; produced-story revision/review resolution is still unfinished, old exports remain retained. Native startup fails at4.2GiB RAM (5/7GiB required); no attempt or download spent.
 
 Current checkpoint verification finished: 513 backend tests PASS/485.76s plus mobile checkpoint flow/static checks. Full application remains unfinished: native writing/image/video quality, produced-story revision branches, missing legacy timing repair and release/license gates remain open. No native attempt or additional download spent. Next independent fix is stale continuation after canon invalidation.

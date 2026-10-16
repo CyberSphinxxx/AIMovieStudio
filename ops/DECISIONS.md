@@ -1,5 +1,7 @@
 # Decisions — 2026-10-12
 
+2026-10-16 draft editor: preserve old nullable text-field semantics, use field-set-aware sparse changes for timing. Explicit null clears flashback episode/moment, absence preserves them; record the actual sparse delta including null in history. Keep scene IDs/lengths fixed and show optional native details controls, reviewed prior episode/shot choices only. Current-story selection clears note/moment explicitly. Pure delta helper normalizes legacy missing optional fields; no new hooks/network/dependencies. React checklist reviewed: derived values calculated directly, existing captured edit revision retained.
+
 2026-10-16: a historical SUCCEEDED job is insufficient to authorize a new later episode. Read previous episode status within BEGIN IMMEDIATE and require COMPLETED before inserting any job, steps or queue event; preserve existing-job idempotence and all original jobs/media. Do not autoapprove invalidated stories.
 
 2026-10-16 checkpoint decision: complete the full backend regression before saving chronology changes. Actual result 513 PASS/485.76s plus current isolated mobile flow and frontend static checks. Continue with a separate transactional stale-episode admission guard; do not count historical SUCCEEDED jobs as current reviewed canon.

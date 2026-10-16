@@ -1,0 +1,114 @@
+FFFFF..........F                                                         [100%]
+================================== FAILURES ===================================
+_ test_edit_story_moment_retains_identity_history_and_original_episode[None] __
+
+saved_time = (<studio.storage.Store object at 0x000001C2D2628310>, '06002da6-96b4-486e-bdbd-85ba46995109', <starlette.testclient.TestClient object at 0x000001C2D26B6690>)
+position = None
+
+    @pytest.mark.parametrize("position", [None, 0, 2, 3])
+    def test_edit_story_moment_retains_identity_history_and_original_episode(saved_time, position):
+        store, pid, client = saved_time
+        before = store.get(pid)
+        result = patch(client, before, flashback_after_shot=position, continuity_note="Remembering a different moment in the first episode.")
+>       assert result.status_code == 200, result.text
+E       AssertionError: {"code":"INVALID_INPUT","message":"Check your movie settings.","details":[{"field":"flashback_after_shot","message":"Extra inputs are not permitted"},{"field":"continuity_note","message":"Extra inputs are not permitted"}],"retryable":false}
+E       assert 422 == 200
+E        +  where 422 = <Response [422 Unprocessable Entity]>.status_code
+
+tests\test_draft_story_time.py:37: AssertionError
+___ test_edit_story_moment_retains_identity_history_and_original_episode[0] ___
+
+saved_time = (<studio.storage.Store object at 0x000001C2D2637910>, 'd4db6f13-4f76-4d98-ac42-df7ea5367ea6', <starlette.testclient.TestClient object at 0x000001C2D279CCD0>)
+position = 0
+
+    @pytest.mark.parametrize("position", [None, 0, 2, 3])
+    def test_edit_story_moment_retains_identity_history_and_original_episode(saved_time, position):
+        store, pid, client = saved_time
+        before = store.get(pid)
+        result = patch(client, before, flashback_after_shot=position, continuity_note="Remembering a different moment in the first episode.")
+>       assert result.status_code == 200, result.text
+E       AssertionError: {"code":"INVALID_INPUT","message":"Check your movie settings.","details":[{"field":"flashback_after_shot","message":"Extra inputs are not permitted"},{"field":"continuity_note","message":"Extra inputs are not permitted"}],"retryable":false}
+E       assert 422 == 200
+E        +  where 422 = <Response [422 Unprocessable Entity]>.status_code
+
+tests\test_draft_story_time.py:37: AssertionError
+___ test_edit_story_moment_retains_identity_history_and_original_episode[2] ___
+
+saved_time = (<studio.storage.Store object at 0x000001C2D26DF590>, '8cb4d9ff-3a15-421f-bc1c-226ff2f4140b', <starlette.testclient.TestClient object at 0x000001C2D27FE4D0>)
+position = 2
+
+    @pytest.mark.parametrize("position", [None, 0, 2, 3])
+    def test_edit_story_moment_retains_identity_history_and_original_episode(saved_time, position):
+        store, pid, client = saved_time
+        before = store.get(pid)
+        result = patch(client, before, flashback_after_shot=position, continuity_note="Remembering a different moment in the first episode.")
+>       assert result.status_code == 200, result.text
+E       AssertionError: {"code":"INVALID_INPUT","message":"Check your movie settings.","details":[{"field":"flashback_after_shot","message":"Extra inputs are not permitted"},{"field":"continuity_note","message":"Extra inputs are not permitted"}],"retryable":false}
+E       assert 422 == 200
+E        +  where 422 = <Response [422 Unprocessable Entity]>.status_code
+
+tests\test_draft_story_time.py:37: AssertionError
+___ test_edit_story_moment_retains_identity_history_and_original_episode[3] ___
+
+saved_time = (<studio.storage.Store object at 0x000001C2D27B5590>, 'e7e2d689-8b53-42f0-90d8-323892114f0b', <starlette.testclient.TestClient object at 0x000001C2D2863ED0>)
+position = 3
+
+    @pytest.mark.parametrize("position", [None, 0, 2, 3])
+    def test_edit_story_moment_retains_identity_history_and_original_episode(saved_time, position):
+        store, pid, client = saved_time
+        before = store.get(pid)
+        result = patch(client, before, flashback_after_shot=position, continuity_note="Remembering a different moment in the first episode.")
+>       assert result.status_code == 200, result.text
+E       AssertionError: {"code":"INVALID_INPUT","message":"Check your movie settings.","details":[{"field":"flashback_after_shot","message":"Extra inputs are not permitted"},{"field":"continuity_note","message":"Extra inputs are not permitted"}],"retryable":false}
+E       assert 422 == 200
+E        +  where 422 = <Response [422 Unprocessable Entity]>.status_code
+
+tests\test_draft_story_time.py:37: AssertionError
+_ test_explicit_null_can_return_to_current_story_but_omission_preserves_moment _
+
+saved_time = (<studio.storage.Store object at 0x000001C2D284A690>, '7af538f3-90f2-4622-be6c-2ed9625e7d91', <starlette.testclient.TestClient object at 0x000001C2D28C5750>)
+tmp_path = WindowsPath('C:/Users/USER-PC/AppData/Local/Temp/pytest-of-USER-PC/pytest-187/test_explicit_null_can_return_0')
+
+    def test_explicit_null_can_return_to_current_story_but_omission_preserves_moment(saved_time, tmp_path):
+        store, pid, client = saved_time
+        before = store.get(pid)
+        first = patch(client, before, narration="I remember the door opening.")
+        assert first.status_code == 200, first.text
+        kept = first.json()
+        assert kept["episodes"][1]["script"]["shots"][2]["flashback_after_shot"] == 1
+        result = patch(client, kept, flashback_episode=None, flashback_after_shot=None, continuity_note="")
+>       assert result.status_code == 200, result.text
+E       AssertionError: {"code":"INVALID_INPUT","message":"Check your movie settings.","details":[{"field":"flashback_episode","message":"Extra inputs are not permitted"},{"field":"flashback_after_shot","message":"Extra inputs are not permitted"},{"field":"continuity_note","message":"Extra inputs are not permitted"}],"retryable":false}
+E       assert 422 == 200
+E        +  where 422 = <Response [422 Unprocessable Entity]>.status_code
+
+tests\test_draft_story_time.py:64: AssertionError
+________ test_exact_time_cannot_reference_an_unreviewed_earlier_script ________
+
+saved_time = (<studio.storage.Store object at 0x000001C2D27D2950>, '0f7b3f29-967b-4ff4-a689-3242f4f6fed2', <starlette.testclient.TestClient object at 0x000001C2D2895590>)
+
+    def test_exact_time_cannot_reference_an_unreviewed_earlier_script(saved_time):
+        store, pid, client = saved_time
+        with store.connect() as db:
+            db.execute("UPDATE episodes SET status='REVIEW_REQUIRED' WHERE project_id=? AND number=1", (pid,))
+        before = store.get(pid)
+        result = patch(client, before, flashback_after_shot=0)
+>       assert result.status_code == 409 and "checkpoint" in result.text.lower()
+E       assert (422 == 409)
+E        +  where 422 = <Response [422 Unprocessable Entity]>.status_code
+
+tests\test_draft_story_time.py:98: AssertionError
+============================== warnings summary ===============================
+tools\app-runtime\Lib\site-packages\fastapi\testclient.py:1
+  C:\L3mxr\Github Repositories\AIMovieStudio\tools\app-runtime\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ===========================
+FAILED tests/test_draft_story_time.py::test_edit_story_moment_retains_identity_history_and_original_episode[None]
+FAILED tests/test_draft_story_time.py::test_edit_story_moment_retains_identity_history_and_original_episode[0]
+FAILED tests/test_draft_story_time.py::test_edit_story_moment_retains_identity_history_and_original_episode[2]
+FAILED tests/test_draft_story_time.py::test_edit_story_moment_retains_identity_history_and_original_episode[3]
+FAILED tests/test_draft_story_time.py::test_explicit_null_can_return_to_current_story_but_omission_preserves_moment
+FAILED tests/test_draft_story_time.py::test_exact_time_cannot_reference_an_unreviewed_earlier_script
+6 failed, 10 passed, 1 warning in 2.57s

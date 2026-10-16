@@ -1,5 +1,7 @@
 # Active backlog — 2026-10-14
 
+Verified draft story-time controls/API:83 related backend PASS90.05s;8frontend unit checks/lint/type/build PASS; final isolated mobile Edge1PASS4.9s/wrapper7.797s, controls/detail screenshots inspected/Axe/nooverflow. Sparse explicit null clears time, omitted fields preserved, strict earlier reviewed bounds/history/backups/IDs retained. Next: append-only legacy canon timing repair. Fresh4.35GiB RAM blocks image; still unspent.
+
 Verified stale continuation guard:46 related backend tests PASS52.56s, prior code full513 checkpoint d2ed4da. Later production now needs both previous job SUCCEEDED and episode COMPLETED under transaction; canon invalidation leaves old jobs/outputs untouched and returns actionable409. Next active draft story-time controls (6 red contracts), then legacy timing repair. Fresh4.2GiB RAM blocks native models; image unspent.
 
 Verified 2026-10-16: precise earlier-episode shot checkpoints, trusted canon timing projection and readable editor/shot labels. Full backend 513 PASS/485.76s (one existing Starlette warning); mobile Edge 1 PASS/5.2s, Axe/overflow/screenshots checked; frontend lint/type/build and four Vitest tests pass. Original exports and legacy data preserved. Native generation remains resource-blocked and unproven. Next: prevent stale reviewed episodes feeding later production, then editable draft story time and append-only timing repair. See PLAN_NEXT.md.

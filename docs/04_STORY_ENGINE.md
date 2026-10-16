@@ -48,3 +48,5 @@ Edits can modify a draft before approval; published episode gets new revision/br
 - A stolen object changes owner after event; later shots reflect new owner.
 - Out-of-order scene edits invalidate related props and camera reference shots appropriately.
 - JSON malformed/too long/model crash: saved stage can resume without losing approved canon.
+
+Stopped unproduced drafts expose optional Story time controls per scene. Sparse PATCH edits accept flashback_episode, flashback_after_shot and continuity_note; explicit null clears nullable time while omitted fields preserve it. Current-story UI selection clears both time fields and the note. Revalidate the complete script against reviewed earlier shot counts and canon before saving; keep original history, scene IDs and lengths. Later drafts need review. A completed job cannot authorize later production if its episode now needs review.
