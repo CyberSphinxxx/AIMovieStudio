@@ -1,0 +1,21 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+___________ test_complete_setup_is_immutable_idempotent_and_offline ___________
+
+prepared = (WindowsPath('C:/Users/USER-PC/AppData/Local/Temp/pytest-of-USER-PC/pytest-171/test_complete_setup_is_immutab0'), WindowsPath('C:/Users/USER-PC/AppData/Local/Temp/pytest-of-USER-PC/pytest-171/test_complete_setup_is_immutab0/tools/wan-gp'))
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000290B3B1D190>
+
+    def test_complete_setup_is_immutable_idempotent_and_offline(prepared, monkeypatch):
+        root, engine = prepared
+        config = engine / "wgp_config.json"
+        config.write_bytes(b'{"existing-setting":"keep"}')
+        calls = fake_fetch(monkeypatch)
+        result = experiment.install(root, approved=True)
+        assert result["status"] == "INSTALLED_NOT_INFERENCE"
+>       assert result["encoder"]["installed"] is True
+E       assert False is True
+
+tests\test_encoder_experiment.py:146: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/test_encoder_experiment.py::test_complete_setup_is_immutable_idempotent_and_offline
+1 failed, 24 deselected in 1.15s

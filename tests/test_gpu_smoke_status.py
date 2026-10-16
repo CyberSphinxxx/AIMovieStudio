@@ -41,6 +41,13 @@ def test_encoder_experiment_preserves_original_reports_and_uses_verified_separat
     assert len(reports) == 1 and json.loads(reports[0].read_text())["status"] == "FAILED"
     summary = json.loads((tmp_path / "tools/gpu/encoder-image-status.json").read_text())
     assert summary["model"] == gpu_smoke.ENCODER_PROFILE and summary["code"] == "IMAGE_RAM_GUARD_STOP"
+    reservation = (tmp_path / "tools/gpu/encoder-image-test-reservation.json").read_bytes()
+    with pytest.raises(RuntimeError, match="EXPERIMENT_SPENT"):
+        gpu_smoke.main()
+    assert (
+        len(seen) == 1
+        and reservation == (tmp_path / "tools/gpu/encoder-image-test-reservation.json").read_bytes()
+    )
 
 
 @pytest.mark.parametrize("phase,ceiling", [("video", "300"), ("runtime", "300"), ("image", "301")])
@@ -51,6 +58,25 @@ def test_encoder_experiment_rejects_video_or_unbounded_testing(tmp_path, monkeyp
     with pytest.raises(SystemExit):
         gpu_smoke.main()
     assert not (tmp_path / "data").exists()
+
+
+def test_experimental_resource_gate_does_not_spend_the_approved_image_attempt(tmp_path, monkeypatch):
+    monkeypatch.setattr(gpu_smoke, "ROOT", tmp_path)
+    monkeypatch.setattr(sys, "argv", ["gpu_smoke", "image", "--encoder-experiment", "--max-seconds", "300"])
+
+    def low_memory():
+        raise RuntimeError("RESOURCE_BUSY: explicit insufficient-resource fixture")
+
+    monkeypatch.setattr(gpu_smoke, "require_resources", low_memory)
+    monkeypatch.setattr(
+        gpu_smoke, "verify_installed", lambda *a: pytest.fail("Model checks ran before resource gate")
+    )
+    with pytest.raises(RuntimeError, match="RESOURCE_BUSY"):
+        gpu_smoke.main()
+    assert not (tmp_path / "tools/gpu/encoder-image-test-reservation.json").exists()
+    assert not (tmp_path / "tools/gpu/encoder-image-status.json").exists()
+    reports = list((tmp_path / "ops/evidence").glob("encoder-experiment-image-*.json"))
+    assert len(reports) == 1 and not json.loads(reports[0].read_text()).get("image_attempted")
 
 
 def test_resource_failure_does_not_erase_last_actual_runtime_observation(tmp_path, monkeypatch):

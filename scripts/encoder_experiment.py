@@ -207,6 +207,7 @@ def install(root: Path, *, approved: bool = False):
             gpu.reserve(RESERVATION, ALLOWANCE - RESEARCH_BYTES)
             gpu.fetch(URL, candidate, SIZE, SHA, reservation=RESERVATION)
         verify(candidate, SIZE, SHA)
+        report["encoder"]["installed"] = True
         for item in report["notices"]:
             source = scoped(root / "ops/evidence/encoder-candidate-notices", item["file"])
             publish(scoped(engine, f"ckpts/Qwen3/studio-q4-notices/{item['file']}"), source.read_bytes())
@@ -232,6 +233,23 @@ def verify_installed(root: Path):
     if receipt != expected:
         raise RuntimeError("CHECKSUM_REQUIRED: Experiment receipt differs from verified inputs.")
     return report
+
+
+def claim_image_test(root: Path, run_id: str, max_seconds: int):
+    """One approved image attempt; survive interruption, never automatically refund."""
+    if not isinstance(max_seconds, int) or isinstance(max_seconds, bool) or not 1 <= max_seconds <= 300:
+        raise ValueError("Image experiment must remain within 300 seconds")
+    path = scoped(root, "tools/gpu/encoder-image-test-reservation.json")
+    path.parent.mkdir(parents=True, exist_ok=True)
+    try:
+        with path.open("xb") as stream:
+            stream.write(encoded({"run_id": run_id, "max_seconds": max_seconds, "profile": PROFILE}))
+            stream.flush()
+            os.fsync(stream.fileno())
+    except FileExistsError as error:
+        raise RuntimeError(
+            "EXPERIMENT_SPENT: Image attempt is already reserved; inspect its saved result before any new approval."
+        ) from error
 
 
 def main():

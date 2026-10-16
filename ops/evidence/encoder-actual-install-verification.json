@@ -1,0 +1,193 @@
+{
+  "scope": "Actual installation, repeated setup and hashes; no native runtime import or inference",
+  "status": "INSTALLED_VERIFIED_NOT_INFERENCE",
+  "idempotent_no_extra_download": true,
+  "report": {
+    "status": "FILES_VERIFIED_NOT_INFERENCE",
+    "profile": "flux2_klein_4b_studio_q4",
+    "profile_definition": {
+      "model": {
+        "name": "Flux Klein 4B — experimental Q4 encoder (unverified)",
+        "architecture": "flux2_klein_4b",
+        "URLs": "flux2_klein_4b",
+        "text_encoder_URLs": [
+          "C:\\L3mxr\\Github Repositories\\AIMovieStudio\\tools\\wan-gp\\ckpts\\Qwen3\\Qwen3-4B-Q4_K_M.gguf"
+        ],
+        "description": "Private image feasibility experiment. RAM fit, speed and quality are unverified."
+      },
+      "resolution": "512x512",
+      "batch_size": 1,
+      "embedded_guidance_scale": 1,
+      "num_inference_steps": 4
+    },
+    "encoder": {
+      "url": "https://huggingface.co/Qwen/Qwen3-4B-GGUF/resolve/bc640142c66e1fdd12af0bd68f40445458f3869b/Qwen3-4B-Q4_K_M.gguf",
+      "bytes": 2497280256,
+      "sha256": "7485fe6f11af29433bc51cab58009521f205840f5b4ae3a32fa7f92e8534fdf5",
+      "installed": true
+    },
+    "lock_sha256": "f1bf412acd2fa12b323fdda96d78688bfc507592f505d8b51f2425d1366d7ae7",
+    "reused_files": [
+      {
+        "file": "ckpts/Qwen3/added_tokens.json",
+        "bytes": 707,
+        "sha256": "c0284b582e14987fbd3d5a2cb2bd139084371ed9acbae488829a1c900833c680",
+        "url": "https://huggingface.co/DeepBeepMeep/Z-Image/resolve/d2c74b46fb8cf2c5e9821663e31f94267da26be5/Qwen3/added_tokens.json"
+      },
+      {
+        "file": "ckpts/Qwen3/chat_template.jinja",
+        "bytes": 4168,
+        "sha256": "a55ee1b1660128b7098723e0abcd92caa0788061051c62d51cbe87d9cf1974d8",
+        "url": "https://huggingface.co/DeepBeepMeep/Z-Image/resolve/d2c74b46fb8cf2c5e9821663e31f94267da26be5/Qwen3/chat_template.jinja"
+      },
+      {
+        "file": "ckpts/Qwen3/config.json",
+        "bytes": 726,
+        "sha256": "8ba006f74fecfaaeb392872a60f4a480e7ec9860153d2e1b769ec81f9a147f8a",
+        "url": "https://huggingface.co/DeepBeepMeep/Z-Image/resolve/d2c74b46fb8cf2c5e9821663e31f94267da26be5/Qwen3/config.json"
+      },
+      {
+        "file": "ckpts/Qwen3/generation_config.json",
+        "bytes": 214,
+        "sha256": "4347b1aeed2b2b78bc059920a0b7f5fec71482e1344952b76d7665d638d71f13",
+        "url": "https://huggingface.co/DeepBeepMeep/Z-Image/resolve/d2c74b46fb8cf2c5e9821663e31f94267da26be5/Qwen3/generation_config.json"
+      },
+      {
+        "file": "ckpts/Qwen3/merges.txt",
+        "bytes": 1671853,
+        "sha256": "8831e4f1a044471340f7c0a83d7bd71306a5b867e95fd870f74d0c5308a904d5",
+        "url": "https://huggingface.co/DeepBeepMeep/Z-Image/resolve/d2c74b46fb8cf2c5e9821663e31f94267da26be5/Qwen3/merges.txt"
+      },
+      {
+        "file": "ckpts/Qwen3/special_tokens_map.json",
+        "bytes": 613,
+        "sha256": "76862e765266b85aa9459767e33cbaf13970f327a0e88d1c65846c2ddd3a1ecd",
+        "url": "https://huggingface.co/DeepBeepMeep/Z-Image/resolve/d2c74b46fb8cf2c5e9821663e31f94267da26be5/Qwen3/special_tokens_map.json"
+      },
+      {
+        "file": "ckpts/Qwen3/tokenizer.json",
+        "bytes": 11422654,
+        "sha256": "aeb13307a71acd8fe81861d94ad54ab689df773318809eed3cbe794b4492dae4",
+        "url": "https://huggingface.co/DeepBeepMeep/Z-Image/resolve/d2c74b46fb8cf2c5e9821663e31f94267da26be5/Qwen3/tokenizer.json"
+      },
+      {
+        "file": "ckpts/Qwen3/tokenizer_config.json",
+        "bytes": 9732,
+        "sha256": "d5d09f07b48c3086c508b30d1c9114bd1189145b74e982a265350c923acd8101",
+        "url": "https://huggingface.co/DeepBeepMeep/Z-Image/resolve/d2c74b46fb8cf2c5e9821663e31f94267da26be5/Qwen3/tokenizer_config.json"
+      },
+      {
+        "file": "ckpts/Qwen3/vocab.json",
+        "bytes": 2776833,
+        "sha256": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910",
+        "url": "https://huggingface.co/DeepBeepMeep/Z-Image/resolve/d2c74b46fb8cf2c5e9821663e31f94267da26be5/Qwen3/vocab.json"
+      },
+      {
+        "file": "ckpts/flux-2-klein-4b_quanto_bf16_int8.safetensors",
+        "bytes": 4072546826,
+        "sha256": "3c4090e193ffafc6db33ebb1b37a06cde0e7d65ef92236518b09f8d4c611b060",
+        "url": "https://huggingface.co/DeepBeepMeep/Flux2/resolve/c976cb238dbf2bee48f0bd65eeb14c039cf45e03/flux-2-klein-4b_quanto_bf16_int8.safetensors"
+      },
+      {
+        "file": "ckpts/flux2_vae.safetensors",
+        "bytes": 336211292,
+        "sha256": "868fe7b343cc8f3a19dbcfcafbc3d5f888802be3f89bd81b65b3621a066ce8f3",
+        "url": "https://huggingface.co/DeepBeepMeep/Flux2/resolve/c976cb238dbf2bee48f0bd65eeb14c039cf45e03/flux2_vae.safetensors"
+      }
+    ],
+    "source_files": [
+      {
+        "file": "wgp.py",
+        "sha256": "3cc996fb3ae47515bdbd2670ca87342a41510a9c3dcffe83e69ae80b1d7f9563",
+        "bytes": 870442
+      },
+      {
+        "file": "shared/api.py",
+        "sha256": "f648af6efd6ada29ebbb9e20f1220520c7949dc38c395fe49bb16646eceda586",
+        "bytes": 78318
+      },
+      {
+        "file": "shared/qtypes/gguf.py",
+        "sha256": "87afd75652d0dd104bbaec1dadd8a268b78dd377c8fe7ce6292dffd62b117b0f",
+        "bytes": 87991
+      },
+      {
+        "file": "models/flux/modules/text_encoder_qwen3.py",
+        "sha256": "c9a9d9e3d29956410662cdae88670f69d7f78ab60f2697d85db6f30fd14c3cdb",
+        "bytes": 4274
+      },
+      {
+        "file": "models/flux/flux_main.py",
+        "sha256": "123331d5710d20b2e5b14fc30e783eba023553e3e088b608c96b87fdaeccbff6",
+        "bytes": 30315
+      },
+      {
+        "file": "models/flux/flux_handler.py",
+        "sha256": "fcae178494ac3935adce968fa93c8f90b8affe8b0ef4bb8c60cd0c224b94500e",
+        "bytes": 22657
+      },
+      {
+        "file": "mmgp/offload.py",
+        "sha256": "0935bcb628a35635eee7d747b756a2c93a6df4916d7c8ce01831b61a852e3288",
+        "bytes": 250703
+      },
+      {
+        "file": "defaults/flux2_klein_4b.json",
+        "sha256": "5cf2f49e5187aaff13ef66401989077d9f7dc442ed616dd93029f060be02119d",
+        "bytes": 785
+      }
+    ],
+    "notices": [
+      {
+        "file": "LICENSE",
+        "bytes": 11544,
+        "sha256": "5de36594c10839788a8c589443a8ef9d8b8d17c65a1b5807206ae037fc36c6bd",
+        "url": "https://huggingface.co/Qwen/Qwen3-4B-GGUF/resolve/bc640142c66e1fdd12af0bd68f40445458f3869b/LICENSE"
+      },
+      {
+        "file": "README.md",
+        "bytes": 7576,
+        "sha256": "f7b7cbdbeab2a25b55e92cf160c035287374253b13af7ea2d5178847f6f8537e",
+        "url": "https://huggingface.co/Qwen/Qwen3-4B-GGUF/resolve/bc640142c66e1fdd12af0bd68f40445458f3869b/README.md"
+      }
+    ],
+    "experiment_cumulative_download_limit": 2600000000,
+    "already_received_research_bytes": 26522,
+    "accounted_gpu_bytes_including_new_reservation": 19616353545,
+    "gpu_download_ceiling_bytes": 32000000000,
+    "settings_changed": false,
+    "hardware_fit": "NOT_TESTED",
+    "video": "DEFERRED: separate image visual PASS and complete cumulative-budget review required"
+  },
+  "hardware": {
+    "gpu": {
+      "available": true,
+      "name": "NVIDIA GeForce RTX 3060 Laptop GPU",
+      "driver": "610.88",
+      "total_mb": 6144,
+      "used_mb": 2565,
+      "temperature_c": 76
+    },
+    "python": "3.11.14",
+    "memory": {
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 1.42,
+      "load_percent": 90
+    },
+    "measured_at": 1792138241.3706417
+  },
+  "image_preflight": {
+    "status": "NOT_STARTED_RESOURCE_GATE",
+    "reason": "RESOURCE_BUSY: Need 5 GB free RAM and 4 GB free VRAM for the initial smoke profile. Currently 1.42 GB RAM and 3579 MB VRAM free. Close heavy applications and retry."
+  },
+  "inference_busy": false,
+  "cpu_4b_seconds_remaining": 330.281,
+  "cpu_retest_reservation_exists": false,
+  "gpu_received_bytes": 13893604149,
+  "gpu_reserved_bytes": 5722749396,
+  "experiment_remaining_reserved_bytes": 102693222,
+  "disk_free_bytes": 29417893888,
+  "original_image_report_sha256": "187b419af264ed10cee550310fbb2eaeed7a075145a29b1f1b57cc89627bcb85",
+  "original_image_status_sha256": "27efd978652e9c60603ecf6f8e2e8c414bbe9046c1ee4a7a9be65691c4ef5d55"
+}

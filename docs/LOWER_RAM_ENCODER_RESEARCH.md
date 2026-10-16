@@ -1,6 +1,6 @@
-# Lower-RAM image encoder candidate — research only
+# Lower-RAM image encoder — research history and installed experiment
 
-No weights downloaded, profile installed or inference performed. This is the next feasibility investigation, not an approved download or verified backend.
+Update2026-10-16: the user approved docs/ENCODER_EXPERIMENT_PROPOSAL.md. The pinned2,497,280,256-byte encoder and separate experimental profile are installed/hash-verified; repeat setup made no extra download. No native runtime import/image inference has occurred for this candidate; RAM/VRAM gates prevented the test. Current evidence: encoder-actual-install-verification.json. The research snapshot below predates this approval/installation and does not establish hardware fit or quality. Overall32GB/40GB limits remain; video is deferred.
 
 The installed int8 image text encoder is4,414,004,409bytes and the latest FluxKlein profile5/buffers-off test stopped at the RAM guard before producing an image. A smaller on-disk encoder is a plausible changed strategy; file size does not prove resident RAM, GPU fit, speed, image quality or tokenizer compatibility.
 

@@ -143,6 +143,7 @@ def test_complete_setup_is_immutable_idempotent_and_offline(prepared, monkeypatc
     calls = fake_fetch(monkeypatch)
     result = experiment.install(root, approved=True)
     assert result["status"] == "INSTALLED_NOT_INFERENCE"
+    assert result["encoder"]["installed"] is True
     assert len(calls) == 1 and calls[0][0] == experiment.URL
     assert calls[0][-1] == experiment.RESERVATION
     assert json.loads(profile(engine).read_text())["model"]["text_encoder_URLs"] == [
@@ -306,3 +307,34 @@ def test_publication_collision_never_deletes_an_existing_temporary(prepared, mon
     with pytest.raises(FileExistsError):
         experiment.publish(path, b"complete replacement")
     assert not path.exists() and temporary.read_bytes() == b"Preserve an existing interrupted operation"
+
+
+def test_single_image_claim_is_durable_and_exclusive_across_competing_calls(prepared):
+    from concurrent.futures import ThreadPoolExecutor
+
+    root, engine = prepared
+
+    def reserve(index):
+        try:
+            experiment.claim_image_test(root, f"explicit-test-{index}", 300)
+            return True
+        except RuntimeError as error:
+            assert "EXPERIMENT_SPENT" in str(error)
+            return False
+
+    with ThreadPoolExecutor(max_workers=4) as pool:
+        assert sum(pool.map(reserve, range(8))) == 1
+    path = root / "tools/gpu/encoder-image-test-reservation.json"
+    before = path.read_bytes()
+    assert json.loads(before)["max_seconds"] == 300
+    with pytest.raises(RuntimeError, match="EXPERIMENT_SPENT"):
+        experiment.claim_image_test(root, "next-session", 300)
+    assert path.read_bytes() == before
+
+
+@pytest.mark.parametrize("value", [0, 301, -1, True, 3.5, "300"])
+def test_invalid_image_ceiling_creates_no_attempt_reservation(prepared, value):
+    root, engine = prepared
+    with pytest.raises(ValueError, match="300 seconds"):
+        experiment.claim_image_test(root, "invalid", value)
+    assert not (root / "tools/gpu/encoder-image-test-reservation.json").exists()

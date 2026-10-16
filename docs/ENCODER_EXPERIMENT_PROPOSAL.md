@@ -1,6 +1,8 @@
 # Experimental image encoder — approval proposal, 2026-10-16
 
-**Not approved or installed. No image-generation success is claimed.**
+**Approved on2026-10-16:** human replied “Approve bounded image-only experiment.” Installation/testing status is recorded in ops/PROGRESS.md; approval does not establish RAM fit or image quality. No image-generation success is claimed.
+
+Installed and SHA-verified2026-10-16; repeat setup verified zero additional download. GPU cumulative receipts13,893,604,149bytes, total reservations5,722,749,396bytes (including experiment remainder102,693,222). Experiment receipts2,497,306,778bytes including metadata/notices remain within2.6GB. Initial raw install report retained a stale pre-install `encoder.installed=false` field; the immutable receipt and subsequent actual verification correctly report true. The report-only bug is fixed/tested without rewriting the original evidence. Latest measured native preflight failed at1.42GiB freeRAM/3579MiB freeVRAM/76C. The single approved image attempt remains **NOT_STARTED**, its durable reservation absent; no need to reapprove the existing scope.
 
 The installed image encoder stopped at the RAM guard. This experiment tries a smaller quantized copy of the same Qwen3 base family through the existing pinned WanGP engine. Smaller disk size does not establish RAM fit, acceptable speed, image quality or identity consistency. The native PyTorch fallback may materialize dense weights; the experiment can still fail.
 
@@ -12,6 +14,7 @@ The installed image encoder stopped at the RAM guard. This experiment tries a sm
 - No new runtime package, kernel, driver, CUDA toolkit, global Python, Windows/security/firewall/paging/power setting, paid API, cloud upload, login, publishing or distribution. The installer does not run inference or switch Studio's default provider/model. It uses the shared native lock and a separate serialized GPU download ledger.
 - After installation, perform **one image-only test**, 512×512, four steps, seed42, SDPA, memory profile5 and transfer buffers off; **300 seconds maximum**, with bounded process cleanup. No automatic inference retry. Require at least5GiB free RAM/4096MiB freeVRAM/<85°C before loading; sample RAM at the existing0.5s target and stop below2GiB or if readings become unknown. Sampling is not a guarantee that usage cannot briefly cross the floor. Log elapsed time/RAM/VRAM/thermals, inspect actual output, preserve any failure. Shared ownership prevents concurrent Studio model calls; independent third-party apps remain outside this cooperation.
 - The test writes unique reports/output in `data/gpu-encoder-smoke` and `ops/evidence/encoder-experiment-image-<id>.json`, with a separate `tools/gpu/encoder-image-status.json`. It does not overwrite the original real-image report or make the original video gate pass.
+- The single image attempt is durably reserved only after resource and installed-file checks pass, before calling the model. `tools/gpu/encoder-image-test-reservation.json` survives interruption and blocks automatic repeat attempts; a failed resource preflight does not spend it. Do not delete/refund a spent reservation automatically.
 
 ## Overall budget and video gate
 

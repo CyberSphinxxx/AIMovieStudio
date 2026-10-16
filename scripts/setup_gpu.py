@@ -186,15 +186,93 @@ def extract_source(archive, revision):
     (vendor / ".studio-revision").write_text(revision)
 
 
+def phase_plan(proposal, phase):
+    """Offline whole-phase admission; no network, writes or reservation refunds."""
+    if phase not in {"image", "video"}:
+        raise ValueError("Only model image/video phases support offline preflight")
+    state = ledger()
+    counts = [state.get("received_bytes")] + list(state.get("reservations", {}).values())
+    if not all(isinstance(n, int) and not isinstance(n, bool) and n >= 0 for n in counts):
+        raise ValueError("INVALID_LEDGER: Download counts must be nonnegative integers")
+    rows, seen, needed = [], set(), 0
+    base = ROOT / "tools/wan-gp/ckpts"
+    if not base.resolve().is_relative_to(ROOT.resolve()):
+        raise ValueError("UNSAFE_PATH: Model folder escaped its installation")
+    for item in proposal["files"]:
+        image = item["repo"] in {"DeepBeepMeep/Flux2", "DeepBeepMeep/Z-Image"}
+        if image != (phase == "image"):
+            continue
+        relative, size, sha = item["file"], item["bytes"], item.get("sha256")
+        if not isinstance(relative, str) or any(c in relative for c in ("\\", ":", "\x00")):
+            raise ValueError("UNSAFE_PATH: Expected a scoped forward-slash model filename")
+        destination = base / relative
+        if (
+            ".." in Path(relative).parts
+            or not destination.resolve().is_relative_to(base.resolve())
+            or destination.resolve() in seen
+        ):
+            raise ValueError("UNSAFE_PATH: Duplicate or escaped model destination")
+        seen.add(destination.resolve())
+        if not isinstance(size, int) or isinstance(size, bool) or size <= 0:
+            raise ValueError("MISSING_CHECKSUM: Every phase file requires a positive size and SHA256")
+        if sha is None:
+            # Historical metadata had Git-blob IDs for small files. Only a matching
+            # existing completed receipt and verified bytes can resolve those hashes.
+            record = state.get("completed", {}).get(str(destination.relative_to(ROOT)), {})
+            if record.get("url") == item["url"] and record.get("bytes") == size and destination.is_file():
+                sha = record.get("sha256")
+        if not isinstance(sha, str) or len(sha) != 64 or any(c not in "0123456789abcdef" for c in sha):
+            raise ValueError(f"MISSING_CHECKSUM: Resolve the pinned SHA256 before downloading {relative}")
+        present = destination.exists()
+        if present and (
+            not destination.is_file() or destination.stat().st_size != size or digest(destination) != sha
+        ):
+            raise RuntimeError(f"CHECKSUM_REQUIRED: Preserve and inspect existing {relative}; no overwrite")
+        partial = destination.with_name(destination.name + ".partial")
+        if not partial.resolve().is_relative_to(base.resolve()):
+            raise ValueError("UNSAFE_PATH: Partial file escaped its installation")
+        offset = partial.stat().st_size if partial.exists() else 0
+        if partial.exists() and (not partial.is_file() or offset > size):
+            raise RuntimeError(f"BAD_PARTIAL: Invalid existing partial for {relative}")
+        if not present and offset == size and digest(partial) != sha:
+            raise RuntimeError(f"CHECKSUM_REQUIRED: Preserve completed partial for {relative}")
+        remaining = 0 if present else size - offset
+        needed += remaining
+        rows.append({**item, "sha256": sha, "destination": str(destination), "remaining_bytes": remaining})
+    if not rows:
+        raise ValueError("EMPTY_PHASE: No files selected for this model phase")
+    if sum(counts) + needed > LIMIT:
+        raise RuntimeError("BUDGET_EXCEEDED: Complete model phase exceeds the approved download budget")
+    if needed and shutil.disk_usage(ROOT).free < needed + max(RESERVE, MIN_FREE):
+        raise RuntimeError("DISK_RESERVE: Complete model phase would exhaust the installation reserve")
+    return {
+        "phase": phase,
+        "status": "OFFLINE_PHASE_PLAN_NOT_INFERENCE",
+        "files": rows,
+        "remaining_download_bytes": needed,
+        "accounted_bytes_after_phase": sum(counts) + needed,
+        "download_ceiling_bytes": LIMIT,
+        "resume_assumption": "Existing partial offsets; refusal to resume is rechecked before any full restart",
+    }
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("phase", choices=["prepare", "image", "video"])
     parser.add_argument("--approved", action="store_true", help="Run only after explicit user approval")
+    parser.add_argument(
+        "--inspect", action="store_true", help="Offline model-phase preflight; no downloads or writes"
+    )
     args = parser.parse_args()
-    if not args.approved:
+    if args.inspect and args.phase == "prepare":
+        parser.error("Offline inspection supports only image/video model phases")
+    if not args.approved and not args.inspect:
         parser.error("Approval is required; see docs/GPU_INSTALL_PROPOSAL.md")
-    TARGET.mkdir(parents=True, exist_ok=True)
     proposal = json.loads((ROOT / "ops/evidence/gpu-download-proposal.json").read_text())
+    if args.inspect:
+        print(json.dumps(phase_plan(proposal, args.phase), indent=2))
+        return
+    TARGET.mkdir(parents=True, exist_ok=True)
     if args.phase == "prepare":
         uv_zip = TARGET / "uv.zip"
         fetch(UV_URL, uv_zip, 15_722_003, UV_SHA)
@@ -227,11 +305,9 @@ def main():
             proof = ROOT / "ops/evidence/real-gpu-image.json"
             if not proof.exists() or json.loads(proof.read_text()).get("status") != "PASS":
                 raise RuntimeError("Video weights require a measured passing image gate first")
-        for item in proposal["files"]:
-            image = item["repo"] in {"DeepBeepMeep/Flux2", "DeepBeepMeep/Z-Image"}
-            if image == (args.phase == "image"):
-                relative = item["file"]
-                fetch(item["url"], ROOT / "tools/wan-gp/ckpts" / relative, item["bytes"], item["sha256"])
+        plan = phase_plan(proposal, args.phase)
+        for item in plan["files"]:
+            fetch(item["url"], Path(item["destination"]), item["bytes"], item["sha256"])
 
 
 if __name__ == "__main__":

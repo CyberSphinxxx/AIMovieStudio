@@ -1,0 +1,43 @@
+FF                                                                       [100%]
+================================== FAILURES ===================================
+__________ test_invalid_later_file_never_spends_an_earlier_download ___________
+
+downloads = WindowsPath('C:/Users/USER-PC/AppData/Local/Temp/pytest-of-USER-PC/pytest-173/test_invalid_later_file_never_0/tools/gpu')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000023BAF67ACD0>
+
+    def test_invalid_later_file_never_spends_an_earlier_download(downloads, monkeypatch):
+        save_proposal([item("one.bin"), item("two.bin", sha=False)])
+        requests = response(monkeypatch, b"safe")
+        monkeypatch.setattr(sys, "argv", ["setup_gpu", "image", "--approved"])
+        before = installer.ledger()
+        with pytest.raises((ValueError, RuntimeError)):
+            installer.main()
+>       assert not requests and installer.ledger() == before
+E       assert (not [<urllib.request.Request object at 0x0000023BACC0B590>])
+
+tests\test_gpu_phase_preflight.py:35: AssertionError
+---------------------------- Captured stdout call -----------------------------
+Verified one.bin: 4 bytes, SHA256 8b3369944dd2a3fab39e32d1aeb1f763946a458ae3e6368a46432adc8f3a0860
+______ test_whole_phase_budget_failure_never_spends_an_earlier_download _______
+
+downloads = WindowsPath('C:/Users/USER-PC/AppData/Local/Temp/pytest-of-USER-PC/pytest-173/test_whole_phase_budget_failur0/tools/gpu')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000023BAF679010>
+
+    def test_whole_phase_budget_failure_never_spends_an_earlier_download(downloads, monkeypatch):
+        save_proposal([item("one.bin"), item("two.bin", b"second")])
+        installer.reserve("existing-runtime", 95)
+        requests = response(monkeypatch, b"safe")
+        monkeypatch.setattr(sys, "argv", ["setup_gpu", "image", "--approved"])
+        before = installer.ledger()
+        with pytest.raises(RuntimeError, match="budget|BUDGET"):
+            installer.main()
+>       assert not requests and installer.ledger() == before
+E       assert (not [<urllib.request.Request object at 0x0000023BAF661810>])
+
+tests\test_gpu_phase_preflight.py:46: AssertionError
+---------------------------- Captured stdout call -----------------------------
+Verified one.bin: 4 bytes, SHA256 8b3369944dd2a3fab39e32d1aeb1f763946a458ae3e6368a46432adc8f3a0860
+=========================== short test summary info ===========================
+FAILED tests/test_gpu_phase_preflight.py::test_invalid_later_file_never_spends_an_earlier_download
+FAILED tests/test_gpu_phase_preflight.py::test_whole_phase_budget_failure_never_spends_an_earlier_download
+2 failed in 0.44s

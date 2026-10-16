@@ -1,5 +1,7 @@
 # Active plan — 2026-10-14
 
+Latest results: human approved new image experiment; actual2.497GB file installed/hash verified, repeat setup no download, unselected profile/receipt. Native candidate test NOT_STARTED at1.42GiBRAM/3579MiBVRAM/76C; durable one-attempt reservation added after gates, no actual claim yet. Independent whole-phase setup preflight reproduced2FAIL0.44s and fixed; actualimage --inspect verifies12files/0bytesneeded. Final141targetsPASS24.48s/Ruff/diff; raw stale installed-flag report/failure tests retained, no newfull434/browser/nativequality claim. Update handoff/archive/local checkpoint. Next one approved<=300s image only after freshsafe resources; otherwise F2.04 time/revision backlog. CPU330.281s/videoDEFERRED/caps unchanged; app currently stopped, no background work promised.
+
 ## Active 2026-10-16 — F3.03 bounded GGUF encoder experiment preparation
 
 Result: software slice verified124targetsPASS23.90s/static and actual offline11input/8source hash+native selection-function contract; candidate absent, no models imported/loaded. Proposal docs/ENCODER_EXPERIMENT_PROPOSAL.md ready for new-file approval. Original ceilings/time/outputs preserved; RAM1.62GiB blocks native. Next dependency-independent phase preflight to reject incomplete checksum/budget before any multi-file download. No new full434/browser/native-quality claim. See PROGRESS for retained failures/exact command.

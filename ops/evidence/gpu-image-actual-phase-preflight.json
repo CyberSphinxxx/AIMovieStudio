@@ -1,0 +1,142 @@
+{
+  "phase": "image",
+  "status": "OFFLINE_PHASE_PLAN_NOT_INFERENCE",
+  "files": [
+    {
+      "repo": "DeepBeepMeep/Flux2",
+      "revision": "c976cb238dbf2bee48f0bd65eeb14c039cf45e03",
+      "file": "flux-2-klein-4b_quanto_bf16_int8.safetensors",
+      "bytes": 4072546826,
+      "sha256": "3c4090e193ffafc6db33ebb1b37a06cde0e7d65ef92236518b09f8d4c611b060",
+      "git_blob": "fa14a5225cbc88922d07a04d57ea0df91868c677",
+      "url": "https://huggingface.co/DeepBeepMeep/Flux2/resolve/c976cb238dbf2bee48f0bd65eeb14c039cf45e03/flux-2-klein-4b_quanto_bf16_int8.safetensors",
+      "destination": "C:\\L3mxr\\Github Repositories\\AIMovieStudio\\tools\\wan-gp\\ckpts\\flux-2-klein-4b_quanto_bf16_int8.safetensors",
+      "remaining_bytes": 0
+    },
+    {
+      "repo": "DeepBeepMeep/Flux2",
+      "revision": "c976cb238dbf2bee48f0bd65eeb14c039cf45e03",
+      "file": "flux2_vae.safetensors",
+      "bytes": 336211292,
+      "sha256": "868fe7b343cc8f3a19dbcfcafbc3d5f888802be3f89bd81b65b3621a066ce8f3",
+      "git_blob": "78f8fcf4adb004763e3335b937a9d7a6dfa9f5b5",
+      "url": "https://huggingface.co/DeepBeepMeep/Flux2/resolve/c976cb238dbf2bee48f0bd65eeb14c039cf45e03/flux2_vae.safetensors",
+      "destination": "C:\\L3mxr\\Github Repositories\\AIMovieStudio\\tools\\wan-gp\\ckpts\\flux2_vae.safetensors",
+      "remaining_bytes": 0
+    },
+    {
+      "repo": "DeepBeepMeep/Z-Image",
+      "revision": "d2c74b46fb8cf2c5e9821663e31f94267da26be5",
+      "file": "Qwen3/qwen3_quanto_bf16_int8.safetensors",
+      "bytes": 4414004409,
+      "sha256": "9cf81c0990491ba3cee10b5f57792bcb73b056deea13962f8137989e3eebf6de",
+      "git_blob": "4e83ee6d0e8889fdd2d83e0fa6aa6b1b33c2b5c6",
+      "url": "https://huggingface.co/DeepBeepMeep/Z-Image/resolve/d2c74b46fb8cf2c5e9821663e31f94267da26be5/Qwen3/qwen3_quanto_bf16_int8.safetensors",
+      "destination": "C:\\L3mxr\\Github Repositories\\AIMovieStudio\\tools\\wan-gp\\ckpts\\Qwen3\\qwen3_quanto_bf16_int8.safetensors",
+      "remaining_bytes": 0
+    },
+    {
+      "repo": "DeepBeepMeep/Z-Image",
+      "revision": "d2c74b46fb8cf2c5e9821663e31f94267da26be5",
+      "file": "Qwen3/added_tokens.json",
+      "bytes": 707,
+      "sha256": "c0284b582e14987fbd3d5a2cb2bd139084371ed9acbae488829a1c900833c680",
+      "git_blob": "b54f9135e44c1e81047e8d05cb027af8bc039eed",
+      "url": "https://huggingface.co/DeepBeepMeep/Z-Image/resolve/d2c74b46fb8cf2c5e9821663e31f94267da26be5/Qwen3/added_tokens.json",
+      "destination": "C:\\L3mxr\\Github Repositories\\AIMovieStudio\\tools\\wan-gp\\ckpts\\Qwen3\\added_tokens.json",
+      "remaining_bytes": 0
+    },
+    {
+      "repo": "DeepBeepMeep/Z-Image",
+      "revision": "d2c74b46fb8cf2c5e9821663e31f94267da26be5",
+      "file": "Qwen3/chat_template.jinja",
+      "bytes": 4168,
+      "sha256": "a55ee1b1660128b7098723e0abcd92caa0788061051c62d51cbe87d9cf1974d8",
+      "git_blob": "01be9b307daa2d425f7c168c9fb145a286e0afb4",
+      "url": "https://huggingface.co/DeepBeepMeep/Z-Image/resolve/d2c74b46fb8cf2c5e9821663e31f94267da26be5/Qwen3/chat_template.jinja",
+      "destination": "C:\\L3mxr\\Github Repositories\\AIMovieStudio\\tools\\wan-gp\\ckpts\\Qwen3\\chat_template.jinja",
+      "remaining_bytes": 0
+    },
+    {
+      "repo": "DeepBeepMeep/Z-Image",
+      "revision": "d2c74b46fb8cf2c5e9821663e31f94267da26be5",
+      "file": "Qwen3/config.json",
+      "bytes": 726,
+      "sha256": "8ba006f74fecfaaeb392872a60f4a480e7ec9860153d2e1b769ec81f9a147f8a",
+      "git_blob": "e49eccdc32f36da9c09cfa0e737084f9e0105e5e",
+      "url": "https://huggingface.co/DeepBeepMeep/Z-Image/resolve/d2c74b46fb8cf2c5e9821663e31f94267da26be5/Qwen3/config.json",
+      "destination": "C:\\L3mxr\\Github Repositories\\AIMovieStudio\\tools\\wan-gp\\ckpts\\Qwen3\\config.json",
+      "remaining_bytes": 0
+    },
+    {
+      "repo": "DeepBeepMeep/Z-Image",
+      "revision": "d2c74b46fb8cf2c5e9821663e31f94267da26be5",
+      "file": "Qwen3/generation_config.json",
+      "bytes": 214,
+      "sha256": "4347b1aeed2b2b78bc059920a0b7f5fec71482e1344952b76d7665d638d71f13",
+      "git_blob": "f5af93d0c7764fa38e3b1cd3aaba1b6307246d3b",
+      "url": "https://huggingface.co/DeepBeepMeep/Z-Image/resolve/d2c74b46fb8cf2c5e9821663e31f94267da26be5/Qwen3/generation_config.json",
+      "destination": "C:\\L3mxr\\Github Repositories\\AIMovieStudio\\tools\\wan-gp\\ckpts\\Qwen3\\generation_config.json",
+      "remaining_bytes": 0
+    },
+    {
+      "repo": "DeepBeepMeep/Z-Image",
+      "revision": "d2c74b46fb8cf2c5e9821663e31f94267da26be5",
+      "file": "Qwen3/merges.txt",
+      "bytes": 1671853,
+      "sha256": "8831e4f1a044471340f7c0a83d7bd71306a5b867e95fd870f74d0c5308a904d5",
+      "git_blob": "31349551d90c7606f325fe0f11bbb8bd5fa0d7c7",
+      "url": "https://huggingface.co/DeepBeepMeep/Z-Image/resolve/d2c74b46fb8cf2c5e9821663e31f94267da26be5/Qwen3/merges.txt",
+      "destination": "C:\\L3mxr\\Github Repositories\\AIMovieStudio\\tools\\wan-gp\\ckpts\\Qwen3\\merges.txt",
+      "remaining_bytes": 0
+    },
+    {
+      "repo": "DeepBeepMeep/Z-Image",
+      "revision": "d2c74b46fb8cf2c5e9821663e31f94267da26be5",
+      "file": "Qwen3/special_tokens_map.json",
+      "bytes": 613,
+      "sha256": "76862e765266b85aa9459767e33cbaf13970f327a0e88d1c65846c2ddd3a1ecd",
+      "git_blob": "ac23c0aaa2434523c494330aeb79c58395378103",
+      "url": "https://huggingface.co/DeepBeepMeep/Z-Image/resolve/d2c74b46fb8cf2c5e9821663e31f94267da26be5/Qwen3/special_tokens_map.json",
+      "destination": "C:\\L3mxr\\Github Repositories\\AIMovieStudio\\tools\\wan-gp\\ckpts\\Qwen3\\special_tokens_map.json",
+      "remaining_bytes": 0
+    },
+    {
+      "repo": "DeepBeepMeep/Z-Image",
+      "revision": "d2c74b46fb8cf2c5e9821663e31f94267da26be5",
+      "file": "Qwen3/tokenizer.json",
+      "bytes": 11422654,
+      "sha256": "aeb13307a71acd8fe81861d94ad54ab689df773318809eed3cbe794b4492dae4",
+      "git_blob": "cd71f61a15a522601badb3dc960d800d9cb3766c",
+      "url": "https://huggingface.co/DeepBeepMeep/Z-Image/resolve/d2c74b46fb8cf2c5e9821663e31f94267da26be5/Qwen3/tokenizer.json",
+      "destination": "C:\\L3mxr\\Github Repositories\\AIMovieStudio\\tools\\wan-gp\\ckpts\\Qwen3\\tokenizer.json",
+      "remaining_bytes": 0
+    },
+    {
+      "repo": "DeepBeepMeep/Z-Image",
+      "revision": "d2c74b46fb8cf2c5e9821663e31f94267da26be5",
+      "file": "Qwen3/tokenizer_config.json",
+      "bytes": 9732,
+      "sha256": "d5d09f07b48c3086c508b30d1c9114bd1189145b74e982a265350c923acd8101",
+      "git_blob": "417d038a63fa3de29cfde265caedae14d1a58d92",
+      "url": "https://huggingface.co/DeepBeepMeep/Z-Image/resolve/d2c74b46fb8cf2c5e9821663e31f94267da26be5/Qwen3/tokenizer_config.json",
+      "destination": "C:\\L3mxr\\Github Repositories\\AIMovieStudio\\tools\\wan-gp\\ckpts\\Qwen3\\tokenizer_config.json",
+      "remaining_bytes": 0
+    },
+    {
+      "repo": "DeepBeepMeep/Z-Image",
+      "revision": "d2c74b46fb8cf2c5e9821663e31f94267da26be5",
+      "file": "Qwen3/vocab.json",
+      "bytes": 2776833,
+      "sha256": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910",
+      "git_blob": "4783fe10ac3adce15ac8f358ef5462739852c569",
+      "url": "https://huggingface.co/DeepBeepMeep/Z-Image/resolve/d2c74b46fb8cf2c5e9821663e31f94267da26be5/Qwen3/vocab.json",
+      "destination": "C:\\L3mxr\\Github Repositories\\AIMovieStudio\\tools\\wan-gp\\ckpts\\Qwen3\\vocab.json",
+      "remaining_bytes": 0
+    }
+  ],
+  "remaining_download_bytes": 0,
+  "accounted_bytes_after_phase": 19616353545,
+  "download_ceiling_bytes": 32000000000,
+  "resume_assumption": "Existing partial offsets; refusal to resume is rechecked before any full restart"
+}

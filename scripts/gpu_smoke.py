@@ -9,7 +9,7 @@ from pathlib import Path
 from uuid import uuid4
 
 from scripts.setup_gpu import ROOT
-from scripts.encoder_experiment import PROFILE as ENCODER_PROFILE, verify_installed
+from scripts.encoder_experiment import PROFILE as ENCODER_PROFILE, claim_image_test, verify_installed
 from studio import media
 from studio.providers import (
     PARENT_MEMORY_CHECK_SECONDS,
@@ -92,6 +92,7 @@ def main():
         report["before"] = require_resources()
         if args.encoder_experiment:
             report["encoder_setup"] = verify_installed(ROOT)
+            claim_image_test(ROOT, directory.name, args.max_seconds)
         if args.phase == "runtime":
             report["runtime_attempted"] = True
             result = provider.request("discover", "", directory, check)
