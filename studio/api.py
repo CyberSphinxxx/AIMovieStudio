@@ -39,6 +39,7 @@ from studio.draft_editing import edit_eligibility
 from studio.export_variants import ExportCopy, enqueue_copy
 from studio.shot_revisions import RetakeRequest, enqueue_retake, discard_retake
 from studio.reference_variants import ReferenceVariant, ReferenceSelection, enqueue_variant, select_reference
+from studio.canon_revisions import CanonTimingRevision, assign_timing
 from studio import backup_import
 from studio.export_folder import reveal_export
 
@@ -545,6 +546,10 @@ def create_app(root: Path | None = None, run_worker=True, *, resource_probe=None
                     {"episode": number, "revision": revision},
                 )
         return store.get(pid)
+
+    @app.post("/api/projects/{pid}/canon/{identity}/timing")
+    def revise_canon_timing(pid: str, identity: str, value: CanonTimingRevision):
+        return assign_timing(store, pid, identity, value)
 
     @app.post("/api/projects/{pid}/canon")
     def revise_canon(pid: str, value: CanonRevision):

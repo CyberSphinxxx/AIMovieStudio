@@ -1,0 +1,154 @@
+{
+  "config": {
+    "configFile": "C:\\L3mxr\\Github Repositories\\AIMovieStudio\\client\\playwright.config.ts",
+    "rootDir": "C:/L3mxr/Github Repositories/AIMovieStudio/client/e2e",
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "C:/L3mxr/Github Repositories/AIMovieStudio/client/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "",
+        "name": "",
+        "testDir": "C:/L3mxr/Github Repositories/AIMovieStudio/client/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 120000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "../ops/evidence/browser-tests.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "runAgents": "none",
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.58.2",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "canon-timing.spec.ts",
+      "file": "canon-timing.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "legacy fact timing can be corrected without replacing saved scenes",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 2483,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('region', { name: 'Saved continuity', exact: true }).getByText('After shot 2', { exact: true })\nExpected: visible\nError: strict mode violation: getByRole('region', { name: 'Saved continuity', exact: true }).getByText('After shot 2', { exact: true }) resolved to 2 elements:\n    1) <p class=\"muted\">After shot 2</p> aka getByRole('paragraph').filter({ hasText: 'After shot' })\n    2) <option value=\"2\">After shot 2</option> aka getByLabel('When this happened')\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('region', { name: 'Saved continuity', exact: true }).getByText('After shot 2', { exact: true })\u001b[22m\n",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('region', { name: 'Saved continuity', exact: true }).getByText('After shot 2', { exact: true })\nExpected: visible\nError: strict mode violation: getByRole('region', { name: 'Saved continuity', exact: true }).getByText('After shot 2', { exact: true }) resolved to 2 elements:\n    1) <p class=\"muted\">After shot 2</p> aka getByRole('paragraph').filter({ hasText: 'After shot' })\n    2) <option value=\"2\">After shot 2</option> aka getByLabel('When this happened')\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('region', { name: 'Saved continuity', exact: true }).getByText('After shot 2', { exact: true })\u001b[22m\n\n    at C:\\L3mxr\\Github Repositories\\AIMovieStudio\\client\\e2e\\canon-timing.spec.ts:63:5",
+                    "location": {
+                      "file": "C:\\L3mxr\\Github Repositories\\AIMovieStudio\\client\\e2e\\canon-timing.spec.ts",
+                      "column": 5,
+                      "line": 63
+                    },
+                    "snippet": "  61 |   await expect(\n  62 |     continuity.getByText(\"After shot 2\", { exact: true }),\n> 63 |   ).toBeVisible();\n     |     ^\n  64 |   const saved = await (await request.get(`/api/projects/${fixture.id}`)).json();\n  65 |   expect(saved.canon[0]).toMatchObject({\n  66 |     id: before.canon[0].id,"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "C:\\L3mxr\\Github Repositories\\AIMovieStudio\\client\\e2e\\canon-timing.spec.ts",
+                        "column": 5,
+                        "line": 63
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('region', { name: 'Saved continuity', exact: true }).getByText('After shot 2', { exact: true })\nExpected: visible\nError: strict mode violation: getByRole('region', { name: 'Saved continuity', exact: true }).getByText('After shot 2', { exact: true }) resolved to 2 elements:\n    1) <p class=\"muted\">After shot 2</p> aka getByRole('paragraph').filter({ hasText: 'After shot' })\n    2) <option value=\"2\">After shot 2</option> aka getByLabel('When this happened')\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('region', { name: 'Saved continuity', exact: true }).getByText('After shot 2', { exact: true })\u001b[22m\n\n\n  61 |   await expect(\n  62 |     continuity.getByText(\"After shot 2\", { exact: true }),\n> 63 |   ).toBeVisible();\n     |     ^\n  64 |   const saved = await (await request.get(`/api/projects/${fixture.id}`)).json();\n  65 |   expect(saved.canon[0]).toMatchObject({\n  66 |     id: before.canon[0].id,\n    at C:\\L3mxr\\Github Repositories\\AIMovieStudio\\client\\e2e\\canon-timing.spec.ts:63:5"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-16T11:29:26.760Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\L3mxr\\Github Repositories\\AIMovieStudio\\client\\test-results\\canon-timing-legacy-fact-t-2d6dd-hout-replacing-saved-scenes\\test-failed-1.png"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "C:\\L3mxr\\Github Repositories\\AIMovieStudio\\client\\test-results\\canon-timing-legacy-fact-t-2d6dd-hout-replacing-saved-scenes\\error-context.md"
+                    },
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "C:\\L3mxr\\Github Repositories\\AIMovieStudio\\client\\test-results\\canon-timing-legacy-fact-t-2d6dd-hout-replacing-saved-scenes\\trace.zip"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "C:\\L3mxr\\Github Repositories\\AIMovieStudio\\client\\e2e\\canon-timing.spec.ts",
+                    "column": 5,
+                    "line": 63
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "bab07f478d4512967dba-5e3a0e0860f4551b55ea",
+          "file": "canon-timing.spec.ts",
+          "line": 7,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-10-16T11:29:25.039Z",
+    "duration": 5288.231,
+    "expected": 0,
+    "skipped": 0,
+    "unexpected": 1,
+    "flaky": 0
+  }
+}

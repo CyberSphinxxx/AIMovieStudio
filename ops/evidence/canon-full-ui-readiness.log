@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "C:\L3mxr\Github Repositories\AIMovieStudio\scripts\checkpoint_browser_smoke.py", line 231, in <module>
+    main()
+  File "C:\L3mxr\Github Repositories\AIMovieStudio\scripts\checkpoint_browser_smoke.py", line 98, in main
+    raise RuntimeError(
+RuntimeError: UI_TEST_RESOURCE_BUSY: Need 3 GiB free RAM for this isolated browser check; native model guards remain unchanged.

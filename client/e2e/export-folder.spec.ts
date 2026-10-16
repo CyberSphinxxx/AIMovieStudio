@@ -24,6 +24,7 @@ test("finished export folder action has busy, launch and failure feedback", asyn
       async () =>
         (await (await request.get(`/api/projects/${project.id}`)).json())
           .status,
+      { timeout: 30000 },
     )
     .toBe("COMPLETED");
   await page.goto(`/project/${project.id}`);

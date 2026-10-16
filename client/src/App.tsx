@@ -25,6 +25,7 @@ import { BackupRestore } from "./BackupRestore";
 import { ReferenceViews } from "./ReferenceViews";
 import { ShowInFolder } from "./ShowInFolder";
 import { StoryMoment } from "./StoryMoment";
+import { CanonTimeline } from "./CanonTimeline";
 
 const EXAMPLE =
   "A lighthouse keeper receives a message from a ship that vanished thirty years ago. Tonight, the light begins to answer.";
@@ -797,17 +798,7 @@ function Studio({ id }: { id: string }) {
                   />
                 )}
                 <h3>Saved continuity</h3>
-                {project.canon.length ? (
-                  project.canon.map((event, i) => (
-                    <p key={i}>
-                      Episode {event.episode} · {event.value}
-                    </p>
-                  ))
-                ) : (
-                  <p className="muted">
-                    Episode outcomes commit after the export passes validation.
-                  </p>
-                )}
+                <CanonTimeline project={project} onSaved={reload} />
               </>
             ) : (
               <p className="empty">Preparing the story plan…</p>

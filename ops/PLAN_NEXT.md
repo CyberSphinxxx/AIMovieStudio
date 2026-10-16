@@ -1,3 +1,15 @@
+# Current next steps — 2026-10-16
+
+Legacy timing slice finished software checks568full/35final/mobile/static. Full19UI is now BLOCKED_RAM after guarded0.27GiB stop; newfullstartup3GiB actualrefuses1.63GiB, do not repeat unchanged. Archive/commit current work then advance the produced-episode review design below while hardware busy. Native approvals/budgets remain unchanged. Older pending text below is historical design context, refreshed HANDOFF is authoritative.
+
+# Next bounded work after legacy timing verification
+
+Current authoritative status (2026-10-16): exact checkpoints d2ed4da, stale continuation d06b61a and sparse draft-time editor25961cd are saved. Legacy timing API/projection/editor has31 focused tests and mobile repair/conflict coverage; full backend50253 pending, no code changes during that suite. Refresh final report18168 passed11.329s after inventory command replaced rolling report; raw inventory is explicitly not executed. Next complete full19 browser cases in a separate sample library, collect all results/update memory/checkpoint. Native image still unspent and gated5GiB/4096MiB/<85C/no owner; writer7GiB/330.281s remain. Do not lower guards, ask readiness again, download video, or reinterpret demo as native.
+
+Next functional gap: an already produced episode marked REVIEW_REQUIRED has no explicit path to confirm an unchanged movie against revised structured canon. Research and plan a narrow produced-episode review before implementing a complete rewrite branch: expected revision, no active/running work, valid retained completed export, prior episode COMPLETED, exact saved script validation against current earlier canonical state with verified shot times. Distinguish declared checks from prose/visual review. Preserve original script/media/canon/history, record explicit user keep decision and evidence revision, reject contradictions with fact/shot IDs. Never silently approve after changing canon or auto-render. A full produced-story rewrite still needs immutable new editions and invalidation design; do not claim this small review would implement it. Reproduce a safe unchanged case and a real declared contradiction before choosing the next vertical slice. Verify API/atomic rollback/concurrency/backup/reopen plus actual retained MP4 hashes/UI and later continuation; no model required.
+
+The original legacy timing design below remains the implementation rationale and test matrix, not a list of untouched tasks.
+
 # Next bounded slice — F2.04 legacy canon timing assignment
 
 Current exact-flashback slice must finish its running full suite/checkpoint first. Do not change core files while that suite may spawn readers of the source.

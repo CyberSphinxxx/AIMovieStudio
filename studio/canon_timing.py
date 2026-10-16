@@ -18,10 +18,11 @@ def canon_key(value, revision):
     return tuple(value.get(key) for key in ("episode", "entity_id", "field", "value", "reason")) + (revision,)
 
 
-def with_timing(rows, sources):
+def with_timing(rows, sources, *, project_revision=None):
     by_id = {row["id"]: row for row in rows}
     by_key = defaultdict(list)
     candidates = defaultdict(list)
+    annotations = defaultdict(list)
     for row in rows:
         by_key[canon_key(row, row["revision"])].append(row["id"])
     for source in sources:
@@ -59,12 +60,45 @@ def with_timing(rows, sources):
                 candidates[identity].append(
                     ("episode_end" if after is None else "after_shot", after, source["seq"])
                 )
+            elif source["kind"] == "canon_timing_revision":
+                identity = data.get("event_id")
+                row = by_id.get(identity)
+                original = data.get("source_canon")
+                revision = data.get("revision")
+                if not row or row["field"] not in {"alive", "location", "prop_owner", "knowledge"}:
+                    continue
+                if not isinstance(original, dict) or canon_key(
+                    original, original.get("revision")
+                ) != canon_key(row, row["revision"]):
+                    continue
+                if (
+                    type(revision) is not int
+                    or revision <= row["revision"]
+                    or (project_revision is not None and revision > project_revision)
+                ):
+                    continue
+                if (
+                    "after_shot" not in data
+                    or not isinstance(data.get("reason"), str)
+                    or not 8 <= len(data["reason"].strip()) <= 500
+                ):
+                    continue
+                after = data["after_shot"]
+                if after is not None and not valid_position(after):
+                    continue
+                annotations[identity].append(
+                    (revision, "episode_end" if after is None else "after_shot", after, source["seq"])
+                )
         except (ValueError, TypeError, KeyError):
             # A corrupt/unlinked source never grants an exact checkpoint.
             continue
     result = []
     for row in rows:
         linked = candidates[row["id"]]
+        revised = annotations[row["id"]]
+        if revised:
+            latest = max(revision for revision, *_ in revised)
+            linked = [(kind, after, seq) for revision, kind, after, seq in revised if revision == latest]
         distinct = {(kind, after) for kind, after, seq in linked}
         if len(distinct) == 1:
             kind, after, seq = linked[0]

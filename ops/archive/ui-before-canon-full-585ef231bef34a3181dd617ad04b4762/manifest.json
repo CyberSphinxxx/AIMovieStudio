@@ -1,0 +1,287 @@
+{
+  "scope": "Exact previous UI screenshot bytes before full19 demo browser verification",
+  "files": [
+    {
+      "path": "ops/evidence/app-runtime-relocation-frame.png",
+      "archive": "ops/archive/ui-before-canon-full-585ef231bef34a3181dd617ad04b4762/app-runtime-relocation-frame.png",
+      "bytes": 46909,
+      "sha256": "14a6bd6bf1da2f3ba5c8e39d3bff9900ef60dee718b0f68921764c116c7d145b"
+    },
+    {
+      "path": "ops/evidence/backup-restore-mobile.png",
+      "archive": "ops/archive/ui-before-canon-full-585ef231bef34a3181dd617ad04b4762/backup-restore-mobile.png",
+      "bytes": 196841,
+      "sha256": "b49348c843fd6e280f5b5fa5d7d107e915a78148b19ec468a66779c1841b84ad"
+    },
+    {
+      "path": "ops/evidence/canon-timing-conflict-mobile-verified-before-inventory.png",
+      "archive": "ops/archive/ui-before-canon-full-585ef231bef34a3181dd617ad04b4762/canon-timing-conflict-mobile-verified-before-inventory.png",
+      "bytes": 123420,
+      "sha256": "6dfbfc451b434f36e73cc45d230866637d410bfe0baf589c6219e1869e1751b0"
+    },
+    {
+      "path": "ops/evidence/canon-timing-conflict-mobile.png",
+      "archive": "ops/archive/ui-before-canon-full-585ef231bef34a3181dd617ad04b4762/canon-timing-conflict-mobile.png",
+      "bytes": 123420,
+      "sha256": "6dfbfc451b434f36e73cc45d230866637d410bfe0baf589c6219e1869e1751b0"
+    },
+    {
+      "path": "ops/evidence/canon-timing-first-failed.png",
+      "archive": "ops/archive/ui-before-canon-full-585ef231bef34a3181dd617ad04b4762/canon-timing-first-failed.png",
+      "bytes": 29927,
+      "sha256": "3ebad158fe27c4aeb75116fb2bd16c4d2b8740586dc62282a617cbaeee5e4db6"
+    },
+    {
+      "path": "ops/evidence/canon-timing-form-mobile-first.png",
+      "archive": "ops/archive/ui-before-canon-full-585ef231bef34a3181dd617ad04b4762/canon-timing-form-mobile-first.png",
+      "bytes": 10363,
+      "sha256": "f85d53bc3448a02788008c231eaae818cc4336b9388e1fd48e89b153cb02e7d6"
+    },
+    {
+      "path": "ops/evidence/canon-timing-form-mobile-verified-before-inventory.png",
+      "archive": "ops/archive/ui-before-canon-full-585ef231bef34a3181dd617ad04b4762/canon-timing-form-mobile-verified-before-inventory.png",
+      "bytes": 10363,
+      "sha256": "f85d53bc3448a02788008c231eaae818cc4336b9388e1fd48e89b153cb02e7d6"
+    },
+    {
+      "path": "ops/evidence/canon-timing-form-mobile.png",
+      "archive": "ops/archive/ui-before-canon-full-585ef231bef34a3181dd617ad04b4762/canon-timing-form-mobile.png",
+      "bytes": 10363,
+      "sha256": "f85d53bc3448a02788008c231eaae818cc4336b9388e1fd48e89b153cb02e7d6"
+    },
+    {
+      "path": "ops/evidence/demo-layout-landscape.png",
+      "archive": "ops/archive/ui-before-canon-full-585ef231bef34a3181dd617ad04b4762/demo-layout-landscape.png",
+      "bytes": 12207,
+      "sha256": "711af95d9125f3476847e7078384961c5bdc354158deeb8b9011d685545dbea9"
+    },
+    {
+      "path": "ops/evidence/demo-layout-late-frame.png",
+      "archive": "ops/archive/ui-before-canon-full-585ef231bef34a3181dd617ad04b4762/demo-layout-late-frame.png",
+      "bytes": 63930,
+      "sha256": "b5700a9780949d627f40449cbd9124799b5d62db9e438b15c816ba6b9b5c4443"
+    },
+    {
+      "path": "ops/evidence/demo-layout-portrait.png",
+      "archive": "ops/archive/ui-before-canon-full-585ef231bef34a3181dd617ad04b4762/demo-layout-portrait.png",
+      "bytes": 16026,
+      "sha256": "39493a6962c5fcfc06759b5630f425254266633fd4ace7beec5d0903e2c24afa"
+    },
+    {
+      "path": "ops/evidence/demo-layout-square-before-heading-fit.png",
+      "archive": "ops/archive/ui-before-canon-full-585ef231bef34a3181dd617ad04b4762/demo-layout-square-before-heading-fit.png",
+      "bytes": 13457,
+      "sha256": "a8e5dd6ff0d248e92cecf4cdc5f4651c3cefdb733d8595beef5c5db28054c354"
+    },
+    {
+      "path": "ops/evidence/demo-layout-square.png",
+      "archive": "ops/archive/ui-before-canon-full-585ef231bef34a3181dd617ad04b4762/demo-layout-square.png",
+      "bytes": 14244,
+      "sha256": "feb20acc154bf726f69f594528276ebb3e87633bf9f6d70c2b5bd92ae8adb559"
+    },
+    {
+      "path": "ops/evidence/draft-editor-mobile.png",
+      "archive": "ops/archive/ui-before-canon-full-585ef231bef34a3181dd617ad04b4762/draft-editor-mobile.png",
+      "bytes": 110595,
+      "sha256": "c66b020a8d9ae050e414f2c45dc1ee55c5f87c0161de74560d3f004748fb46ba"
+    },
+    {
+      "path": "ops/evidence/export-copies-mobile.png",
+      "archive": "ops/archive/ui-before-canon-full-585ef231bef34a3181dd617ad04b4762/export-copies-mobile.png",
+      "bytes": 90395,
+      "sha256": "e7227d2bfe254e9b59340563925aa3fab22e0c773cb2b7cdfe59c5ee707ce1e1"
+    },
+    {
+      "path": "ops/evidence/export-folder-mobile.png",
+      "archive": "ops/archive/ui-before-canon-full-585ef231bef34a3181dd617ad04b4762/export-folder-mobile.png",
+      "bytes": 90077,
+      "sha256": "878b0f36b8a89eb68e003c401945e0279eeddb97a88fd41fbd3e6e9d6c143570"
+    },
+    {
+      "path": "ops/evidence/home-1366.png",
+      "archive": "ops/archive/ui-before-canon-full-585ef231bef34a3181dd617ad04b4762/home-1366.png",
+      "bytes": 150106,
+      "sha256": "7cb96d03000fe7545397eabd417cfef0afc71559fc44013fd72c099959a86f3c"
+    },
+    {
+      "path": "ops/evidence/home-1920.png",
+      "archive": "ops/archive/ui-before-canon-full-585ef231bef34a3181dd617ad04b4762/home-1920.png",
+      "bytes": 156356,
+      "sha256": "015b9de105afe0a7bcc1b650f6c256f7b6f1b30b8ee38c0a1dfe93c4896ec34e"
+    },
+    {
+      "path": "ops/evidence/home-320.png",
+      "archive": "ops/archive/ui-before-canon-full-585ef231bef34a3181dd617ad04b4762/home-320.png",
+      "bytes": 124607,
+      "sha256": "a06df565c8c05017c84228c0b9d9e2f83b6a385bcf7a6b9c7c0458977fad4fe7"
+    },
+    {
+      "path": "ops/evidence/home-360.png",
+      "archive": "ops/archive/ui-before-canon-full-585ef231bef34a3181dd617ad04b4762/home-360.png",
+      "bytes": 132164,
+      "sha256": "9b107f47545046a7cc1b27cc024af10ef0b4458284cccd79365e0d3b1f42f637"
+    },
+    {
+      "path": "ops/evidence/home-390.png",
+      "archive": "ops/archive/ui-before-canon-full-585ef231bef34a3181dd617ad04b4762/home-390.png",
+      "bytes": 135676,
+      "sha256": "d7341252ccaaf1fb464f156c3f7ada4f072d80c456d69d70f1d302d93f136ae8"
+    },
+    {
+      "path": "ops/evidence/home-768.png",
+      "archive": "ops/archive/ui-before-canon-full-585ef231bef34a3181dd617ad04b4762/home-768.png",
+      "bytes": 144875,
+      "sha256": "349d75acb9a1cbe309bd9e9d3933a794b6f6a31cf4d0fafc33c4f19727a574f8"
+    },
+    {
+      "path": "ops/evidence/missing-model.png",
+      "archive": "ops/archive/ui-before-canon-full-585ef231bef34a3181dd617ad04b4762/missing-model.png",
+      "bytes": 71853,
+      "sha256": "6932b0cdd63cfba6c4ba62b40a39742019be10367f300bd53dbc4aa6bed671f2"
+    },
+    {
+      "path": "ops/evidence/private-build-final-preview.png",
+      "archive": "ops/archive/ui-before-canon-full-585ef231bef34a3181dd617ad04b4762/private-build-final-preview.png",
+      "bytes": 13099,
+      "sha256": "eccdf0f47ef5bbc10b594c015cef65bd61d656dd492df9ca7f7eee58cc1dfb63"
+    },
+    {
+      "path": "ops/evidence/provider-memory-mobile.png",
+      "archive": "ops/archive/ui-before-canon-full-585ef231bef34a3181dd617ad04b4762/provider-memory-mobile.png",
+      "bytes": 234023,
+      "sha256": "dd962ca3eddfb9792d9def3ed20ab6951b2ceb6077aac72f73e63c3e3f52d797"
+    },
+    {
+      "path": "ops/evidence/reference-views-mobile.png",
+      "archive": "ops/archive/ui-before-canon-full-585ef231bef34a3181dd617ad04b4762/reference-views-mobile.png",
+      "bytes": 118663,
+      "sha256": "e78aa4d791116d9a33724f2b1a3824fb7bcd107bd752a300835e17b17f67d7c4"
+    },
+    {
+      "path": "ops/evidence/resource-wait-inference_busy-mobile.png",
+      "archive": "ops/archive/ui-before-canon-full-585ef231bef34a3181dd617ad04b4762/resource-wait-inference_busy-mobile.png",
+      "bytes": 66472,
+      "sha256": "4df5a57db3f65da176eee0b2bb508ad8e05b7c586879950e598d3d0e1eb151f3"
+    },
+    {
+      "path": "ops/evidence/resource-wait-memory_busy-mobile.png",
+      "archive": "ops/archive/ui-before-canon-full-585ef231bef34a3181dd617ad04b4762/resource-wait-memory_busy-mobile.png",
+      "bytes": 65923,
+      "sha256": "150180457e1d2768b10593e2ae8f32528ce2505b31dd067c9a076c669f936612"
+    },
+    {
+      "path": "ops/evidence/resource-wait-mobile.png",
+      "archive": "ops/archive/ui-before-canon-full-585ef231bef34a3181dd617ad04b4762/resource-wait-mobile.png",
+      "bytes": 65923,
+      "sha256": "150180457e1d2768b10593e2ae8f32528ce2505b31dd067c9a076c669f936612"
+    },
+    {
+      "path": "ops/evidence/retake-shots-mobile.png",
+      "archive": "ops/archive/ui-before-canon-full-585ef231bef34a3181dd617ad04b4762/retake-shots-mobile.png",
+      "bytes": 89124,
+      "sha256": "8fe22143b22852c4853e54c19aa8f120046d41e33995a4e96714f3b367cab87d"
+    },
+    {
+      "path": "ops/evidence/settings-desktop.png",
+      "archive": "ops/archive/ui-before-canon-full-585ef231bef34a3181dd617ad04b4762/settings-desktop.png",
+      "bytes": 215560,
+      "sha256": "e065f1045fbed5310ba0dd0370ed3e57b09216215122a671468ae70b9a7cbfda"
+    },
+    {
+      "path": "ops/evidence/silent-story-review-mobile.png",
+      "archive": "ops/archive/ui-before-canon-full-585ef231bef34a3181dd617ad04b4762/silent-story-review-mobile.png",
+      "bytes": 92320,
+      "sha256": "5f857a047bb483c42641e7b430f7bd224f521895a8f904b37fad561683175e0f"
+    },
+    {
+      "path": "ops/evidence/sound-effects-export-mobile.png",
+      "archive": "ops/archive/ui-before-canon-full-585ef231bef34a3181dd617ad04b4762/sound-effects-export-mobile.png",
+      "bytes": 103325,
+      "sha256": "94952613b3b8c32d66eaaf0eb900b4bfb6884dacefb77be66a4db6290ba2574a"
+    },
+    {
+      "path": "ops/evidence/sound-effects-settings-mobile.png",
+      "archive": "ops/archive/ui-before-canon-full-585ef231bef34a3181dd617ad04b4762/sound-effects-settings-mobile.png",
+      "bytes": 194158,
+      "sha256": "4be70d599336f8989041691e8e8607c2cae13876e35557b039765f9100ef7f91"
+    },
+    {
+      "path": "ops/evidence/story-checkpoint-edited-mobile.png",
+      "archive": "ops/archive/ui-before-canon-full-585ef231bef34a3181dd617ad04b4762/story-checkpoint-edited-mobile.png",
+      "bytes": 102414,
+      "sha256": "80426cf2a7ddac431415ac9587c2c00402c3991335a00f0ae95c6beb6af36e8d"
+    },
+    {
+      "path": "ops/evidence/story-checkpoint-origin-failed.png",
+      "archive": "ops/archive/ui-before-canon-full-585ef231bef34a3181dd617ad04b4762/story-checkpoint-origin-failed.png",
+      "bytes": 2740,
+      "sha256": "fb32313e11bc8ffbd5310a1660e630b64cedb4622f8462a5eae2d5464ac8279e"
+    },
+    {
+      "path": "ops/evidence/story-checkpoint-shots-mobile.png",
+      "archive": "ops/archive/ui-before-canon-full-585ef231bef34a3181dd617ad04b4762/story-checkpoint-shots-mobile.png",
+      "bytes": 77409,
+      "sha256": "d6f8aafa84bc7cae0a8f47e6a461451fcf93db104e46689a48597b0bbdd33f88"
+    },
+    {
+      "path": "ops/evidence/story-checkpoint-skip-selector-failed.png",
+      "archive": "ops/archive/ui-before-canon-full-585ef231bef34a3181dd617ad04b4762/story-checkpoint-skip-selector-failed.png",
+      "bytes": 40189,
+      "sha256": "018a70e50b256b63a2edb324e8fbf36699ca8ad25329f569cbb039c801a311cc"
+    },
+    {
+      "path": "ops/evidence/story-time-controls-detail.png",
+      "archive": "ops/archive/ui-before-canon-full-585ef231bef34a3181dd617ad04b4762/story-time-controls-detail.png",
+      "bytes": 16788,
+      "sha256": "291ae4c369b4c3a938d2bc95bfbbe00eb99038676526136c19196d9898887012"
+    },
+    {
+      "path": "ops/evidence/story-time-controls-mobile-first.png",
+      "archive": "ops/archive/ui-before-canon-full-585ef231bef34a3181dd617ad04b4762/story-time-controls-mobile-first.png",
+      "bytes": 183059,
+      "sha256": "ff8a7a3cbc605da22e880bb5ef2536e525e7290042d82484c0a81c3cdb866e46"
+    },
+    {
+      "path": "ops/evidence/story-time-controls-mobile.png",
+      "archive": "ops/archive/ui-before-canon-full-585ef231bef34a3181dd617ad04b4762/story-time-controls-mobile.png",
+      "bytes": 182066,
+      "sha256": "bccbde01a4ba42efde92d285d4661b5c3b5a9151c44e594ae22516b63da92aba"
+    },
+    {
+      "path": "ops/evidence/story-time-edited-mobile-first.png",
+      "archive": "ops/archive/ui-before-canon-full-585ef231bef34a3181dd617ad04b4762/story-time-edited-mobile-first.png",
+      "bytes": 101433,
+      "sha256": "c9bff3f6924c2865812a38fd41d9b7086a2e0aeeeaec8646f198a397320383a9"
+    },
+    {
+      "path": "ops/evidence/story-time-edited-mobile.png",
+      "archive": "ops/archive/ui-before-canon-full-585ef231bef34a3181dd617ad04b4762/story-time-edited-mobile.png",
+      "bytes": 101433,
+      "sha256": "c9bff3f6924c2865812a38fd41d9b7086a2e0aeeeaec8646f198a397320383a9"
+    },
+    {
+      "path": "ops/evidence/story-time-shots-mobile-first.png",
+      "archive": "ops/archive/ui-before-canon-full-585ef231bef34a3181dd617ad04b4762/story-time-shots-mobile-first.png",
+      "bytes": 77409,
+      "sha256": "d6f8aafa84bc7cae0a8f47e6a461451fcf93db104e46689a48597b0bbdd33f88"
+    },
+    {
+      "path": "ops/evidence/story-time-shots-mobile.png",
+      "archive": "ops/archive/ui-before-canon-full-585ef231bef34a3181dd617ad04b4762/story-time-shots-mobile.png",
+      "bytes": 77409,
+      "sha256": "d6f8aafa84bc7cae0a8f47e6a461451fcf93db104e46689a48597b0bbdd33f88"
+    },
+    {
+      "path": "ops/evidence/studio-export-desktop.png",
+      "archive": "ops/archive/ui-before-canon-full-585ef231bef34a3181dd617ad04b4762/studio-export-desktop.png",
+      "bytes": 101532,
+      "sha256": "2147140fa3bf64bfecddbe5ccf64100037c0ff24f999d93c994d2e14a0489ef1"
+    },
+    {
+      "path": "ops/evidence/studio-export-mobile.png",
+      "archive": "ops/archive/ui-before-canon-full-585ef231bef34a3181dd617ad04b4762/studio-export-mobile.png",
+      "bytes": 73980,
+      "sha256": "94edfc0f12f852166e43fd3196c2bb486f2c96bd177b266fedf797e6c6d9cf8d"
+    }
+  ]
+}

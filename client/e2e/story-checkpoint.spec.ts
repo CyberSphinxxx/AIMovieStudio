@@ -84,7 +84,10 @@ test("saved flashback checkpoints remain clear while editing a mobile draft", as
     path: "../ops/evidence/story-time-controls-mobile.png",
     fullPage: true,
   });
-  await page.getByText("Story time for shot 3", { exact: true }).locator("..").screenshot({ path: "../ops/evidence/story-time-controls-detail.png" });
+  await page
+    .getByText("Story time for shot 3", { exact: true })
+    .locator("..")
+    .screenshot({ path: "../ops/evidence/story-time-controls-detail.png" });
   expect(
     (
       await new AxeBuilder({ page })

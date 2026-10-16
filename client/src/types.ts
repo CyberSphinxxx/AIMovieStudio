@@ -133,6 +133,8 @@ export type Project = {
     { asset_id: string; sha256: string; revision: number }
   >;
   canon: {
+    id: string;
+    revision: number;
     entity_id: string;
     episode: number;
     field: string;

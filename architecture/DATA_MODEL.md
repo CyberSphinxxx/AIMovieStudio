@@ -30,3 +30,7 @@ Optimistic lock `revision` increments on change; conflicts return 409 and show d
 
 ## Backups
 Store manifest JSON with schema version and append-only event table; support export with media and restore validation/checksums. A binary database by itself is not enough for long-term portability; provide JSON story/shot/asset manifest export too.
+
+### Append-only canon timing revisions
+
+No canon table migration: raw eight-column facts stay immutable. A canon_timing_revision event stores event_id, the original source_canon identity tuple and original revision, previous derived timing, explicit after_shot (null = end), explanation, new project revision and affected later episodes. Store.get validates linkage and project-revision bounds, then derives timing/source sequence from current audit rows. Same-revision disagreement fails closed. ZIP import retains fact identities and derives the newly assigned event sequence; historical previous-source sequence in the audit payload is retained as original evidence rather than used for lookup. No media or canon-value mutation follows from timing annotation.

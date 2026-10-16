@@ -5,6 +5,7 @@ main library, changes user settings, or terminates user applications.
 """
 
 import json
+import argparse
 import os
 import shutil
 import socket
@@ -25,7 +26,7 @@ from studio.story import DemoStory
 ROOT = Path(__file__).resolve().parents[1]
 
 
-def fixture(directory):
+def fixture(directory, *, legacy_timing=False):
     store = Store(directory)
     spec = ProjectInput(
         idea="DEVELOPMENT CHECKPOINT FIXTURE: A keeper remembers opening a door before returning home.",
@@ -61,6 +62,20 @@ def fixture(directory):
                     "DRAFTED",
                 ),
             )
+        if legacy_timing:
+            db.execute(
+                "INSERT INTO canon VALUES(?,?,?,?,?,?,?,?)",
+                (
+                    str(uuid4()),
+                    pid,
+                    plan.characters[0].id,
+                    1,
+                    "knowledge",
+                    "The keeper recognizes the vanished ship.",
+                    "A legacy sample fact without recorded scene timing.",
+                    1,
+                ),
+            )
     return {
         "id": pid,
         "second_title": plan.episodes[1].title,
@@ -70,15 +85,23 @@ def fixture(directory):
 
 
 def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    modes = parser.add_mutually_exclusive_group()
+    modes.add_argument(
+        "--canon-timing", action="store_true", help="Verify explicit legacy fact timing repair"
+    )
+    modes.add_argument("--all", action="store_true", help="Run the full demo UI suite in an isolated library")
+    args = parser.parse_args()
     baseline = memory_status()
-    if not runtime_memory_known(baseline) or baseline["free_gb"] < 0.75:
+    minimum = 3 if args.all else 0.75
+    if not runtime_memory_known(baseline) or baseline["free_gb"] < minimum:
         raise RuntimeError(
-            "UI_TEST_RESOURCE_BUSY: Need 0.75 GiB free RAM for this isolated browser check; native model guards remain unchanged."
+            f"UI_TEST_RESOURCE_BUSY: Need {minimum} GiB free RAM for this isolated browser check; native model guards remain unchanged."
         )
     identity = uuid4().hex
     directory = ROOT / "data/checkpoint-browser" / identity
     directory.mkdir(parents=True)
-    sample = fixture(directory / "library")
+    sample = fixture(directory / "library", legacy_timing=args.canon_timing)
     sample_path = directory / "fixture.json"
     atomic_json(sample_path, sample)
     with socket.socket() as sock:
@@ -92,14 +115,19 @@ def main():
         "PYTHONNOUSERSITE": "1",
         "PYTHONDONTWRITEBYTECODE": "1",
     }
+    if args.all:
+        # Each case creates its own sample; a shared fixture would mix modes.
+        env.pop("STUDIO_CHECKPOINT_FIXTURE", None)
     previous = ROOT / "ops/evidence/browser-tests.json"
     report = {
         "scope": "Isolated explicit demo UI fixture, no model inference",
         "url": url,
         "fixture": str(sample_path),
         "baseline_memory": baseline,
+        "minimum_free_gib": minimum,
         "samples": [],
         "status": "STARTED",
+        "suite": "all" if args.all else "canon-timing" if args.canon_timing else "story-checkpoint",
     }
     if previous.exists():
         archive = ROOT / f"ops/evidence/browser-tests-before-checkpoint-{identity}.json"
@@ -107,6 +135,8 @@ def main():
             stream.write(previous.read_bytes())
         report["previous_browser_report"] = {"path": str(archive), "sha256": digest(archive)}
     flags = subprocess.CREATE_NO_WINDOW if os.name == "nt" else 0
+    ceiling = 600 if args.all else 160
+    report["wall_seconds_limit"] = ceiling
     started = time.monotonic()
     try:
         with (
@@ -151,7 +181,15 @@ def main():
                     node,
                     str(ROOT / "client/node_modules/@playwright/test/cli.js"),
                     "test",
-                    "e2e/story-checkpoint.spec.ts",
+                    *(
+                        []
+                        if args.all
+                        else [
+                            "e2e/canon-timing.spec.ts"
+                            if args.canon_timing
+                            else "e2e/story-checkpoint.spec.ts"
+                        ]
+                    ),
                 ],
                 cwd=ROOT / "client",
                 env=env,
@@ -167,8 +205,8 @@ def main():
                     raise RuntimeError(
                         "UI_TEST_RESOURCE_BUSY: Isolated verification stopped below 0.3 GiB or lost RAM counters"
                     )
-                if time.monotonic() - started > 160:
-                    raise RuntimeError("UI test exceeded its bounded 160 seconds")
+                if time.monotonic() - started > ceiling:
+                    raise RuntimeError(f"UI test exceeded its bounded {ceiling} seconds")
                 time.sleep(0.5)
             if browser.returncode:
                 raise RuntimeError(

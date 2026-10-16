@@ -1,0 +1,6 @@
+{
+  "source": "ops/HANDOFF.md",
+  "archive": "ops/archive/HANDOFF-2026-10-16-before-canon-timing-refresh.md",
+  "sha256": "4daba7b6f7e8d21cba4a43f79f6619519571aa4f2271dc8a546186690749ef4c",
+  "reason": "Preserve earlier handoff before current concise status refresh"
+}

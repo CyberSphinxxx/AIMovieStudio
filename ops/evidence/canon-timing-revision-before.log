@@ -1,0 +1,339 @@
+FFFFFFFFFFFFFFFF                                                         [100%]
+================================== FAILURES ===================================
+____ test_timing_assignment_repairs_exact_flashback_without_rewriting_fact ____
+
+legacy_fact = (<studio.storage.Store object at 0x000001BD90B7C450>, '7ed3f82e-e52c-4a36-9d2b-290ad56a6c78', '9fb0a5b3-d146-4a35-962e-4bf3e954f582', <starlette.testclient.TestClient object at 0x000001BD90BD8190>)
+tmp_path = WindowsPath('C:/Users/USER-PC/AppData/Local/Temp/pytest-of-USER-PC/pytest-191/test_timing_assignment_repairs0')
+
+    def test_timing_assignment_repairs_exact_flashback_without_rewriting_fact(legacy_fact, tmp_path):
+        store, pid, identity, client = legacy_fact
+        before, original = store.get(pid), raw(store)
+        script = EpisodeScript.model_validate(before["episodes"][1]["script"])
+        plan = SeasonPlan.model_validate(before["plan"])
+        assert any("no verified shot timing" in e for e in continuity_errors(script, before["canon"], plan, episode_lengths={1: 3}))
+        result = annotate(client, pid, identity)
+>       assert result.status_code == 200, result.text
+E       AssertionError: {"detail":"Method Not Allowed"}
+E       assert 405 == 200
+E        +  where 405 = <Response [405 Method Not Allowed]>.status_code
+
+tests\test_canon_timing_revision.py:47: AssertionError
+___ test_explicit_end_and_newer_annotation_override_without_erasing_history ___
+
+legacy_fact = (<studio.storage.Store object at 0x000001BD90BCB690>, 'ef6149f0-5f8e-495f-ad67-4a37e2e516b2', '7e2a3448-7872-423d-b30d-2f732778eaff', <starlette.testclient.TestClient object at 0x000001BD90C9A290>)
+
+    def test_explicit_end_and_newer_annotation_override_without_erasing_history(legacy_fact):
+        store, pid, identity, client = legacy_fact
+        original = raw(store)
+        result = annotate(client, pid, identity, after_shot=None)
+>       assert result.status_code == 200, result.text
+E       AssertionError: {"detail":"Method Not Allowed"}
+E       assert 405 == 200
+E        +  where 405 = <Response [405 Method Not Allowed]>.status_code
+
+tests\test_canon_timing_revision.py:73: AssertionError
+_________________ test_invalid_annotation_is_atomic[fields0] __________________
+
+legacy_fact = (<studio.storage.Store object at 0x000001BD90BEB710>, 'aacd11d1-ad59-492c-a6e6-620e974a67b9', 'a237fac4-8b84-4248-aed0-8b36c4e26916', <starlette.testclient.TestClient object at 0x000001BD90CF9710>)
+fields = {'revision': 99}
+
+    @pytest.mark.parametrize("fields", [{"revision": 99}, {"after_shot": 4}, {"after_shot": -1}, {"after_shot": True}, {"after_shot": "1"}, {"after_shot": 1.5}, {"reason": "        "}])
+    def test_invalid_annotation_is_atomic(legacy_fact, fields):
+        store, pid, identity, client = legacy_fact
+        before = store.get(pid)
+        result = annotate(client, pid, identity, **fields)
+>       assert result.status_code in {409, 422}, result.text
+E       AssertionError: {"detail":"Method Not Allowed"}
+E       assert 405 in {409, 422}
+E        +  where 405 = <Response [405 Method Not Allowed]>.status_code
+
+tests\test_canon_timing_revision.py:88: AssertionError
+_________________ test_invalid_annotation_is_atomic[fields1] __________________
+
+legacy_fact = (<studio.storage.Store object at 0x000001BD90BD8A50>, '845534fb-75ea-4e66-aa6f-c2c92873e600', 'bd0346c5-145b-4499-bdfb-11f978dcf1a9', <starlette.testclient.TestClient object at 0x000001BD90D5D9D0>)
+fields = {'after_shot': 4}
+
+    @pytest.mark.parametrize("fields", [{"revision": 99}, {"after_shot": 4}, {"after_shot": -1}, {"after_shot": True}, {"after_shot": "1"}, {"after_shot": 1.5}, {"reason": "        "}])
+    def test_invalid_annotation_is_atomic(legacy_fact, fields):
+        store, pid, identity, client = legacy_fact
+        before = store.get(pid)
+        result = annotate(client, pid, identity, **fields)
+>       assert result.status_code in {409, 422}, result.text
+E       AssertionError: {"detail":"Method Not Allowed"}
+E       assert 405 in {409, 422}
+E        +  where 405 = <Response [405 Method Not Allowed]>.status_code
+
+tests\test_canon_timing_revision.py:88: AssertionError
+_________________ test_invalid_annotation_is_atomic[fields2] __________________
+
+legacy_fact = (<studio.storage.Store object at 0x000001BD90D4FE50>, '4d8a02d0-d7e2-4bab-9a95-9260bf615e65', '6dff5d9c-8d0b-467c-afb8-91f70471586f', <starlette.testclient.TestClient object at 0x000001BD90DC75D0>)
+fields = {'after_shot': -1}
+
+    @pytest.mark.parametrize("fields", [{"revision": 99}, {"after_shot": 4}, {"after_shot": -1}, {"after_shot": True}, {"after_shot": "1"}, {"after_shot": 1.5}, {"reason": "        "}])
+    def test_invalid_annotation_is_atomic(legacy_fact, fields):
+        store, pid, identity, client = legacy_fact
+        before = store.get(pid)
+        result = annotate(client, pid, identity, **fields)
+>       assert result.status_code in {409, 422}, result.text
+E       AssertionError: {"detail":"Method Not Allowed"}
+E       assert 405 in {409, 422}
+E        +  where 405 = <Response [405 Method Not Allowed]>.status_code
+
+tests\test_canon_timing_revision.py:88: AssertionError
+_________________ test_invalid_annotation_is_atomic[fields3] __________________
+
+legacy_fact = (<studio.storage.Store object at 0x000001BD90DD7250>, '37672fc5-3ba1-44fc-8077-a346ac3afdec', '178f1b44-f42e-4491-93cc-ca514f950f17', <starlette.testclient.TestClient object at 0x000001BD90DED350>)
+fields = {'after_shot': True}
+
+    @pytest.mark.parametrize("fields", [{"revision": 99}, {"after_shot": 4}, {"after_shot": -1}, {"after_shot": True}, {"after_shot": "1"}, {"after_shot": 1.5}, {"reason": "        "}])
+    def test_invalid_annotation_is_atomic(legacy_fact, fields):
+        store, pid, identity, client = legacy_fact
+        before = store.get(pid)
+        result = annotate(client, pid, identity, **fields)
+>       assert result.status_code in {409, 422}, result.text
+E       AssertionError: {"detail":"Method Not Allowed"}
+E       assert 405 in {409, 422}
+E        +  where 405 = <Response [405 Method Not Allowed]>.status_code
+
+tests\test_canon_timing_revision.py:88: AssertionError
+_________________ test_invalid_annotation_is_atomic[fields4] __________________
+
+legacy_fact = (<studio.storage.Store object at 0x000001BD90D80C10>, 'cf5aa7fc-da25-43dd-b781-1b248a0c3f8c', '34546905-428c-43bb-8737-0692a00f3581', <starlette.testclient.TestClient object at 0x000001BD90E9AC50>)
+fields = {'after_shot': '1'}
+
+    @pytest.mark.parametrize("fields", [{"revision": 99}, {"after_shot": 4}, {"after_shot": -1}, {"after_shot": True}, {"after_shot": "1"}, {"after_shot": 1.5}, {"reason": "        "}])
+    def test_invalid_annotation_is_atomic(legacy_fact, fields):
+        store, pid, identity, client = legacy_fact
+        before = store.get(pid)
+        result = annotate(client, pid, identity, **fields)
+>       assert result.status_code in {409, 422}, result.text
+E       AssertionError: {"detail":"Method Not Allowed"}
+E       assert 405 in {409, 422}
+E        +  where 405 = <Response [405 Method Not Allowed]>.status_code
+
+tests\test_canon_timing_revision.py:88: AssertionError
+_________________ test_invalid_annotation_is_atomic[fields5] __________________
+
+legacy_fact = (<studio.storage.Store object at 0x000001BD90E921D0>, '76bd13f7-bbe2-4aca-905a-b4f0d1f7b7e7', 'bc0f9a45-7c7f-4fac-8cb6-73e62435e072', <starlette.testclient.TestClient object at 0x000001BD90E26090>)
+fields = {'after_shot': 1.5}
+
+    @pytest.mark.parametrize("fields", [{"revision": 99}, {"after_shot": 4}, {"after_shot": -1}, {"after_shot": True}, {"after_shot": "1"}, {"after_shot": 1.5}, {"reason": "        "}])
+    def test_invalid_annotation_is_atomic(legacy_fact, fields):
+        store, pid, identity, client = legacy_fact
+        before = store.get(pid)
+        result = annotate(client, pid, identity, **fields)
+>       assert result.status_code in {409, 422}, result.text
+E       AssertionError: {"detail":"Method Not Allowed"}
+E       assert 405 in {409, 422}
+E        +  where 405 = <Response [405 Method Not Allowed]>.status_code
+
+tests\test_canon_timing_revision.py:88: AssertionError
+_________________ test_invalid_annotation_is_atomic[fields6] __________________
+
+legacy_fact = (<studio.storage.Store object at 0x000001BD90DFD310>, '519c6a82-a1d5-4896-bcf0-dc0d62dc21bc', 'cd12d870-fe12-4438-9807-9ce2e74a7d81', <starlette.testclient.TestClient object at 0x000001BD90D920D0>)
+fields = {'reason': '        '}
+
+    @pytest.mark.parametrize("fields", [{"revision": 99}, {"after_shot": 4}, {"after_shot": -1}, {"after_shot": True}, {"after_shot": "1"}, {"after_shot": 1.5}, {"reason": "        "}])
+    def test_invalid_annotation_is_atomic(legacy_fact, fields):
+        store, pid, identity, client = legacy_fact
+        before = store.get(pid)
+        result = annotate(client, pid, identity, **fields)
+>       assert result.status_code in {409, 422}, result.text
+E       AssertionError: {"detail":"Method Not Allowed"}
+E       assert 405 in {409, 422}
+E        +  where 405 = <Response [405 Method Not Allowed]>.status_code
+
+tests\test_canon_timing_revision.py:88: AssertionError
+_____________ test_missing_position_is_not_implicitly_episode_end _____________
+
+legacy_fact = (<studio.storage.Store object at 0x000001BD90DE28D0>, 'ac0929a4-bedd-4a97-981b-5ffcd6ae3450', 'da3fb2cb-182f-445b-89b5-8db0bfba5a7e', <starlette.testclient.TestClient object at 0x000001BD90D4FC50>)
+
+    def test_missing_position_is_not_implicitly_episode_end(legacy_fact):
+        store, pid, identity, client = legacy_fact
+        result = client.post(f"/api/projects/{pid}/canon/{identity}/timing", json={"revision": 1, "reason": "An explicit timing correction."})
+>       assert result.status_code == 422
+E       assert 405 == 422
+E        +  where 405 = <Response [405 Method Not Allowed]>.status_code
+
+tests\test_canon_timing_revision.py:95: AssertionError
+_________ test_retry_and_foreign_fact_cannot_append_another_revision __________
+
+legacy_fact = (<studio.storage.Store object at 0x000001BD90D5D6D0>, '1045c53b-61f3-467b-9973-49324ca7552d', '2babd5dd-8caf-44ea-8c70-7ec70f3b7e2a', <starlette.testclient.TestClient object at 0x000001BD90CEC0D0>)
+
+    def test_retry_and_foreign_fact_cannot_append_another_revision(legacy_fact):
+        store, pid, identity, client = legacy_fact
+>       assert annotate(client, pid, identity).status_code == 200
+E       AssertionError: assert 405 == 200
+E        +  where 405 = <Response [405 Method Not Allowed]>.status_code
+E        +    where <Response [405 Method Not Allowed]> = annotate(<starlette.testclient.TestClient object at 0x000001BD90CEC0D0>, '1045c53b-61f3-467b-9973-49324ca7552d', '2babd5dd-8caf-44ea-8c70-7ec70f3b7e2a')
+
+tests\test_canon_timing_revision.py:101: AssertionError
+_______ test_unsafe_sources_and_inflight_work_block_annotation[outcome] _______
+
+legacy_fact = (<studio.storage.Store object at 0x000001BD90DECD50>, '5c49204b-82f4-420a-a955-79b55a86238d', 'f7d1b4fc-fb62-4179-9ae1-489a25f3be2d', <starlette.testclient.TestClient object at 0x000001BD90C795D0>)
+fault = 'outcome'
+
+    @pytest.mark.parametrize("fault", ["outcome", "unreviewed", "missing_script", "active_job", "running_step"])
+    def test_unsafe_sources_and_inflight_work_block_annotation(legacy_fact, fault):
+        store, pid, identity, client = legacy_fact
+        with store.connect() as db:
+            if fault == "outcome":
+                db.execute("UPDATE canon SET field='outcome',entity_id=? WHERE id=?", (pid, identity))
+            elif fault == "unreviewed":
+                db.execute("UPDATE episodes SET status='REVIEW_REQUIRED' WHERE project_id=? AND number=1", (pid,))
+            elif fault == "missing_script":
+                db.execute("UPDATE episodes SET script=NULL WHERE project_id=? AND number=1", (pid,))
+            else:
+                job = str(uuid4())
+                db.execute("INSERT INTO jobs(id,project_id,episode,state,created) VALUES(?,?,?,?,0)", (job, pid, 1, "QUEUED" if fault == "active_job" else "FAILED"))
+                if fault == "running_step":
+                    store.add_step(db, job, 0, "SCRIPT", {"episode": 1})
+                    db.execute("UPDATE steps SET state='RUNNING' WHERE job_id=?", (job,))
+        before = store.get(pid)
+        result = annotate(client, pid, identity)
+>       assert result.status_code == 409, result.text
+E       AssertionError: {"detail":"Method Not Allowed"}
+E       assert 405 == 409
+E        +  where 405 = <Response [405 Method Not Allowed]>.status_code
+
+tests\test_canon_timing_revision.py:130: AssertionError
+_____ test_unsafe_sources_and_inflight_work_block_annotation[unreviewed] ______
+
+legacy_fact = (<studio.storage.Store object at 0x000001BD90CCA090>, '46637f10-9ebd-44f9-a68d-227b74b6fe37', '339dbfc7-2637-4256-9637-fe22a8406bb9', <starlette.testclient.TestClient object at 0x000001BD90BDAB10>)
+fault = 'unreviewed'
+
+    @pytest.mark.parametrize("fault", ["outcome", "unreviewed", "missing_script", "active_job", "running_step"])
+    def test_unsafe_sources_and_inflight_work_block_annotation(legacy_fact, fault):
+        store, pid, identity, client = legacy_fact
+        with store.connect() as db:
+            if fault == "outcome":
+                db.execute("UPDATE canon SET field='outcome',entity_id=? WHERE id=?", (pid, identity))
+            elif fault == "unreviewed":
+                db.execute("UPDATE episodes SET status='REVIEW_REQUIRED' WHERE project_id=? AND number=1", (pid,))
+            elif fault == "missing_script":
+                db.execute("UPDATE episodes SET script=NULL WHERE project_id=? AND number=1", (pid,))
+            else:
+                job = str(uuid4())
+                db.execute("INSERT INTO jobs(id,project_id,episode,state,created) VALUES(?,?,?,?,0)", (job, pid, 1, "QUEUED" if fault == "active_job" else "FAILED"))
+                if fault == "running_step":
+                    store.add_step(db, job, 0, "SCRIPT", {"episode": 1})
+                    db.execute("UPDATE steps SET state='RUNNING' WHERE job_id=?", (job,))
+        before = store.get(pid)
+        result = annotate(client, pid, identity)
+>       assert result.status_code == 409, result.text
+E       AssertionError: {"detail":"Method Not Allowed"}
+E       assert 405 == 409
+E        +  where 405 = <Response [405 Method Not Allowed]>.status_code
+
+tests\test_canon_timing_revision.py:130: AssertionError
+___ test_unsafe_sources_and_inflight_work_block_annotation[missing_script] ____
+
+legacy_fact = (<studio.storage.Store object at 0x000001BD90BE8350>, 'c02e258b-60e2-4f98-86c1-fdf7d2d3af33', '7d6777df-1ced-46c3-b9a6-ca8d89f90199', <starlette.testclient.TestClient object at 0x000001BD8F376990>)
+fault = 'missing_script'
+
+    @pytest.mark.parametrize("fault", ["outcome", "unreviewed", "missing_script", "active_job", "running_step"])
+    def test_unsafe_sources_and_inflight_work_block_annotation(legacy_fact, fault):
+        store, pid, identity, client = legacy_fact
+        with store.connect() as db:
+            if fault == "outcome":
+                db.execute("UPDATE canon SET field='outcome',entity_id=? WHERE id=?", (pid, identity))
+            elif fault == "unreviewed":
+                db.execute("UPDATE episodes SET status='REVIEW_REQUIRED' WHERE project_id=? AND number=1", (pid,))
+            elif fault == "missing_script":
+                db.execute("UPDATE episodes SET script=NULL WHERE project_id=? AND number=1", (pid,))
+            else:
+                job = str(uuid4())
+                db.execute("INSERT INTO jobs(id,project_id,episode,state,created) VALUES(?,?,?,?,0)", (job, pid, 1, "QUEUED" if fault == "active_job" else "FAILED"))
+                if fault == "running_step":
+                    store.add_step(db, job, 0, "SCRIPT", {"episode": 1})
+                    db.execute("UPDATE steps SET state='RUNNING' WHERE job_id=?", (job,))
+        before = store.get(pid)
+        result = annotate(client, pid, identity)
+>       assert result.status_code == 409, result.text
+E       AssertionError: {"detail":"Method Not Allowed"}
+E       assert 405 == 409
+E        +  where 405 = <Response [405 Method Not Allowed]>.status_code
+
+tests\test_canon_timing_revision.py:130: AssertionError
+_____ test_unsafe_sources_and_inflight_work_block_annotation[active_job] ______
+
+legacy_fact = (<studio.storage.Store object at 0x000001BD90C9AE50>, 'ddfc9530-8ca2-4e61-b2c8-77836aa8dcf4', '67d2f421-4ce5-42ab-b4ca-85703b6a36e8', <starlette.testclient.TestClient object at 0x000001BD90F33310>)
+fault = 'active_job'
+
+    @pytest.mark.parametrize("fault", ["outcome", "unreviewed", "missing_script", "active_job", "running_step"])
+    def test_unsafe_sources_and_inflight_work_block_annotation(legacy_fact, fault):
+        store, pid, identity, client = legacy_fact
+        with store.connect() as db:
+            if fault == "outcome":
+                db.execute("UPDATE canon SET field='outcome',entity_id=? WHERE id=?", (pid, identity))
+            elif fault == "unreviewed":
+                db.execute("UPDATE episodes SET status='REVIEW_REQUIRED' WHERE project_id=? AND number=1", (pid,))
+            elif fault == "missing_script":
+                db.execute("UPDATE episodes SET script=NULL WHERE project_id=? AND number=1", (pid,))
+            else:
+                job = str(uuid4())
+                db.execute("INSERT INTO jobs(id,project_id,episode,state,created) VALUES(?,?,?,?,0)", (job, pid, 1, "QUEUED" if fault == "active_job" else "FAILED"))
+                if fault == "running_step":
+                    store.add_step(db, job, 0, "SCRIPT", {"episode": 1})
+                    db.execute("UPDATE steps SET state='RUNNING' WHERE job_id=?", (job,))
+        before = store.get(pid)
+        result = annotate(client, pid, identity)
+>       assert result.status_code == 409, result.text
+E       AssertionError: {"detail":"Method Not Allowed"}
+E       assert 405 == 409
+E        +  where 405 = <Response [405 Method Not Allowed]>.status_code
+
+tests\test_canon_timing_revision.py:130: AssertionError
+____ test_unsafe_sources_and_inflight_work_block_annotation[running_step] _____
+
+legacy_fact = (<studio.storage.Store object at 0x000001BD90B66B10>, 'd3f22550-5cee-4cb0-b4f5-15b0e7b0ddcd', 'd7727519-1b5f-409f-9cbe-f92d65351065', <starlette.testclient.TestClient object at 0x000001BD90FA5350>)
+fault = 'running_step'
+
+    @pytest.mark.parametrize("fault", ["outcome", "unreviewed", "missing_script", "active_job", "running_step"])
+    def test_unsafe_sources_and_inflight_work_block_annotation(legacy_fact, fault):
+        store, pid, identity, client = legacy_fact
+        with store.connect() as db:
+            if fault == "outcome":
+                db.execute("UPDATE canon SET field='outcome',entity_id=? WHERE id=?", (pid, identity))
+            elif fault == "unreviewed":
+                db.execute("UPDATE episodes SET status='REVIEW_REQUIRED' WHERE project_id=? AND number=1", (pid,))
+            elif fault == "missing_script":
+                db.execute("UPDATE episodes SET script=NULL WHERE project_id=? AND number=1", (pid,))
+            else:
+                job = str(uuid4())
+                db.execute("INSERT INTO jobs(id,project_id,episode,state,created) VALUES(?,?,?,?,0)", (job, pid, 1, "QUEUED" if fault == "active_job" else "FAILED"))
+                if fault == "running_step":
+                    store.add_step(db, job, 0, "SCRIPT", {"episode": 1})
+                    db.execute("UPDATE steps SET state='RUNNING' WHERE job_id=?", (job,))
+        before = store.get(pid)
+        result = annotate(client, pid, identity)
+>       assert result.status_code == 409, result.text
+E       AssertionError: {"detail":"Method Not Allowed"}
+E       assert 405 == 409
+E        +  where 405 = <Response [405 Method Not Allowed]>.status_code
+
+tests\test_canon_timing_revision.py:130: AssertionError
+============================== warnings summary ===============================
+tools\app-runtime\Lib\site-packages\fastapi\testclient.py:1
+  C:\L3mxr\Github Repositories\AIMovieStudio\tools\app-runtime\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ===========================
+FAILED tests/test_canon_timing_revision.py::test_timing_assignment_repairs_exact_flashback_without_rewriting_fact
+FAILED tests/test_canon_timing_revision.py::test_explicit_end_and_newer_annotation_override_without_erasing_history
+FAILED tests/test_canon_timing_revision.py::test_invalid_annotation_is_atomic[fields0]
+FAILED tests/test_canon_timing_revision.py::test_invalid_annotation_is_atomic[fields1]
+FAILED tests/test_canon_timing_revision.py::test_invalid_annotation_is_atomic[fields2]
+FAILED tests/test_canon_timing_revision.py::test_invalid_annotation_is_atomic[fields3]
+FAILED tests/test_canon_timing_revision.py::test_invalid_annotation_is_atomic[fields4]
+FAILED tests/test_canon_timing_revision.py::test_invalid_annotation_is_atomic[fields5]
+FAILED tests/test_canon_timing_revision.py::test_invalid_annotation_is_atomic[fields6]
+FAILED tests/test_canon_timing_revision.py::test_missing_position_is_not_implicitly_episode_end
+FAILED tests/test_canon_timing_revision.py::test_retry_and_foreign_fact_cannot_append_another_revision
+FAILED tests/test_canon_timing_revision.py::test_unsafe_sources_and_inflight_work_block_annotation[outcome]
+FAILED tests/test_canon_timing_revision.py::test_unsafe_sources_and_inflight_work_block_annotation[unreviewed]
+FAILED tests/test_canon_timing_revision.py::test_unsafe_sources_and_inflight_work_block_annotation[missing_script]
+FAILED tests/test_canon_timing_revision.py::test_unsafe_sources_and_inflight_work_block_annotation[active_job]
+FAILED tests/test_canon_timing_revision.py::test_unsafe_sources_and_inflight_work_block_annotation[running_step]
+16 failed, 1 warning in 2.64s

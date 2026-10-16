@@ -1,5 +1,9 @@
 # Active backlog — 2026-10-14
 
+Verified product backend568PASS508.70s/current timingmobile1PASS7.5s/static8Vitest/build. Final35timing/harness targetsPASS9.89s. Full19UI incomplete: RAM2.12->0.27GiB guarded stop52.015s,3casesPASS/oldexport5swaitfailure/nextinterrupted. Poll30s/fullstartup3GiB implemented; actualreadiness blocked1.63GiB. Native image unspent/no downloads; F2.04 remainsIN_PROGRESS. Current detailed handoff refreshed; next narrow produced-episode review/revision.
+
+Active legacy timing repair:31 focused tests PASS10.64s, API append-only/immutable facts, latest valid correction/conflict guard, backup/import relinking and original demo movie hashes verified. Optional human-readable Saved continuity editor implemented; mobile repaired1PASS7.9s/stale polling conflict correctly refused; frontend lint/type/build/8Vitest pass. Full backend running50253. Inventory --list replaced rollingJSON with19 listed/unexecuted; preserved inventory/logs, current isolated rerun18168 will restore actual report. Native4.35GiB blocks image/unspent; app remains unfinished.
+
 Verified draft story-time controls/API:83 related backend PASS90.05s;8frontend unit checks/lint/type/build PASS; final isolated mobile Edge1PASS4.9s/wrapper7.797s, controls/detail screenshots inspected/Axe/nooverflow. Sparse explicit null clears time, omitted fields preserved, strict earlier reviewed bounds/history/backups/IDs retained. Next: append-only legacy canon timing repair. Fresh4.35GiB RAM blocks image; still unspent.
 
 Verified stale continuation guard:46 related backend tests PASS52.56s, prior code full513 checkpoint d2ed4da. Later production now needs both previous job SUCCEEDED and episode COMPLETED under transaction; canon invalidation leaves old jobs/outputs untouched and returns actionable409. Next active draft story-time controls (6 red contracts), then legacy timing repair. Fresh4.2GiB RAM blocks native models; image unspent.
@@ -78,7 +82,7 @@ Do not interpret partial task evidence as full phase acceptance. See PROGRESS an
 | F0.01 | DONE_VERIFIED | ops/evidence/*baseline*, actual workstation commands |
 | F0.02 | IN_PROGRESS | docs/SOURCE_REGISTER.md; private-use assumption; distribution/weight review incomplete |
 | F0.03 | IN_PROGRESS | User disabled SAC; runtime discovery and real CUDA arithmetic PASS; installed image loads stopped at RAM guard, no generation fit proof |
-| F0.04 | DONE_VERIFIED | Architecture implemented + runnable tests; CPU Python 3.12 deviation recorded |
+| F0.04 | DONE_VERIFIED | Architecture implemented + runnable tests; private Python3.11 verified, earlier3.12 deviation preserved |
 | F1.01 | DONE_VERIFIED | API and frontend run; build/lint/typecheck pass |
 | F1.02 | DONE_VERIFIED | API persistence/idempotency/reopen tests, browser create |
 | F1.03 | IN_PROGRESS | Responsive screenshots + Axe passed; broader UI/screen-reader review open |
@@ -87,7 +91,7 @@ Do not interpret partial task evidence as full phase acceptance. See PROGRESS an
 | F2.01 | IN_PROGRESS | Native4B plan persisted then4shot request timed out180s/269.719total; new frozen-config two-shot requests implemented/fixture-tested; real quality still unproven |
 | F2.02 | IN_PROGRESS | Finite ending and episode outline persisted; real quality evaluation open |
 | F2.03 | IN_PROGRESS | New4B two-shot/other four-shot sections, legacy preservation, frozen settings, prewrites, recovery/backup and whole-script continuity verified; native quality unproven |
-| F2.04 | IN_PROGRESS | Declared ownership/knowledge/location/life before-state checks, export-only canon, prop reference lineage and episode-start flashbacks tested; precise world time/prose semantics open |
+| F2.04 | IN_PROGRESS | Declared state checks, export-only canon, exact prior-shot checkpoints/sparse draft-time edits/stale continuation guard verified; legacy timing annotation in final regression. World-clock/prose semantics/produced-story branches remain open |
 | F2.05 | IN_PROGRESS | 10-episode outline fixture; episode2 reference/canon reuse tested; real series not proven |
 | F2.06 | DONE_VERIFIED | Ten screenplay checkpoints, interrupted receipt recovery/reuse, no future canon; 3-episode browser flow |
 | F3.01 | DONE_VERIFIED | Demo references/keyframes + sidecar receipts/hash/lineage |

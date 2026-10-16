@@ -1,0 +1,35 @@
+F...                                                                     [100%]
+================================== FAILURES ===================================
+_ test_browser_scope_requires_headroom_before_creating_a_fixture[args0-2.12-3] _
+
+tmp_path = WindowsPath('C:/Users/USER-PC/AppData/Local/Temp/pytest-of-USER-PC/pytest-196/test_browser_scope_requires_he0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001B814385590>
+args = ['--all'], free = 2.12, minimum = '3'
+
+    @pytest.mark.parametrize("args,free,minimum", [(["--all"], 2.12, "3"), ([], 0.7, "0.75")])
+    def test_browser_scope_requires_headroom_before_creating_a_fixture(tmp_path, monkeypatch, args, free, minimum):
+        monkeypatch.setattr("sys.argv", ["browser-smoke", *args])
+        monkeypatch.setattr(smoke, "ROOT", tmp_path)
+        monkeypatch.setattr(smoke, "memory_status", lambda: {"available": True, "total_gb": 15.19, "free_gb": free, "load_percent": 90})
+        monkeypatch.setattr(smoke, "fixture", lambda *a, **k: pytest.fail("Allocated fixture below its startup guard"))
+        with pytest.raises(RuntimeError, match=f"Need {minimum} GiB"):
+>           smoke.main()
+
+tests\test_browser_resource_guard.py:15: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\checkpoint_browser_smoke.py:103: in main
+    sample = fixture(directory / "library", legacy_timing=args.canon_timing)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+a = (WindowsPath('C:/Users/USER-PC/AppData/Local/Temp/pytest-of-USER-PC/pytest-196/test_browser_scope_requires_he0/data/checkpoint-browser/53eabf812d634052a4336187e5c0eeba/library'),)
+k = {'legacy_timing': False}
+
+>   monkeypatch.setattr(smoke, "fixture", lambda *a, **k: pytest.fail("Allocated fixture below its startup guard"))
+                                                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: Allocated fixture below its startup guard
+
+tests\test_browser_resource_guard.py:13: Failed
+=========================== short test summary info ===========================
+FAILED tests/test_browser_resource_guard.py::test_browser_scope_requires_headroom_before_creating_a_fixture[args0-2.12-3]
+1 failed, 3 passed in 0.45s

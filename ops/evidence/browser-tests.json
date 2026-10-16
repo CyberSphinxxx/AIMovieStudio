@@ -60,13 +60,13 @@
   },
   "suites": [
     {
-      "title": "story-checkpoint.spec.ts",
-      "file": "story-checkpoint.spec.ts",
+      "title": "canon-timing.spec.ts",
+      "file": "canon-timing.spec.ts",
       "column": 0,
       "line": 0,
       "specs": [
         {
-          "title": "saved flashback checkpoints remain clear while editing a mobile draft",
+          "title": "legacy fact timing can be corrected without replacing saved scenes",
           "ok": true,
           "tags": [],
           "tests": [
@@ -81,12 +81,12 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 2909,
+                  "duration": 4891,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-16T11:23:07.617Z",
+                  "startTime": "2026-10-16T11:32:52.913Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -94,8 +94,8 @@
               "status": "expected"
             }
           ],
-          "id": "c57dc83481ca05ab56d1-58e4323c87e71c1edfb0",
-          "file": "story-checkpoint.spec.ts",
+          "id": "bab07f478d4512967dba-5e3a0e0860f4551b55ea",
+          "file": "canon-timing.spec.ts",
           "line": 7,
           "column": 1
         }
@@ -104,8 +104,8 @@
   ],
   "errors": [],
   "stats": {
-    "startTime": "2026-10-16T11:23:06.258Z",
-    "duration": 4857.553,
+    "startTime": "2026-10-16T11:32:51.133Z",
+    "duration": 7463.73,
     "expected": 1,
     "skipped": 0,
     "unexpected": 0,

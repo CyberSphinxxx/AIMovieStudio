@@ -1,5 +1,9 @@
 # Blockers —2026-10-14 (latest observations first)
 
+Current blocker: full19UI resource-stop0.27GiB after52.015s; final35targets/full568productbackend/focusedmobile passed, but corrected30sexportwait/full3GiB-startup suite cannot rerun at1.63GiB. No native attempt;5/7GiB modelgates,330.281sCPU,unspentapprovedimage/videoDEFERRED unchanged. Product unfinished: produced-story review/branches, true native quality/longform/Windowscleanaccount/licensing/audits still open. No new approval pending.
+
+Legacy canon timing repair is implemented/31 focused tests and repaired mobile flow pass; full backend currently pending50253, final browser report refresh18168. Produced-story revision/review resolution, world-clock/prose semantics, native generation/quality and release/license gates remain open. Native4.35GiB startup below5/7GiB, image attempt unspent. No new approval pending.
+
 Draft story-time repair is implemented and verified; older canon facts without linked timing still cannot authorize exact flashbacks. Next add explicit versioned timing assignment while keeping original facts/exports immutable. Latest native preflight4.35GiB RAM/4904MiB freeVRAM/62C fails5GiB; no model attempt/download/reservation.
 
 Stale continuation admission fixed/46 related tests PASS52.56s. This deliberately refuses later production after earlier canon invalidation; produced-story revision/review resolution is still unfinished, old exports remain retained. Native startup fails at4.2GiB RAM (5/7GiB required); no attempt or download spent.
