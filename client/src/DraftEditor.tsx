@@ -1,6 +1,7 @@
 import { useRef, useState } from "react";
 import { api } from "./types";
 import type { Episode, Project, Shot } from "./types";
+import { StoryMoment } from "./StoryMoment";
 
 export function DraftEditor({ project, episode, onSaved }: {
   project: Project;
@@ -82,6 +83,7 @@ export function DraftEditor({ project, episode, onSaved }: {
             {draft.map((shot) => (
               <div className="draft-scene" key={shot.id}>
                 <h4>Shot {shot.number} · {shot.duration.toFixed(1)} seconds</h4>
+                <StoryMoment shot={shot} />
                 <label htmlFor={`action-${shot.id}`}>Scene action {shot.number}</label>
                 <textarea id={`action-${shot.id}`} rows={3} required minLength={5} maxLength={1500} value={shot.action} onChange={(e) => update(shot.id, "action", e.target.value)} />
                 <div className="draft-fields">

@@ -11,6 +11,7 @@ from studio.inference_lock import InferenceBusy
 from studio.domain import EpisodeScript, SeasonPlan, continuity_errors, stable, validate_script
 from studio.script_batches import merge_sections, validate_section
 from studio.continuity import draft_events
+from studio.canon_timing import saved_episode_lengths
 from studio.storage import Store, atomic_json, digest
 from studio.story import DemoStory, OllamaStory
 from studio.providers import WanGPConfig, WanGPProvider
@@ -415,7 +416,7 @@ class Worker:
             "license": "Original app-owned development fixture"
             if spec["backend"] == "demo"
             else "WanGP Community License 2.0; individual model rights reviewed by user. Credit WanGP where required.",
-            "prompt_template_version": 2,
+            "prompt_template_version": 3,
         }
         if stage == "PLAN":
             plan = story_provider().plan(project)
@@ -466,7 +467,9 @@ class Worker:
             events = project["canon"]
             if stage.startswith("DRAFT"):
                 events = draft_events(project, number)
-            conflicts = continuity_errors(script, events, plan)
+            conflicts = continuity_errors(
+                script, events, plan, episode_lengths=saved_episode_lengths(project)
+            )
             if conflicts:
                 raise RuntimeError("CANON_CONFLICT: " + "; ".join(conflicts))
             return {"script": (section if stage.endswith("_BATCH") else script).model_dump(), "artifacts": []}

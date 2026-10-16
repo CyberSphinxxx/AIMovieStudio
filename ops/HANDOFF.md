@@ -1,5 +1,16 @@
 # AI Movie Studio handoff — 2026-10-16 (Asia/Manila)
 
+## Current verified checkpoint — 2026-10-16
+
+Full backend completed: 513 PASS/485.76s, one existing Starlette deprecation; evidence/story-checkpoint-full-backend.log. Mobile Edge 1 PASS/5.2s; screenshots inspected, Axe/overflow/prior-script preservation checked. Frontend lint/type/build/four Vitest tests pass. Optional flashback_after_shot and derived timing provenance are verified code, not native-quality proof. All earlier failure artifacts retained. No test/model process remains from these checks; original library untouched by isolated browser. Save local checkpoint, then follow PLAN_NEXT.md: stale continuation guard first, draft story-time edits second, legacy timing assignment third. Native image unspent/CPU330.281s remain under existing guards; no new approval pending. Older pending paragraphs below are historical.
+
+
+## Active uncommitted continuation after f86b068
+
+UPDATE: isolatedmobile flow now1EdgePASS5.2s/wrapper8.828s; PNGs both viewed/Axe/nooverflow/stableprior script. Own-origin403 fixed/15API security checks; second fixture failure nonexistent.skip-link corrected to accessible “Skip to workspace”, traces retained. CurrentfullbackendRUNNINGsession96686/logstory-checkpoint-full-backend.log (faulthandler90), codefrozenwhilecollecting, docs only changed since startup. Collect full result thencommit coherentcurrentcheckpoint. New docs04/data model record optionalflashback_after_shot/provenance contract. Prioractiveparagraph below is historical. Nexttask append-only missing legacy timing assignment; native models stillblocked/unspent/no new approvals. All frontendstatic/build/4Vitest passed, final27contracts+65earlierintegration scopes distinct.
+
+Optional earlier-episode flashback_after_shot +derived canon timing provenance +manual timed revisions/worker/schema/prompts/UI StoryMoment implemented. Read PROGRESS active section/PLAN_ACTIVE before editing.65story/batch/editor/integrationPASS107.55s, final27purecontracts/1isolatedfixtureAPI,4frontendVitest/lint/type/build. Strictcheckpoint intervals preserve originaltwoepisode demoexports/reopen/backup; unknownrelevant timingrefused. Firstbrowser failed403 ownOriginonrandomport; actual2red/6greenAPIrepro, fixedexactvalidatedloopbacksame-origin,15security/APIchecksPASS. Repairedisolatedmobile run session18992 currentlypending; collect/check logs/screenshots and finalizecheckpoint before next task. No native tests/downloads; continuationRAM0.88GiB blockedcandidate/4B, imageattemptstillunspent. Currentfrontend productionbundle built; mainserver notstarted, testservers/browser onlyownedisolatedfixtures. Currentcode uncommitted; do not claim complete/currentfullsuite. See PROGRESS for exactlogs/failures. Next independent follow-up: append-only timing repair for legacy unknown canon (current precisechecks failclosed but existing UI cannot assign missing legacy timing without new API).
+
 ## Current outcome
 
 The application remains unfinished. The explicitly labeled development demo works from idea to story, references, shots, audio and MP4. Real writing quality, image/video generation, sustained continuity and release gates remain unverified. Never count fixture media, installation, hashes, CUDA arithmetic or configuration selection as successful AI generation.

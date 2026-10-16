@@ -131,6 +131,7 @@ class Shot(StrictModel):
     required_props: list[PropUse] = Field(default_factory=list, max_length=8)
     required_knowledge: list[KnowledgeUse] = Field(default_factory=list, max_length=8)
     flashback_episode: int | None = Field(default=None, ge=1, le=24)
+    flashback_after_shot: int | None = Field(default=None, ge=0, le=120, strict=True)
     continuity_note: str = Field(default="", max_length=500)
 
     @field_validator("character_ids")
@@ -157,6 +158,7 @@ class CanonEvent(StrictModel):
     field: Literal["alive", "location", "prop_owner", "knowledge", "outcome"]
     value: str
     reason: str = Field(min_length=3)
+    after_shot: int | None = Field(default=None, ge=0, le=120, strict=True)
 
 
 def validate_script(
@@ -190,6 +192,8 @@ def validate_script(
         if shot.flashback_episode is not None:
             if shot.flashback_episode >= script.number or len(shot.continuity_note.strip()) < 8:
                 raise ValueError("Flashbacks need an earlier episode and explicit continuity explanation")
+        elif shot.flashback_after_shot is not None:
+            raise ValueError("An exact flashback checkpoint requires an earlier flashback episode")
     for change in script.proposed_changes:
         if change.after_shot > len(script.shots):
             raise ValueError("Canon change references a missing shot")
@@ -226,7 +230,13 @@ def validate_canon_value(plan: SeasonPlan, entity_id: str, field: str, value: st
             raise ValueError("Knowledge fact must contain 3–500 characters")
 
 
-def continuity_errors(script: EpisodeScript, events: list[dict], plan: SeasonPlan | None = None) -> list[str]:
+def continuity_errors(
+    script: EpisodeScript,
+    events: list[dict],
+    plan: SeasonPlan | None = None,
+    *,
+    episode_lengths: dict[int, int] | None = None,
+) -> list[str]:
     from studio.continuity import check_continuity
 
-    return check_continuity(script, events, plan)
+    return check_continuity(script, events, plan, episode_lengths=episode_lengths)

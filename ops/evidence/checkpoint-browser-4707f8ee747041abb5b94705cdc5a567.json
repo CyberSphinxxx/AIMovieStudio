@@ -1,0 +1,420 @@
+{
+  "scope": "Isolated explicit demo UI fixture, no model inference",
+  "url": "http://127.0.0.1:60300",
+  "fixture": "C:\\L3mxr\\Github Repositories\\AIMovieStudio\\data\\checkpoint-browser\\4707f8ee747041abb5b94705cdc5a567\\fixture.json",
+  "baseline_memory": {
+    "available": true,
+    "total_gb": 15.19,
+    "free_gb": 0.81,
+    "load_percent": 94
+  },
+  "samples": [
+    {
+      "seconds": 2.75,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 0.87,
+      "load_percent": 94
+    },
+    {
+      "seconds": 3.25,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 0.94,
+      "load_percent": 93
+    },
+    {
+      "seconds": 3.75,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 0.94,
+      "load_percent": 93
+    },
+    {
+      "seconds": 4.25,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 0.92,
+      "load_percent": 93
+    },
+    {
+      "seconds": 4.75,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 0.95,
+      "load_percent": 93
+    },
+    {
+      "seconds": 5.25,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 0.94,
+      "load_percent": 93
+    },
+    {
+      "seconds": 5.75,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 0.93,
+      "load_percent": 93
+    },
+    {
+      "seconds": 6.25,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 0.93,
+      "load_percent": 93
+    },
+    {
+      "seconds": 6.75,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 0.92,
+      "load_percent": 93
+    },
+    {
+      "seconds": 7.25,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 0.9,
+      "load_percent": 94
+    },
+    {
+      "seconds": 7.75,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 0.91,
+      "load_percent": 94
+    },
+    {
+      "seconds": 8.25,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 0.9,
+      "load_percent": 94
+    },
+    {
+      "seconds": 8.77,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 0.9,
+      "load_percent": 94
+    },
+    {
+      "seconds": 9.27,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 0.9,
+      "load_percent": 94
+    },
+    {
+      "seconds": 9.77,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 0.9,
+      "load_percent": 94
+    },
+    {
+      "seconds": 10.27,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 0.9,
+      "load_percent": 94
+    },
+    {
+      "seconds": 10.77,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 0.9,
+      "load_percent": 94
+    },
+    {
+      "seconds": 11.27,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 0.9,
+      "load_percent": 94
+    },
+    {
+      "seconds": 11.77,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 0.91,
+      "load_percent": 94
+    },
+    {
+      "seconds": 12.27,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 0.91,
+      "load_percent": 94
+    },
+    {
+      "seconds": 12.77,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 0.91,
+      "load_percent": 94
+    },
+    {
+      "seconds": 13.27,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 0.9,
+      "load_percent": 94
+    },
+    {
+      "seconds": 13.77,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 0.9,
+      "load_percent": 94
+    },
+    {
+      "seconds": 14.27,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 0.9,
+      "load_percent": 94
+    },
+    {
+      "seconds": 14.77,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 0.9,
+      "load_percent": 94
+    },
+    {
+      "seconds": 15.27,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 0.9,
+      "load_percent": 94
+    },
+    {
+      "seconds": 15.77,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 0.9,
+      "load_percent": 94
+    },
+    {
+      "seconds": 16.27,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 0.9,
+      "load_percent": 94
+    },
+    {
+      "seconds": 16.77,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 0.89,
+      "load_percent": 94
+    },
+    {
+      "seconds": 17.27,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 0.88,
+      "load_percent": 94
+    },
+    {
+      "seconds": 17.77,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 0.88,
+      "load_percent": 94
+    },
+    {
+      "seconds": 18.27,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 0.88,
+      "load_percent": 94
+    },
+    {
+      "seconds": 18.77,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 0.88,
+      "load_percent": 94
+    },
+    {
+      "seconds": 19.27,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 0.88,
+      "load_percent": 94
+    },
+    {
+      "seconds": 19.77,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 0.87,
+      "load_percent": 94
+    },
+    {
+      "seconds": 20.27,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 0.87,
+      "load_percent": 94
+    },
+    {
+      "seconds": 20.77,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 0.86,
+      "load_percent": 94
+    },
+    {
+      "seconds": 21.27,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 0.83,
+      "load_percent": 94
+    },
+    {
+      "seconds": 21.77,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 0.78,
+      "load_percent": 94
+    },
+    {
+      "seconds": 22.27,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 0.77,
+      "load_percent": 94
+    },
+    {
+      "seconds": 22.78,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 0.7,
+      "load_percent": 95
+    },
+    {
+      "seconds": 23.28,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 0.65,
+      "load_percent": 95
+    },
+    {
+      "seconds": 23.78,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 0.59,
+      "load_percent": 96
+    },
+    {
+      "seconds": 24.28,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 0.48,
+      "load_percent": 96
+    },
+    {
+      "seconds": 24.78,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 0.5,
+      "load_percent": 96
+    },
+    {
+      "seconds": 25.28,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 0.39,
+      "load_percent": 97
+    },
+    {
+      "seconds": 25.78,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 0.35,
+      "load_percent": 97
+    },
+    {
+      "seconds": 26.28,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 0.35,
+      "load_percent": 97
+    },
+    {
+      "seconds": 26.78,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 0.34,
+      "load_percent": 97
+    },
+    {
+      "seconds": 27.28,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 0.36,
+      "load_percent": 97
+    },
+    {
+      "seconds": 27.78,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 0.36,
+      "load_percent": 97
+    },
+    {
+      "seconds": 28.28,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 0.38,
+      "load_percent": 97
+    },
+    {
+      "seconds": 28.78,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 0.38,
+      "load_percent": 97
+    },
+    {
+      "seconds": 29.28,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 0.41,
+      "load_percent": 97
+    },
+    {
+      "seconds": 29.78,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 0.45,
+      "load_percent": 97
+    },
+    {
+      "seconds": 30.28,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 0.47,
+      "load_percent": 96
+    },
+    {
+      "seconds": 30.78,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 0.48,
+      "load_percent": 96
+    }
+  ],
+  "status": "FAILED",
+  "previous_browser_report": {
+    "path": "C:\\L3mxr\\Github Repositories\\AIMovieStudio\\ops\\evidence\\browser-tests-before-checkpoint-4707f8ee747041abb5b94705cdc5a567.json",
+    "sha256": "4cd58e575406b90bdc91ac74ce869c339c6b5eefd5bd2a2a87085c0926925adb"
+  },
+  "error": "Browser assertions failed; inspect isolated browser.log and Playwright report",
+  "elapsed_seconds": 31.281,
+  "logs_directory": "C:\\L3mxr\\Github Repositories\\AIMovieStudio\\data\\checkpoint-browser\\4707f8ee747041abb5b94705cdc5a567"
+}

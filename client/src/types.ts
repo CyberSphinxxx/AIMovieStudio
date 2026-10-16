@@ -39,6 +39,7 @@ export type Shot = {
   location_id: string;
   required_props?: { prop_id: string; character_id: string }[];
   flashback_episode?: number | null;
+  flashback_after_shot?: number | null;
   continuity_note?: string;
 };
 export type Episode = {
@@ -137,6 +138,9 @@ export type Project = {
     field: string;
     value: string;
     reason: string;
+    after_shot?: number | null;
+    timing_status?: "after_shot" | "episode_end" | "episode_only";
+    timing_source_seq?: number | null;
   }[];
 };
 export type Recent = Pick<Project, "id" | "title" | "spec" | "status"> & {

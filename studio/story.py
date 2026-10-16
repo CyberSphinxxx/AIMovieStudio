@@ -6,6 +6,7 @@ import threading
 from typing import Literal, Protocol, TypeVar, Union
 
 import httpx
+from studio.canon_timing import saved_episode_lengths
 from pydantic import BaseModel, Field, ValidationError, create_model, field_validator
 from studio.screenplay_text import validate_shot_headings
 from studio.inference_lock import serialized_inference, retain_current_inference
@@ -340,6 +341,26 @@ class OllamaStory:
                 ...,
             ),
             flashback_episode=(Literal.__getitem__((None, *range(1, number))), None),
+            flashback_after_shot=(
+                Literal.__getitem__(
+                    (
+                        None,
+                        *range(
+                            0,
+                            max(
+                                (
+                                    count
+                                    for episode, count in saved_episode_lengths(project).items()
+                                    if episode < number
+                                ),
+                                default=-1,
+                            )
+                            + 1,
+                        ),
+                    )
+                ),
+                None,
+            ),
             required_props=(list[prop_schema], Field(default_factory=list, max_length=8 if props else 0)),
             required_knowledge=(list[knowledge_schema], Field(default_factory=list, max_length=8)),
         )
@@ -408,7 +429,7 @@ class OllamaStory:
         prompt = (
             f"Write screenplay scenes for episode {number}, shots {start + 1} through {start + count} of {total}. Exactly {count} cinematic shots, each duration {duration} seconds. Include scene action and offscreen dialogue/narration (no lip-sync claim); screenplay must describe these scenes, not just a title. If numbering shots in the screenplay, use ONLY {list(range(start + 1, start + count + 1))}, once each, in that order. Stop at shot {start + count}; no earlier/later shot text. Continue after earlier sections without copying their actions. Follow the episode outline, reaching its outcome only in the final section. Preserve the idea's specific sacrifice and resolution; show them happening rather than stating they occurred. Use character/location IDs EXACTLY as supplied. Keep spoken lines concise and complete; empty narration is allowed. Fixed plan: {json.dumps(fixed_plan)}. Prior canon only: {json.dumps([e for e in project['canon'] if e['episode'] < number])}. Settings: {json.dumps(project['spec'])}. Earlier sections in this episode: {json.dumps(section_context)}"
             + draft_context
-            + f" In each shot, required_props lists prop_id/character_id for the specific actor using each prop; required_knowledge lists facts used by that character. When facts, ownership, life or location change, provide proposed_changes with global after_shot ({start} means before this section), exact before_value, value and causal reason. Knowledge before_value is unknown/known; its value is exact fact text. Changes from earlier sections already apply; do not repeat them. Never invent a change merely to bypass a contradiction. Flashbacks require an earlier flashback_episode and continuity_note; their state is the start of that earlier episode and cannot change present canon."
+            + f" In each shot, required_props lists prop_id/character_id for the specific actor using each prop; required_knowledge lists facts used by that character. When facts, ownership, life or location change, provide proposed_changes with global after_shot ({start} means before this section), exact before_value, value and causal reason. Knowledge before_value is unknown/known; its value is exact fact text. Changes from earlier sections already apply; do not repeat them. Never invent a change merely to bypass a contradiction. Flashbacks require an earlier flashback_episode and continuity_note. With flashback_after_shot null, state is the start of that earlier episode. Only when the outline needs a precise saved moment, set flashback_after_shot to a checkpoint 0..the earlier episode shot count: {json.dumps({episode: count for episode, count in saved_episode_lengths(project).items() if episode < number})}. Zero includes declared setup before shot1; N includes changes after shot N but not later changes. Use verified timing, never infer missing legacy timing. Flashbacks cannot change present canon."
         )
         if len(prompt) > 24000:
             raise RuntimeError(

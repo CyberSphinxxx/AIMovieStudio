@@ -24,6 +24,7 @@ import { DraftEditor } from "./DraftEditor";
 import { BackupRestore } from "./BackupRestore";
 import { ReferenceViews } from "./ReferenceViews";
 import { ShowInFolder } from "./ShowInFolder";
+import { StoryMoment } from "./StoryMoment";
 
 const EXAMPLE =
   "A lighthouse keeper receives a message from a ship that vanished thirty years ago. Tonight, the light begins to answer.";
@@ -926,6 +927,7 @@ function Studio({ id }: { id: string }) {
                           {clip ? "SAVED" : "PLANNED"}
                         </small>
                         <h3>{shot.camera}</h3>
+                        <StoryMoment shot={shot} />
                         <p>{shot.action}</p>
                         <blockquote>{shot.narration}</blockquote>
                         {movie && (

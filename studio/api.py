@@ -117,12 +117,21 @@ def create_app(root: Path | None = None, run_worker=True, *, resource_probe=None
                 403,
             )
         origin = request.headers.get("origin")
-        if origin and origin not in {
-            "http://127.0.0.1:8765",
-            "http://localhost:8765",
-            "http://127.0.0.1:5173",
-            "http://localhost:5173",
-        }:
+        same_local_origin = (
+            request.url.hostname in {"127.0.0.1", "localhost"}
+            and origin == f"{request.url.scheme}://{request.url.netloc}"
+        )
+        if (
+            origin
+            and not same_local_origin
+            and origin
+            not in {
+                "http://127.0.0.1:8765",
+                "http://localhost:8765",
+                "http://127.0.0.1:5173",
+                "http://localhost:5173",
+            }
+        ):
             return JSONResponse(
                 {
                     "code": "INVALID_ORIGIN",
@@ -449,10 +458,14 @@ def create_app(root: Path | None = None, run_worker=True, *, resource_probe=None
                             }
                         )
             cast = {c["id"]: c["name"] for c in project["plan"]["characters"]}
+            from studio.canon_timing import flashback_label
+
             script.screenplay = (
                 f"USER-EDITED SAVED DRAFT — Episode {number}. Scene timing and identities retained.\n\n"
                 + "\n\n".join(
-                    f"SCENE {s.number} — {s.camera}\n{s.action}\n"
+                    f"SCENE {s.number} — {s.camera}\n"
+                    + (f"{flashback_label(s)}\n" if s.flashback_episode is not None else "")
+                    + f"{s.action}\n"
                     + (
                         f"{cast.get(s.speaker_id, 'Unknown speaker')} (offscreen): {s.narration}"
                         if s.narration.strip()
@@ -464,7 +477,11 @@ def create_app(root: Path | None = None, run_worker=True, *, resource_probe=None
             script = EpisodeScript.model_validate(script.model_dump())
             plan = SeasonPlan.model_validate(project["plan"])
             validate_script(script, plan, project["spec"]["target_seconds"])
-            conflicts = continuity_errors(script, draft_events(project, number), plan)
+            from studio.canon_timing import saved_episode_lengths
+
+            conflicts = continuity_errors(
+                script, draft_events(project, number), plan, episode_lengths=saved_episode_lengths(project)
+            )
             if conflicts:
                 raise ValueError("CANON_CONFLICT: " + "; ".join(conflicts))
             revision = project["revision"] + 1
@@ -553,10 +570,19 @@ def create_app(root: Path | None = None, run_worker=True, *, resource_probe=None
             from uuid import uuid4
 
             event = value.event
+            if event.after_shot is not None:
+                saved = next(
+                    (episode for episode in project["episodes"] if episode["number"] == event.episode), None
+                )
+                if event.field == "outcome":
+                    raise ValueError("An episode outcome belongs to the episode end, not a shot checkpoint")
+                if not saved or not saved["script"] or event.after_shot > len(saved["script"]["shots"]):
+                    raise ValueError("Exact canon timing requires a saved episode with that shot checkpoint")
+            event_id = str(uuid4())
             db.execute(
                 "INSERT INTO canon VALUES(?,?,?,?,?,?,?,?)",
                 (
-                    str(uuid4()),
+                    event_id,
                     pid,
                     event.entity_id,
                     event.episode,
@@ -577,7 +603,12 @@ def create_app(root: Path | None = None, run_worker=True, *, resource_probe=None
                 "UPDATE episodes SET status='REVIEW_REQUIRED' WHERE project_id=? AND number>?",
                 (pid, event.episode),
             )
-            self_data = {"event": event.model_dump(), "affected_episodes": affected, "revision": revision + 1}
+            self_data = {
+                "event_id": event_id,
+                "event": event.model_dump(),
+                "affected_episodes": affected,
+                "revision": revision + 1,
+            }
             store.event(db, pid, None, "canon_revision", self_data)
         return self_data
 

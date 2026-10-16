@@ -236,6 +236,15 @@ class Store:
                 dict(r)
                 for r in db.execute("SELECT * FROM canon WHERE project_id=? ORDER BY episode,rowid", (pid,))
             ]
+            from studio.canon_timing import with_timing
+
+            project["canon"] = with_timing(
+                project["canon"],
+                db.execute(
+                    "SELECT seq,kind,data FROM events WHERE project_id=? AND kind IN ('canon_committed','canon_revision') ORDER BY seq",
+                    (pid,),
+                ),
+            )
             for episode in project["episodes"]:
                 episode["can_edit_draft"], episode["draft_edit_reason"] = edit_eligibility(project, episode)
             return project

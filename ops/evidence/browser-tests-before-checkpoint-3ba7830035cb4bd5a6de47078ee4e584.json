@@ -1,0 +1,149 @@
+{
+  "config": {
+    "configFile": "C:\\L3mxr\\Github Repositories\\AIMovieStudio\\client\\playwright.config.ts",
+    "rootDir": "C:/L3mxr/Github Repositories/AIMovieStudio/client/e2e",
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "C:/L3mxr/Github Repositories/AIMovieStudio/client/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "",
+        "name": "",
+        "testDir": "C:/L3mxr/Github Repositories/AIMovieStudio/client/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 120000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "../ops/evidence/browser-tests.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "runAgents": "none",
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.58.2",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "story-checkpoint.spec.ts",
+      "file": "story-checkpoint.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "saved flashback checkpoints remain clear while editing a mobile draft",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 6086,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByText('Development demo', { exact: true })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByText('Development demo', { exact: true })\u001b[22m\n",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByText('Development demo', { exact: true })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByText('Development demo', { exact: true })\u001b[22m\n\n    at C:\\L3mxr\\Github Repositories\\AIMovieStudio\\client\\e2e\\story-checkpoint.spec.ts:30:5",
+                    "location": {
+                      "file": "C:\\L3mxr\\Github Repositories\\AIMovieStudio\\client\\e2e\\story-checkpoint.spec.ts",
+                      "column": 5,
+                      "line": 30
+                    },
+                    "snippet": "  28 |   await expect(\n  29 |     page.getByText(\"Development demo\", { exact: true }),\n> 30 |   ).toBeVisible();\n     |     ^\n  31 |   await page.getByRole(\"tab\", { name: \"Episodes\", exact: true }).click();\n  32 |   await page\n  33 |     .getByRole(\"button\")"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "C:\\L3mxr\\Github Repositories\\AIMovieStudio\\client\\e2e\\story-checkpoint.spec.ts",
+                        "column": 5,
+                        "line": 30
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByText('Development demo', { exact: true })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByText('Development demo', { exact: true })\u001b[22m\n\n\n  28 |   await expect(\n  29 |     page.getByText(\"Development demo\", { exact: true }),\n> 30 |   ).toBeVisible();\n     |     ^\n  31 |   await page.getByRole(\"tab\", { name: \"Episodes\", exact: true }).click();\n  32 |   await page\n  33 |     .getByRole(\"button\")\n    at C:\\L3mxr\\Github Repositories\\AIMovieStudio\\client\\e2e\\story-checkpoint.spec.ts:30:5"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-16T10:58:39.131Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\L3mxr\\Github Repositories\\AIMovieStudio\\client\\test-results\\story-checkpoint-saved-fla-9f7b4-hile-editing-a-mobile-draft\\test-failed-1.png"
+                    },
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "C:\\L3mxr\\Github Repositories\\AIMovieStudio\\client\\test-results\\story-checkpoint-saved-fla-9f7b4-hile-editing-a-mobile-draft\\trace.zip"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "C:\\L3mxr\\Github Repositories\\AIMovieStudio\\client\\e2e\\story-checkpoint.spec.ts",
+                    "column": 5,
+                    "line": 30
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "c57dc83481ca05ab56d1-58e4323c87e71c1edfb0",
+          "file": "story-checkpoint.spec.ts",
+          "line": 7,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-10-16T10:58:37.033Z",
+    "duration": 9391.940000000002,
+    "expected": 0,
+    "skipped": 0,
+    "unexpected": 1,
+    "flaky": 0
+  }
+}
