@@ -5,3 +5,5 @@ ops/archive/** -text whitespace=cr-at-eol
 # Captured consoles include significant spacing in original failure traces.
 # Do not alter those bytes to satisfy source-formatting checks.
 ops/evidence/**/*.log -text -whitespace
+# Preserve pinned third-party notice bytes, including original source spacing.
+ops/evidence/encoder-candidate-notices/** -text -whitespace
