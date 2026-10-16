@@ -6,12 +6,14 @@ from collections import Counter
 from datetime import datetime, timezone
 from importlib.metadata import distributions
 from pathlib import Path
+from uuid import uuid4
 
 from studio.storage import atomic_json, digest
 
 ROOT = Path(__file__).resolve().parents[1]
 NOTICE = re.compile(r"^(licen[cs]e|copying|notice|copyright)([._-].*)?$", re.I)
 MAX_NOTICE = 2 * 1024 * 1024
+ENCODER_NOTICE_LOCK_SHA = "f1bf412acd2fa12b323fdda96d78688bfc507592f505d8b51f2425d1366d7ae7"
 
 
 def notice_record(path: Path, boundary: Path, root: Path):
@@ -133,9 +135,41 @@ def node_inventory(root: Path):
     return items, findings
 
 
+def experimental_encoder_notices(root: Path):
+    directory = root / "tools/wan-gp/ckpts/Qwen3/studio-q4-notices"
+    installed = (
+        directory.exists()
+        or (directory.parent / "Qwen3-4B-Q4_K_M.gguf").exists()
+        or (root / "tools/gpu/encoder-experiment-receipt.json").exists()
+    )
+    if not installed:
+        return [], []
+    records, findings = [], []
+    lock = root / "ops/evidence/encoder-experiment-lock.json"
+    try:
+        record = notice_record(lock, root / "ops/evidence", root)
+        if record["sha256"] != ENCODER_NOTICE_LOCK_SHA:
+            raise ValueError("Experimental notice lock changed")
+        items = json.loads(lock.read_bytes())["notices"]
+        if {item["file"] for item in items} != {"LICENSE", "README.md"} or len(items) != 2:
+            raise ValueError("Unexpected experimental encoder notice set")
+    except (OSError, ValueError, KeyError, TypeError):
+        return [], ["experimental encoder: pinned notice lock missing, redirected or changed"]
+    for item in items:
+        try:
+            record = notice_record(directory / item["file"], directory, root)
+            if record["sha256"] != item["sha256"]:
+                raise ValueError("Installed experimental encoder notice changed")
+            records.append(record)
+        except (OSError, ValueError, KeyError, TypeError):
+            findings.append("experimental encoder: installed notice missing, redirected or changed")
+    return records, findings
+
+
 def inventory(root: Path):
     components, findings = [], []
     for relative, scope in [
+        ("tools/app-runtime/Lib/site-packages", "app-runtime-python"),
         (".venv/Lib/site-packages", "main-python"),
         ("tools/wan-gp/.venv/Lib/site-packages", "optional-gpu-python"),
     ]:
@@ -150,6 +184,8 @@ def inventory(root: Path):
         root / "tools/wan-gp/LICENSE.txt",
         root / "tools/story/qwen1.5b-LICENSE",
     ]
+    if (root / "tools/app-runtime").exists():
+        notice_files.append(root / "tools/app-runtime/LICENSE.txt")
     # Optional approved writer: inventory only when present, no download or clearance.
     notice_files.extend(
         path
@@ -167,6 +203,9 @@ def inventory(root: Path):
         ]
     )
     standalone = []
+    encoder_records, encoder_findings = experimental_encoder_notices(root)
+    standalone.extend(encoder_records)
+    findings.extend(encoder_findings)
     index = root / "ops/evidence/model-license-sources.json"
     if index.is_file():
         model_sources = json.loads(index.read_text(encoding="utf-8"))
@@ -217,7 +256,8 @@ def inventory(root: Path):
 
 def main():
     report = inventory(ROOT)
-    path = ROOT / "ops/evidence/installed-license-inventory.json"
+    # Every execution preserves previous findings and their exact evidence bytes.
+    path = ROOT / f"ops/evidence/installed-license-inventory-{uuid4().hex}.json"
     atomic_json(path, report)
     print(
         json.dumps(

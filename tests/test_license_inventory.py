@@ -138,6 +138,101 @@ def test_external_python_environment_is_not_scanned(tmp_path):
     assert items == [] and findings == ["test: environment redirected outside workspace"]
 
 
+def test_inventory_covers_the_actual_private_app_runtime_without_imports(tmp_path):
+    site = tmp_path / "tools/app-runtime/Lib/site-packages"
+    dist = site / "private_dependency-1.0.dist-info"
+    dist.mkdir(parents=True)
+    (dist / "METADATA").write_text(
+        "Metadata-Version: 2.4\nName: private-dependency\nVersion: 1.0\nLicense-Expression: MIT\n"
+    )
+    (dist / "LICENSE").write_text("A private runtime dependency notice.")
+    (dist / "RECORD").write_text("private_dependency-1.0.dist-info/LICENSE,,\n")
+    (site / "private_dependency.py").write_text("raise RuntimeError('DO NOT IMPORT RUNTIME')")
+    python_notice = tmp_path / "tools/app-runtime/LICENSE.txt"
+    python_notice.write_text("Private Python runtime notice.")
+    report = inventory(tmp_path)
+    assert report["counts"]["app-runtime-python"] == 1
+    assert any(
+        c["name"] == "private-dependency" and c["scope"] == "app-runtime-python" for c in report["components"]
+    )
+    assert any(item["path"] == "tools/app-runtime/LICENSE.txt" for item in report["standalone_notices"])
+    assert report["status"] == "INVENTORY_ONLY_NOT_CLEARED" and not report["native_dependencies_imported"]
+
+
+def test_installed_experimental_encoder_notices_are_hash_checked_against_lock(tmp_path, monkeypatch):
+    import hashlib
+
+    directory = tmp_path / "tools/wan-gp/ckpts/Qwen3/studio-q4-notices"
+    directory.mkdir(parents=True)
+    license_file = directory / "LICENSE"
+    license_file.write_text("Pinned experimental model license.")
+    card = directory / "README.md"
+    card.write_text("Pinned experimental model card.")
+    lock = tmp_path / "ops/evidence/encoder-experiment-lock.json"
+    lock.parent.mkdir(parents=True)
+    lock.write_text(
+        json.dumps(
+            {
+                "notices": [
+                    {"file": item.name, "sha256": hashlib.sha256(item.read_bytes()).hexdigest()}
+                    for item in [license_file, card]
+                ]
+            }
+        )
+    )
+    monkeypatch.setattr(
+        "scripts.license_inventory.ENCODER_NOTICE_LOCK_SHA", hashlib.sha256(lock.read_bytes()).hexdigest()
+    )
+    report = inventory(tmp_path)
+    captured = [item for item in report["standalone_notices"] if "studio-q4-notices" in item["path"]]
+    assert len(captured) == 2
+    assert not any("experimental encoder" in f for f in report["findings"])
+    license_file.write_text("Changed bytes must not silently count as pinned rights evidence.")
+    failed = inventory(tmp_path)
+    assert len([item for item in failed["standalone_notices"] if "studio-q4-notices" in item["path"]]) == 1
+    assert any("experimental encoder" in f and "changed" in f for f in failed["findings"])
+
+
+def test_installed_private_runtime_missing_python_notice_is_reported(tmp_path):
+    (tmp_path / "tools/app-runtime/Lib/site-packages").mkdir(parents=True)
+    report = inventory(tmp_path)
+    assert any(
+        "tools/app-runtime/LICENSE.txt" in item and "unavailable" in item for item in report["findings"]
+    )
+
+
+def test_uninstalled_experimental_encoder_adds_no_false_missing_notice_finding(tmp_path):
+    assert not any("experimental encoder" in item for item in inventory(tmp_path)["findings"])
+
+
+@pytest.mark.parametrize("contents", [None, "not JSON", '{"notices":[]}'])
+def test_present_encoder_without_valid_pinned_notice_lock_cannot_clear_findings(tmp_path, contents):
+    directory = tmp_path / "tools/wan-gp/ckpts/Qwen3"
+    directory.mkdir(parents=True)
+    (directory / "Qwen3-4B-Q4_K_M.gguf").write_bytes(b"size-only fixture, never model loading")
+    if contents is not None:
+        lock = tmp_path / "ops/evidence/encoder-experiment-lock.json"
+        lock.parent.mkdir(parents=True)
+        lock.write_text(contents)
+    report = inventory(tmp_path)
+    assert any("experimental encoder" in item and "lock" in item for item in report["findings"])
+    assert not any("studio-q4-notices" in item["path"] for item in report["standalone_notices"])
+
+
+def test_license_cli_keeps_each_report_and_does_not_replace_historical_evidence(tmp_path, monkeypatch):
+    from scripts import license_inventory
+
+    output = tmp_path / "ops/evidence"
+    output.mkdir(parents=True)
+    historical = output / "installed-license-inventory.json"
+    historical.write_bytes(b"preserve historical exact evidence")
+    monkeypatch.setattr(license_inventory, "ROOT", tmp_path)
+    license_inventory.main()
+    license_inventory.main()
+    assert historical.read_bytes() == b"preserve historical exact evidence"
+    assert len(list(output.glob("installed-license-inventory-*.json"))) == 2
+
+
 def test_small_source_capture_preserves_original_at_pinned_revision(tmp_path, monkeypatch):
     from scripts.capture_license_sources import capture
 

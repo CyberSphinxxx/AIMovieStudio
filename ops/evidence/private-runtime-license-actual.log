@@ -1,0 +1,1 @@
+{"status": "INVENTORY_ONLY_NOT_CLEARED", "counts": {"app-runtime-python": 18, "main-python": 49, "optional-gpu-python": 170, "frontend": 209}, "findings": 83, "output": "C:\\L3mxr\\Github Repositories\\AIMovieStudio\\ops\\evidence\\installed-license-inventory-acf9b376b3f24e03bddc7ab644e88e62.json"}
