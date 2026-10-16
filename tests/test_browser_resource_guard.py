@@ -5,7 +5,9 @@ import pytest
 from scripts import checkpoint_browser_smoke as smoke
 
 
-@pytest.mark.parametrize("args,free,minimum", [(["--all"], 2.12, "3"), ([], 0.7, "0.75")])
+@pytest.mark.parametrize(
+    "args,free,minimum", [(["--all"], 2.12, "3"), ([], 0.7, "0.75"), (["--movie-review"], 1.0, "1.25")]
+)
 def test_browser_scope_requires_headroom_before_creating_a_fixture(
     tmp_path, monkeypatch, args, free, minimum
 ):

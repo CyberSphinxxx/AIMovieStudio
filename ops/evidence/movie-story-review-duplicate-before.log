@@ -1,0 +1,14 @@
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "C:\L3mxr\Github Repositories\AIMovieStudio\scripts\checkpoint_browser_smoke.py", line 333, in <module>
+    main()
+  File "C:\L3mxr\Github Repositories\AIMovieStudio\scripts\checkpoint_browser_smoke.py", line 195, in main
+    movie_review_fixture(directory / "library")
+  File "C:\L3mxr\Github Repositories\AIMovieStudio\scripts\checkpoint_browser_smoke.py", line 171, in movie_review_fixture
+    backup_import.commit_import(target, operation)
+  File "C:\L3mxr\Github Repositories\AIMovieStudio\studio\backup_import.py", line 211, in commit_import
+    _publish_project(source, target)
+  File "C:\L3mxr\Github Repositories\AIMovieStudio\studio\backup_import.py", line 135, in _publish_project
+    os.rename(source, target)
+PermissionError: [WinError 5] Access is denied: 'C:\\L3mxr\\Github Repositories\\AIMovieStudio\\data\\checkpoint-browser\\1b72f843de4a4b0eaa22c295bf54b832\\library\\restore-imports\\eeda297e-4aed-4da3-8f89-706d1fed333a\\store\\b516d438-0204-4ec9-a472-5de22619e5ff' -> 'C:\\L3mxr\\Github Repositories\\AIMovieStudio\\data\\checkpoint-browser\\1b72f843de4a4b0eaa22c295bf54b832\\library\\b516d438-0204-4ec9-a472-5de22619e5ff'

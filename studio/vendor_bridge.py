@@ -11,6 +11,7 @@ import os
 import socket
 import sys
 import time
+from contextlib import nullcontext
 from pathlib import Path
 
 if __package__:
@@ -161,15 +162,19 @@ def run_session(request, root, directory, response_path, telemetry):
     else:
         telemetry.mark_phase("validating_request")
         parameters, schema = build_settings(session, request)
-        telemetry.mark_phase("submitting_generation")
-        job = session.submit_task(parameters)
-        deadline = time.monotonic() + request["timeout"]
-        while not job.done:
-            if (directory / "cancel.request").exists() or time.monotonic() > deadline:
-                job.cancel()
-                raise RuntimeError("CANCELLED_OR_TIMEOUT: WanGP generation stopped.")
-            time.sleep(0.2)
-        generated = require_success(job.result(), directory)
+        compatibility = encoder_compatibility_context(request, root)
+        with compatibility as record:
+            telemetry.mark_phase("submitting_generation")
+            job = session.submit_task(parameters)
+            deadline = time.monotonic() + request["timeout"]
+            while not job.done:
+                if (directory / "cancel.request").exists() or time.monotonic() > deadline:
+                    job.cancel()
+                    raise RuntimeError("CANCELLED_OR_TIMEOUT: WanGP generation stopped.")
+                time.sleep(0.2)
+            generated = require_success(job.result(), directory)
+            if record is not None:
+                runtime_options["encoder_compatibility"] = record
         telemetry.mark_phase("validating_output")
         result = {
             "files": [str(p) for p in generated],
@@ -184,6 +189,29 @@ def run_session(request, root, directory, response_path, telemetry):
     temporary.write_text(json.dumps(result, default=str), encoding="utf-8")
     temporary.replace(response_path)
     telemetry.mark_phase("response_saved")
+
+
+def encoder_compatibility_context(request, root):
+    option = request.get("encoder_compatibility")
+    if option is None:
+        return nullcontext()
+    if (
+        option != "qwen3_tied_head_v1"
+        or request.get("kind") != "image"
+        or request.get("model") != "flux2_klein_4b_studio_q4"
+    ):
+        raise RuntimeError(
+            "INCOMPATIBLE: Experimental encoder compatibility is restricted to its image profile"
+        )
+    # This child alone owns the runtime; never modify vendor files or defaults.
+    from models.flux.modules import text_encoder_qwen3
+
+    if __package__:
+        from .vendor_qwen_compat import scoped_tied_head
+    else:
+        from vendor_qwen_compat import scoped_tied_head
+
+    return scoped_tied_head(root, text_encoder_qwen3)
 
 
 if __name__ == "__main__":

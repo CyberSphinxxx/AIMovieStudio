@@ -1,5 +1,7 @@
 # Experimental image encoder — approval proposal, 2026-10-16
 
+**Current outcome:** the single approved image attempt ran and FAILED83.75s during loading (`Missing keys: ['lm_head.weight']`), with no image. Its durable reservation is consumed; do not retry/reset/refund it. Earlier NOT_STARTED entries below are historical. A separate tested compatibility change and additional one-image scope are described in `ENCODER_TIED_HEAD_TEST_PROPOSAL.md`; that additional attempt is not yet approved.
+
 **Approved on2026-10-16:** human replied “Approve bounded image-only experiment.” Installation/testing status is recorded in ops/PROGRESS.md; approval does not establish RAM fit or image quality. No image-generation success is claimed.
 
 Installed and SHA-verified2026-10-16; repeat setup verified zero additional download. GPU cumulative receipts13,893,604,149bytes, total reservations5,722,749,396bytes (including experiment remainder102,693,222). Experiment receipts2,497,306,778bytes including metadata/notices remain within2.6GB. Initial raw install report retained a stale pre-install `encoder.installed=false` field; the immutable receipt and subsequent actual verification correctly report true. The report-only bug is fixed/tested without rewriting the original evidence. Latest measured native preflight failed at1.42GiB freeRAM/3579MiB freeVRAM/76C. The single approved image attempt remains **NOT_STARTED**, its durable reservation absent; no need to reapprove the existing scope.

@@ -40,6 +40,7 @@ from studio.export_variants import ExportCopy, enqueue_copy
 from studio.shot_revisions import RetakeRequest, enqueue_retake, discard_retake
 from studio.reference_variants import ReferenceVariant, ReferenceSelection, enqueue_variant, select_reference
 from studio.canon_revisions import CanonTimingRevision, assign_timing
+from studio.movie_story_review import MovieStoryReview, review_movie
 from studio import backup_import
 from studio.export_folder import reveal_export
 
@@ -358,6 +359,10 @@ def create_app(root: Path | None = None, run_worker=True, *, resource_probe=None
     @app.post("/api/projects/{pid}/produce", status_code=202)
     def produce(pid: str, value: EpisodeRequest):
         return {"job_id": store.enqueue(pid, value.episode)}
+
+    @app.post("/api/projects/{pid}/episodes/{number}/review-movie")
+    def keep_reviewed_movie(pid: str, number: int, value: MovieStoryReview):
+        return review_movie(store, pid, number, value)
 
     @app.post("/api/projects/{pid}/episodes/{number}/export-copy", status_code=202)
     def export_copy(pid: str, number: int, value: ExportCopy):

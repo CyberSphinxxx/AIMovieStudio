@@ -50,9 +50,14 @@ class WanGPConfig(StrictModel):
 
 
 class WanGPProvider:
-    def __init__(self, config: WanGPConfig, data_root: Path):
+    def __init__(self, config: WanGPConfig, data_root: Path, *, encoder_compatibility: str | None = None):
         self.config = config
         self.data_root = data_root.resolve()
+        if encoder_compatibility is not None and (
+            encoder_compatibility != "qwen3_tied_head_v1" or config.image_model != "flux2_klein_4b_studio_q4"
+        ):
+            raise ValueError("Unsupported experimental encoder compatibility")
+        self.encoder_compatibility = encoder_compatibility
 
     def configured(self):
         return (
@@ -104,6 +109,10 @@ class WanGPProvider:
             "smart_memory_pinning": self.config.smart_memory_pinning,
             "parent_memory_sample_interval_seconds": PARENT_MEMORY_CHECK_SECONDS,
         }
+        if self.encoder_compatibility is not None:
+            if kind != "image":
+                raise ValueError("Experimental encoder compatibility is image-only")
+            request["encoder_compatibility"] = self.encoder_compatibility
         req, res = directory / "provider-request.json", directory / "provider-result.json"
         atomic_json(req, request)
         last_memory_check = float("-inf")

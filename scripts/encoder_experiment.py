@@ -252,6 +252,37 @@ def claim_image_test(root: Path, run_id: str, max_seconds: int):
         ) from error
 
 
+def claim_tied_head_test(root: Path, run_id: str, max_seconds: int, *, approved: bool = False):
+    """Separate new scope; the original failed reservation is never changed."""
+    if not approved:
+        raise RuntimeError("APPROVAL_REQUIRED: See docs/ENCODER_TIED_HEAD_TEST_PROPOSAL.md")
+    if type(max_seconds) is not int or not 1 <= max_seconds <= 300:
+        raise ValueError("Tied-head image test must remain within 300 seconds")
+    original = scoped(root, "tools/gpu/encoder-image-test-reservation.json")
+    if not original.is_file():
+        raise RuntimeError("INCOMPATIBLE: Inspect and retain the original image attempt first")
+    path = scoped(root, "tools/gpu/encoder-tied-head-test-reservation.json")
+    try:
+        with path.open("xb") as stream:
+            stream.write(
+                encoded(
+                    {
+                        "run_id": run_id,
+                        "max_seconds": max_seconds,
+                        "profile": PROFILE,
+                        "compatibility": "qwen3_tied_head_v1",
+                        "original_reservation_sha256": digest(original),
+                    }
+                )
+            )
+            stream.flush()
+            os.fsync(stream.fileno())
+    except FileExistsError as error:
+        raise RuntimeError(
+            "EXPERIMENT_SPENT: Tied-head image test already reserved; no automatic retry"
+        ) from error
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("mode", choices=["inspect", "install"])

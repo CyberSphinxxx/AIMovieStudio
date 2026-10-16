@@ -26,6 +26,7 @@ import { ReferenceViews } from "./ReferenceViews";
 import { ShowInFolder } from "./ShowInFolder";
 import { StoryMoment } from "./StoryMoment";
 import { CanonTimeline } from "./CanonTimeline";
+import { RetainedMovieReview } from "./RetainedMovieReview";
 
 const EXAMPLE =
   "A lighthouse keeper receives a message from a ship that vanished thirty years ago. Tonight, the light begins to answer.";
@@ -636,6 +637,8 @@ function Studio({ id }: { id: string }) {
     ep?.status === "REVIEW_REQUIRED"
       ? ep.status
       : job?.state || ep?.status || project.status;
+  const needsMovieReview =
+    ep?.status === "REVIEW_REQUIRED" && !!movie && job?.state === "SUCCEEDED";
   return (
     <>
       <button
@@ -791,9 +794,18 @@ function Studio({ id }: { id: string }) {
                 </pre>
                 {ep?.script && (
                   <DraftEditor
-                    key={`${id}:${episode}`}
+                    key={`draft:${id}:${episode}`}
                     project={project}
                     episode={ep}
+                    onSaved={reload}
+                  />
+                )}
+                {ep && movie && (
+                  <RetainedMovieReview
+                    key={`review:${id}:${episode}`}
+                    project={project}
+                    episode={ep}
+                    movie={movie}
                     onSaved={reload}
                   />
                 )}
@@ -1241,30 +1253,34 @@ function Studio({ id }: { id: string }) {
         <aside className="progress-panel" aria-label="Production progress">
           <p className="eyebrow">PRODUCTION</p>
           <h2>
-            {waitingForResources
-              ? "Waiting for your computer."
-              : running
-                ? "Making your movie."
-                : movie && job?.state === "SUCCEEDED"
-                  ? "That’s a wrap."
-                  : stageLabel(episodeState)}
+            {needsMovieReview
+              ? "Needs story review."
+              : waitingForResources
+                ? "Waiting for your computer."
+                : running
+                  ? "Making your movie."
+                  : movie && job?.state === "SUCCEEDED"
+                    ? "That’s a wrap."
+                    : stageLabel(episodeState)}
           </h2>
           <p aria-live="polite" className="muted">
-            {waitingForResources
-              ? `${job?.resource_wait?.message || "Waiting for safe memory and graphics conditions."} Studio will continue automatically when resources are free. You can pause or stop at any time.`
-              : active
-                ? stepLabel(active)
-                : movie && job?.state === "SUCCEEDED"
-                  ? "Your draft passed media validation."
-                  : job?.state === "PAUSED"
-                    ? ep?.can_edit_draft
-                      ? "Your screenplay is saved. Review it in Story, then resume to make footage."
-                      : "Saved progress. Resume when you’re ready."
-                    : job?.state === "FAILED"
-                      ? "Your completed work is safe."
-                      : job?.state === "CANCELLED"
-                        ? "Production stopped. Assets are preserved."
-                        : "Every completed step is saved."}
+            {needsMovieReview
+              ? "Earlier story details changed. Review this movie and its screenplay in Story before continuing."
+              : waitingForResources
+                ? `${job?.resource_wait?.message || "Waiting for safe memory and graphics conditions."} Studio will continue automatically when resources are free. You can pause or stop at any time.`
+                : active
+                  ? stepLabel(active)
+                  : movie && job?.state === "SUCCEEDED"
+                    ? "Your draft passed media validation."
+                    : job?.state === "PAUSED"
+                      ? ep?.can_edit_draft
+                        ? "Your screenplay is saved. Review it in Story, then resume to make footage."
+                        : "Saved progress. Resume when you’re ready."
+                      : job?.state === "FAILED"
+                        ? "Your completed work is safe."
+                        : job?.state === "CANCELLED"
+                          ? "Production stopped. Assets are preserved."
+                          : "Every completed step is saved."}
           </p>
           <div
             className="progress-track"

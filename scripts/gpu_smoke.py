@@ -5,11 +5,17 @@ from __future__ import annotations
 import argparse
 import json
 import time
+from contextlib import ExitStack
 from pathlib import Path
 from uuid import uuid4
 
 from scripts.setup_gpu import ROOT
-from scripts.encoder_experiment import PROFILE as ENCODER_PROFILE, claim_image_test, verify_installed
+from scripts.encoder_experiment import (
+    PROFILE as ENCODER_PROFILE,
+    claim_image_test,
+    claim_tied_head_test,
+    verify_installed,
+)
 from studio import media
 from studio.providers import (
     PARENT_MEMORY_CHECK_SECONDS,
@@ -20,6 +26,7 @@ from studio.providers import (
 )
 from studio.storage import atomic_json, digest
 from studio.diagnostics import memory_status
+from studio.inference_lock import native_inference
 
 
 def smoke_guard(report, started, max_seconds):
@@ -55,11 +62,23 @@ def main():
         help="Image-only approved experimental Q4 encoder, profile 5/buffers off; preserves original evidence",
     )
     parser.add_argument(
+        "--tied-head-retest",
+        action="store_true",
+        help="Separate proposed one-image test; requires explicit new approval after the original attempt",
+    )
+    parser.add_argument("--approved-tied-head-retest", action="store_true")
+    parser.add_argument(
         "--disable-smart-pinning",
         action="store_true",
         help="Use a scoped engine config without extra transfer buffers; memory fit is unproven",
     )
     args = parser.parse_args()
+    if args.tied_head_retest and (not args.encoder_experiment or not args.approved_tied_head_retest):
+        parser.error(
+            "Tied-head retest requires --encoder-experiment and explicit new approval of docs/ENCODER_TIED_HEAD_TEST_PROPOSAL.md"
+        )
+    if args.approved_tied_head_retest and not args.tied_head_retest:
+        parser.error("Approval flag requires --tied-head-retest")
     if not 1 <= args.max_seconds <= 3600:
         parser.error("GPU smoke ceiling must be between 1 and 3600 seconds")
     if args.encoder_experiment and (args.phase != "image" or args.max_seconds > 300):
@@ -69,7 +88,9 @@ def main():
     directory.mkdir(parents=True)
     report = {"phase": args.phase, "is_mock": False, "status": "STARTED", "directory": str(directory)}
     evidence = ROOT / (
-        f"ops/evidence/encoder-experiment-image-{directory.name}.json"
+        f"ops/evidence/encoder-tied-head-image-{directory.name}.json"
+        if args.tied_head_retest
+        else f"ops/evidence/encoder-experiment-image-{directory.name}.json"
         if args.encoder_experiment
         else f"ops/evidence/real-gpu-{args.phase}.json"
     )
@@ -87,12 +108,24 @@ def main():
         memory_profile=5 if args.encoder_experiment else float(args.profile),
         smart_memory_pinning=False if args.disable_smart_pinning or args.encoder_experiment else None,
     )
-    provider = WanGPProvider(config, root)
+    provider = WanGPProvider(
+        config, root, encoder_compatibility="qwen3_tied_head_v1" if args.tied_head_retest else None
+    )
+    ownership = ExitStack()
     try:
+        # Own inference before reserving an attempt or validating large files.
+        # The provider's nested lease remains held through child cleanup.
+        ownership.enter_context(native_inference())
         report["before"] = require_resources()
         if args.encoder_experiment:
             report["encoder_setup"] = verify_installed(ROOT)
-            claim_image_test(ROOT, directory.name, args.max_seconds)
+            if args.tied_head_retest:
+                claim_tied_head_test(
+                    ROOT, directory.name, args.max_seconds, approved=args.approved_tied_head_retest
+                )
+                report["encoder_compatibility"] = "qwen3_tied_head_v1"
+            else:
+                claim_image_test(ROOT, directory.name, args.max_seconds)
         if args.phase == "runtime":
             report["runtime_attempted"] = True
             result = provider.request("discover", "", directory, check)
@@ -144,6 +177,7 @@ def main():
         report["telemetry"] = [json.loads(p.read_text()) for p in directory.rglob("provider-telemetry.json")]
         raise
     finally:
+        ownership.close()
         report["elapsed_seconds"] = round(time.monotonic() - started, 3)
         atomic_json(evidence, report)
         if args.phase == "runtime" and report.get("runtime_attempted"):
@@ -174,7 +208,9 @@ def main():
             atomic_json(
                 ROOT
                 / (
-                    "tools/gpu/encoder-image-status.json"
+                    "tools/gpu/encoder-tied-head-status.json"
+                    if args.tied_head_retest
+                    else "tools/gpu/encoder-image-status.json"
                     if args.encoder_experiment
                     else "tools/gpu/image-status.json"
                 ),

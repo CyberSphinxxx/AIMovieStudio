@@ -1,0 +1,24 @@
+{
+  "scope": "Fresh admission before the already-approved single native image attempt",
+  "hardware": {
+    "gpu": {
+      "available": true,
+      "name": "NVIDIA GeForce RTX 3060 Laptop GPU",
+      "driver": "610.88",
+      "total_mb": 6144,
+      "used_mb": 1114,
+      "temperature_c": 59
+    },
+    "python": "3.11.14",
+    "memory": {
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 5.07,
+      "load_percent": 66
+    },
+    "measured_at": 1792157402.5061264
+  },
+  "inference_busy": false,
+  "image_attempt_reserved": false,
+  "status": "RESOURCES_PASS_NOT_INFERENCE"
+}

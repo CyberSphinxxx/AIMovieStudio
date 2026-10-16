@@ -1,0 +1,185 @@
+{
+  "scope": "Isolated explicit demo UI fixture, no model inference",
+  "url": "http://127.0.0.1:65115",
+  "fixture": "C:\\L3mxr\\Github Repositories\\AIMovieStudio\\data\\checkpoint-browser\\46120c0d960444688b08ca5016368b12\\fixture.json",
+  "baseline_memory": {
+    "available": true,
+    "total_gb": 15.19,
+    "free_gb": 2.24,
+    "load_percent": 85
+  },
+  "minimum_free_gib": 1.25,
+  "samples": [
+    {
+      "seconds": 1.84,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 2.14,
+      "load_percent": 85
+    },
+    {
+      "seconds": 2.34,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 2.11,
+      "load_percent": 86
+    },
+    {
+      "seconds": 2.84,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 2.02,
+      "load_percent": 86
+    },
+    {
+      "seconds": 3.34,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 2.05,
+      "load_percent": 86
+    },
+    {
+      "seconds": 3.84,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 1.97,
+      "load_percent": 87
+    },
+    {
+      "seconds": 4.34,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 1.94,
+      "load_percent": 87
+    },
+    {
+      "seconds": 4.84,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 1.85,
+      "load_percent": 87
+    },
+    {
+      "seconds": 5.36,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 1.8,
+      "load_percent": 88
+    },
+    {
+      "seconds": 5.86,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 1.77,
+      "load_percent": 88
+    },
+    {
+      "seconds": 6.36,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 1.78,
+      "load_percent": 88
+    },
+    {
+      "seconds": 6.86,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 1.69,
+      "load_percent": 88
+    },
+    {
+      "seconds": 7.36,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 1.43,
+      "load_percent": 90
+    },
+    {
+      "seconds": 7.86,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 1.48,
+      "load_percent": 90
+    },
+    {
+      "seconds": 8.36,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 1.51,
+      "load_percent": 90
+    },
+    {
+      "seconds": 8.86,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 1.35,
+      "load_percent": 91
+    },
+    {
+      "seconds": 9.36,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 1.46,
+      "load_percent": 90
+    },
+    {
+      "seconds": 9.86,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 1.48,
+      "load_percent": 90
+    },
+    {
+      "seconds": 10.36,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 1.48,
+      "load_percent": 90
+    },
+    {
+      "seconds": 10.86,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 1.51,
+      "load_percent": 90
+    },
+    {
+      "seconds": 11.36,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 1.51,
+      "load_percent": 90
+    },
+    {
+      "seconds": 11.86,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 1.52,
+      "load_percent": 89
+    },
+    {
+      "seconds": 12.36,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 1.59,
+      "load_percent": 89
+    },
+    {
+      "seconds": 12.86,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 1.83,
+      "load_percent": 87
+    }
+  ],
+  "status": "PASS_DEMO_UI_NOT_INFERENCE",
+  "suite": "movie-review",
+  "previous_browser_report": {
+    "path": "C:\\L3mxr\\Github Repositories\\AIMovieStudio\\ops\\evidence\\browser-tests-before-checkpoint-46120c0d960444688b08ca5016368b12.json",
+    "sha256": "a3606ff9f80ebc3bd0d293cf37da5054054f8f31d232280555c5ba98be3b1c9f"
+  },
+  "wall_seconds_limit": 160,
+  "test_exit_code": 0,
+  "elapsed_seconds": 13.36,
+  "logs_directory": "C:\\L3mxr\\Github Repositories\\AIMovieStudio\\data\\checkpoint-browser\\46120c0d960444688b08ca5016368b12"
+}

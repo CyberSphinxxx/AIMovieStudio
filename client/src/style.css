@@ -1632,6 +1632,9 @@ select {
   width: 100%;
   min-width: 0;
 }
+.draft-editor .check-label input {
+  width: 20px;
+}
 .draft-scene {
   padding: 18px 0;
   border-bottom: 1px solid var(--border);

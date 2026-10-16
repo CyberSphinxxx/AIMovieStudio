@@ -1,0 +1,220 @@
+{
+  "scope": "Isolated explicit demo UI fixture, no model inference",
+  "url": "http://127.0.0.1:57469",
+  "fixture": "C:\\L3mxr\\Github Repositories\\AIMovieStudio\\data\\checkpoint-browser\\a128a4a8a0ec498f82956b4bd12d540b\\fixture.json",
+  "baseline_memory": {
+    "available": true,
+    "total_gb": 15.19,
+    "free_gb": 5.11,
+    "load_percent": 66
+  },
+  "minimum_free_gib": 1.25,
+  "samples": [
+    {
+      "seconds": 1.31,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 5.07,
+      "load_percent": 66
+    },
+    {
+      "seconds": 1.81,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 5.0,
+      "load_percent": 67
+    },
+    {
+      "seconds": 2.31,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 4.94,
+      "load_percent": 67
+    },
+    {
+      "seconds": 2.81,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 4.88,
+      "load_percent": 67
+    },
+    {
+      "seconds": 3.31,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 4.8,
+      "load_percent": 68
+    },
+    {
+      "seconds": 3.81,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 4.71,
+      "load_percent": 68
+    },
+    {
+      "seconds": 4.31,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 4.64,
+      "load_percent": 69
+    },
+    {
+      "seconds": 4.81,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 4.49,
+      "load_percent": 70
+    },
+    {
+      "seconds": 5.31,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 4.52,
+      "load_percent": 70
+    },
+    {
+      "seconds": 5.81,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 4.38,
+      "load_percent": 71
+    },
+    {
+      "seconds": 6.31,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 4.34,
+      "load_percent": 71
+    },
+    {
+      "seconds": 6.81,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 4.26,
+      "load_percent": 71
+    },
+    {
+      "seconds": 7.31,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 4.25,
+      "load_percent": 72
+    },
+    {
+      "seconds": 7.81,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 4.27,
+      "load_percent": 71
+    },
+    {
+      "seconds": 8.31,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 4.25,
+      "load_percent": 72
+    },
+    {
+      "seconds": 8.81,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 4.25,
+      "load_percent": 72
+    },
+    {
+      "seconds": 9.31,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 4.26,
+      "load_percent": 71
+    },
+    {
+      "seconds": 9.81,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 4.27,
+      "load_percent": 71
+    },
+    {
+      "seconds": 10.31,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 4.26,
+      "load_percent": 71
+    },
+    {
+      "seconds": 10.81,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 4.29,
+      "load_percent": 71
+    },
+    {
+      "seconds": 11.31,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 4.29,
+      "load_percent": 71
+    },
+    {
+      "seconds": 11.81,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 4.3,
+      "load_percent": 71
+    },
+    {
+      "seconds": 12.31,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 4.32,
+      "load_percent": 71
+    },
+    {
+      "seconds": 12.83,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 4.32,
+      "load_percent": 71
+    },
+    {
+      "seconds": 13.33,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 4.33,
+      "load_percent": 71
+    },
+    {
+      "seconds": 13.83,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 4.32,
+      "load_percent": 71
+    },
+    {
+      "seconds": 14.33,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 4.44,
+      "load_percent": 70
+    },
+    {
+      "seconds": 14.83,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 4.7,
+      "load_percent": 69
+    }
+  ],
+  "status": "FAILED",
+  "suite": "movie-review",
+  "previous_browser_report": {
+    "path": "C:\\L3mxr\\Github Repositories\\AIMovieStudio\\ops\\evidence\\browser-tests-before-checkpoint-a128a4a8a0ec498f82956b4bd12d540b.json",
+    "sha256": "207d1306014bc16e1a2682c1b279f154ab1c2eecddbab6d8d8baaeb00b5128f0"
+  },
+  "wall_seconds_limit": 160,
+  "error": "Browser assertions failed; inspect isolated browser.log and Playwright report",
+  "elapsed_seconds": 15.328,
+  "logs_directory": "C:\\L3mxr\\Github Repositories\\AIMovieStudio\\data\\checkpoint-browser\\a128a4a8a0ec498f82956b4bd12d540b"
+}

@@ -73,6 +73,10 @@ The user approved the private GPU scope in `docs/GPU_INSTALL_PROPOSAL.md` and in
 
 ## Verify
 
+Story → **Review existing movie** can keep an already produced episode after an earlier continuity change. Watch the movie and read its screenplay, then explicitly confirm your review. Studio checks declared continuity, the saved screenplay checkpoint, media hashes and playable export. Conflicts stay blocked and the original movie stays available. Review earlier episodes first. This does not rewrite footage or automatically judge story or cinematic quality.
+
+The separately approved smaller image encoder was tested once. Loading failed after 83.75 seconds with a missing `lm_head.weight` key; no image was generated. That single approved attempt is consumed. Compatibility investigation continues offline; another native image attempt needs a revised concrete proposal and approval. Video remains deferred.
+
 The advanced WanGP connection settings offer **Use smaller RAM transfer buffers**. This applies the engine's documented smart-memory-pinning override in a private per-job configuration. It can reduce reserved memory at the cost of slower transfers; actual model fit is still unverified. The original engine configuration and credentials are preserved. Leaving it off retains the engine default. Developer test after resource guards pass: .venv/Scripts/python.exe -m scripts.gpu_smoke image --profile 5 --disable-smart-pinning --max-seconds 300 . Video still requires a reviewed image PASS.
 
 ```powershell

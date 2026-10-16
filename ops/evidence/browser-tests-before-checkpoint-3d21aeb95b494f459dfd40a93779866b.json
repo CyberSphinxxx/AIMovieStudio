@@ -1,0 +1,154 @@
+{
+  "config": {
+    "configFile": "C:\\L3mxr\\Github Repositories\\AIMovieStudio\\client\\playwright.config.ts",
+    "rootDir": "C:/L3mxr/Github Repositories/AIMovieStudio/client/e2e",
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "C:/L3mxr/Github Repositories/AIMovieStudio/client/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "",
+        "name": "",
+        "testDir": "C:/L3mxr/Github Repositories/AIMovieStudio/client/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 120000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "../ops/evidence/browser-tests.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "runAgents": "none",
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.58.2",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "movie-story-review.spec.ts",
+      "file": "movie-story-review.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "keeping a reviewed movie preserves its cut and refuses contradictory canon",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 9545,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveCount\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  getByRole('heading', { name: 'Your scene, your words.', exact: true })\nExpected: \u001b[32m1\u001b[39m\nReceived: \u001b[31m2\u001b[39m\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveCount\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { name: 'Your scene, your words.', exact: true })\u001b[22m\n\u001b[2m    9 × locator resolved to 2 elements\u001b[22m\n\u001b[2m      - unexpected value \"2\"\u001b[22m\n",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveCount\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  getByRole('heading', { name: 'Your scene, your words.', exact: true })\nExpected: \u001b[32m1\u001b[39m\nReceived: \u001b[31m2\u001b[39m\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveCount\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { name: 'Your scene, your words.', exact: true })\u001b[22m\n\u001b[2m    9 × locator resolved to 2 elements\u001b[22m\n\u001b[2m      - unexpected value \"2\"\u001b[22m\n\n    at C:\\L3mxr\\Github Repositories\\AIMovieStudio\\client\\e2e\\movie-story-review.spec.ts:110:93",
+                    "location": {
+                      "file": "C:\\L3mxr\\Github Repositories\\AIMovieStudio\\client\\e2e\\movie-story-review.spec.ts",
+                      "column": 93,
+                      "line": 110
+                    },
+                    "snippet": "  108 |   await expect(review.getByRole(\"alert\")).toContainText(\"CANON_CONFLICT\");\n  109 |   await expect(review.getByRole(\"alert\")).toContainText(\"dead\");\n> 110 |   await expect(page.getByRole(\"heading\", { name: \"Your scene, your words.\", exact: true })).toHaveCount(1);\n      |                                                                                             ^\n  111 |   const conflicted = await (\n  112 |     await request.get(`/api/projects/${sample.id}`)\n  113 |   ).json();"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "C:\\L3mxr\\Github Repositories\\AIMovieStudio\\client\\e2e\\movie-story-review.spec.ts",
+                        "column": 93,
+                        "line": 110
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveCount\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  getByRole('heading', { name: 'Your scene, your words.', exact: true })\nExpected: \u001b[32m1\u001b[39m\nReceived: \u001b[31m2\u001b[39m\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveCount\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { name: 'Your scene, your words.', exact: true })\u001b[22m\n\u001b[2m    9 × locator resolved to 2 elements\u001b[22m\n\u001b[2m      - unexpected value \"2\"\u001b[22m\n\n\n  108 |   await expect(review.getByRole(\"alert\")).toContainText(\"CANON_CONFLICT\");\n  109 |   await expect(review.getByRole(\"alert\")).toContainText(\"dead\");\n> 110 |   await expect(page.getByRole(\"heading\", { name: \"Your scene, your words.\", exact: true })).toHaveCount(1);\n      |                                                                                             ^\n  111 |   const conflicted = await (\n  112 |     await request.get(`/api/projects/${sample.id}`)\n  113 |   ).json();\n    at C:\\L3mxr\\Github Repositories\\AIMovieStudio\\client\\e2e\\movie-story-review.spec.ts:110:93"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-16T13:27:43.121Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\L3mxr\\Github Repositories\\AIMovieStudio\\client\\test-results\\movie-story-review-keeping-c63c9-refuses-contradictory-canon\\test-failed-1.png"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "C:\\L3mxr\\Github Repositories\\AIMovieStudio\\client\\test-results\\movie-story-review-keeping-c63c9-refuses-contradictory-canon\\error-context.md"
+                    },
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "C:\\L3mxr\\Github Repositories\\AIMovieStudio\\client\\test-results\\movie-story-review-keeping-c63c9-refuses-contradictory-canon\\trace.zip"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "C:\\L3mxr\\Github Repositories\\AIMovieStudio\\client\\e2e\\movie-story-review.spec.ts",
+                    "column": 93,
+                    "line": 110
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "e9b2874976d32c9ecedd-5b2f5a3f0540e77db36a",
+          "file": "movie-story-review.spec.ts",
+          "line": 8,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-10-16T13:27:41.764Z",
+    "duration": 12332.060000000001,
+    "expected": 0,
+    "skipped": 0,
+    "unexpected": 1,
+    "flaky": 0
+  }
+}

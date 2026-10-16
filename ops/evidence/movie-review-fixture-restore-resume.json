@@ -1,0 +1,13 @@
+{
+  "scope": "One explicit resume of the owned failed sample restore; no OS changes",
+  "operation_id": "eeda297e-4aed-4da3-8f89-706d1fed333a",
+  "status": "RESUMED",
+  "result": {
+    "operation_id": "eeda297e-4aed-4da3-8f89-706d1fed333a",
+    "project_ids": [
+      "b516d438-0204-4ec9-a472-5de22619e5ff"
+    ],
+    "project_count": 1,
+    "paused_jobs": 0
+  }
+}

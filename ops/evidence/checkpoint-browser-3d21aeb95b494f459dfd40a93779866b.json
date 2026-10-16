@@ -1,0 +1,122 @@
+{
+  "scope": "Isolated explicit demo UI fixture, no model inference",
+  "url": "http://127.0.0.1:59660",
+  "fixture": "C:\\L3mxr\\Github Repositories\\AIMovieStudio\\data\\checkpoint-browser\\3d21aeb95b494f459dfd40a93779866b\\fixture.json",
+  "baseline_memory": {
+    "available": true,
+    "total_gb": 15.19,
+    "free_gb": 5.45,
+    "load_percent": 64
+  },
+  "minimum_free_gib": 1.25,
+  "samples": [
+    {
+      "seconds": 1.33,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 5.38,
+      "load_percent": 64
+    },
+    {
+      "seconds": 1.83,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 5.29,
+      "load_percent": 65
+    },
+    {
+      "seconds": 2.33,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 5.23,
+      "load_percent": 65
+    },
+    {
+      "seconds": 2.83,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 5.15,
+      "load_percent": 66
+    },
+    {
+      "seconds": 3.33,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 5.07,
+      "load_percent": 66
+    },
+    {
+      "seconds": 3.83,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 5.02,
+      "load_percent": 66
+    },
+    {
+      "seconds": 4.33,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 4.77,
+      "load_percent": 68
+    },
+    {
+      "seconds": 4.83,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 4.88,
+      "load_percent": 67
+    },
+    {
+      "seconds": 5.33,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 4.77,
+      "load_percent": 68
+    },
+    {
+      "seconds": 5.83,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 4.68,
+      "load_percent": 69
+    },
+    {
+      "seconds": 6.33,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 4.6,
+      "load_percent": 69
+    },
+    {
+      "seconds": 6.83,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 4.61,
+      "load_percent": 69
+    },
+    {
+      "seconds": 7.33,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 4.57,
+      "load_percent": 69
+    },
+    {
+      "seconds": 7.83,
+      "available": true,
+      "total_gb": 15.19,
+      "free_gb": 4.54,
+      "load_percent": 70
+    }
+  ],
+  "status": "PASS_DEMO_UI_NOT_INFERENCE",
+  "suite": "movie-review",
+  "previous_browser_report": {
+    "path": "C:\\L3mxr\\Github Repositories\\AIMovieStudio\\ops\\evidence\\browser-tests-before-checkpoint-3d21aeb95b494f459dfd40a93779866b.json",
+    "sha256": "53cbcdc290555649708bc023fd61006aaf986deae6c143d3eca0b9d56bb72a90"
+  },
+  "wall_seconds_limit": 160,
+  "test_exit_code": 0,
+  "elapsed_seconds": 8.328,
+  "logs_directory": "C:\\L3mxr\\Github Repositories\\AIMovieStudio\\data\\checkpoint-browser\\3d21aeb95b494f459dfd40a93779866b"
+}
