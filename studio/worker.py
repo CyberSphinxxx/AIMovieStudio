@@ -789,6 +789,19 @@ class Worker:
             validation = media.validate_video(path, size, spec["target_seconds"], audio=True)
             final = directory / "movie.mp4"
             os.replace(path, final)
+            from studio.quality import evaluate_export
+
+            quality_eval = evaluate_export(
+                path=final,
+                size=size,
+                target_duration=spec["target_seconds"],
+                audio_expected=True,
+                is_mock=spec["backend"] == "demo",
+                script=script,
+                clips=clips,
+                store=self.store,
+                check=check,
+            )
             metadata = {
                 **base,
                 "width": size[0],
@@ -798,7 +811,10 @@ class Worker:
                 "quality": "Draft demo; abstract motion storyboard, not AI generated"
                 if spec["backend"] == "demo"
                 else "Real local inference; draft edit; cinematic review not performed",
-                "cinematic_review": "not performed",
+                "cinematic_review": quality_eval.cinematic_review,
+                "cinematic_review_status": quality_eval.cinematic_review_status,
+                "cost_usd": quality_eval.cost_usd,
+                "quality_evaluation": quality_eval.model_dump(),
                 "parent_asset_ids": [a["id"] for a in clips] + [audio["id"]],
                 "dialogue_present": audio["metadata"]["dialogue_present"],
                 "sound_effects_present": bool(audio["metadata"].get("sound_effects")),
@@ -814,6 +830,7 @@ class Worker:
                     "export": movie,
                     "edit_decision_list": script["shots"],
                     "media_probe": validation,
+                    "quality_evaluation": quality_eval.model_dump(),
                 },
             )
             artifacts = [movie, self.artifact(step, "manifest", manifest, base)]

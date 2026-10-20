@@ -17,6 +17,7 @@ import {
   ShieldCheck,
   Square,
   WandSparkles,
+  Keyboard,
 } from "lucide-react";
 import { api, assetUrl, stageLabel, stepLabel } from "./types";
 import type { Project, Recent, Spec } from "./types";
@@ -28,6 +29,8 @@ import { StoryMoment } from "./StoryMoment";
 import { CanonTimeline } from "./CanonTimeline";
 import { RetainedMovieReview } from "./RetainedMovieReview";
 import { AlternativeStory } from "./AlternativeStory";
+import { QualityCard } from "./QualityCard";
+import { ShortcutsModal } from "./ShortcutsModal";
 
 const EXAMPLE =
   "A lighthouse keeper receives a message from a ship that vanished thirty years ago. Tonight, the light begins to answer.";
@@ -553,6 +556,7 @@ function Studio({ id }: { id: string }) {
   const [tab, setTab] = useState("Overview");
   const [episode, setEpisode] = useState(1);
   const [busy, setBusy] = useState(false);
+  const [showShortcuts, setShowShortcuts] = useState(false);
   const reload = useCallback(
     () =>
       api<Project>(`/projects/${id}`)
@@ -565,6 +569,62 @@ function Studio({ id }: { id: string }) {
     const timer = window.setInterval(() => void reload(), 1500);
     return () => clearInterval(timer);
   }, [reload]);
+  useEffect(() => {
+    function handleKeyDown(event: KeyboardEvent) {
+      const target = event.target as HTMLElement | null;
+      if (
+        target &&
+        (target.tagName === "INPUT" ||
+          target.tagName === "TEXTAREA" ||
+          target.tagName === "SELECT" ||
+          target.isContentEditable)
+      ) {
+        return;
+      }
+      if (event.key === "?") {
+        event.preventDefault();
+        setShowShortcuts((prev) => !prev);
+      } else if (event.key === "Escape") {
+        setShowShortcuts(false);
+      } else if (event.key >= "1" && event.key <= "6") {
+        const tabs = [
+          "Overview",
+          "Story",
+          "Cast & World",
+          "Shots",
+          "Episodes",
+          "Export",
+        ];
+        const selected = tabs[Number(event.key) - 1];
+        if (selected) {
+          event.preventDefault();
+          setTab(selected);
+        }
+      } else if (event.key === "[" && project && episode > 1) {
+        event.preventDefault();
+        setEpisode((prev) => Math.max(1, prev - 1));
+      } else if (
+        event.key === "]" &&
+        project &&
+        episode < project.spec.episodes
+      ) {
+        event.preventDefault();
+        setEpisode((prev) => Math.min(project.spec.episodes, prev + 1));
+      } else if (event.key === " " && tab === "Overview") {
+        const video = document.querySelector<HTMLVideoElement>(".preview video");
+        if (video) {
+          event.preventDefault();
+          if (video.paused) {
+            void video.play();
+          } else {
+            video.pause();
+          }
+        }
+      }
+    }
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [project, episode, tab]);
   async function action(name: string, body?: object) {
     setBusy(true);
     setError("");
@@ -659,11 +719,21 @@ function Studio({ id }: { id: string }) {
           </p>
           <h1>{project.title}</h1>
         </div>
-        <span
-          className={`state-label ${job?.state === "FAILED" ? "failed" : ""}`}
-        >
-          {active ? stepLabel(active) : stageLabel(episodeState)}
-        </span>
+        <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+          <button
+            className="text-button"
+            aria-label="Keyboard shortcuts"
+            onClick={() => setShowShortcuts(true)}
+            style={{ fontSize: "12px", display: "inline-flex", alignItems: "center", gap: 4 }}
+          >
+            <Keyboard size={14} /> Shortcuts (?)
+          </button>
+          <span
+            className={`state-label ${job?.state === "FAILED" ? "failed" : ""}`}
+          >
+            {active ? stepLabel(active) : stageLabel(episodeState)}
+          </span>
+        </div>
       </div>
       {project.spec.backend === "demo" && <DemoNotice />}
       <ErrorMessage message={error || job?.error || ""} />
@@ -1075,6 +1145,7 @@ function Studio({ id }: { id: string }) {
                     <Download size={18} /> Download MP4
                   </a>
                   <ShowInFolder key={movie.id} assetId={movie.id} />
+                  <QualityCard movie={movie} spec={project.spec} />
                   <p className="muted">
                     {movie.metadata.dialogue_present
                       ? "Windows synthetic speech + original ambience."
@@ -1465,6 +1536,7 @@ function Studio({ id }: { id: string }) {
           </div>
         </aside>
       </div>
+      {showShortcuts && <ShortcutsModal onClose={() => setShowShortcuts(false)} />}
     </>
   );
 }

@@ -1,5 +1,14 @@
 # Decisions — 2026-10-12
 
+## Verified deterministic quality evaluator & keyboard shortcuts checkpoint — 2026-10-20
+
+F7.02 & F7.04 VERIFIED_SOFTWARE:
+- Combined single-pass fault detection: FFmpeg filters `-vf blackdetect=d=0.5:pix_th=0.10` and `-af volumedetect` executed together in a single null muxer decode pass (`-f null -`) at >250x real-time speed (~0.01s for 5s clip). Eliminates performance overhead during render exports and recut editions.
+- Strict pixel format validation: Enforce `pix_fmt == "yuv420p"` across all generated/exported videos. Verified repository assets already comply. Guarantee universal web browser and HTML5 `<video>` decoding compatibility.
+- Safe missing asset handling in lineage evaluation: Asset lookup from storage handles nonexistent or corrupted clip IDs safely into `missing_assets` collection rather than raising unhandled `KeyError`, preserving evaluator integrity during incomplete runs.
+- Transparent cost & critique labeling: Local generation incurs $0.00 compute cost and 0 cloud tokens; explicitly stated in UI and manifest metadata. Automatic hard gates are clearly designated as deterministic checks without falsely asserting subjective AI cinematic evaluation has taken place.
+- Accessible keyboard shortcuts: Standard NLE navigation keys (`Space`, `1`–`6`, `[`/`]`, `?`, `Esc`) mapped globally to assist filmmakers, respecting active input/textarea focus.
+
 ## Verified alternative-story checkpoint — 2026-10-16
 
 F2.04/F7.03 text-only story branching VERIFIED_SOFTWARE: source plan/saved scripts copied transactionally to a new draft project, new stable entity/shot IDs with audited mappings/source revision/hashes, no original project/media/revision mutation. No assets/jobs/completedcanon/manualcorrections/provider settings copied and no automatic generation. Explicit optional disclosure; new draft has clear review/produce actions and no fake0/1 progress or empty stage list. UUID idempotency survives source changes/concurrent duplicate requests; unrelated keys/revisions, active/running sources, invalid/missing stories, foreign origins fail; audit-write interruption rolls back. Cancelled sources can recover as new drafts without copied commands/secrets. Two real FFmpeg demo episodes reuse copied scripts (no story provider), backup/reopen preserves both projects and original media SHAs.

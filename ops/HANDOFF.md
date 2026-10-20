@@ -1,4 +1,13 @@
-# AI Movie Studio handoff — 2026-10-16
+# AI Movie Studio handoff — 2026-10-20
+
+## Verified deterministic quality evaluator & keyboard shortcuts checkpoint — 2026-10-20
+
+F7.02 & F7.04 VERIFIED_SOFTWARE:
+- Deterministic quality evaluator implemented in `studio/quality.py` and wired into pipeline export (`studio/worker.py`) and recut editions (`studio/shot_revisions.py`).
+- 10 hard gates: MP4 container, H.264 video codec, YUV420p pixel format, target dimensions, duration within ±0.5s, minimum frame count, AAC audio stream, combined single-pass FFmpeg blackout detection (<=0.5s), combined single-pass FFmpeg silence detection (mean volume > -60 dB), EDL count matching, and parent asset on-disk existence & SHA-256 integrity.
+- Honest quality & cost transparency: local compute cost $0.00 and 0 cloud tokens recorded in manifest and asset metadata; explicit disclaimer that AI critic evaluation was not performed.
+- UI & Accessibility: `QualityCard` added to Export tab; `ShortcutsModal` added with global key listener (`Space`, `1`–`6`, `[`/`]`, `?`, `Esc`).
+- Verification: 79 related backend tests PASS in 125.18s; 13 Vitest tests PASS in 526ms; ESLint, TypeScript strict, Ruff, and production Vite build all clean.
 
 ## Verified alternative-story checkpoint — 2026-10-16
 

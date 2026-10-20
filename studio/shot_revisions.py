@@ -263,11 +263,31 @@ def execute_retake(worker, project: dict, step: dict, settings: dict) -> dict:
         partial, size, project["spec"]["target_seconds"], audio=True, check=check
     )
     os.replace(partial, final)
+    from studio.quality import evaluate_export
+
+    episode_script = next(
+        e["script"] for e in project["episodes"] if e["number"] == step["episode"]
+    )
+    quality_eval = evaluate_export(
+        path=final,
+        size=size,
+        target_duration=project["spec"]["target_seconds"],
+        audio_expected=True,
+        is_mock=source["metadata"]["is_mock"],
+        script=episode_script,
+        clips=[a for a, _ in clips],
+        store=worker.store,
+        check=check,
+    )
     metadata = {
         **source["metadata"],
         "edition": payload["edition"],
         "source_export_id": source["id"],
         "retaken_shot_id": shot["id"],
+        "cinematic_review": quality_eval.cinematic_review,
+        "cinematic_review_status": quality_eval.cinematic_review_status,
+        "cost_usd": quality_eval.cost_usd,
+        "quality_evaluation": quality_eval.model_dump(),
         "parent_asset_ids": [a["id"] for a, _ in clips] + [audio["id"]],
         "parent_hashes": [a["sha256"] for a, _ in clips] + [audio["sha256"]],
     }
@@ -279,10 +299,9 @@ def execute_retake(worker, project: dict, step: dict, settings: dict) -> dict:
             "schema_version": 1,
             "export": movie,
             "source_export_id": source["id"],
-            "edit_decision_list": next(
-                e["script"]["shots"] for e in project["episodes"] if e["number"] == step["episode"]
-            ),
+            "edit_decision_list": episode_script["shots"],
             "media_probe": validation,
+            "quality_evaluation": quality_eval.model_dump(),
         },
     )
     result = [movie, worker.artifact(step, "manifest-edition", manifest, metadata)]

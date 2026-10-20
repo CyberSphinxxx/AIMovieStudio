@@ -109,6 +109,8 @@ def validate_video(
     video = next((s for s in result["streams"] if s["codec_type"] == "video"), None)
     if not video or (video["width"], video["height"]) != size or video["codec_name"] != "h264":
         raise RuntimeError("BAD_OUTPUT: Video dimensions or codec do not match the export profile.")
+    if video.get("pix_fmt") != "yuv420p":
+        raise RuntimeError("BAD_OUTPUT: Video pixel format must be yuv420p for browser playback.")
     if abs(float(result["format"]["duration"]) - duration) > 0.15:
         raise RuntimeError("BAD_OUTPUT: Export runtime does not match the timeline.")
     if audio and not any(s["codec_type"] == "audio" and s["codec_name"] == "aac" for s in result["streams"]):

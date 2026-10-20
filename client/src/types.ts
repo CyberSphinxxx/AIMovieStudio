@@ -78,7 +78,30 @@ export type Asset = {
     requested_view?: string;
     parent_asset_ids?: string[];
     source_export_id?: string;
+    cinematic_review?: string;
+    cinematic_review_status?: string;
+    cost_usd?: number;
+    quality_evaluation?: QualityEvaluation;
   };
+};
+export type HardGateCheck = {
+  name: string;
+  passed: boolean;
+  measured: string;
+  threshold: string;
+  error?: string | null;
+};
+export type QualityEvaluation = {
+  schema_version: number;
+  evaluated_at: number;
+  all_hard_gates_passed: boolean;
+  hard_gates: HardGateCheck[];
+  cinematic_review_status: string;
+  cinematic_review: string;
+  quality_tier: string;
+  cost_usd: number;
+  cloud_tokens_used: number;
+  warnings?: string[];
 };
 export type Step = {
   id: string;
